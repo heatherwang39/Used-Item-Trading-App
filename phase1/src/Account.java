@@ -4,6 +4,13 @@ class Account{
     private String email;
     private boolean isAdmin;
 
+    private Item
+
+
+
+
+
+
     public Account(String userName, String pw, String email){
         this.userName = userName;
         this.pw = pw;

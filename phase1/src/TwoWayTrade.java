@@ -1,4 +1,4 @@
-public class TwoWayTrade implements Trade{
+abstract class TwoWayTrade implements Trade{
 
 
 
