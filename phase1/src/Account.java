@@ -1,27 +1,17 @@
-class Account{
-    private String userName;
-    private String pw;
+abstract class Account {
+
+    private String username;
+    private String password;
     private String email;
-    private boolean isAdmin;
 
-    private Item
-
-
-
-
-
-
-    public Account(String userName, String pw, String email){
-        this.userName = userName;
-        this.pw = pw;
-        this.email = pw;
-        isAdmin = false;
+    public Account(String username, String password, String email){
+        this.username = username;
+        this.password = password;
+        this.email = email;
     }
 
-    if (true){
-
+    public boolean isPassword(String password) {
+        return password.equals(this.password);
     }
-    if (false) {
 
-    }
 }
