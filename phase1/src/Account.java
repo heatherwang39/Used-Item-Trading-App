@@ -10,8 +10,18 @@ abstract class Account {
         this.email = email;
     }
 
-    public boolean isPassword(String password) {
+    public boolean isPassword(String password){
         return password.equals(this.password);
     }
+
+    public String getUsername(){
+        return username;
+    }
+
+    public String getEmail(){
+        return email;
+    }
+
+    abstract boolean isAdmin();
 
 }
