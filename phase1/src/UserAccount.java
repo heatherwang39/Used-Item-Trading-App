@@ -5,10 +5,18 @@ public class UserAccount extends Account {
     private String email;
     private boolean isAdmin;
     private boolean isFrozen;
+    private List<Item> inventory;
+    private List<Item> wishlist;
 
     public UserAccount(String username, String password, String email) {
         super(username, password, email);
-        isAdmin = true;
+        isAdmin = false;
         isFrozen = false;
     }
+
+    public void setFrozen(){isFrozen = !isFrozen;}
+
+    public String getInventory(){return inventory}
+
+    public String getWishlist(){return wishlist}
 }

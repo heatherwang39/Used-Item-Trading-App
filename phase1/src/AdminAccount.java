@@ -9,4 +9,6 @@ class AdminAccount extends Account {
         super(username, password, email);
         isAdmin = true;
     }
+
+
 }
