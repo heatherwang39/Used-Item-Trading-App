@@ -3,13 +3,13 @@ public class UserAccount extends Account {
     private String username;
     private String password;
     private String email;
-    private boolean isAdmin;
     private boolean isFrozen;
     private List<Item> inventory;
     private List<Item> wishlist;
 
-    public UserAccount(String username, String password, String email) {
+    public UserAccount(String username, String password, String email){
         super(username, password, email);
+
         isAdmin = false;
         isFrozen = false;
     }
@@ -19,4 +19,15 @@ public class UserAccount extends Account {
     public String getInventory(){return inventory}
 
     public String getWishlist(){return wishlist}
+
+        isFrozen = false;
+    }
+
+    public boolean isAdmin(){
+        return false;
+    }
+
+
+
+
 }

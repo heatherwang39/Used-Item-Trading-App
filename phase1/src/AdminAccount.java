@@ -5,10 +5,13 @@ class AdminAccount extends Account {
     private String email;
     private boolean isAdmin;
 
-    public AdminAccount(String username, String password, String email) {
+    public AdminAccount(String username, String password, String email){
         super(username, password, email);
         isAdmin = true;
     }
 
+    public boolean isAdmin(){
+        return true;
+    }
 
 }
