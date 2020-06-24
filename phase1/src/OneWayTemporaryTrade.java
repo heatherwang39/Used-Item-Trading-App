@@ -5,6 +5,7 @@ import java.util.Optional;
 public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
     private Optional<List> firstMeeting;
     private Optional<List> secondMeeting;
+    private int warnings;
 
 
 
@@ -13,6 +14,6 @@ public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
     }
 
 
-
+    //TODO: Finish Implementing the Meeting system
 
 }
