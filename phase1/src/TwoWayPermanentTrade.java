@@ -1,2 +1,2 @@
-public class TwoWayPermanentTrade extends TwoWayTrade implements Permanent {
+public class TwoWayPermanentTrade extends TwoWayTrade implements OneMeeting {
 }

@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserAccount extends Account {
 
     private String username;
@@ -10,7 +13,6 @@ public class UserAccount extends Account {
     public UserAccount(String username, String password, String email){
         super(username, password, email);
 
-        isAdmin = false;
         isFrozen = false;
     }
 

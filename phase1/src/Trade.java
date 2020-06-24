@@ -2,11 +2,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 abstract class Trade {
-    private Integer tradeNumber;
-    private Integer status;
+    private int tradeNumber;
+    private int status;
 
 
-    public Trade(Integer tradeNumber){
+    public Trade(int tradeNumber){
         this.tradeNumber = tradeNumber;
         status = 0;
     }
@@ -17,7 +17,7 @@ abstract class Trade {
      *
      * @return the trade number of the Trade object
      */
-    public Integer getTradeNumber(){
+    public int getTradeNumber(){
         return tradeNumber;
     }
 
@@ -31,7 +31,7 @@ abstract class Trade {
      *
      * @return the status of the Trade Object.
      */
-    public Integer getStatus(){
+    public int getStatus(){
         return status;
     };
 
@@ -42,8 +42,8 @@ abstract class Trade {
      * @param status The new status of the Trade
      * @return A boolean representing whether or not the change was made
      */
-    public boolean setStatus(Integer status){
-        if(this.status.equals(status)){
+    public boolean setStatus(int status){
+        if(this.status == status){
             return false;
         }
         this.status = status;
@@ -53,5 +53,4 @@ abstract class Trade {
 
     public abstract List<Item> getItems();
     public abstract List<Account> getAccounts();
-
 }
