@@ -1,50 +1,60 @@
-import java.util.ArrayList;
-import java.util.List;
-
 abstract class TwoWayTrade extends Trade{
     private UserAccount trader1;
-    private List<Item> items1;
+    private Item item1;
     private UserAccount trader2;
-    private List<Item> items2;
+    private Item item2;
 
-    public TwoWayTrade(int tradeNumber, UserAccount trader1, List<Item> items1,
-                       UserAccount trader2, List<Item> items2){
+
+    /** Initializes an instance of TwoWayTrade based on the given parameters
+     *
+     * @param tradeNumber The tradeNumber corresponding to this trade
+     * @param firstTrader The first trader (UserAccount) involved in this trade
+     * @param item1 The item the first trader traded away
+     * @param secondTrader The second trader (UserAccount) involved in this trade
+     * @param item2 The item the second trader traded away
+     */
+    public TwoWayTrade(int tradeNumber,
+                       UserAccount firstTrader, Item item1,
+                       UserAccount secondTrader, Item item2){
         super(tradeNumber);
-        this.trader1 = trader1;
-        this.items1 = items1;
-        this.trader2 = trader2;
-        this.items2 = items2;
+        this.trader1 = firstTrader;
+        this.item1 = item1;
+        this.trader2 = secondTrader;
+        this.item2 = item2;
     };
 
 
-    public List<Item> getItems(){
-        List items = new ArrayList();
-        items.addAll(items1);
-        items.addAll(items2);
-        return items;
-    };
+    /** Retrieve the first trader (UserAccount) involved in this trade
+     *
+     * @return The first trader (UserAccount) involved in this trade
+     */
+    public UserAccount getFirstTrader(){
+        return trader1;
+    }
 
-    
-    public List<Account> getAccounts(){
-        List accounts = new ArrayList();
-        accounts.add(trader1);
-        accounts.add(trader2);
-        return accounts;
-    };
-
-
-    public List firstTraderItems(){
-        List information = new ArrayList();
-        information.add(trader1);
-        information.add(items1);
-        return information;
+    /** Retrieve the item the first trader (UserAccount) sent in this trade
+     *
+     * @return The item the first trader (UserAccount) sent in this trade
+     */
+    public Item getFirstTraderItem(){
+        return item1;
     }
 
 
-    public List secondTraderItems(){
-        List information = new ArrayList();
-        information.add(trader2);
-        information.add(items2);
-        return information;
+    /** Retrieve the second trader (UserAccount) involved in this trade
+     *
+     * @return The second trader (UserAccount) involved in this trade
+     */
+    public UserAccount getSecondTrader(){
+        return trader2;
+    }
+
+
+    /** Retrieve the item the second trader (UserAccount) sent in this trade
+     *
+     * @return The item the second trader (UserAccount) sent in this trade
+     */
+    public Item getSecondTraderItem(){
+        return item2;
     }
 }

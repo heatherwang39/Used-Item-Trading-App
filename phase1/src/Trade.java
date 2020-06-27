@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-
 abstract class Trade {
     private int tradeNumber;
     private int status;
@@ -49,8 +46,4 @@ abstract class Trade {
         this.status = status;
         return true;
     }
-
-
-    public abstract List<Item> getItems();
-    public abstract List<Account> getAccounts();
 }
