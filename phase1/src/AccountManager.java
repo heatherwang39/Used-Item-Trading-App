@@ -1,12 +1,30 @@
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class AccountManager {
 
     HashMap<String, Account> accounts;
 
-    public AccountManager() {
+
+
+    public AccountManager() throws IOException {
         accounts = new HashMap<>();
-        // TODO: csv parser for accounts
+        // Begin citation: https://stackoverflow.com/questions/5464631/java-read-a-file-if-it-doesnt-exist-create-it
+        File accountsCSV = new File("resources", "accounts.csv");
+        if (!accountsCSV.isFile() && !accountsCSV.createNewFile())
+        {
+            throw new IOException("Error creating new file: " + accountsCSV.getAbsolutePath());
+        }
+        // End citation
+        Scanner scanner = new Scanner(accountsCSV);
+        try {
+            while (scanner.hasNextLine()) {
+                records.add(getRecordFromLine(scanner.nextLine()));
+        }
+            }
+        }
     }
 
     public UserAccount createUserAccount(String username, String password, String email) {

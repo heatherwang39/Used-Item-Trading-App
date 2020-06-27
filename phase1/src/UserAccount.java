@@ -14,10 +14,11 @@ public class UserAccount extends Account {
      * @param username account username
      * @param password account password
      * @param email account email address
+     * @param isFrozen is this account frozen?
      */
-    public UserAccount(String username, String password, String email){
+    public UserAccount(String username, String password, String email, boolean isFrozen){
         super(username, password, email);
-        isFrozen = false;
+        this.isFrozen = isFrozen;
     }
 
     /**
