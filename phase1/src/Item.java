@@ -1,20 +1,17 @@
 abstract class Item{
+
     private String name;
     private String description;
-    private int price;
     private static int numberOfItems;
     private int id;
-    private Boolean isVerified = false;
+    private boolean isVerified = false;
     private String usernameOfOwner;
     private int currentStatus;
-    //private Date borrowedDate;
-    //private Date dueDate;
     private int timeLimit = 30;
 
-    public Item(String name, String description, int price){
+    public Item(String name, String description){
         this.name = name;
-        this.description = type;
-        this.price = price;
+        this.description = description;
         numberOfItems++;
         this.id = numberOfItems;
     }
@@ -29,9 +26,9 @@ abstract class Item{
 
     /**
      * Set whether the item can be added to system
-     * @param boolean whether the item has been verified
+     * @param isVerified whether the item has been verified
      */
-    public void setIsVerified(Boolean isVerified) {
+    public void setIsVerified(boolean isVerified) {
         this.isVerified = isVerified;
     }
 
@@ -48,7 +45,7 @@ abstract class Item{
 
     /**
      * Set the current status of the item
-     * @param current status of the item
+     * @param currentStatus the current status of this item
      */
     public void setCurrentStatus(int currentStatus){
         this.currentStatus = currentStatus;
@@ -56,7 +53,7 @@ abstract class Item{
 
     /**
      * Get the username of current owner
-     * @return the username of current owner
+     * @return username of current owner
      */
     public String getUsernameOfOwner() {
         return usernameOfOwner;
@@ -72,7 +69,7 @@ abstract class Item{
 
     /**
      * Set the username of current owner
-     * @param username of the owner
+     * @param usernameOfOwner username of the owner of this item
      */
     public void setUsernameOfOwner(String usernameOfOwner) {
         this.usernameOfOwner = usernameOfOwner;
