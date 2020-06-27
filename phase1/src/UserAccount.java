@@ -1,32 +1,43 @@
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * Represents an user account in the Trade system. Users have basic privileges, and can make offers so long as their
+ * account isn't frozen.
+ * @author Robbert Liu
+ * @version %I%, %G%
+ * @since Phase 1
+ */
 public class UserAccount extends Account {
 
-    private String username;
-    private String password;
-    private String email;
     private boolean isFrozen;
-    private List<Item> inventory;
-    private List<Item> wishlist;
 
+    /**
+     * Class constructor
+     * @param username account username
+     * @param password account password
+     * @param email account email address
+     */
     public UserAccount(String username, String password, String email){
         super(username, password, email);
-
         isFrozen = false;
     }
 
-    public void setFrozen(){isFrozen = !isFrozen;}
+    /**
+     * Set account status to frozen
+     */
+    public void freeze() { isFrozen = true; }
 
-    public List<Item> getInventory(){return inventory;} //changed typed from String to List<Item>
+    /**
+     * Set account status to not frozen
+     */
+    public void unfreeze() { isFrozen = false; }
 
-    public List<Item> getWishlist(){return wishlist;}
-
-        //isFrozen = false;     ???? TODO: I commented this out because idk why it's here??
-    //}
-
+    /**
+     * Return false because users do not have admin privileges
+     */
     public boolean isAdmin(){
         return false;
     }
+
+
+
 
 }

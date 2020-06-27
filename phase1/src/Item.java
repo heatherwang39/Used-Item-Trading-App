@@ -1,5 +1,4 @@
 abstract class Item{
-
     private String name;
     private String description;
     private int price;
@@ -24,13 +23,13 @@ abstract class Item{
      * Get whether this item can be added to system
      * @return true if the administrative user has looked at it and confirmed that it can be added to system, false if not
      */
-    public Boolean getIsVerified() {
+    public boolean getIsVerified() {
         return isVerified;
     }
 
     /**
      * Set whether the item can be added to system
-     * @param a boolean whether the item has been verified
+     * @param boolean whether the item has been verified
      */
     public void setIsVerified(Boolean isVerified) {
         this.isVerified = isVerified;
@@ -61,6 +60,14 @@ abstract class Item{
      */
     public String getUsernameOfOwner() {
         return usernameOfOwner;
+    }
+
+    /**
+     * Get the item's unique id
+     * @return item id
+     */
+    public int getID() {
+        return id;
     }
 
     /**
