@@ -18,18 +18,15 @@ public class UserAccount extends Account {
 
     public void setFrozen(){isFrozen = !isFrozen;}
 
-    public String getInventory(){return inventory}
+    public List<Item> getInventory(){return inventory;} //changed typed from String to List<Item>
 
-    public String getWishlist(){return wishlist}
+    public List<Item> getWishlist(){return wishlist;}
 
-        isFrozen = false;
-    }
+        //isFrozen = false;     ???? TODO: I commented this out because idk why it's here??
+    //}
 
     public boolean isAdmin(){
         return false;
     }
-
-
-
 
 }

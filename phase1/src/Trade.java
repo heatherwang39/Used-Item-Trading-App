@@ -48,7 +48,7 @@ abstract class Trade {
         }
         this.status = status;
         return true;
-    };
+    }
 
 
     public abstract List<Item> getItems();

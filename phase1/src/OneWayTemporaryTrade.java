@@ -14,8 +14,8 @@ public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
     private int max_warnings = 6;
 
 
-    public OneWayTemporaryTrade(int tradeNumber, UserAccount sender, UserAccount receiver, List<Item> items){
-        super(tradeNumber, sender, receiver, items);
+    public OneWayTemporaryTrade(int tradeNumber, UserAccount sender, UserAccount receiver, Item item){
+        super(tradeNumber, sender, receiver, item);
         firstMeeting = new ArrayList();
         secondMeeting = new ArrayList();
     }
