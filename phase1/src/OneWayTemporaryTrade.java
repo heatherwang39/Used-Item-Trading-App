@@ -15,9 +15,28 @@ public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
 
 
     public OneWayTemporaryTrade(int tradeNumber, UserAccount sender, UserAccount receiver, Item item){
+
         super(tradeNumber, sender, receiver, item);
+
         firstMeeting = new ArrayList();
+
+        firstMeetingAccepted = new ArrayList();
+        firstMeetingAccepted.add(false);
+        firstMeetingAccepted.add(false);
+
+        firstMeetingConfirmed = new ArrayList();
+        firstMeetingConfirmed.add(false);
+        firstMeetingConfirmed.add(false);
+
         secondMeeting = new ArrayList();
+
+        secondMeetingAccepted = new ArrayList();
+        secondMeetingAccepted.add(false);
+        secondMeetingAccepted.add(false);
+
+        secondMeetingConfirmed = new ArrayList();
+        secondMeetingConfirmed.add(false);
+        secondMeetingConfirmed.add(false);
     }
 
 
@@ -67,6 +86,71 @@ public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
     }
 
 
+
+
+
+
+
+
+
+
+    //TODO: May change this function to raise errors
+    public boolean acceptSecondMeeting(UserAccount trader){
+        if(secondMeeting.isEmpty()){
+            return false;
+            //TODO: Raise no meeting error?
+        }
+        if(getSender().equals(trader)){
+            boolean confirmation = acceptSecondMeetingSender();
+            if(getSecondAccepted()){
+                warnings = 0;
+            }
+            return confirmation;
+        }
+        if(getReceiver().equals(trader)){
+            boolean confirmation = acceptSecondMeetingReceiver();
+            if(getSecondAccepted()){
+                warnings = 0;
+            }
+            return confirmation;
+        }
+        else{
+            return false;
+            //TODO: Raise wrong user error?
+        }
+    }
+
+    private boolean acceptSecondMeetingSender(){
+        if(secondMeetingAccepted[0]){
+            return false;
+        }
+        secondMeetingAccepted[0] = true;
+        return true;
+    }
+
+    private boolean acceptSecondMeetingReceiver(){
+        if(secondMeetingAccepted[1]){
+            return false;
+        }
+        secondMeetingAccepted[1] = true;
+        return true;
+    }
+
+    public boolean getSecondAccepted(){
+        if(secondMeeting.isEmpty()){
+            return false;
+        }
+        return secondMeetingAccepted[0] && secondMeetingAccepted[1];
+    }
+
+
+
+
+
+
+
+
+
     //TODO: May change this function to raise errors
     private boolean confirmFirstMeeting(UserAccount trader){
         if(firstMeeting.isEmpty()){
@@ -75,16 +159,10 @@ public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
         }
         if(getSender().equals(trader)){
             boolean confirmation = confirmFirstMeetingSender();
-            if(getFirstConfirmed()){
-                warnings = 0;
-            }
             return confirmation;
         }
         if(getReceiver().equals(trader)){
             boolean confirmation = confirmFirstMeetingReceiver();
-            if(getFirstConfirmed()){
-                warnings = 0;
-            }
             return confirmation;
         }
         else{
@@ -120,22 +198,23 @@ public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
 
 
 
+
     //TODO: May change this function to raise errors
-    private boolean confirmSecondMeeting(UserAccount trader){
-        if(secondMeeting.isEmpty()){
+    public boolean acceptFirstMeeting(UserAccount trader){
+        if(firstMeeting.isEmpty()){
             return false;
             //TODO: Raise no meeting error?
         }
         if(getSender().equals(trader)){
-            boolean confirmation = confirmSecondMeetingSender();
-            if(getSecondConfirmed()){
+            boolean confirmation = acceptFirstMeetingSender();
+            if(getFirstAccepted()){
                 warnings = 0;
             }
             return confirmation;
         }
         if(getReceiver().equals(trader)){
-            boolean confirmation = confirmSecondMeetingReceiver();
-            if(getSecondConfirmed()){
+            boolean confirmation = acceptFirstMeetingReceiver();
+            if(getFirstAccepted()){
                 warnings = 0;
             }
             return confirmation;
@@ -146,18 +225,75 @@ public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
         }
     }
 
-    private boolean confirmSecondMeetingSender(){
-        if(secondMeeting[2]){
+    private boolean acceptFirstMeetingSender(){
+        if(firstMeetingAccepted[0]){
             return false;
         }
-        secondMeeting[2] = true;
+        firstMeetingAccepted[0] = true;
+        return true;
+    }
+
+    private boolean acceptFirstMeetingReceiver(){
+        if(firstMeetingAccepted[1]){
+            return false;
+        }
+        firstMeetingAccepted[1] = true;
+        return true;
+    }
+
+    public boolean getFirstAccepted(){
+        if(firstMeeting.isEmpty()){
+            return false;
+        }
+        return firstMeetingAccepted[0] && firstMeetingAccepted[1];
+    }
+
+
+
+
+
+
+
+
+    //TODO: May change this function to raise errors
+    private boolean confirmSecondMeeting(UserAccount trader){
+        if(secondMeeting.isEmpty()){
+            return false;
+            //TODO: Raise no meeting error?
+        }
+        if(getSender().equals(trader)){
+            boolean confirmation = confirmSecondMeetingSender();
+            if (getSecondConfirmed()){
+                setStatus(2);
+            }
+            return confirmation;
+        }
+        if(getReceiver().equals(trader)){
+            boolean confirmation = confirmSecondMeetingReceiver();
+            if (getSecondConfirmed()){
+                setStatus(2);
+            }
+            return confirmation;
+        }
+        else{
+            return false;
+            //TODO: Raise wrong user error?
+        }
+    }
+
+    private boolean confirmSecondMeetingSender(){
+        if(secondMeetingConfirmed[0]){
+            return false;
+        }
+        secondMeetingConfirmed[0] = true;
         return true;
     }
 
     private boolean confirmSecondMeetingReceiver(){
-        if(secondMeeting[0]){
+        if(secondMeetingConfirmed[1]){
             return false;
         }
+        secondMeetingConfirmed[1] = true;
         return true;
     }
 
@@ -165,7 +301,7 @@ public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
         if(secondMeeting.isEmpty()){
             return false;
         }
-        return secondMeeting[0] && secondMeeting[1];
+        return secondMeetingConfirmed[0] && secondMeetingConfirmed[1];
     }
 
 }
