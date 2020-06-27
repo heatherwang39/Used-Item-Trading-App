@@ -2,13 +2,13 @@ public class Book extends Item{
 
     private String author;
 
-    public Book(String name, String description, int price, String author) {
-        super(name,description,price);
+    public Book(String name, String description, String author) {
+        super(name,description);
         this.author = author;
     }
 
     @Override
     public String toString(){
-        return "Book name: " + name +", description: " + description + ", price: " + price +", author: " + author ;
+        return "Book name: " + name +", description: " + description + ", author: " + author ;
     }
 }
