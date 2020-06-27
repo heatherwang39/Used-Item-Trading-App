@@ -12,7 +12,6 @@ abstract class Item{
     public Item(String name, String description){
         this.name = name;
         this.description = description;
-        this.price = price;
         numberOfItems++;
         this.id = numberOfItems;
     }
@@ -54,7 +53,7 @@ abstract class Item{
 
     /**
      * Get the username of current owner
-     * @return the username of current owner
+     * @return username of current owner
      */
     public String getUsernameOfOwner() {
         return usernameOfOwner;
