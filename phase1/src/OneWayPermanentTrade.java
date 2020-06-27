@@ -1,7 +1,6 @@
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting{
     private List meeting;
@@ -11,23 +10,40 @@ public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting{
     private int max_warnings = 6;
 
 
-    public OneWayPermanentTrade(int tradeNumber, UserAccount sender, UserAccount receiver, List<Item> items){
-        super(tradeNumber, sender, receiver, items);
+    /** Initializes an instance of OneWayPermanentTrade based on the given parameters
+     *
+     * @param tradeNumber The tradeNumber corresponding to this trade
+     * @param sender The trader (UserAccount) that sent the item
+     * @param receiver The trader (UserAccount) that received the item
+     * @param item The item that was traded from the sender to the receiver
+     */
+    public OneWayPermanentTrade(int tradeNumber, UserAccount sender, UserAccount receiver, Item item){
+
+        super(tradeNumber, sender, receiver, item);
+
         meeting = new ArrayList();
+
         meetingAccepted = new ArrayList();
         meetingAccepted.add(false);
         meetingAccepted.add(false);
+
         meetingConfirmed = new ArrayList();
         meetingConfirmed.add(false);
         meetingConfirmed.add(false);
     }
 
 
-    public Optional<List> getMeeting(){
-        if(meeting.isEmpty()){
-            return null;
-        }
-        List meetingCopy = new ArrayList(meeting);
+    /** Return a list representation of the scheduled meeting.
+     *
+     * Iff a meeting has been suggested, return a list with the String representation of the location
+     * of the meeting at index 0 and the time (LocalDateTime) of the meeting at the index 1 of the list.
+     *
+     * Iff no meeting has been suggested, return an empty list.
+     *
+     * @return A list representation of the meeting
+     */
+    public List getMeeting(){
+        ArrayList meetingCopy = new ArrayList(meeting);
         return meetingCopy;
     }
 
