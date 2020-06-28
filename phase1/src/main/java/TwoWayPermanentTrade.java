@@ -1,5 +1,7 @@
 package main.java;
 
+import java.time.LocalDateTime;
+
 public class TwoWayPermanentTrade extends TwoWayTrade implements OneMeeting {
     private TwoPersonMeeting meeting;
     private int warnings;
@@ -22,11 +24,28 @@ public class TwoWayPermanentTrade extends TwoWayTrade implements OneMeeting {
     }
 
 
-    public TwoPersonMeeting getMeeting(){
+    /** Return the Meeting suggested with this Trade. If no meeting has been suggested,
+     * a NoMeetingException will be thrown
+     *
+     * @return The Meeting associated with this Trade
+     * @throws NoMeetingException No Meeting has been suggested
+     */
+    public TwoPersonMeeting getMeeting() throws NoMeetingException{
+        if(meeting == null){
+            throw new NoMeetingException();
+        }
         return meeting;
     }
 
 
+    /** Suggest a Meeting for this Trade. Return True iff this suggestion has been
+     * successfully recorded. Throw an exception is this suggestion is inappropriate for this Trade.
+     *
+     * @param meeting The suggested Meeting
+     * @return True iff the suggestion has been successfully recorded
+     * @throws WrongAccountException The suggested Meeting does not have the right Attendees
+     * @throws TimeException The suggested Meeting is at an inappropriate time
+     */
     public boolean setMeeting(TwoPersonMeeting meeting) throws WrongAccountException, TimeException{
         if(!meeting.getAttendees().contains(getFirstTrader())){
             throw new WrongAccountException();
@@ -34,7 +53,7 @@ public class TwoWayPermanentTrade extends TwoWayTrade implements OneMeeting {
         if(!meeting.getAttendees().contains(getSecondTrader())){
             throw new WrongAccountException();
         }
-        if(meeting.getTime().compareTo(meeting.getTime().now()) < 0){
+        if(meeting.getTime().compareTo(LocalDateTime.now()) < 0){
             throw new TimeException();
         }
         warnings += 1;
@@ -43,6 +62,24 @@ public class TwoWayPermanentTrade extends TwoWayTrade implements OneMeeting {
             return false;
         }
         this.meeting = meeting;
+        return true;
+    }
+
+
+    /**Reset the number of warnings (i.e., the number of times a meeting has been
+     * suggested without confirming) back to 0
+     *
+     */
+    public void resetWarnings(){
+        warnings = 0;
+    }
+
+
+    /** Returns whether or not the Trade is permanent. Iff the Trade is permanent, return true.
+     *
+     * @return whether the Trade is Permanent
+     */
+    public boolean isPermanent(){
         return true;
     }
 }

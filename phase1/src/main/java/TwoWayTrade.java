@@ -59,4 +59,13 @@ abstract class TwoWayTrade extends Trade{
     public Item getSecondTraderItem(){
         return item2;
     }
+
+
+    /** Returns whether or not the Trade is one-way. Iff the Trade is one-way, return true.
+     *
+     * @return whether the Trade is one-way
+     */
+    public boolean isOneWay(){
+        return false;
+    }
 }

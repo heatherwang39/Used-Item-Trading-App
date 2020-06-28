@@ -3,7 +3,7 @@ package main.java;
 import java.util.List;
 
 public class TradeManager {
-    private static int numTrades = 0;
+    private int numTrades = 0;
     private List<Trade> trades;
 
     //TODO: Create a public method that creates new trades of the required type, using the helper methods below

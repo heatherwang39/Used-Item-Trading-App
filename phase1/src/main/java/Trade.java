@@ -48,4 +48,17 @@ abstract class Trade {
         this.status = status;
         return true;
     }
+
+    /** Returns whether or not the Trade is permanent. Iff the Trade is permanent, return true.
+     *
+     * @return whether the Trade is Permanent
+     */
+    abstract boolean isPermanent();
+
+
+    /** Returns whether or not the Trade is one-way. Iff the Trade is one-way, return true.
+     *
+     * @return whether the Trade is one-way
+     */
+    abstract boolean isOneWay();
 }

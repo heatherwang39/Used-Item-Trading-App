@@ -44,4 +44,13 @@ abstract class OneWayTrade extends Trade{
     public UserAccount getReceiver(){
         return receiver;
     }
+
+
+    /** Returns whether or not the Trade is one-way. Iff the Trade is one-way, return true.
+     *
+     * @return whether the Trade is one-way
+     */
+    public boolean isOneWay(){
+        return true;
+    }
 }
