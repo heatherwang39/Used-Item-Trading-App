@@ -4,8 +4,8 @@ import java.util.List;
 
 public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting{
     private List meeting;
-    private List meetingAccepted;
-    private List meetingConfirmed;
+    private List<Boolean> meetingAccepted;
+    private List<Boolean> meetingConfirmed;
     private int warnings;
     private int max_warnings = 6;
 
@@ -92,18 +92,18 @@ public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting{
     }
 
     private boolean acceptMeetingSender(){
-        if(meetingAccepted[0]){
+        if(meetingAccepted.get(0)){
             return false;
         }
-        meetingAccepted[0] = true;
+        meetingAccepted.set(0, true);
         return true;
     }
 
     private boolean acceptMeetingReceiver(){
-        if(meetingAccepted[1]){
+        if(meetingAccepted.get(1)){
             return false;
         }
-        meetingAccepted[1] = true;
+        meetingAccepted.set(1, true);
         return true;
     }
 
@@ -111,12 +111,12 @@ public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting{
         if(meeting.isEmpty()){
             return false;
         }
-        return meetingAccepted[0] && meetingAccepted[1];
+        return meetingAccepted.get(0) && meetingAccepted.get(1);
     }
 
 
     public boolean confirmMeeting(UserAccount trader){
-        if(meeting[1].compareTo(meeting[1].now()) < 0){
+        if(((LocalDateTime)meeting.get(1)).compareTo(((LocalDateTime)meeting.get(1)).now()) < 0){
             //TODO: Raise time error?
             return false;
         }
@@ -145,25 +145,27 @@ public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting{
     }
 
     private boolean confirmMeetingSender(){
-        if(meetingConfirmed[0]){
+        if(meetingConfirmed.get(0)){
             return false;
         }
-        meetingConfirmed[0] = true;
+        meetingConfirmed.set(0, true);
         return true;
     }
 
     private boolean confirmMeetingReceiver(){
-        if(meetingConfirmed[1]){
+        if(meetingConfirmed.get(1)){
             return false;
         }
-        meetingConfirmed[1] = true;
+        meetingConfirmed.set(1, true);
         return true;
     }
+
+
 
     public boolean getConfirmed(){
         if(meeting.isEmpty()){
             return false;
         }
-        return meetingConfirmed[0] && meetingConfirmed[1];
+        return meetingConfirmed.get(0) && meetingConfirmed.get(1);
     }
 }

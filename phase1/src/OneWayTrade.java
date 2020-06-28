@@ -4,7 +4,7 @@ abstract class OneWayTrade extends Trade{
     private Item item; //changed item from List<Item> to Item
 
 
-    /** Initializes an instance of TwoWayTrade based on the given parameters
+    /** Initializes an instance of OneWayTrade based on the given parameters
      *
      * @param tradeNumber The tradeNumber corresponding to this trade
      * @param sender The trader (UserAccount) that sent the item

@@ -1,19 +1,25 @@
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
     private List firstMeeting;
-    private List firstMeetingAccepted;
-    private List firstMeetingConfirmed;
+    private List<Boolean> firstMeetingAccepted;
+    private List<Boolean> firstMeetingConfirmed;
     private List secondMeeting;
-    private List secondMeetingAccepted;
-    private List secondMeetingConfirmed;
+    private List<Boolean> secondMeetingAccepted;
+    private List<Boolean> secondMeetingConfirmed;
     private int warnings;
     private int max_warnings = 6;
 
 
+    /** Initializes an instance of OneWayTemporaryTrade based on the given parameters
+     *
+     * @param tradeNumber The tradeNumber corresponding to this trade
+     * @param sender The trader (UserAccount) that sent the item
+     * @param receiver The trader (UserAccount) that received the item
+     * @param item The item that was traded from the sender to the receiver
+     */
     public OneWayTemporaryTrade(int tradeNumber, UserAccount sender, UserAccount receiver, Item item){
 
         super(tradeNumber, sender, receiver, item);
@@ -40,19 +46,31 @@ public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
     }
 
 
-    public Optional<List> getFirstMeeting(){
-        if(firstMeeting.isEmpty()){
-            return null;
-        }
+    /** Return a list representation of the scheduled first meeting.
+     *
+     * Iff a meeting has been suggested, return a list with the String representation of the location
+     * of the meeting at index 0 and the time (LocalDateTime) of the meeting at the index 1 of the list.
+     *
+     * Iff no meeting has been suggested, return an empty list.
+     *
+     * @return A list representation of the first meeting
+     */
+    public List getFirstMeeting(){
         List meetingCopy = new ArrayList(firstMeeting);
         return meetingCopy;
     }
 
 
-    public Optional<List> getSecondMeeting(){
-        if(secondMeeting.isEmpty()){
-            return null;
-        }
+    /** Return a list representation of the scheduled second meeting.
+     *
+     * Iff a meeting has been suggested, return a list with the String representation of the location
+     * of the meeting at index 0 and the time (LocalDateTime) of the meeting at the index 1 of the list.
+     *
+     * Iff no meeting has been suggested, return an empty list.
+     *
+     * @return A list representation of the second meeting
+     */
+    public List getSecondMeeting(){
         List meetingCopy = new ArrayList(secondMeeting);
         return meetingCopy;
     }
@@ -121,18 +139,18 @@ public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
     }
 
     private boolean acceptSecondMeetingSender(){
-        if(secondMeetingAccepted[0]){
+        if(secondMeetingAccepted.get(0)){
             return false;
         }
-        secondMeetingAccepted[0] = true;
+        secondMeetingAccepted.set(0, true);
         return true;
     }
 
     private boolean acceptSecondMeetingReceiver(){
-        if(secondMeetingAccepted[1]){
+        if(secondMeetingAccepted.get(1)){
             return false;
         }
-        secondMeetingAccepted[1] = true;
+        secondMeetingAccepted.set(1, true);
         return true;
     }
 
@@ -140,7 +158,7 @@ public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
         if(secondMeeting.isEmpty()){
             return false;
         }
-        return secondMeetingAccepted[0] && secondMeetingAccepted[1];
+        return secondMeetingAccepted.get(0) && secondMeetingAccepted.get(1);
     }
 
 
@@ -152,7 +170,7 @@ public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
 
 
     //TODO: May change this function to raise errors
-    private boolean confirmFirstMeeting(UserAccount trader){
+    public boolean confirmFirstMeeting(UserAccount trader){
         if(firstMeeting.isEmpty()){
             return false;
             //TODO: Raise no meeting error?
@@ -172,23 +190,23 @@ public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
     }
 
     private boolean confirmFirstMeetingSender(){
-        if(firstMeetingConfirmed[0]){
+        if(firstMeetingConfirmed.get(0)){
             return false;
         }
-        firstMeetingConfirmed[0] = true;
+        firstMeetingConfirmed.set(0, true);
         return true;
     }
 
     private boolean confirmFirstMeetingReceiver(){
-        if(firstMeetingConfirmed[1]){
+        if(firstMeetingConfirmed.get(1)){
             return false;
         }
-        firstMeetingConfirmed[1] = true;
+        firstMeetingConfirmed.set(1, true);
         return true;
     }
 
     public boolean getFirstConfirmed(){
-        return firstMeeting[0] && firstMeeting[1];
+        return firstMeetingConfirmed.get(0) && firstMeetingConfirmed.get(1);
     }
 
 
@@ -226,18 +244,18 @@ public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
     }
 
     private boolean acceptFirstMeetingSender(){
-        if(firstMeetingAccepted[0]){
+        if(firstMeetingAccepted.get(0)){
             return false;
         }
-        firstMeetingAccepted[0] = true;
+        firstMeetingAccepted.set(0, true);
         return true;
     }
 
     private boolean acceptFirstMeetingReceiver(){
-        if(firstMeetingAccepted[1]){
+        if(firstMeetingAccepted.get(1)){
             return false;
         }
-        firstMeetingAccepted[1] = true;
+        firstMeetingAccepted.set(1, true);
         return true;
     }
 
@@ -245,7 +263,7 @@ public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
         if(firstMeeting.isEmpty()){
             return false;
         }
-        return firstMeetingAccepted[0] && firstMeetingAccepted[1];
+        return firstMeetingAccepted.get(0) && firstMeetingAccepted.get(1);
     }
 
 
@@ -256,7 +274,7 @@ public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
 
 
     //TODO: May change this function to raise errors
-    private boolean confirmSecondMeeting(UserAccount trader){
+    public boolean confirmSecondMeeting(UserAccount trader){
         if(secondMeeting.isEmpty()){
             return false;
             //TODO: Raise no meeting error?
@@ -282,18 +300,18 @@ public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
     }
 
     private boolean confirmSecondMeetingSender(){
-        if(secondMeetingConfirmed[0]){
+        if(secondMeetingConfirmed.get(0)){
             return false;
         }
-        secondMeetingConfirmed[0] = true;
+        secondMeetingConfirmed.set(0, true);
         return true;
     }
 
     private boolean confirmSecondMeetingReceiver(){
-        if(secondMeetingConfirmed[1]){
+        if(secondMeetingConfirmed.get(1)){
             return false;
         }
-        secondMeetingConfirmed[1] = true;
+        secondMeetingConfirmed.set(1, true);
         return true;
     }
 
@@ -301,7 +319,7 @@ public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
         if(secondMeeting.isEmpty()){
             return false;
         }
-        return secondMeetingConfirmed[0] && secondMeetingConfirmed[1];
+        return secondMeetingConfirmed.get(0) && secondMeetingConfirmed.get(1);
     }
 
 }
