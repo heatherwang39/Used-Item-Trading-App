@@ -1,5 +1,7 @@
 package main.java;
 
+import java.time.LocalDateTime;
+
 public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings {
     private TwoPersonMeeting firstMeeting;
     private TwoPersonMeeting secondMeeting;
@@ -23,12 +25,18 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings {
     }
 
 
-    public TwoPersonMeeting getFirstMeeting(){
+    public TwoPersonMeeting getFirstMeeting() throws NoMeetingException{
+        if(firstMeeting == null){
+            throw new NoMeetingException();
+        }
         return firstMeeting;
     }
 
 
-    public TwoPersonMeeting getSecondMeeting(){
+    public TwoPersonMeeting getSecondMeeting() throws NoMeetingException{
+        if(secondMeeting == null){
+            throw new NoMeetingException();
+        }
         return secondMeeting;
     }
 
@@ -40,7 +48,7 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings {
         if(!meeting.getAttendees().contains(getSecondTrader())){
             throw new WrongAccountException();
         }
-        if(meeting.getTime().compareTo(meeting.getTime().now()) < 0){
+        if(meeting.getTime().compareTo(LocalDateTime.now()) < 0){
             throw new TimeException();
         }
         warnings += 1;
@@ -60,7 +68,7 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings {
         if(!meeting.getAttendees().contains(getSecondTrader())){
             throw new WrongAccountException();
         }
-        if(meeting.getTime().compareTo(meeting.getTime().now()) < 0){
+        if(meeting.getTime().compareTo(LocalDateTime.now()) < 0){
             throw new TimeException();
         }
         warnings += 1;
@@ -70,5 +78,9 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings {
         }
         secondMeeting = meeting;
         return true;
+    }
+
+    public void resetWarnings(){
+        warnings = 0;
     }
 }
