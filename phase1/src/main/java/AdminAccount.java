@@ -1,5 +1,7 @@
+package main.java;
+
 /**
- * Represents an admin account in the Trade system. Admins are users with additional privileges, meaning they can
+ * Represents an admin account in the main.java.Trade system. Admins are users with additional privileges, meaning they can
  * manage other accounts' trading threshold, inventory, and frozen status.
  * @author Robbert Liu
  * @version %I%, %G%

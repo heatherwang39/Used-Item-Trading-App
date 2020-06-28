@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+package main.java;
+
 import java.util.List;
 
 public class TradeManager {
@@ -39,7 +40,7 @@ public class TradeManager {
                 return t;
             }
         }
-        //TODO: Create an Error if no Trade has the given TradeNumber
+        //TODO: Create an Error if no main.java.Trade has the given TradeNumber
     }
 
 }

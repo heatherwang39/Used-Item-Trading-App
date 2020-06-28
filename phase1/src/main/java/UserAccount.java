@@ -1,5 +1,7 @@
+package main.java;
+
 /**
- * Represents an user account in the Trade system. Users have basic privileges, and can make offers so long as their
+ * Represents an user account in the main.java.Trade system. Users have basic privileges, and can make offers so long as their
  * account isn't frozen.
  * @author Robbert Liu
  * @version %I%, %G%

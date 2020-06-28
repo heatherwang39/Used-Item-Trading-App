@@ -1,9 +1,11 @@
+package main.java;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings {
+public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
     private List firstMeeting;
     private List firstMeetingAccepted;
     private List firstMeetingConfirmed;
@@ -14,10 +16,9 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings {
     private int max_warnings = 6;
 
 
-    public TwoWayTemporaryTrade(int tradeNumber, UserAccount trader1, Item items1,
-                                     UserAccount trader2, Item items2){
+    public OneWayTemporaryTrade(int tradeNumber, UserAccount sender, UserAccount receiver, Item item){
 
-        super(tradeNumber, trader1, items1, trader2, items2);
+        super(tradeNumber, sender, receiver, item);
 
         firstMeeting = new ArrayList();
 
@@ -39,11 +40,6 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings {
         secondMeetingConfirmed.add(false);
         secondMeetingConfirmed.add(false);
     }
-
-
-
-
-
 
 
     public Optional<List> getFirstMeeting(){
@@ -106,15 +102,15 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings {
             return false;
             //TODO: Raise no meeting error?
         }
-        if(getFirstTrader().equals(trader)){
-            boolean confirmation = acceptSecondMeetingFirstTrader();
+        if(getSender().equals(trader)){
+            boolean confirmation = acceptSecondMeetingSender();
             if(getSecondAccepted()){
                 warnings = 0;
             }
             return confirmation;
         }
-        if(getSecondTrader().equals(trader)){
-            boolean confirmation = acceptSecondMeetingSecondTrader();
+        if(getReceiver().equals(trader)){
+            boolean confirmation = acceptSecondMeetingReceiver();
             if(getSecondAccepted()){
                 warnings = 0;
             }
@@ -126,7 +122,7 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings {
         }
     }
 
-    private boolean acceptSecondMeetingFirstTrader(){
+    private boolean acceptSecondMeetingSender(){
         if(secondMeetingAccepted[0]){
             return false;
         }
@@ -134,7 +130,7 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings {
         return true;
     }
 
-    private boolean acceptSecondMeetingSecondTrader(){
+    private boolean acceptSecondMeetingReceiver(){
         if(secondMeetingAccepted[1]){
             return false;
         }
@@ -163,11 +159,11 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings {
             return false;
             //TODO: Raise no meeting error?
         }
-        if(getFirstTrader().equals(trader)){
+        if(getSender().equals(trader)){
             boolean confirmation = confirmFirstMeetingSender();
             return confirmation;
         }
-        if(getSecondTrader().equals(trader)){
+        if(getReceiver().equals(trader)){
             boolean confirmation = confirmFirstMeetingReceiver();
             return confirmation;
         }
@@ -211,14 +207,14 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings {
             return false;
             //TODO: Raise no meeting error?
         }
-        if(getFirstTrader().equals(trader)){
+        if(getSender().equals(trader)){
             boolean confirmation = acceptFirstMeetingSender();
             if(getFirstAccepted()){
                 warnings = 0;
             }
             return confirmation;
         }
-        if(getSecondTrader().equals(trader)){
+        if(getReceiver().equals(trader)){
             boolean confirmation = acceptFirstMeetingReceiver();
             if(getFirstAccepted()){
                 warnings = 0;
@@ -267,14 +263,14 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings {
             return false;
             //TODO: Raise no meeting error?
         }
-        if(getFirstTrader().equals(trader)){
+        if(getSender().equals(trader)){
             boolean confirmation = confirmSecondMeetingSender();
             if (getSecondConfirmed()){
                 setStatus(2);
             }
             return confirmation;
         }
-        if(getSecondTrader().equals(trader)){
+        if(getReceiver().equals(trader)){
             boolean confirmation = confirmSecondMeetingReceiver();
             if (getSecondConfirmed()){
                 setStatus(2);

@@ -1,3 +1,5 @@
+package main.java;
+
 public class TraderMain {
 
     public static void main(String[] args) {
