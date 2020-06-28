@@ -1,20 +1,27 @@
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class TwoWayPermanentTrade extends TwoWayTrade implements OneMeeting {
     private List meeting;
-    private List meetingAccepted;
-    private List meetingConfirmed;
+    private List<Boolean> meetingAccepted;
+    private List<Boolean> meetingConfirmed;
     private int warnings;
     private int max_warnings = 6;
 
 
-    public TwoWayPermanentTrade(int tradeNumber, UserAccount trader1, Item items1,
-                                UserAccount trader2, Item items2){
+    /** Initializes an instance of TwoWayPermanentTrade based on the given parameters
+     *
+     * @param tradeNumber The tradeNumber corresponding to this trade
+     * @param firstTrader The first trader (UserAccount) involved in this trade
+     * @param firstItem The item the first trader traded away
+     * @param secondTrader The second trader (UserAccount) involved in this trade
+     * @param secondItem The item the second trader traded away
+     */
+    public TwoWayPermanentTrade(int tradeNumber, UserAccount firstTrader, Item firstItem,
+                                UserAccount secondTrader, Item secondItem){
 
-        super(tradeNumber, trader1, items1, trader2, items2);
+        super(tradeNumber, firstTrader, firstItem, secondTrader, secondItem);
 
         meeting = new ArrayList();
 
@@ -28,10 +35,16 @@ public class TwoWayPermanentTrade extends TwoWayTrade implements OneMeeting {
     }
 
 
-    public Optional<List> getMeeting(){
-        if(meeting.isEmpty()){
-            return null;
-        }
+    /** Return a list representation of the scheduled meeting.
+     *
+     * Iff a meeting has been suggested, return a list with the String representation of the location
+     * of the meeting at index 0 and the time (LocalDateTime) of the meeting at the index 1 of the list.
+     *
+     * Iff no meeting has been suggested, return an empty list.
+     *
+     * @return A list representation of the meeting
+     */
+    public List getMeeting(){
         List meetingCopy = new ArrayList(meeting);
         return meetingCopy;
     }
@@ -81,18 +94,18 @@ public class TwoWayPermanentTrade extends TwoWayTrade implements OneMeeting {
     }
 
     private boolean acceptMeetingFirstTrader(){
-        if(meetingAccepted[0]){
+        if(meetingAccepted.get(0)){
             return false;
         }
-        meetingAccepted[0] = true;
+        meetingAccepted.set(0, true);
         return true;
     }
 
     private boolean acceptMeetingSecondTrader(){
-        if(meetingAccepted[1]){
+        if(meetingAccepted.get(1)){
             return false;
         }
-        meetingAccepted[1] = true;
+        meetingAccepted.set(1, true);
         return true;
     }
 
@@ -100,13 +113,13 @@ public class TwoWayPermanentTrade extends TwoWayTrade implements OneMeeting {
         if(meeting.isEmpty()){
             return false;
         }
-        return meetingAccepted[0] && meetingAccepted[1];
+        return meetingAccepted.get(0) && meetingAccepted.get(1);
     }
 
 
 
     public boolean confirmMeeting(UserAccount trader){
-        if(meeting[1].compareTo(meeting[1].now() < 0){
+        if(((LocalDateTime)meeting.get(1)).compareTo(((LocalDateTime)meeting.get(1)).now()) < 0){
             //TODO: Raise time error?
             return false;
         }
@@ -135,18 +148,18 @@ public class TwoWayPermanentTrade extends TwoWayTrade implements OneMeeting {
     }
 
     private boolean confirmMeetingFirstTrader(){
-        if(meetingConfirmed[0]){
+        if(meetingConfirmed.get(0)){
             return false;
         }
-        meetingConfirmed[0] = true;
+        meetingConfirmed.set(0, true);
         return true;
     }
 
     private boolean confirmMeetingSecondTrader(){
-        if(meetingConfirmed[1]){
+        if(meetingConfirmed.get(1)){
             return false;
         }
-        meetingConfirmed[1] = true;
+        meetingConfirmed.set(1, true);
         return true;
     }
 
@@ -154,6 +167,6 @@ public class TwoWayPermanentTrade extends TwoWayTrade implements OneMeeting {
         if(meeting.isEmpty()){
             return false;
         }
-        return meetingConfirmed[0] && meetingConfirmed[1];
+        return meetingConfirmed.get(0) && meetingConfirmed.get(1);
     }
 }
