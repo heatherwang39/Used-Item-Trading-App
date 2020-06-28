@@ -1,3 +1,5 @@
+package main.java;
+
 abstract class TwoWayTrade extends Trade{
     private UserAccount trader1;
     private Item item1;
@@ -14,13 +16,13 @@ abstract class TwoWayTrade extends Trade{
      * @param secondItem The item the second trader traded away
      */
     public TwoWayTrade(int tradeNumber,
-                       UserAccount firstTrader, Item item1,
-                       UserAccount secondTrader, Item item2){
+                       UserAccount firstTrader, Item firstItem,
+                       UserAccount secondTrader, Item secondItem){
         super(tradeNumber);
-        this.trader1 = firstTrader;
-        this.item1 = item1;
-        this.trader2 = secondTrader;
-        this.item2 = item2;
+        trader1 = firstTrader;
+        item1 = firstItem;
+        trader2 = secondTrader;
+        item2 = secondItem;
     };
 
 
