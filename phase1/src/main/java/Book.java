@@ -1,3 +1,5 @@
+package main.java;
+
 public class Book extends Item{
 
     private String author;
@@ -9,6 +11,6 @@ public class Book extends Item{
 
     @Override
     public String toString(){
-        return "Book name: " + name +", description: " + description + ", author: " + author ;
+        return "main.java.Book name: " + name +", description: " + description + ", author: " + author ;
     }
 }

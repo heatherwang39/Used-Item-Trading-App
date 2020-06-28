@@ -8,19 +8,19 @@ abstract class TwoWayTrade extends Trade{
     /** Initializes an instance of TwoWayTrade based on the given parameters
      *
      * @param tradeNumber The tradeNumber corresponding to this trade
-     * @param firstTrader The first trader (UserAccount) involved in this trade
+     * @param firstTrader The first trader (main.java.UserAccount) involved in this trade
      * @param firstItem The item the first trader traded away
-     * @param secondTrader The second trader (UserAccount) involved in this trade
+     * @param secondTrader The second trader (main.java.UserAccount) involved in this trade
      * @param secondItem The item the second trader traded away
      */
     public TwoWayTrade(int tradeNumber,
-                       UserAccount firstTrader, Item firstItem,
-                       UserAccount secondTrader, Item secondItem){
+                       UserAccount firstTrader, Item item1,
+                       UserAccount secondTrader, Item item2){
         super(tradeNumber);
-        trader1 = firstTrader;
-        item1 = firstItem;
-        trader2 = secondTrader;
-        item2 = secondItem;
+        this.trader1 = firstTrader;
+        this.item1 = item1;
+        this.trader2 = secondTrader;
+        this.item2 = item2;
     };
 
 

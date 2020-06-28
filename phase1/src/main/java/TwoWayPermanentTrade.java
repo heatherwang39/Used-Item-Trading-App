@@ -1,8 +1,10 @@
+package main.java;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting{
+public class TwoWayPermanentTrade extends TwoWayTrade implements OneMeeting {
     private List meeting;
     private List<Boolean> meetingAccepted;
     private List<Boolean> meetingConfirmed;
@@ -10,16 +12,18 @@ public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting{
     private int max_warnings = 6;
 
 
-    /** Initializes an instance of OneWayPermanentTrade based on the given parameters
+    /** Initializes an instance of TwoWayPermanentTrade based on the given parameters
      *
      * @param tradeNumber The tradeNumber corresponding to this trade
-     * @param sender The trader (UserAccount) that sent the item
-     * @param receiver The trader (UserAccount) that received the item
-     * @param item The item that was traded from the sender to the receiver
+     * @param firstTrader The first trader (UserAccount) involved in this trade
+     * @param firstItem The item the first trader traded away
+     * @param secondTrader The second trader (UserAccount) involved in this trade
+     * @param secondItem The item the second trader traded away
      */
-    public OneWayPermanentTrade(int tradeNumber, UserAccount sender, UserAccount receiver, Item item){
+    public TwoWayPermanentTrade(int tradeNumber, UserAccount firstTrader, Item firstItem,
+                                UserAccount secondTrader, Item secondItem){
 
-        super(tradeNumber, sender, receiver, item);
+        super(tradeNumber, firstTrader, firstItem, secondTrader, secondItem);
 
         meeting = new ArrayList();
 
@@ -43,7 +47,7 @@ public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting{
      * @return A list representation of the meeting
      */
     public List getMeeting(){
-        ArrayList meetingCopy = new ArrayList(meeting);
+        List meetingCopy = new ArrayList(meeting);
         return meetingCopy;
     }
 
@@ -71,15 +75,15 @@ public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting{
             return false;
             //TODO: Raise no meeting error?
         }
-        if(getSender().equals(trader)){
-            boolean confirmation = acceptMeetingSender();
+        if(getFirstTrader().equals(trader)){
+            boolean confirmation = acceptMeetingSecondTrader();
             if(getAccepted()){
                 warnings = 0;
             }
             return confirmation;
         }
-        if(getReceiver().equals(trader)){
-            boolean confirmation = acceptMeetingReceiver();
+        if(getSecondTrader().equals(trader)){
+            boolean confirmation = acceptMeetingSecondTrader();
             if(getAccepted()){
                 warnings = 0;
             }
@@ -91,7 +95,7 @@ public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting{
         }
     }
 
-    private boolean acceptMeetingSender(){
+    private boolean acceptMeetingFirstTrader(){
         if(meetingAccepted.get(0)){
             return false;
         }
@@ -99,7 +103,7 @@ public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting{
         return true;
     }
 
-    private boolean acceptMeetingReceiver(){
+    private boolean acceptMeetingSecondTrader(){
         if(meetingAccepted.get(1)){
             return false;
         }
@@ -115,6 +119,7 @@ public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting{
     }
 
 
+
     public boolean confirmMeeting(UserAccount trader){
         if(((LocalDateTime)meeting.get(1)).compareTo(((LocalDateTime)meeting.get(1)).now()) < 0){
             //TODO: Raise time error?
@@ -124,15 +129,15 @@ public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting{
             return false;
             //TODO: Raise no meeting error?
         }
-        if(getSender().equals(trader)){
-            boolean confirmation = confirmMeetingSender();
+        if(getFirstTrader().equals(trader)){
+            boolean confirmation = confirmMeetingFirstTrader();
             if (getConfirmed()){
                 setStatus(2);
             }
             return confirmation;
         }
-        if(getReceiver().equals(trader)){
-            boolean confirmation = confirmMeetingReceiver();
+        if(getSecondTrader().equals(trader)){
+            boolean confirmation = confirmMeetingSecondTrader();
             if (getConfirmed()){
                 setStatus(2);
             }
@@ -144,7 +149,7 @@ public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting{
         }
     }
 
-    private boolean confirmMeetingSender(){
+    private boolean confirmMeetingFirstTrader(){
         if(meetingConfirmed.get(0)){
             return false;
         }
@@ -152,15 +157,13 @@ public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting{
         return true;
     }
 
-    private boolean confirmMeetingReceiver(){
+    private boolean confirmMeetingSecondTrader(){
         if(meetingConfirmed.get(1)){
             return false;
         }
         meetingConfirmed.set(1, true);
         return true;
     }
-
-
 
     public boolean getConfirmed(){
         if(meeting.isEmpty()){

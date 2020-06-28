@@ -1,8 +1,10 @@
+package main.java;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * RAn abstract account in the Trade system representing a single user or admin of the program. All accounts
+ * RAn abstract account in the main.java.Trade system representing a single user or admin of the program. All accounts
  * stores the username, password, and email, along with the account's inventory and wishlist.
  * @author Robbert Liu
  * @version %I%, %G%

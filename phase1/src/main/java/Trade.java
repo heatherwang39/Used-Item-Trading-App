@@ -1,3 +1,5 @@
+package main.java;
+
 abstract class Trade {
     private int tradeNumber;
     private int status;
@@ -10,9 +12,9 @@ abstract class Trade {
 
 
     /**
-     * Return the trade number of the Trade object
+     * Return the trade number of the main.java.Trade object
      *
-     * @return the trade number of the Trade object
+     * @return the trade number of the main.java.Trade object
      */
     public int getTradeNumber(){
         return tradeNumber;
@@ -20,13 +22,13 @@ abstract class Trade {
 
 
     /**
-     * Return the status of the Trade Object.
+     * Return the status of the main.java.Trade Object.
      * -1 represents that the trade has been cancelled
      * 0 represents that the trade is awaiting confirmation
      * 1 represents that the trade is ongoing
      * 2 represents that the trade has been completed
      *
-     * @return the status of the Trade Object.
+     * @return the status of the main.java.Trade Object.
      */
     public int getStatus(){
         return status;
@@ -34,9 +36,9 @@ abstract class Trade {
 
 
     /**
-     * Changes the status of the Trade object. Iff the change was successfully made, return True.
+     * Changes the status of the main.java.Trade object. Iff the change was successfully made, return True.
      *
-     * @param status The new status of the Trade
+     * @param status The new status of the main.java.Trade
      * @return A boolean representing whether or not the change was made
      */
     public boolean setStatus(int status){
