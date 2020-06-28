@@ -12,7 +12,7 @@ public class AccountManager {
     public AccountManager() throws IOException {
         accounts = new HashMap<>();
         // Begin citation: https://stackoverflow.com/questions/5464631/java-read-a-file-if-it-doesnt-exist-create-it
-        File accountsCSV = new File("resources", "accounts.csv");
+        File accountsCSV = new File("main/resources", "accounts.csv");
         if (!accountsCSV.isFile() && !accountsCSV.createNewFile())
         {
             throw new IOException("Error creating new file: " + accountsCSV.getAbsolutePath());
@@ -27,8 +27,8 @@ public class AccountManager {
         }
     }
 
-    public UserAccount createUserAccount(String username, String password, String email) {
-        UserAccount user = new UserAccount(username, password, email);
+    public UserAccount createUserAccount(String username, String password, String email, boolean isFrozen) {
+        UserAccount user = new UserAccount(username, password, email, isFrozen);
         // TODO: save to csv
         accounts.put(username, user);
         return user;
