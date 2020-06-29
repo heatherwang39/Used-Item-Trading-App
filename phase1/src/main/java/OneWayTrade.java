@@ -13,8 +13,7 @@ abstract class OneWayTrade extends Trade{
      * @param receiver The trader (main.java.UserAccount) that received the item
      * @param item The item that was traded from the sender to the receiver
      */
-    public OneWayTrade(int tradeNumber, UserAccount sender, UserAccount receiver, Item item){
-        super(tradeNumber);
+    public OneWayTrade(UserAccount sender, UserAccount receiver, Item item){
         this.sender = sender;
         this.receiver = receiver;
         this.item = item;

@@ -15,8 +15,8 @@ public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting{
      * @param receiver The trader (main.java.UserAccount) that received the item
      * @param item The item that was traded from the sender to the receiver
      */
-    public OneWayPermanentTrade(int tradeNumber, UserAccount sender, UserAccount receiver, Item item){
-        super(tradeNumber, sender, receiver, item);
+    public OneWayPermanentTrade(UserAccount sender, UserAccount receiver, Item item){
+        super(sender, receiver, item);
         warnings = 0;
     }
 

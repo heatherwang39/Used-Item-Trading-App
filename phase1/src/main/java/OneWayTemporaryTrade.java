@@ -16,8 +16,8 @@ public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
      * @param receiver The trader (UserAccount) that received the item
      * @param item The item that was traded from the sender to the receiver
      */
-    public OneWayTemporaryTrade(int tradeNumber, UserAccount sender, UserAccount receiver, Item item){
-        super(tradeNumber, sender, receiver, item);
+    public OneWayTemporaryTrade(UserAccount sender, UserAccount receiver, Item item){
+        super(sender, receiver, item);
         warnings = 0;
     }
 

@@ -2,11 +2,13 @@ package main.java;
 
 abstract class Trade {
     private int tradeNumber;
+    private static int totalNumTrades;
     private int status;
 
 
-    public Trade(int tradeNumber){
-        this.tradeNumber = tradeNumber;
+    public Trade(){
+        totalNumTrades++;
+        this.tradeNumber = totalNumTrades;
         status = 0;
     }
 
@@ -20,6 +22,9 @@ abstract class Trade {
         return tradeNumber;
     }
 
+    public static int getTotalNumTrades() {
+        return totalNumTrades;
+    }
 
     /**
      * Return the status of the main.java.Trade Object.
@@ -48,7 +53,6 @@ abstract class Trade {
         this.status = status;
         return true;
     }
-
 
     /** Returns whether or not the Trade is permanent. Iff the Trade is permanent, return true.
      *

@@ -16,10 +16,10 @@ public class TwoWayPermanentTrade extends TwoWayTrade implements OneMeeting {
      * @param secondTrader The second trader (UserAccount) involved in this trade
      * @param secondItem The item the second trader traded away
      */
-    public TwoWayPermanentTrade(int tradeNumber, UserAccount firstTrader, Item firstItem,
+    public TwoWayPermanentTrade(UserAccount firstTrader, Item firstItem,
                                 UserAccount secondTrader, Item secondItem){
 
-        super(tradeNumber, firstTrader, firstItem, secondTrader, secondItem);
+        super(firstTrader, firstItem, secondTrader, secondItem);
         warnings = 0;
     }
 

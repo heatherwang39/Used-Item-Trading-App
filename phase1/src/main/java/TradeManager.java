@@ -3,7 +3,6 @@ package main.java;
 import java.util.List, Trade;
 
 public class TradeManager {
-    private int numTrades = 0;
     private List<Trade> trades;
 
     //TODO: Create a public method that creates TwoPersonMeetings and moves it into a Trade
@@ -26,14 +25,12 @@ public class TradeManager {
     }
 
     private void newOWPTrade(UserAccount sender, UserAccount receiver, Item item){
-        Trade t = new OneWayPermanentTrade(numTrades + 1, sender, receiver, item);
-        numTrades++;
+        Trade t = new OneWayPermanentTrade(sender, receiver, item);
         trades.add(t);
     }
 
     private void newOWTTrade(UserAccount sender, UserAccount receiver, Item item){
-        Trade t = new OneWayTemporaryTrade(numTrades + 1, sender, receiver, item);
-        numTrades++;
+        Trade t = new OneWayTemporaryTrade(sender, receiver, item);
         trades.add(t);
     }
 
@@ -46,14 +43,12 @@ public class TradeManager {
     }
 
     private void newTWPTrade(UserAccount firstTrader, Item firstItem, UserAccount secondTrader, Item secondItem){
-        Trade t = new TwoWayPermanentTrade(numTrades + 1, firstTrader, firstItem, secondTrader, secondItem);
-        numTrades++;
+        Trade t = new TwoWayPermanentTrade(firstTrader, firstItem, secondTrader, secondItem);
         trades.add(t);
     }
 
     private void newTWTTrade(UserAccount firstTrader, Item firstItem, UserAccount secondTrader, Item secondItem){
-        Trade t = new TwoWayTemporaryTrade(numTrades + 1, firstTrader, firstItem, secondTrader, secondItem);
-        numTrades++;
+        Trade t = new TwoWayTemporaryTrade(firstTrader, firstItem, secondTrader, secondItem);
         trades.add(t);
     }
 
