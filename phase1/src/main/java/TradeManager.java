@@ -1,6 +1,6 @@
 package main.java;
 
-import java.util.List;
+import java.util.List, Trade;
 
 public class TradeManager {
     private int numTrades = 0;
@@ -8,6 +8,16 @@ public class TradeManager {
 
     //TODO: Create a public method that creates TwoPersonMeetings and moves it into a Trade
 
+    /**
+     * Sets the meeting location for this trade instance.
+     * @param t The trade instance we want to set the meeting for.
+     */
+    public void newTwoPersonMeeting(Trade t){
+        OneMeeting m = new OneMeeting; // add parameters here, requires modifying OneMeeting or expanding it
+        t.setMeeting(m);
+
+
+    }
 
     //TODO: Write the JavaDoc for this Method
     public void newOneWayTrade(Boolean permanent, UserAccount sender, UserAccount receiver, Item item){

@@ -3,6 +3,7 @@ package main.java;
 abstract class Trade {
     private int tradeNumber;
     private int status;
+    private Meeting[2] meeting;
 
 
     public Trade(int tradeNumber){
@@ -48,6 +49,20 @@ abstract class Trade {
         this.status = status;
         return true;
     }
+
+    /**
+     * Sets the meeting of this main.java.Trade object. Returns nothing.
+     * @param m The meeting location of this main.java.Trade object.
+     */
+    public void setMeeting(OneMeeting m){
+        if (meeting[0] == null) {
+            meeting[0] = m;
+        }
+        else{
+            meeting[1] = m;
+        }
+    }
+    public void setMeeting(TwoMeeting m){meeting[0] = m[0]; meeting[1] = m[1]}
 
     /** Returns whether or not the Trade is permanent. Iff the Trade is permanent, return true.
      *
