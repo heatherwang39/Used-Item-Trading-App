@@ -23,5 +23,5 @@ public interface Meeting {
      *
      * @return A list of Attendees for this Meeting
      */
-    List<Account> getAttendees();
+    List<String> getAttendees();
 }

@@ -11,14 +11,13 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings {
 
     /** Initializes an instance of TwoWayTemporaryTrade based on the given parameters
      *
-     * @param tradeNumber The tradeNumber corresponding to this trade
-     * @param firstTrader The first trader (UserAccount) involved in this trade
-     * @param firstItem The item the first trader traded away
-     * @param secondTrader The second trader (UserAccount) involved in this trade
-     * @param secondItem The item the second trader traded away
+     * @param firstTrader The first trader (their username) involved in this trade
+     * @param firstItem The item (its ID) the first trader traded away
+     * @param secondTrader The second trader (their username) involved in this trade
+     * @param secondItem The item (its ID) the second trader traded away
      */
-    public TwoWayTemporaryTrade(UserAccount firstTrader, Item firstItem,
-                                UserAccount secondTrader, Item secondItem) {
+    public TwoWayTemporaryTrade(String firstTrader, int firstItem,
+                                String secondTrader, int secondItem) {
 
         super(firstTrader, firstItem, secondTrader, secondItem);
         warnings = 0;

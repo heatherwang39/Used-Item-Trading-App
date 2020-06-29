@@ -11,12 +11,11 @@ public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
 
     /** Initializes an instance of OneWayTemporaryTrade based on the given parameters
      *
-     * @param tradeNumber The tradeNumber corresponding to this trade
-     * @param sender The trader (UserAccount) that sent the item
-     * @param receiver The trader (UserAccount) that received the item
-     * @param item The item that was traded from the sender to the receiver
+     * @param sender The trader (their username) that sent the item
+     * @param receiver The trader (their username) that received the item
+     * @param item The item (its ID) that was traded from the sender to the receiver
      */
-    public OneWayTemporaryTrade(UserAccount sender, UserAccount receiver, Item item){
+    public OneWayTemporaryTrade(String sender, String receiver, int item){
         super(sender, receiver, item);
         warnings = 0;
     }

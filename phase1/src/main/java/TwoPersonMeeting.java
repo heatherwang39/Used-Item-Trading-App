@@ -7,13 +7,13 @@ import java.util.List;
 public class TwoPersonMeeting implements Meeting {
     private String place;
     private LocalDateTime time;
-    private Account firstAttendee;
-    private Account secondAttendee;
+    private String firstAttendee;
+    private String secondAttendee;
     private List<Boolean> Accepted;
     private List<Boolean> Confirmed;
 
 
-    public TwoPersonMeeting(String place, LocalDateTime time, Account firstAttendee, Account secondAttendee){
+    public TwoPersonMeeting(String place, LocalDateTime time, String firstAttendee, String secondAttendee){
         this.place = place;
         this.time = time;
         this.firstAttendee = firstAttendee;
@@ -39,7 +39,7 @@ public class TwoPersonMeeting implements Meeting {
     }
 
 
-    public List<Account> getAttendees(){
+    public List<String> getAttendees(){
         List attendees = new ArrayList();
         attendees.add(firstAttendee);
         attendees.add(secondAttendee);
