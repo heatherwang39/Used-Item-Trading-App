@@ -36,7 +36,7 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings {
         if(firstMeeting == null){
             throw new NoMeetingException();
         }
-        return firstMeeting.getPlace();
+        return secondMeeting.getPlace();
     }
 
 
@@ -115,16 +115,26 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings {
 
 
     public boolean acceptFirstMeeting(String acceptor) throws WrongAccountException {
+        boolean value;
         if(acceptor.equals(getFirstTrader()) || acceptor.equals(getSecondTrader())){
-            firstMeeting.acceptMeeting(acceptor);
+            value = firstMeeting.acceptMeeting(acceptor);
+            if(getFirstMeetingAccepted()){
+                resetWarnings();
+            }
+            return value;
         }
         throw new WrongAccountException();
     }
 
 
     public boolean acceptSecondMeeting(String acceptor) throws WrongAccountException {
+        boolean value;
         if(acceptor.equals(getFirstTrader()) || acceptor.equals(getSecondTrader())){
-            secondMeeting.acceptMeeting(acceptor);
+            value = secondMeeting.acceptMeeting(acceptor);
+            if(getSecondMeetingAccepted()){
+                resetWarnings();
+            }
+            return value;
         }
         throw new WrongAccountException();
     }
@@ -132,7 +142,7 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings {
 
     public boolean confirmFirstMeeting(String attendee) throws WrongAccountException{
         if(attendee.equals(getFirstTrader()) || attendee.equals(getSecondTrader())){
-            firstMeeting.acceptMeeting(attendee);
+            return firstMeeting.confirmMeeting(attendee);
         }
         throw new WrongAccountException();
     }
@@ -140,7 +150,7 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings {
 
     public boolean confirmSecondMeeting(String attendee) throws WrongAccountException{
         if(attendee.equals(getFirstTrader()) || attendee.equals(getSecondTrader())){
-            secondMeeting.acceptMeeting(attendee);
+            return secondMeeting.confirmMeeting(attendee);
         }
         throw new WrongAccountException();
     }

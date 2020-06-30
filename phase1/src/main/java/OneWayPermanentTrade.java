@@ -67,15 +67,20 @@ public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting{
 
 
     public boolean acceptMeeting(String acceptor) throws WrongAccountException {
+        boolean value;
         if(acceptor.equals(getSender()) || acceptor.equals(getReceiver())){
-            meeting.acceptMeeting(acceptor);
+            value = meeting.acceptMeeting(acceptor);
+            if(getMeetingAccepted()){
+                resetWarnings();
+            }
+            return value;
         }
         throw new WrongAccountException();
     }
 
     public boolean confirmMeeting(String attendee) throws WrongAccountException{
         if(attendee.equals(getSender()) || attendee.equals(getReceiver())){
-            meeting.acceptMeeting(attendee);
+            return meeting.confirmMeeting(attendee);
         }
         throw new WrongAccountException();
     }

@@ -5,9 +5,17 @@ import java.util.List;
 
 public class TradeManager {
     private List<Trade> trades;
-    
 
-    //TODO: Write the JavaDoc for this Method
+
+    /** Initializes a new OneWayTrade based on the given parameters. Return the tradeNumber of the newly initialized
+     * OneWayTrade.
+     *
+     * @param permanent Whether or not the Trade is to be permanent
+     * @param sender The username of the Sender of the Trade
+     * @param receiver The username of the Receiver of the Trade
+     * @param item The ID of the item involved in the Trade
+     * @return The tradeNumber of the newly initialized Trade.
+     */
     public int newOneWayTrade(Boolean permanent, String sender, String receiver, int item){
         int t;
         if(permanent){t = newOWPTrade(sender, receiver, item);}
@@ -28,7 +36,16 @@ public class TradeManager {
     }
 
 
-    //TODO: Write the JavaDoc for this Method
+    /** Initializes a new TwoWayTrade based on the given parameters. Return the tradeNumber of the newly initialized
+     * TwoWayTrade
+     *
+     * @param permanent Whether or not the Trade is to be permanent
+     * @param firstTrader The username of the first trader.
+     * @param firstItem The ID of the item the first trader sent in this trade
+     * @param secondTrader The username of the second trader.
+     * @param secondItem The ID of the item the second trader sent in this trade
+     * @return The tradeNumber of the newly initialized Trade.
+     */
     public int newTwoWayTrade(Boolean permanent, String firstTrader, int firstItem,
                                String secondTrader, int secondItem){
         int t;
@@ -50,7 +67,12 @@ public class TradeManager {
     }
 
 
-    //TODO:Write the JavaDoc for this Method
+    /** Returns the Trade that corresponds to the given tradeNumber
+     *
+     * @param tradeNumber The tradeNumber of the Trade that is to be returned
+     * @return The Trade that corresponds to the given tradeNumber
+     * @throws TradeNumberException If no Trade with the given tradeNumber can be found
+     */
     public Trade getTrade(int tradeNumber) throws TradeNumberException{
         for(Trade t:trades){
             if(t.getTradeNumber() == tradeNumber){

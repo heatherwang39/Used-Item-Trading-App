@@ -69,15 +69,20 @@ public class TwoWayPermanentTrade extends TwoWayTrade implements OneMeeting {
 
 
     public boolean acceptMeeting(String acceptor) throws WrongAccountException {
+        boolean value;
         if(acceptor.equals(getFirstTrader()) || acceptor.equals(getSecondTrader())){
-            meeting.acceptMeeting(acceptor);
+            value = meeting.acceptMeeting(acceptor);
+            if(getMeetingAccepted()){
+                resetWarnings();
+            }
+            return value;
         }
         throw new WrongAccountException();
     }
 
     public boolean confirmMeeting(String attendee) throws WrongAccountException{
         if(attendee.equals(getFirstTrader()) || attendee.equals(getSecondTrader())){
-            meeting.acceptMeeting(attendee);
+            return meeting.confirmMeeting(attendee);
         }
         throw new WrongAccountException();
     }

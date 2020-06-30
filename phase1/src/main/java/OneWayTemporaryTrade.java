@@ -33,7 +33,7 @@ public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
         if(firstMeeting == null){
             throw new NoMeetingException();
         }
-        return firstMeeting.getPlace();
+        return secondMeeting.getPlace();
     }
 
 
@@ -112,16 +112,26 @@ public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
 
 
     public boolean acceptFirstMeeting(String acceptor) throws WrongAccountException {
+        boolean value;
         if(acceptor.equals(getSender()) || acceptor.equals(getReceiver())){
-            firstMeeting.acceptMeeting(acceptor);
+            value = firstMeeting.acceptMeeting(acceptor);
+            if(getFirstMeetingAccepted()){
+                resetWarnings();
+            }
+            return value;
         }
         throw new WrongAccountException();
     }
 
 
     public boolean acceptSecondMeeting(String acceptor) throws WrongAccountException {
+        boolean value;
         if(acceptor.equals(getSender()) || acceptor.equals(getReceiver())){
-            secondMeeting.acceptMeeting(acceptor);
+            value = secondMeeting.acceptMeeting(acceptor);
+            if(getSecondMeetingAccepted()){
+                resetWarnings();
+            }
+            return value;
         }
         throw new WrongAccountException();
     }
@@ -129,7 +139,7 @@ public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
 
     public boolean confirmFirstMeeting(String attendee) throws WrongAccountException{
         if(attendee.equals(getSender()) || attendee.equals(getReceiver())){
-            firstMeeting.acceptMeeting(attendee);
+            return firstMeeting.confirmMeeting(attendee);
         }
         throw new WrongAccountException();
     }
@@ -137,7 +147,7 @@ public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
 
     public boolean confirmSecondMeeting(String attendee) throws WrongAccountException{
         if(attendee.equals(getSender()) || attendee.equals(getReceiver())){
-            secondMeeting.acceptMeeting(attendee);
+            return secondMeeting.confirmMeeting(attendee);
         }
         throw new WrongAccountException();
     }
