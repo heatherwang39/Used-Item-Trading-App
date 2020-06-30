@@ -1,62 +1,73 @@
 package main.java;
 
-abstract class TwoWayTrade extends Trade{
-    private UserAccount trader1;
-    private Item item1;
-    private UserAccount trader2;
-    private Item item2;
+import java.io.Serializable;
+
+/**
+ *
+ */
+abstract class TwoWayTrade extends Trade implements Serializable {
+    private String trader1;
+    private int item1;
+    private String trader2;
+    private int item2;
 
 
-    /** Initializes an instance of main.java.TwoWayTrade based on the given parameters
+    /** Initializes an instance of TwoWayTrade based on the given parameters
      *
-     * @param tradeNumber The tradeNumber corresponding to this trade
-     * @param firstTrader The first trader (main.java.UserAccount) involved in this trade
-     * @param item1 The item the first trader traded away
-     * @param secondTrader The second trader (main.java.UserAccount) involved in this trade
-     * @param item2 The item the second trader traded away
+     * @param firstTrader The first trader (their username) involved in this trade
+     * @param firstItem The item (its ID) the first trader traded away
+     * @param secondTrader The second trader (their username) involved in this trade
+     * @param secondItem The item (its ID) the second trader traded away
      */
-    public TwoWayTrade(int tradeNumber,
-                       UserAccount firstTrader, Item item1,
-                       UserAccount secondTrader, Item item2){
-        super(tradeNumber);
-        this.trader1 = firstTrader;
-        this.item1 = item1;
-        this.trader2 = secondTrader;
-        this.item2 = item2;
+    public TwoWayTrade(String firstTrader, int firstItem,
+                       String secondTrader, int secondItem){
+        trader1 = firstTrader;
+        item1 = firstItem;
+        trader2 = secondTrader;
+        item2 = secondItem;
     };
 
 
-    /** Retrieve the first trader (main.java.UserAccount) involved in this trade
+    /** Retrieve the first trader (their username) involved in this trade
      *
-     * @return The first trader (main.java.UserAccount) involved in this trade
+     * @return The first trader (their username) involved in this trade
      */
-    public UserAccount getFirstTrader(){
+    public String getFirstTrader(){
         return trader1;
     }
 
-    /** Retrieve the item the first trader (main.java.UserAccount) sent in this trade
+    /** Retrieve the item the first trader (their username) sent in this trade
      *
-     * @return The item the first trader (main.java.UserAccount) sent in this trade
+     * @return The item the first trader (their username) sent in this trade
      */
-    public Item getFirstTraderItem(){
+    public int getFirstTraderItem(){
         return item1;
     }
 
 
-    /** Retrieve the second trader (main.java.UserAccount) involved in this trade
+    /** Retrieve the second trader (their username) involved in this trade
      *
-     * @return The second trader (main.java.UserAccount) involved in this trade
+     * @return The second trader (their username) involved in this trade
      */
-    public UserAccount getSecondTrader(){
+    public String getSecondTrader(){
         return trader2;
     }
 
 
-    /** Retrieve the item the second trader (main.java.UserAccount) sent in this trade
+    /** Retrieve the item the second trader (their username) sent in this trade
      *
-     * @return The item the second trader (main.java.UserAccount) sent in this trade
+     * @return The item the second trader (their username) sent in this trade
      */
-    public Item getSecondTraderItem(){
+    public int getSecondTraderItem(){
         return item2;
+    }
+
+
+    /** Returns whether or not the Trade is one-way. Iff the Trade is one-way, return true.
+     *
+     * @return whether the Trade is one-way
+     */
+    public boolean isOneWay(){
+        return false;
     }
 }

@@ -1,12 +1,19 @@
 package main.java;
 
-abstract class Trade {
+import java.io.Serializable;
+
+abstract class Trade implements Serializable {
     private int tradeNumber;
+    private static int totalNumTrades;
     private int status;
 
-
-    public Trade(int tradeNumber){
-        this.tradeNumber = tradeNumber;
+    /** Initialize a new instance of Trade. The default status of the trade will be set to 0,
+     * and the Trade will be given a unique tradeNumber.
+     *
+     */
+    public Trade(){
+        totalNumTrades++;
+        this.tradeNumber = totalNumTrades;
         status = 0;
     }
 
@@ -20,6 +27,9 @@ abstract class Trade {
         return tradeNumber;
     }
 
+    public static int getTotalNumTrades() {
+        return totalNumTrades;
+    }
 
     /**
      * Return the status of the main.java.Trade Object.
@@ -32,11 +42,16 @@ abstract class Trade {
      */
     public int getStatus(){
         return status;
-    };
+    }
 
 
     /**
      * Changes the status of the main.java.Trade object. Iff the change was successfully made, return True.
+     *
+     * -1 represents that the trade has been cancelled
+     * 0 represents that the trade is awaiting confirmation
+     * 1 represents that the trade is ongoing
+     * 2 represents that the trade has been completed
      *
      * @param status The new status of the main.java.Trade
      * @return A boolean representing whether or not the change was made
@@ -48,4 +63,17 @@ abstract class Trade {
         this.status = status;
         return true;
     }
+
+    /** Returns whether or not the Trade is permanent. Iff the Trade is permanent, return true.
+     *
+     * @return whether the Trade is Permanent
+     */
+    abstract boolean isPermanent();
+
+
+    /** Returns whether or not the Trade is one-way. Iff the Trade is one-way, return true.
+     *
+     * @return whether the Trade is one-way
+     */
+    abstract boolean isOneWay();
 }

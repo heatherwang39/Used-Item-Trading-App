@@ -1,161 +1,119 @@
 package main.java;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
-public class TwoWayPermanentTrade extends TwoWayTrade implements OneMeeting {
-    private List meeting;
-    private List meetingAccepted;
-    private List meetingConfirmed;
+public class TwoWayPermanentTrade extends TwoWayTrade implements OneMeeting, Serializable {
+    private TwoPersonMeeting meeting;
     private int warnings;
     private int max_warnings = 6;
 
 
-    public TwoWayPermanentTrade(int tradeNumber, UserAccount trader1, Item items1,
-                                UserAccount trader2, Item items2){
+    /** Initializes an instance of TwoWayPermanentTrade based on the given parameters
+     *
+     * @param firstTrader The first trader (their username) involved in this trade
+     * @param firstItem The item (its ID) the first trader traded away
+     * @param secondTrader The second trader (their username) involved in this trade
+     * @param secondItem The item (its ID) the second trader traded away
+     */
+    public TwoWayPermanentTrade(String firstTrader, int firstItem,
+                                String secondTrader, int secondItem){
 
-        super(tradeNumber, trader1, items1, trader2, items2);
-
-        meeting = new ArrayList();
-
-        meetingAccepted = new ArrayList();
-        meetingAccepted.add(false);
-        meetingAccepted.add(false);
-
-        meetingConfirmed = new ArrayList();
-        meetingConfirmed.add(false);
-        meetingConfirmed.add(false);
+        super(firstTrader, firstItem, secondTrader, secondItem);
+        warnings = 0;
     }
 
 
-    public Optional<List> getMeeting(){
-        if(meeting.isEmpty()){
-            return null;
+    public String getMeetingPlace() throws NoMeetingException{
+        if(meeting == null){
+            throw new NoMeetingException();
         }
-        List meetingCopy = new ArrayList(meeting);
-        return meetingCopy;
+        return meeting.getPlace();
     }
 
 
-    public boolean setMeeting(String place, LocalDateTime time){
-        if(time.compareTo(time.now()) < 0){
-            //TODO: Raise time error?
-            return false;
+    public LocalDateTime getMeetingTime() throws NoMeetingException{
+        if(meeting == null){
+            throw new NoMeetingException();
+        }
+        return meeting.getTime();
+    }
+
+
+    public boolean setMeeting(String place, LocalDateTime time) throws TimeException{
+        TwoPersonMeeting meeting = new TwoPersonMeeting(place, time, getFirstTrader(), getSecondTrader());
+        if(meeting.getTime().compareTo(LocalDateTime.now()) < 0){
+            throw new TimeException();
         }
         warnings += 1;
         if(warnings > max_warnings){
             setStatus(-1);
             return false;
         }
-        meeting = new ArrayList();
-        meeting.add(place);
-        meeting.add(time);
+        this.meeting = meeting;
         return true;
     }
 
 
-    //TODO: May change this function to raise errors
-    public boolean acceptMeeting(UserAccount trader){
-        if(meeting.isEmpty()){
-            return false;
-            //TODO: Raise no meeting error?
-        }
-        if(getFirstTrader().equals(trader)){
-            boolean confirmation = acceptMeetingSecondTrader();
-            if(getAccepted()){
-                warnings = 0;
+    public boolean suggestMeeting(String place, LocalDateTime time,
+                                  String suggester) throws WrongAccountException, TimeException {
+
+        if(suggester.equals(getFirstTrader()) || suggester.equals(getSecondTrader())){
+            if(!setMeeting(place, time)){
+                return false;
             }
-            return confirmation;
+            acceptMeeting(suggester);
         }
-        if(getSecondTrader().equals(trader)){
-            boolean confirmation = acceptMeetingSecondTrader();
-            if(getAccepted()){
-                warnings = 0;
+        else{throw new WrongAccountException();}
+        return true;
+    }
+
+
+    public boolean acceptMeeting(String acceptor) throws WrongAccountException {
+        boolean value;
+        if(acceptor.equals(getFirstTrader()) || acceptor.equals(getSecondTrader())){
+            value = meeting.acceptMeeting(acceptor);
+            if(getMeetingAccepted()){
+                resetWarnings();
             }
-            return confirmation;
+            return value;
         }
-        else{
-            return false;
-            //TODO: Raise wrong user error?
-        }
+        throw new WrongAccountException();
     }
 
-    private boolean acceptMeetingFirstTrader(){
-        if(meetingAccepted[0]){
-            return false;
+    public boolean confirmMeeting(String attendee) throws WrongAccountException{
+        if(attendee.equals(getFirstTrader()) || attendee.equals(getSecondTrader())){
+            return meeting.confirmMeeting(attendee);
         }
-        meetingAccepted[0] = true;
+        throw new WrongAccountException();
+    }
+
+    /**Reset the number of warnings (i.e., the number of times a meeting has been
+     * suggested without confirming) back to 0
+     *
+     */
+    public void resetWarnings(){
+        warnings = 0;
+    }
+
+
+    /** Returns whether or not the Trade is permanent. Iff the Trade is permanent, return true.
+     *
+     * @return whether the Trade is Permanent
+     */
+    public boolean isPermanent(){
         return true;
     }
 
-    private boolean acceptMeetingSecondTrader(){
-        if(meetingAccepted[1]){
-            return false;
-        }
-        meetingAccepted[1] = true;
-        return true;
-    }
 
-    public boolean getAccepted(){
-        if(meeting.isEmpty()){
-            return false;
-        }
-        return meetingAccepted[0] && meetingAccepted[1];
+
+
+    public boolean getMeetingAccepted(){
+        return meeting.getAccepted();
     }
 
 
-
-    public boolean confirmMeeting(UserAccount trader){
-        if(meeting[1].compareTo(meeting[1].now() < 0){
-            //TODO: Raise time error?
-            return false;
-        }
-        if(meeting.isEmpty()){
-            return false;
-            //TODO: Raise no meeting error?
-        }
-        if(getFirstTrader().equals(trader)){
-            boolean confirmation = confirmMeetingFirstTrader();
-            if (getConfirmed()){
-                setStatus(2);
-            }
-            return confirmation;
-        }
-        if(getSecondTrader().equals(trader)){
-            boolean confirmation = confirmMeetingSecondTrader();
-            if (getConfirmed()){
-                setStatus(2);
-            }
-            return confirmation;
-        }
-        else{
-            return false;
-            //TODO: Raise wrong user error?
-        }
-    }
-
-    private boolean confirmMeetingFirstTrader(){
-        if(meetingConfirmed[0]){
-            return false;
-        }
-        meetingConfirmed[0] = true;
-        return true;
-    }
-
-    private boolean confirmMeetingSecondTrader(){
-        if(meetingConfirmed[1]){
-            return false;
-        }
-        meetingConfirmed[1] = true;
-        return true;
-    }
-
-    public boolean getConfirmed(){
-        if(meeting.isEmpty()){
-            return false;
-        }
-        return meetingConfirmed[0] && meetingConfirmed[1];
+    public boolean getMeetingConfirmed(){
+        return meeting.getConfirmed();
     }
 }
