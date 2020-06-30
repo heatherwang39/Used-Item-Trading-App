@@ -1,8 +1,9 @@
 package main.java;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings{
+public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings, Serializable {
     private TwoPersonMeeting firstMeeting;
     private TwoPersonMeeting secondMeeting;
     private int warnings;

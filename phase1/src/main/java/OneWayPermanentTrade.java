@@ -1,9 +1,10 @@
 package main.java;
 
+import java.io.Serializable;
 import java.sql.Time;
 import java.time.LocalDateTime;
 
-public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting{
+public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting, Serializable {
     private TwoPersonMeeting meeting;
     private int warnings;
     private int max_warnings = 6;

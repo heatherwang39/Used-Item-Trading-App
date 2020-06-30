@@ -1,9 +1,11 @@
 package main.java;
 
+import java.io.Serializable;
+
 /**
  *
  */
-abstract class TwoWayTrade extends Trade{
+abstract class TwoWayTrade extends Trade implements Serializable {
     private String trader1;
     private int item1;
     private String trader2;

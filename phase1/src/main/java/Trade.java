@@ -1,6 +1,8 @@
 package main.java;
 
-abstract class Trade {
+import java.io.Serializable;
+
+abstract class Trade implements Serializable {
     private int tradeNumber;
     private static int totalNumTrades;
     private int status;

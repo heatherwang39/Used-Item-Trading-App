@@ -1,6 +1,8 @@
 package main.java;
 
-abstract class OneWayTrade extends Trade{
+import java.io.Serializable;
+
+abstract class OneWayTrade extends Trade implements Serializable {
     private String sender;
     private String receiver;
     private int item; //changed item from List<main.java.Item> to main.java.Item
