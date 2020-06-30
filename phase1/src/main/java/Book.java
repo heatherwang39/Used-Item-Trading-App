@@ -11,6 +11,8 @@ public class Book extends Item{
 
     @Override
     public String toString(){
-        return "main.java.Book name: " + name +", description: " + description + ", author: " + author ;
+        // TODO: change name to getName and decription to getDescription
+        // return "main.java.Book name: " + name +", description: " + description + ", author: " + author ;
+        return "";
     }
 }
