@@ -1,5 +1,6 @@
 package main.java;
 
+import java.sql.Time;
 import java.time.LocalDateTime;
 
 public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting{
@@ -20,35 +21,24 @@ public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting{
     }
 
 
-    /** Return the Meeting suggested with this Trade. If no meeting has been suggested,
-     * a NoMeetingException will be thrown
-     *
-     * @return The Meeting associated with this Trade
-     * @throws NoMeetingException No Meeting has been suggested
-     */
-    public TwoPersonMeeting getMeeting() throws NoMeetingException{
+    public String getMeetingPlace() throws NoMeetingException{
         if(meeting == null){
             throw new NoMeetingException();
         }
-        return meeting;
+        return meeting.getPlace();
     }
 
 
-    /** Suggest a Meeting for this Trade. Return True iff this suggestion has been
-     * successfully recorded. Throw an exception is this suggestion is inappropriate for this Trade.
-     *
-     * @param meeting The suggested Meeting
-     * @return True iff the suggestion has been successfully recorded
-     * @throws WrongAccountException The suggested Meeting does not have the right Attendees
-     * @throws TimeException The suggested Meeting is at an inappropriate time
-     */
-    public boolean setMeeting(TwoPersonMeeting meeting) throws WrongAccountException, TimeException{
-        if(!meeting.getAttendees().contains(getSender())){
-            throw new WrongAccountException();
+    public LocalDateTime getMeetingTime() throws NoMeetingException{
+        if(meeting == null){
+            throw new NoMeetingException();
         }
-        if(!meeting.getAttendees().contains(getReceiver())){
-            throw new WrongAccountException();
-        }
+        return meeting.getTime();
+    }
+
+
+    public boolean setMeeting(String place, LocalDateTime time) throws TimeException{
+        TwoPersonMeeting meeting = new TwoPersonMeeting(place, time, getSender(), getReceiver());
         if(meeting.getTime().compareTo(LocalDateTime.now()) < 0){
             throw new TimeException();
         }
@@ -59,6 +49,35 @@ public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting{
         }
         this.meeting = meeting;
         return true;
+    }
+
+
+    public boolean suggestMeeting(String place, LocalDateTime time,
+                                  String suggester) throws WrongAccountException, TimeException {
+
+        if(suggester.equals(getSender()) || suggester.equals(getReceiver())){
+            if(!setMeeting(place, time)){
+                return false;
+            }
+            acceptMeeting(suggester);
+        }
+        else{throw new WrongAccountException();}
+        return true;
+    }
+
+
+    public boolean acceptMeeting(String acceptor) throws WrongAccountException {
+        if(acceptor.equals(getSender()) || acceptor.equals(getReceiver())){
+            meeting.acceptMeeting(acceptor);
+        }
+        throw new WrongAccountException();
+    }
+
+    public boolean confirmMeeting(String attendee) throws WrongAccountException{
+        if(attendee.equals(getSender()) || attendee.equals(getReceiver())){
+            meeting.acceptMeeting(attendee);
+        }
+        throw new WrongAccountException();
     }
 
 
@@ -77,5 +96,17 @@ public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting{
      */
     public boolean isPermanent(){
         return true;
+    }
+
+
+
+
+    public boolean getMeetingAccepted(){
+        return meeting.getAccepted();
+    }
+
+
+    public boolean getMeetingConfirmed(){
+        return meeting.getConfirmed();
     }
 }

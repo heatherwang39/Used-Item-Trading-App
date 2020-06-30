@@ -6,42 +6,57 @@ import java.util.List;
 public interface TwoMeetings {
 
 
-    /** Return the suggested first Meeting with this object. If the first meeting has
-     * not yet been suggested, a NoMeetingException will be thrown
-     *
-     * @return The first Meeting associated with this object
-     * @throws NoMeetingException The first meeting has not yet been suggested
-     */
-    Meeting getFirstMeeting() throws NoMeetingException;
+
+    String getFirstMeetingPlace() throws NoMeetingException;
 
 
-    /** Suggest a first Meeting for this object. Return True iff this suggestion has been
-     * successfully recorded. Throw an exception is this suggestion is inappropriate for this object.
-     *
-     * @param meeting The suggested Meeting
-     * @return True iff the suggestion has been successfully recorded
-     * @throws WrongAccountException The suggested Meeting does not have the right Attendees
-     * @throws TimeException The suggested Meeting is at an inappropriate time
-     */
-    boolean setFirstMeeting(TwoPersonMeeting meeting) throws WrongAccountException, TimeException;
+    LocalDateTime getFirstMeetingTime() throws NoMeetingException;
 
 
-    /** Return the suggested second Meeting with this object. If no meeting has been suggested,
-     * a NoMeetingException will be thrown
-     *
-     * @return The second Meeting associated with this object
-     * @throws NoMeetingException The second meeting has not yet been suggested
-     */
-    Meeting getSecondMeeting() throws NoMeetingException;
+    boolean getFirstMeetingAccepted();
 
 
-    /** Suggest a second Meeting for this object. Return True iff this suggestion has been
-     * successfully recorded. Throw an exception is this suggestion is inappropriate for this object.
-     *
-     * @param meeting The suggested Meeting
-     * @return True iff the suggestion has been successfully recorded
-     * @throws WrongAccountException The suggested Meeting does not have the right Attendees
-     * @throws TimeException The suggested Meeting is at an inappropriate time
-     */
-    boolean setSecondMeeting(TwoPersonMeeting meeting) throws WrongAccountException, TimeException;
+    boolean getFirstMeetingConfirmed();
+
+
+    boolean setFirstMeeting(String place, LocalDateTime time) throws TimeException;
+
+
+    boolean suggestFirstMeeting(String place, LocalDateTime time, String suggester) throws
+            WrongAccountException, TimeException;
+
+
+    boolean acceptFirstMeeting(String acceptor) throws NoMeetingException, WrongAccountException;
+
+
+    boolean confirmFirstMeeting(String attendee) throws NoMeetingException, WrongAccountException, TimeException;
+
+
+
+
+
+
+    String getSecondMeetingPlace() throws NoMeetingException;
+
+
+    LocalDateTime getSecondMeetingTime() throws NoMeetingException;
+
+
+    boolean getSecondMeetingAccepted();
+
+
+    boolean getSecondMeetingConfirmed();
+
+
+    boolean setSecondMeeting(String place, LocalDateTime time) throws TimeException;
+
+
+    boolean suggestSecondMeeting(String place, LocalDateTime time, String suggester) throws
+            WrongAccountException, TimeException;
+
+
+    boolean acceptSecondMeeting(String acceptor) throws NoMeetingException, WrongAccountException;
+
+
+    boolean confirmSecondMeeting(String attendee) throws NoMeetingException, WrongAccountException, TimeException;
 }

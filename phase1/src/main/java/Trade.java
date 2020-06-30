@@ -5,7 +5,10 @@ abstract class Trade {
     private static int totalNumTrades;
     private int status;
 
-
+    /** Initialize a new instance of Trade. The default status of the trade will be set to 0,
+     * and the Trade will be given a unique tradeNumber.
+     *
+     */
     public Trade(){
         totalNumTrades++;
         this.tradeNumber = totalNumTrades;
@@ -37,7 +40,7 @@ abstract class Trade {
      */
     public int getStatus(){
         return status;
-    };
+    }
 
 
     /**

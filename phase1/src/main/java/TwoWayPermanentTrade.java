@@ -23,35 +23,24 @@ public class TwoWayPermanentTrade extends TwoWayTrade implements OneMeeting {
     }
 
 
-    /** Return the Meeting suggested with this Trade. If no meeting has been suggested,
-     * a NoMeetingException will be thrown
-     *
-     * @return The Meeting associated with this Trade
-     * @throws NoMeetingException No Meeting has been suggested
-     */
-    public TwoPersonMeeting getMeeting() throws NoMeetingException{
+    public String getMeetingPlace() throws NoMeetingException{
         if(meeting == null){
             throw new NoMeetingException();
         }
-        return meeting;
+        return meeting.getPlace();
     }
 
 
-    /** Suggest a Meeting for this Trade. Return True iff this suggestion has been
-     * successfully recorded. Throw an exception is this suggestion is inappropriate for this Trade.
-     *
-     * @param meeting The suggested Meeting
-     * @return True iff the suggestion has been successfully recorded
-     * @throws WrongAccountException The suggested Meeting does not have the right Attendees
-     * @throws TimeException The suggested Meeting is at an inappropriate time
-     */
-    public boolean setMeeting(TwoPersonMeeting meeting) throws WrongAccountException, TimeException{
-        if(!meeting.getAttendees().contains(getFirstTrader())){
-            throw new WrongAccountException();
+    public LocalDateTime getMeetingTime() throws NoMeetingException{
+        if(meeting == null){
+            throw new NoMeetingException();
         }
-        if(!meeting.getAttendees().contains(getSecondTrader())){
-            throw new WrongAccountException();
-        }
+        return meeting.getTime();
+    }
+
+
+    public boolean setMeeting(String place, LocalDateTime time) throws TimeException{
+        TwoPersonMeeting meeting = new TwoPersonMeeting(place, time, getFirstTrader(), getSecondTrader());
         if(meeting.getTime().compareTo(LocalDateTime.now()) < 0){
             throw new TimeException();
         }
@@ -64,6 +53,34 @@ public class TwoWayPermanentTrade extends TwoWayTrade implements OneMeeting {
         return true;
     }
 
+
+    public boolean suggestMeeting(String place, LocalDateTime time,
+                                  String suggester) throws WrongAccountException, TimeException {
+
+        if(suggester.equals(getFirstTrader()) || suggester.equals(getSecondTrader())){
+            if(!setMeeting(place, time)){
+                return false;
+            }
+            acceptMeeting(suggester);
+        }
+        else{throw new WrongAccountException();}
+        return true;
+    }
+
+
+    public boolean acceptMeeting(String acceptor) throws WrongAccountException {
+        if(acceptor.equals(getFirstTrader()) || acceptor.equals(getSecondTrader())){
+            meeting.acceptMeeting(acceptor);
+        }
+        throw new WrongAccountException();
+    }
+
+    public boolean confirmMeeting(String attendee) throws WrongAccountException{
+        if(attendee.equals(getFirstTrader()) || attendee.equals(getSecondTrader())){
+            meeting.acceptMeeting(attendee);
+        }
+        throw new WrongAccountException();
+    }
 
     /**Reset the number of warnings (i.e., the number of times a meeting has been
      * suggested without confirming) back to 0
@@ -80,5 +97,17 @@ public class TwoWayPermanentTrade extends TwoWayTrade implements OneMeeting {
      */
     public boolean isPermanent(){
         return true;
+    }
+
+
+
+
+    public boolean getMeetingAccepted(){
+        return meeting.getAccepted();
+    }
+
+
+    public boolean getMeetingConfirmed(){
+        return meeting.getConfirmed();
     }
 }
