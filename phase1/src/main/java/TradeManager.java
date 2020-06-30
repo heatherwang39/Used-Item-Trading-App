@@ -7,6 +7,12 @@ import java.util.List;
 public class TradeManager {
     private List<Trade> trades;
 
+    /**
+     * Creates a new TradeManager.
+     *
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public TradeManager(String filePath) throws IOException, ClassNotFoundException {
         File file = new File(filePath);
         if (file.exists()) {
@@ -74,6 +80,12 @@ public class TradeManager {
         return t.getTradeNumber();
     }
 
+    /**
+     * Reads the trades from file at filepath, populating trades.
+     *
+     * @param filePath the file to read the trades from
+     * @throws IOException
+     */
     public void readFromFile(String path) throws ClassNotFoundException, IOException {
         InputStream file = new FileInputStream(path);
         InputStream buffer = new BufferedInputStream(file);
@@ -83,6 +95,12 @@ public class TradeManager {
         input.close();
     }
 
+    /**
+     * Writes the trades to the file at filepath.
+     *
+     * @param filePath the file to write the trades to
+     * @throws IOException
+     */
     public void saveToFile(String filePath) throws IOException {
         OutputStream file = new FileOutputStream(filePath);
         OutputStream buffer = new BufferedOutputStream(file);
