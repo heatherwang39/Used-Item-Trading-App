@@ -1,12 +1,20 @@
 package main.java;
 
+import java.io.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class TradeManager {
     private List<Trade> trades;
 
-
+    public TradeManager(String filePath) throws IOException, ClassNotFoundException {
+        File file = new File(filePath);
+        if (file.exists()) {
+            readFromFile(filePath);
+        } else {
+            file.createNewFile();
+        }
+    }
     /** Initializes a new OneWayTrade based on the given parameters. Return the tradeNumber of the newly initialized
      * OneWayTrade.
      *
@@ -66,6 +74,23 @@ public class TradeManager {
         return t.getTradeNumber();
     }
 
+    public void readFromFile(String path) throws ClassNotFoundException, IOException {
+        InputStream file = new FileInputStream(path);
+        InputStream buffer = new BufferedInputStream(file);
+        ObjectInput input = new ObjectInputStream(buffer);
+
+        trades = (List<Trade>) input.readObject();
+        input.close();
+    }
+
+    public void saveToFile(String filePath) throws IOException {
+        OutputStream file = new FileOutputStream(filePath);
+        OutputStream buffer = new BufferedOutputStream(file);
+        ObjectOutput output = new ObjectOutputStream(buffer);
+
+        output.writeObject(trades);
+        output.close();
+    }
 
     /** Returns the Trade that corresponds to the given tradeNumber
      *
