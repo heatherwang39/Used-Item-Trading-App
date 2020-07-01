@@ -1,6 +1,8 @@
 package main.java;
 
-public class Clothes extends Item{
+import java.io.Serializable;
+
+public class Clothes extends Item implements Serializable {
 
     private String brand;
 
@@ -9,10 +11,13 @@ public class Clothes extends Item{
         this.brand = brand;
     }
 
+    public String getBrand() {
+        return brand;
+    }
+
     @Override
     public String toString(){
-        // TODO: change name to getName and decription to getDescription
         // return "main.java.Book name: " + name +", description: " + description + ", brand: " + brand ;
-        return "";
+        return "Clothes name: " + getName() +", description: " + getDescription() + ", brand: " + getBrand() ;
     }
 }
