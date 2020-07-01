@@ -83,7 +83,7 @@ public class TradeManager {
     /**
      * Reads the trades from file at filepath, populating trades.
      *
-     * @param filePath the file to read the trades from
+     * @param path the file to read the trades from
      * @throws IOException
      */
     public void readFromFile(String path) throws ClassNotFoundException, IOException {

@@ -1,22 +1,25 @@
 package main.java;
 
+import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * RAn abstract account in the main.java.Trade system representing a single user or admin of the program. All accounts
- * stores the username, password, and email, along with the account's inventory and wishlist.
+ * Ran abstract account in the main.java.Trade system representing a single user or admin of the program. All accounts
+ * stores the username, password, and email, along with the account's inventory and wishlist as lists containing item
+ * IDs.
  * @author Robbert Liu
  * @version %I%, %G%
  * @since Phase 1
  */
-abstract class Account {
+abstract class Account implements Serializable {
 
     private final String username;
     private final String password;
     private final String email;
-    private final List<Item> wishlist;
-    private final List<Item> inventory;
+    private final List<Integer> wishlist;
+    private final List<Integer> inventory;
 
 
     /**
@@ -68,75 +71,50 @@ abstract class Account {
      * Get a shallow copy of account inventory
      * @return inventory
      */
-    public List<Item> getInventory() { return new ArrayList<>(inventory); }
+    public List<Integer> getInventory() {return new ArrayList<>(inventory); }
 
     /**
      * Get a shallow copy of account wishlist
      * @return wishlist
      */
-    public List<Item> getWishlist() { return new ArrayList<>(wishlist); }
+    public List<Integer> getWishlist() { return new ArrayList<>(wishlist); }
 
     /**
-     * Add an item to account inventory
-     * @param item item to be added
+     * Add an item ID to account inventory
+     * @param itemID item ID to be added
      */
-    public void addInventory(Item item) { inventory.add(item); }
+    public void addInventory(int itemID) { inventory.add(itemID); }
 
     /**
-     * Add an item to account wishlist
-     * @param item item to be added
+     * Add an item ID to account wishlist
+     * @param itemID item ID to be added
      */
-    public void addWishlist(Item item) { wishlist.add(item); }
+    public void addWishlist(int itemID) { wishlist.add(itemID); }
 
     /**
-     * Remove an item from account inventory
-     * @param id item id
+     * Remove an item ID from account inventory
+     * @param id item id to be removed
      */
-    public void removeInventory(int id) {
-        boolean found = false;
-        for (int i = 0; i < inventory.size() && !found ; i ++) {
-            if (inventory.get(i).getID() == id) {
-                found = true;
-                inventory.remove(i);
-            }
-        }
-        if (!found) throw new ItemNotFoundException();
-    }
+    public void removeInventory(int id) { inventory.remove(id); }
 
     /**
      * Remove an item from account wishlist
+     * @param id item id to be removed
+     */
+
+    public void removeWishlist(int id) { wishlist.remove(id); }
+
+    /**
+     * Returns if an item ID is in account's inventory
      * @param id item id
+     * @return boolean if ID is in inventory
      */
-    public void removeWishlist(int id) {
-        boolean found = false;
-        for (int i = 0; i < wishlist.size() && !found; i++) {
-            if (wishlist.get(i).getID() == id) {
-                found = true;
-                wishlist.remove(i);
-            }
-        }
-        if (!found) throw new ItemNotFoundException();
-    }
+    public boolean inInventory (int id) { return inventory.contains(id); }
 
     /**
-     * Retrieve an item from account inventory
-     * @param id  item id
+     * Returns if an item ID is in account's wishlist
+     * @param id item id
+     * @return boolean if ID is in wishlist
      */
-    public Item getFromInventory (int id) {
-        for (Item i : inventory) {
-            if (i.getID() == id) return i;
-        }
-        throw new ItemNotFoundException();
-    }
-
-    /**
-     * Retrieve an item from account wishlist
-     * @param id  item id
-     */
-    public Item getFromWishlist (int id) {
-        for (Item i : wishlist) {
-            if (i.getID() == id) return i;
-        }
-        throw new ItemNotFoundException();
-    }
+    public boolean inWishlist (int id) { return wishlist.contains(id); }
 }
