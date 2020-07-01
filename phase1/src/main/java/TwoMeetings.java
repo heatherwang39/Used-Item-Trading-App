@@ -15,7 +15,7 @@ public interface TwoMeetings {
     String getFirstMeetingPlace() throws NoMeetingException;
 
 
-    /** Return the first time of the suggested Meeting for this object. If no first Meeting has been suggested, throw
+    /** Return the time of the first suggested Meeting for this object. If no first Meeting has been suggested, throw
      * a NoMeetingException
      *
      * @return The time of the suggested first Meeting
@@ -77,7 +77,7 @@ public interface TwoMeetings {
     /** Attempt to record the fact that attendee has confirmed the suggested first Meeting. If this fact is successfully
      * recorded, return True.
      *
-     * @param attendee
+     * @param attendee The attendee confirming that the Meeting has happened
      * @return Whether the change has been successfully recorded
      * @throws NoMeetingException Thrown if no first meeting has been suggested
      * @throws WrongAccountException Thrown if the attendee was not been invited to this first meeting
@@ -160,7 +160,7 @@ public interface TwoMeetings {
     /** Attempt to record the fact that attendee has confirmed the suggested second Meeting. If this fact is
      * successfully recorded, return True.
      *
-     * @param attendee
+     * @param attendee The attendee confirming that the Meeting has happened
      * @return Whether the change has been successfully recorded
      * @throws NoMeetingException Thrown if no second Meeting has been suggested
      * @throws WrongAccountException Thrown if the attendee was not been invited to this meeting

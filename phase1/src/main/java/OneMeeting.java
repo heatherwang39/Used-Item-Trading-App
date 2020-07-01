@@ -79,7 +79,7 @@ public interface OneMeeting {
     /** Attempt to record the fact that attendee has confirmed the suggested Meeting. If this fact is successfully
      * recorded, return True.
      *
-     * @param attendee
+     * @param attendee The attendee confirming that the Meeting has happened
      * @return Whether the change has been successfully recorded
      * @throws NoMeetingException Thrown if no meeting has been suggested
      * @throws WrongAccountException Thrown if the attendee was not been invited to this meeting
