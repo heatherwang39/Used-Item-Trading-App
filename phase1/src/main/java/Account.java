@@ -1,7 +1,6 @@
 package main.java;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +19,9 @@ abstract class Account implements Serializable {
     private final String email;
     private final List<Integer> wishlist;
     private final List<Integer> inventory;
+    private final List<Integer> tradesOffered;
+    private final List<Integer> tradesReceived;
+
 
 
     /**
@@ -34,6 +36,8 @@ abstract class Account implements Serializable {
         this.email = email;
         inventory = new ArrayList<>();
         wishlist = new ArrayList<>();
+        tradesOffered = new ArrayList<>();
+        tradesReceived = new ArrayList<>();
     }
 
     /**
@@ -101,20 +105,41 @@ abstract class Account implements Serializable {
      * Remove an item from account wishlist
      * @param id item id to be removed
      */
-
     public void removeWishlist(int id) { wishlist.remove(id); }
 
     /**
-     * Returns if an item ID is in account's inventory
-     * @param id item id
-     * @return boolean if ID is in inventory
+     * Get a shallow copy of trades offered
+     * @return trade numbers
      */
-    public boolean inInventory (int id) { return inventory.contains(id); }
+    public List<Integer> getTradesOffered() {return new ArrayList<>(tradesOffered); }
 
     /**
-     * Returns if an item ID is in account's wishlist
-     * @param id item id
-     * @return boolean if ID is in wishlist
+     * Get a shallow copy of trades received
+     * @return trade numbers
      */
-    public boolean inWishlist (int id) { return wishlist.contains(id); }
+    public List<Integer> getTradesReceived() { return new ArrayList<>(tradesReceived); }
+
+    /**
+     * Add a trade to trades offered
+     * @param tradeNumber trade number
+     */
+    public void addTradesOffered(int tradeNumber) { tradesOffered.add(tradeNumber); }
+
+    /**
+     * Add a trade to trades received
+     * @param tradeNumber trade number
+     */
+    public void addTradesReceived(int tradeNumber) { tradesReceived.add(tradeNumber); }
+
+    /**
+     * Remove a trade from trades offered
+     * @param tradeNumber trade number
+     */
+    public void removeTradesOffered(int tradeNumber) { tradesOffered.remove(tradeNumber); }
+
+    /**
+     * Remove a trade from trades received
+     * @param tradeNumber trade number
+     */
+    public void removeTradesReceived(int tradeNumber) { tradesReceived.remove(tradeNumber); }
 }
