@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Ran abstract account in the main.java.Trade system representing a single user or admin of the program. All accounts
- * stores the username, password, and email, along with the account's inventory and wishlist as lists containing item
+ * An abstract account in the main.java.Trade system representing a single user or admin of the program. All accounts
+ * store the username, password, and email, along with the account's inventory and wishlist as lists containing item
  * IDs.
  * @author Robbert Liu
  * @version %I%, %G%

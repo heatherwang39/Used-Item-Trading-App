@@ -1,6 +1,5 @@
 package main.java;
 
-import javax.naming.InvalidNameException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,10 +7,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+/**
+ * Use case class for managing login info, account creation, and getting and mutating accounts.
+ * @author Robbert Liu
+ * @version %I%, %G%
+ * @since Phase 1
+ */
 public class AccountManager {
 
     Map<String, Account> accounts;
     String path;
+
 
     public AccountManager(String path) throws IOException, ClassNotFoundException {
         accounts = new HashMap<>();
@@ -77,6 +83,14 @@ public class AccountManager {
         return user;
     }
 
+    public void freezeAccount(String username) throws AccountNotFoundException, ClassCastException{
+        ((UserAccount)getAccount(username)).freeze();
+    }
+
+    public void unfreezeAccount(String username) throws AccountNotFoundException, ClassCastException{
+        ((UserAccount)getAccount(username)).unfreeze();
+    }
+
     public Account getAccount(String username) throws AccountNotFoundException{
         if (accounts.containsKey(username)){
             return accounts.get(username);
@@ -134,6 +148,56 @@ public class AccountManager {
         Account account = getAccount(username);
         for (int id : itemIDs) {
             account.removeWishlist(id);
+        }
+        saveToFile(path);
+    }
+
+    public void addTradesOffered(String username, int tradeNumber) throws AccountNotFoundException, IOException {
+        getAccount(username).addTradesOffered(tradeNumber);
+        saveToFile(path);
+    }
+
+    public void addTradesOffered(String username, List<Integer> tradeNumbers) throws AccountNotFoundException,
+            IOException {
+        Account account = getAccount(username);
+        for (int number: tradeNumbers) { account.addTradesOffered(number);}
+        saveToFile(path);
+    }
+
+    public void addTradesReceived(String username, int tradeNumber) throws AccountNotFoundException, IOException {
+        getAccount(username).addTradesReceived(tradeNumber);
+        saveToFile(path);
+    }
+
+    public void addTradesReceived(String username, List<Integer> tradeNumbers) throws AccountNotFoundException,
+            IOException {
+        Account account = getAccount(username);
+        for (int number: tradeNumbers) { account.addTradesReceived(number);}
+        saveToFile(path);
+    }
+
+    public void removeTradesOffered(String username, int tradeNumber) throws AccountNotFoundException, IOException {
+        getAccount(username).removeTradesOffered(tradeNumber);
+        saveToFile(path);
+    }
+
+    public void removeTradesOffered(String username, List<Integer> tradeNumbers) throws AccountNotFoundException,
+            IOException {
+        Account account = getAccount(username);
+        for (int number: tradeNumbers) { account.removeTradesOffered(number);}
+        saveToFile(path);
+    }
+
+    public void removeTradesReceived(String username, int tradeNumber) throws AccountNotFoundException, IOException {
+        getAccount(username).removeTradesReceived(tradeNumber);
+        saveToFile(path);
+    }
+
+    public void removeTradesReceived(String username, List<Integer> tradeNumbers) throws AccountNotFoundException,
+            IOException {
+        Account account = getAccount(username);
+        for (int number : tradeNumbers) {
+            account.removeTradesReceived(number);
         }
         saveToFile(path);
     }
