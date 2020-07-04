@@ -6,22 +6,20 @@ import java.util.List;
 public interface TwoMeetings {
 
 
-    /** Return the place of the suggested first Meeting for this object. If no first Meeting has been suggested, throw
-     * a NoMeetingException
+    /** Return the place of the suggested first Meeting for this object. If no first Meeting has been suggested, return
+     * null
      *
      * @return The place of the suggested first Meeting
-     * @throws NoMeetingException (Thrown if no first meeting has been suggested)
      */
-    String getFirstMeetingPlace() throws NoMeetingException;
+    String getFirstMeetingPlace();
 
 
-    /** Return the time of the first suggested Meeting for this object. If no first Meeting has been suggested, throw
-     * a NoMeetingException
+    /** Return the time of the first suggested Meeting for this object. If no first Meeting has been suggested, return
+     * null
      *
      * @return The time of the suggested first Meeting
-     * @throws NoMeetingException (Thrown if no first meeting has been suggested)
      */
-    LocalDateTime getFirstMeetingTime() throws NoMeetingException;
+    LocalDateTime getFirstMeetingTime();
 
 
     /** Return True iff the first Meeting corresponding to the object has been accepted
@@ -89,22 +87,20 @@ public interface TwoMeetings {
 
 
 
-    /** Return the place of the suggested second Meeting for this object. If no second Meeting has been suggested, throw
-     * a NoMeetingException
+    /** Return the place of the suggested second Meeting for this object. If no second Meeting has been suggested,
+     * return null
      *
      * @return The place of the suggested second Meeting
-     * @throws NoMeetingException (Thrown if no second meeting has been suggested)
      */
-    String getSecondMeetingPlace() throws NoMeetingException;
+    String getSecondMeetingPlace();
 
 
-    /** Return the second time of the suggested Meeting for this object. If no second Meeting has been suggested, throw
-     * a NoMeetingException
+    /** Return the second time of the suggested Meeting for this object. If no second Meeting has been suggested, return
+     * null
      *
      * @return The time of the suggested second Meeting
-     * @throws NoMeetingException (Thrown if no second meeting has been suggested)
      */
-    LocalDateTime getSecondMeetingTime() throws NoMeetingException;
+    LocalDateTime getSecondMeetingTime();
 
 
     /** Return True iff the second Meeting corresponding to the object has been accepted

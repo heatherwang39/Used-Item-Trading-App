@@ -8,22 +8,18 @@ import java.util.Optional;
 public interface OneMeeting {
 
 
-    /** Return the place of the suggested Meeting for this object. If no Meeting has been suggested, throw
-     * a NoMeetingException
+    /** Return the place of the suggested Meeting for this object. If no Meeting has been suggested, return null
      *
      * @return The place of the suggested Meeting
-     * @throws NoMeetingException (Thrown if no meeting has been suggested)
      */
-    String getMeetingPlace() throws NoMeetingException;
+    String getMeetingPlace();
 
 
-    /** Return the time of the suggested Meeting for this object. If no Meeting has been suggested, throw
-     * a NoMeetingException
+    /** Return the time of the suggested Meeting for this object. If no Meeting has been suggested, return null
      *
      * @return The time of the suggested Meeting
-     * @throws NoMeetingException (Thrown if no meeting has been suggested)
      */
-    LocalDateTime getMeetingTime() throws NoMeetingException;
+    LocalDateTime getMeetingTime();
 
 
     /** Return True iff the Meeting corresponding to the object has been accepted

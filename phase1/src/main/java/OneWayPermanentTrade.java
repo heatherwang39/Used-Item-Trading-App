@@ -6,8 +6,6 @@ import java.time.LocalDateTime;
 
 public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting, Serializable {
     private TwoPersonMeeting meeting;
-    private int warnings;
-    private int max_warnings = 6;
 
 
     /** Initializes an instance of main.java.OneWayPermanentTrade based on the given parameters
@@ -18,34 +16,24 @@ public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting, Ser
      */
     public OneWayPermanentTrade(String sender, String receiver, int item){
         super(sender, receiver, item);
-        warnings = 0;
+        meeting = new TwoPersonMeeting(sender, receiver);
     }
 
 
-    /** Return the place of the suggested Meeting for this Trade. If no Meeting has been suggested, throw
-     * a NoMeetingException
+    /** Return the place of the suggested Meeting for this Trade. If no Meeting has been suggested, return null
      *
      * @return The place of the suggested Meeting
-     * @throws NoMeetingException (Thrown if no meeting has been suggested)
      */
-    public String getMeetingPlace() throws NoMeetingException{
-        if(meeting == null){
-            throw new NoMeetingException();
-        }
+    public String getMeetingPlace(){
         return meeting.getPlace();
     }
 
 
-    /** Return the time of the suggested Meeting for this Trade. If no Meeting has been suggested, throw
-     * a NoMeetingException
+    /** Return the time of the suggested Meeting for this Trade. If no Meeting has been suggested, return null
      *
      * @return The time of the suggested Meeting
-     * @throws NoMeetingException (Thrown if no meeting has been suggested)
      */
-    public LocalDateTime getMeetingTime() throws NoMeetingException{
-        if(meeting == null){
-            throw new NoMeetingException();
-        }
+    public LocalDateTime getMeetingTime(){
         return meeting.getTime();
     }
 
@@ -59,17 +47,13 @@ public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting, Ser
      * @throws TimeException Thrown if the suggested Meeting is at an invalid time
      */
     public boolean setMeeting(String place, LocalDateTime time) throws TimeException{
-        TwoPersonMeeting meeting = new TwoPersonMeeting(place, time, getSender(), getReceiver());
-        if(meeting.getTime().compareTo(LocalDateTime.now()) < 0){
-            throw new TimeException();
-        }
-        warnings += 1;
-        if(warnings > max_warnings){
+        boolean value;
+        try{ value = meeting.setPlaceTime(place, time);}
+        catch(TradeCancelledException e){
             setStatus(-1);
             return false;
         }
-        this.meeting = meeting;
-        return true;
+        return value;
     }
 
 
@@ -85,15 +69,13 @@ public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting, Ser
      */
     public boolean suggestMeeting(String place, LocalDateTime time,
                                   String suggester) throws WrongAccountException, TimeException {
-
-        if(suggester.equals(getSender()) || suggester.equals(getReceiver())){
-            if(!setMeeting(place, time)){
-                return false;
-            }
-            acceptMeeting(suggester);
+        boolean value;
+        try{value = meeting.suggestPlaceTime(place, time, suggester);}
+        catch(TradeCancelledException e){
+            setStatus(-1);
+            return false;
         }
-        else{throw new WrongAccountException();}
-        return true;
+        return value;
     }
 
 
@@ -105,16 +87,8 @@ public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting, Ser
      * @throws NoMeetingException Thrown if no meeting has been suggested
      * @throws WrongAccountException Thrown if the acceptor has not been invited to this meeting
      */
-    public boolean acceptMeeting(String acceptor) throws WrongAccountException {
-        boolean value;
-        if(acceptor.equals(getSender()) || acceptor.equals(getReceiver())){
-            value = meeting.acceptMeeting(acceptor);
-            if(getMeetingAccepted()){
-                resetWarnings();
-            }
-            return value;
-        }
-        throw new WrongAccountException();
+    public boolean acceptMeeting(String acceptor) throws NoMeetingException, WrongAccountException {
+        return meeting.acceptMeeting(acceptor);
     }
 
 
@@ -123,15 +97,17 @@ public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting, Ser
      *
      * @param attendee The attendee confirming that the Meeting has happened
      * @return Whether the change has been successfully recorded
-     * @throws NoMeetingException Thrown if no meeting has been suggested
+     * @throws NoMeetingException Thrown if no meeting has been accepted
      * @throws WrongAccountException Thrown if the attendee was not been invited to this meeting
      * @throws TimeException Thrown if the Meeting was confirmed before it was supposed to take place
      */
-    public boolean confirmMeeting(String attendee) throws WrongAccountException{
-        if(attendee.equals(getSender()) || attendee.equals(getReceiver())){
-            return meeting.confirmMeeting(attendee);
+    public boolean confirmMeeting(String attendee) throws NoMeetingException, WrongAccountException, TimeException{
+        boolean value;
+        value = meeting.confirmMeeting(attendee);
+        if(meeting.getConfirmed()){
+            setStatus(2);
         }
-        throw new WrongAccountException();
+        return value;
     }
 
 
@@ -140,7 +116,7 @@ public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting, Ser
      *
      */
     public void resetWarnings(){
-        warnings = 0;
+        meeting.resetWarnings();
     }
 
 

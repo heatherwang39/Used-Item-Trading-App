@@ -6,8 +6,6 @@ import java.time.LocalDateTime;
 public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings, Serializable {
     private TwoPersonMeeting firstMeeting;
     private TwoPersonMeeting secondMeeting;
-    private int warnings;
-    private int max_warnings = 6;
 
 
     /** Initializes an instance of TwoWayTemporaryTrade based on the given parameters
@@ -21,7 +19,8 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings, Se
                                 String secondTrader, int secondItem) {
 
         super(firstTrader, firstItem, secondTrader, secondItem);
-        warnings = 0;
+        firstMeeting = new TwoPersonMeeting(firstTrader, secondTrader);
+        secondMeeting = new TwoPersonMeeting(firstTrader, secondTrader);
     }
 
 
@@ -29,54 +28,38 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings, Se
      * a NoMeetingException
      *
      * @return The place of the suggested first Meeting
-     * @throws NoMeetingException (Thrown if no first meeting has been suggested)
      */
-    public String getFirstMeetingPlace() throws NoMeetingException{
-        if(firstMeeting == null){
-            throw new NoMeetingException();
-        }
+    public String getFirstMeetingPlace(){
         return firstMeeting.getPlace();
     }
 
 
-    /** Return the place of the suggested second Meeting for this Trade. If no second Meeting has been suggested, throw
-     * a NoMeetingException
+    /** Return the place of the suggested second Meeting for this Trade. If no second Meeting has been suggested, return
+     * null
      *
      * @return The place of the suggested second Meeting
-     * @throws NoMeetingException (Thrown if no second meeting has been suggested)
      */
-    public String getSecondMeetingPlace() throws NoMeetingException{
-        if(firstMeeting == null){
-            throw new NoMeetingException();
-        }
+    public String getSecondMeetingPlace(){
         return secondMeeting.getPlace();
     }
 
 
-    /** Return the time of the first suggested Meeting for this Trade. If no first Meeting has been suggested, throw
-     * a NoMeetingException
+    /** Return the time of the first suggested Meeting for this Trade. If no first Meeting has been suggested, return
+     * null
      *
      * @return The time of the suggested first Meeting
-     * @throws NoMeetingException (Thrown if no first meeting has been suggested)
      */
-    public LocalDateTime getFirstMeetingTime() throws NoMeetingException{
-        if(firstMeeting == null){
-            throw new NoMeetingException();
-        }
+    public LocalDateTime getFirstMeetingTime(){
         return firstMeeting.getTime();
     }
 
 
-    /** Return the second time of the suggested Meeting for this Trade. If no second Meeting has been suggested, throw
-     * a NoMeetingException
+    /** Return the second time of the suggested Meeting for this Trade. If no second Meeting has been suggested, return
+     * null
      *
      * @return The time of the suggested second Meeting
-     * @throws NoMeetingException (Thrown if no second meeting has been suggested)
      */
-    public LocalDateTime getSecondMeetingTime() throws NoMeetingException{
-        if(firstMeeting == null){
-            throw new NoMeetingException();
-        }
+    public LocalDateTime getSecondMeetingTime(){
         return secondMeeting.getTime();
     }
 
@@ -90,17 +73,13 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings, Se
      * @throws TimeException Thrown if the suggested Meeting is at an invalid time
      */
     public boolean setFirstMeeting(String place, LocalDateTime time) throws TimeException{
-        TwoPersonMeeting meeting = new TwoPersonMeeting(place, time, getFirstTrader(), getSecondTrader());
-        if(meeting.getTime().compareTo(LocalDateTime.now()) < 0){
-            throw new TimeException();
-        }
-        warnings += 1;
-        if(warnings > max_warnings){
+        boolean value;
+        try{ value = firstMeeting.setPlaceTime(place, time);}
+        catch(TradeCancelledException e){
             setStatus(-1);
             return false;
         }
-        firstMeeting = meeting;
-        return true;
+        return value;
     }
 
 
@@ -113,17 +92,13 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings, Se
      * @throws TimeException Thrown if the suggested Meeting is at an invalid time
      */
     public boolean setSecondMeeting(String place, LocalDateTime time) throws TimeException{
-        TwoPersonMeeting meeting = new TwoPersonMeeting(place, time, getFirstTrader(), getSecondTrader());
-        if(meeting.getTime().compareTo(LocalDateTime.now()) < 0){
-            throw new TimeException();
-        }
-        warnings += 1;
-        if(warnings > max_warnings){
-            setStatus(-1);
+        boolean value;
+        try{ value = secondMeeting.setPlaceTime(place, time);}
+        catch(TradeCancelledException e){
+            secondMeeting.resetWarnings();
             return false;
         }
-        secondMeeting = meeting;
-        return true;
+        return value;
     }
 
 
@@ -139,15 +114,13 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings, Se
      */
     public boolean suggestFirstMeeting(String place, LocalDateTime time,
                                        String suggester) throws WrongAccountException, TimeException {
-
-        if(suggester.equals(getFirstTrader()) || suggester.equals(getSecondTrader())){
-            if(!setFirstMeeting(place, time)){
-                return false;
-            }
-            acceptFirstMeeting(suggester);
+        boolean value;
+        try{value = firstMeeting.suggestPlaceTime(place, time, suggester);}
+        catch(TradeCancelledException e){
+            setStatus(-1);
+            return false;
         }
-        else{throw new WrongAccountException();}
-        return true;
+        return value;
     }
 
 
@@ -164,14 +137,13 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings, Se
     public boolean suggestSecondMeeting(String place, LocalDateTime time,
                                         String suggester) throws WrongAccountException, TimeException {
 
-        if(suggester.equals(getFirstTrader()) || suggester.equals(getSecondTrader())){
-            if(!setSecondMeeting(place, time)){
-                return false;
-            }
-            acceptSecondMeeting(suggester);
+        boolean value;
+        try{value = secondMeeting.suggestPlaceTime(place, time, suggester);}
+        catch(TradeCancelledException e){
+            resetWarnings();
+            return false;
         }
-        else{throw new WrongAccountException();}
-        return true;
+        return value;
     }
 
 
@@ -183,16 +155,8 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings, Se
      * @throws NoMeetingException Thrown if no first meeting has been suggested
      * @throws WrongAccountException Thrown if the acceptor has not been invited to this first meeting
      */
-    public boolean acceptFirstMeeting(String acceptor) throws WrongAccountException {
-        boolean value;
-        if(acceptor.equals(getFirstTrader()) || acceptor.equals(getSecondTrader())){
-            value = firstMeeting.acceptMeeting(acceptor);
-            if(getFirstMeetingAccepted()){
-                resetWarnings();
-            }
-            return value;
-        }
-        throw new WrongAccountException();
+    public boolean acceptFirstMeeting(String acceptor) throws NoMeetingException, WrongAccountException {
+        return firstMeeting.acceptMeeting(acceptor);
     }
 
 
@@ -204,16 +168,8 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings, Se
      * @throws NoMeetingException Thrown if no second meeting has been suggested
      * @throws WrongAccountException Thrown if the acceptor has not been invited to this second meeting
      */
-    public boolean acceptSecondMeeting(String acceptor) throws WrongAccountException {
-        boolean value;
-        if(acceptor.equals(getFirstTrader()) || acceptor.equals(getSecondTrader())){
-            value = secondMeeting.acceptMeeting(acceptor);
-            if(getSecondMeetingAccepted()){
-                resetWarnings();
-            }
-            return value;
-        }
-        throw new WrongAccountException();
+    public boolean acceptSecondMeeting(String acceptor) throws NoMeetingException, WrongAccountException {
+        return secondMeeting.acceptMeeting(acceptor);
     }
 
 
@@ -226,11 +182,8 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings, Se
      * @throws WrongAccountException Thrown if the attendee was not been invited to this first meeting
      * @throws TimeException Thrown if the first Meeting was confirmed before it was supposed to take place
      */
-    public boolean confirmFirstMeeting(String attendee) throws WrongAccountException{
-        if(attendee.equals(getFirstTrader()) || attendee.equals(getSecondTrader())){
-            return firstMeeting.confirmMeeting(attendee);
-        }
-        throw new WrongAccountException();
+    public boolean confirmFirstMeeting(String attendee) throws NoMeetingException, WrongAccountException, TimeException{
+        return firstMeeting.confirmMeeting(attendee);
     }
 
 
@@ -243,11 +196,14 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings, Se
      * @throws WrongAccountException Thrown if the attendee was not been invited to this meeting
      * @throws TimeException Thrown if the second Meeting was confirmed before it was supposed to take place
      */
-    public boolean confirmSecondMeeting(String attendee) throws WrongAccountException{
-        if(attendee.equals(getFirstTrader()) || attendee.equals(getSecondTrader())){
-            return secondMeeting.confirmMeeting(attendee);
+    public boolean confirmSecondMeeting(String attendee) throws NoMeetingException, WrongAccountException,
+            TimeException{
+        boolean value;
+        value = secondMeeting.confirmMeeting(attendee);
+        if(secondMeeting.getConfirmed()){
+            setStatus(2);
         }
-        throw new WrongAccountException();
+        return value;
     }
 
     /**Reset the number of warnings (i.e., the number of times a meeting has been
@@ -255,7 +211,8 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings, Se
      *
      */
     public void resetWarnings(){
-        warnings = 0;
+        firstMeeting.resetWarnings();
+        secondMeeting.resetWarnings();
     }
 
 
