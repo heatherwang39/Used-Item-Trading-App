@@ -1,6 +1,7 @@
 package main.java;
 
 import java.io.Serializable;
+import java.util.List;
 
 abstract class Trade implements Serializable {
     private int tradeNumber;
@@ -76,4 +77,19 @@ abstract class Trade implements Serializable {
      * @return whether the Trade is one-way
      */
     abstract boolean isOneWay();
+
+
+    /** Returns a List of Traders (i.e., their usernames) involved in this trade
+     *
+     * @return Usernames of Traders involved in this trade
+     */
+    abstract List<String> getTraders();
+
+
+    /** Returns a List of Items (i.e., their ids) in an order based on the item's owner before the trade and the order
+     *  of the Traders that getTraders() returns.
+     *
+     * @return The list of items involved in this trade
+     */
+    abstract List<Integer> getItems();
 }

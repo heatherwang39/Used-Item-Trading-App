@@ -1,6 +1,8 @@
 package main.java;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 abstract class OneWayTrade extends Trade implements Serializable {
     private String sender;
@@ -52,5 +54,29 @@ abstract class OneWayTrade extends Trade implements Serializable {
      */
     public boolean isOneWay(){
         return true;
+    }
+
+
+    /** Returns a List of Traders (i.e., their usernames) involved in this trade
+     *
+     * @return Usernames of Traders involved in this trade
+     */
+    public List<String> getTraders(){
+        List<String> traders = new ArrayList<String>();
+        traders.add(getSender());
+        traders.add(getReceiver());
+        return traders;
+    }
+
+
+    /** Returns a List of Items (i.e., their ids) in an order based on the item's owner before the trade and the order
+     *  of the Traders that getTraders() returns.
+     *
+     * @return The list of items involved in this trade
+     */
+    public List<Integer> getItems(){
+        List<Integer> items = new ArrayList<Integer>();
+        items.add(getItem());
+        return items;
     }
 }

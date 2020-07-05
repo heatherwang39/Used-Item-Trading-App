@@ -1,15 +1,17 @@
 package main.java;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  */
 abstract class TwoWayTrade extends Trade implements Serializable {
-    private String trader1;
-    private int item1;
-    private String trader2;
-    private int item2;
+    private String firstTrader;
+    private int firstItem;
+    private String secondTrader;
+    private int secondItem;
 
 
     /** Initializes an instance of TwoWayTrade based on the given parameters
@@ -21,10 +23,10 @@ abstract class TwoWayTrade extends Trade implements Serializable {
      */
     public TwoWayTrade(String firstTrader, int firstItem,
                        String secondTrader, int secondItem){
-        trader1 = firstTrader;
-        item1 = firstItem;
-        trader2 = secondTrader;
-        item2 = secondItem;
+        firstTrader = firstTrader;
+        firstItem = firstItem;
+        secondTrader = secondTrader;
+        secondItem = secondItem;
     };
 
 
@@ -33,7 +35,7 @@ abstract class TwoWayTrade extends Trade implements Serializable {
      * @return The first trader (their username) involved in this trade
      */
     public String getFirstTrader(){
-        return trader1;
+        return firstTrader;
     }
 
     /** Retrieve the item the first trader (their username) sent in this trade
@@ -41,7 +43,7 @@ abstract class TwoWayTrade extends Trade implements Serializable {
      * @return The item the first trader (their username) sent in this trade
      */
     public int getFirstTraderItem(){
-        return item1;
+        return firstItem;
     }
 
 
@@ -50,7 +52,7 @@ abstract class TwoWayTrade extends Trade implements Serializable {
      * @return The second trader (their username) involved in this trade
      */
     public String getSecondTrader(){
-        return trader2;
+        return secondTrader;
     }
 
 
@@ -59,7 +61,7 @@ abstract class TwoWayTrade extends Trade implements Serializable {
      * @return The item the second trader (their username) sent in this trade
      */
     public int getSecondTraderItem(){
-        return item2;
+        return secondItem;
     }
 
 
@@ -69,5 +71,29 @@ abstract class TwoWayTrade extends Trade implements Serializable {
      */
     public boolean isOneWay(){
         return false;
+    }
+
+
+    /** Returns a List of Traders (i.e., their usernames) involved in this trade
+     *
+     * @return Usernames of Traders involved in this trade
+     */
+    public List<String> getTraders(){
+        List<String> traders = new ArrayList<String>();
+        traders.add(getFirstTrader());
+        traders.add(getSecondTrader());
+        return traders;
+    }
+
+    /** Returns a List of Items (i.e., their ids) in an order based on the item's owner before the trade and the order
+     *  of the Traders that getTraders() returns.
+     *
+     * @return The list of items involved in this trade
+     */
+    public List<Integer> getItems(){
+        List<Integer> items = new ArrayList<Integer>();
+        items.add(getFirstTraderItem());
+        items.add(getSecondTraderItem());
+        return items;
     }
 }
