@@ -28,8 +28,22 @@ abstract class Trade implements Serializable {
         return tradeNumber;
     }
 
+    /**
+     * Return the total number of trades
+     *
+     * @return the value of totalNumTrades in main.java.Trade
+     */
     public static int getTotalNumTrades() {
         return totalNumTrades;
+    }
+
+    /**
+     * Sets the total number of trades after the trades are deserialized
+     *
+     * @param numberOfTrades the number of trades deserialized
+     */
+    public static void setTotalNumTrades(int numberOfTrades) {
+        totalNumTrades = numberOfTrades;
     }
 
     /**

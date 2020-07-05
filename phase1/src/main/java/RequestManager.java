@@ -30,7 +30,7 @@ public class RequestManager {
 
         while (scanner.hasNextLine()) {
             line = scanner.nextLine().split(",");
-            item = new Item(line[1], line[2]); //Currently using abstract item, will change when an item making method is ready
+            item = new Item(line[1], line[2]); //TODO: change when an item making method is ready
             request.put(line[0], item);
             requests.add(request);
         }

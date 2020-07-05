@@ -107,6 +107,7 @@ public class TradeManager {
         ObjectOutput output = new ObjectOutputStream(buffer);
 
         output.writeObject(trades);
+        Trade.setTotalNumTrades(trades.size()); //TODO: Consider alternative way to update total num of trades
         output.close();
     }
 

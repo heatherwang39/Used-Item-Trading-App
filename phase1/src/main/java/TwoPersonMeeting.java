@@ -1,11 +1,12 @@
 package main.java;
 
+import java.io.Serializable;
 import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TwoPersonMeeting implements Meeting {
+public class TwoPersonMeeting implements Meeting, Serializable {
     private String place;
     private LocalDateTime time;
     private String firstAttendee;
