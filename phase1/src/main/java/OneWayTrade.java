@@ -16,7 +16,8 @@ abstract class OneWayTrade extends Trade implements Serializable {
      * @param receiver The trader (their username) that received the item
      * @param item The item (its ID) that was traded from the sender to the receiver
      */
-    public OneWayTrade(String sender, String receiver, int item){
+    public OneWayTrade(int tradeNumber, String sender, String receiver, int item){
+        super(tradeNumber);
         this.sender = sender;
         this.receiver = receiver;
         this.item = item;

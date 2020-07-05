@@ -21,12 +21,13 @@ abstract class TwoWayTrade extends Trade implements Serializable {
      * @param secondTrader The second trader (their username) involved in this trade
      * @param secondItem The item (its ID) the second trader traded away
      */
-    public TwoWayTrade(String firstTrader, int firstItem,
+    public TwoWayTrade(int tradeNumber, String firstTrader, int firstItem,
                        String secondTrader, int secondItem){
-        firstTrader = firstTrader;
-        firstItem = firstItem;
-        secondTrader = secondTrader;
-        secondItem = secondItem;
+        super(tradeNumber);
+        this.firstTrader = firstTrader;
+        this.firstItem = firstItem;
+        this.secondTrader = secondTrader;
+        this.secondItem = secondItem;
     };
 
 

@@ -5,16 +5,14 @@ import java.util.List;
 
 abstract class Trade implements Serializable {
     private int tradeNumber;
-    private static int totalNumTrades;
     private int status;
 
     /** Initialize a new instance of Trade. The default status of the trade will be set to 0,
      * and the Trade will be given a unique tradeNumber.
      *
      */
-    public Trade(){
-        totalNumTrades++;
-        this.tradeNumber = totalNumTrades;
+    public Trade(int tradeNumber){
+        this.tradeNumber = tradeNumber;
         status = 0;
     }
 
@@ -26,24 +24,6 @@ abstract class Trade implements Serializable {
      */
     public int getTradeNumber(){
         return tradeNumber;
-    }
-
-    /**
-     * Return the total number of trades
-     *
-     * @return the value of totalNumTrades in main.java.Trade
-     */
-    public static int getTotalNumTrades() {
-        return totalNumTrades;
-    }
-
-    /**
-     * Sets the total number of trades after the trades are deserialized
-     *
-     * @param numberOfTrades the number of trades deserialized
-     */
-    public static void setTotalNumTrades(int numberOfTrades) {
-        totalNumTrades = numberOfTrades;
     }
 
     /**

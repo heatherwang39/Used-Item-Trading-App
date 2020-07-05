@@ -21,6 +21,14 @@ public class TradeManager {
             file.createNewFile();
         }
     }
+
+    /**
+     * Gets the total number of trades made
+     *
+     * @return the size of the trades List
+     */
+    public int getNumberOfTrades() { return trades.size();}
+
     /** Initializes a new OneWayTrade based on the given parameters. Return the tradeNumber of the newly initialized
      * OneWayTrade.
      *
@@ -38,13 +46,13 @@ public class TradeManager {
     }
 
     private int newOWPTrade(String sender, String receiver, int item){
-        Trade t = new OneWayPermanentTrade(sender, receiver, item);
+        Trade t = new OneWayPermanentTrade(getNumberOfTrades(), sender, receiver, item);
         trades.add(t);
         return t.getTradeNumber();
     }
 
     private int newOWTTrade(String sender, String receiver, int item){
-        Trade t = new OneWayTemporaryTrade(sender, receiver, item);
+        Trade t = new OneWayTemporaryTrade(getNumberOfTrades(), sender, receiver, item);
         trades.add(t);
         return t.getTradeNumber();
     }
@@ -69,13 +77,13 @@ public class TradeManager {
     }
 
     private int newTWPTrade(String firstTrader, int firstItem, String secondTrader, int secondItem){
-        Trade t = new TwoWayPermanentTrade(firstTrader, firstItem, secondTrader, secondItem);
+        Trade t = new TwoWayPermanentTrade(getNumberOfTrades(), firstTrader, firstItem, secondTrader, secondItem);
         trades.add(t);
         return t.getTradeNumber();
     }
 
     private int newTWTTrade(String firstTrader, int firstItem, String secondTrader, int secondItem){
-        Trade t = new TwoWayTemporaryTrade(firstTrader, firstItem, secondTrader, secondItem);
+        Trade t = new TwoWayTemporaryTrade(getNumberOfTrades(), firstTrader, firstItem, secondTrader, secondItem);
         trades.add(t);
         return t.getTradeNumber();
     }
@@ -107,7 +115,6 @@ public class TradeManager {
         ObjectOutput output = new ObjectOutputStream(buffer);
 
         output.writeObject(trades);
-        Trade.setTotalNumTrades(trades.size()); //TODO: Consider alternative way to update total num of trades
         output.close();
     }
 
