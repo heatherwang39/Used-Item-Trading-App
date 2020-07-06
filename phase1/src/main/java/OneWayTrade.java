@@ -70,14 +70,18 @@ abstract class OneWayTrade extends Trade implements Serializable {
     }
 
 
-    /** Returns a List of Items (i.e., their ids) in an order based on the item's owner before the trade and the order
-     *  of the Traders that getTraders() returns.
+
+    /** Returns a List with a length equal to that of the number of traders involved in the trade. At each index,
+     * store the ID of the item that is involved in the trade and was originally owned by the Trader at the given
+     * index in getTraders(). Iff the specified Trader has no item that he/she is involving in trade and originally
+     * owned, store null at the particular index.
      *
-     * @return The list of items involved in this trade
+     * @return A list of item IDs involved in this trade based on the original owners
      */
-    public List<Integer> getItems(){
-        List<Integer> items = new ArrayList<Integer>();
+    public List<Integer> getItemsOriginal(){
+        List<Integer> items = new ArrayList();
         items.add(getItem());
+        items.add(null);
         return items;
     }
 }

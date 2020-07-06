@@ -80,10 +80,22 @@ abstract class Trade implements Serializable {
     abstract List<String> getTraders();
 
 
-    /** Returns a List of Items (i.e., their ids) in an order based on the item's owner before the trade and the order
-     *  of the Traders that getTraders() returns.
+    /** Returns a List with a length equal to that of the number of traders involved in the trade. At each index,
+     * store the ID of the item that is involved in the trade and was originally owned by the Trader at the given
+     * index in getTraders(). Iff the specified Trader has no item that he/she is involving in trade and originally
+     * owned, store null at the particular index.
      *
-     * @return The list of items involved in this trade
+     * @return A list of item IDs involved in this trade based on the original owners
      */
-    abstract List<Integer> getItems();
+    abstract List<Integer> getItemsOriginal();
+
+
+    /** Returns a List with a length equal to that of the number of traders involved in the trade. At each index,
+     * store the ID of the item that is involved in the trade and will be own by the Trader at the given
+     * index in getTraders() at the end of the trade. Iff the specified Trader will not receive an item that at the end
+     * of the trade, store null at that particular index.
+     *
+     * @return A list of item IDs involved in this trade based on the original owners
+     */
+    abstract List<Integer> getItemsFinal();
 }

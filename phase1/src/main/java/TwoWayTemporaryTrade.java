@@ -2,6 +2,7 @@ package main.java;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings, Serializable {
     private TwoPersonMeeting firstMeeting;
@@ -258,5 +259,17 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings, Se
      */
     public boolean getSecondMeetingConfirmed(){
         return secondMeeting.getConfirmed();
+    }
+
+
+    /** Returns a List with a length equal to that of the number of traders involved in the trade. At each index,
+     * store the ID of the item that is involved in the trade and will be own by the Trader at the given
+     * index in getTraders() at the end of the trade. Iff the specified Trader will not receive an item that at the end
+     * of the trade, store null at that particular index.
+     *
+     * @return A list of item IDs involved in this trade based on the original owners
+     */
+    public List<Integer> getItemsFinal(){
+        return getItemsOriginal();
     }
 }
