@@ -24,7 +24,7 @@ public class AccountManager {
         this.path = path;
         File file = new File(path);
         if (file.exists()) {
-            readFromFile(path);
+            try {readFromFile(path);} catch(EOFException e) {}
         } else {
             file.createNewFile();
         }

@@ -22,7 +22,7 @@ public class ItemManager {
         items = new HashMap<Integer, Item>();
         File file = new File(filePath);
         if (file.exists()) {
-            readFromFile(filePath);
+            try {readFromFile(filePath);} catch(EOFException e) {}
         } else {
             file.createNewFile();
         }
