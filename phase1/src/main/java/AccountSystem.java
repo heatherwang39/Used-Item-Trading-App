@@ -1,13 +1,13 @@
 package main.java;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class AccountSystem {
 
     private final AccountManager am;
-    private final String accountsPath;
 
     public AccountSystem(String accountsPath) throws IOException, ClassNotFoundException {
-        this.accountsPath = accountsPath;
         am = new AccountManager(accountsPath);
         try {
             am.createAdminAccount("admin", "admin", "admin@trader.org");
@@ -38,16 +38,16 @@ public class AccountSystem {
         }
     }
 
-    private Account signIn(AccountManager am) {
-        try {
+    private Account signIn(AccountManager am) throws IOException {
+        try (BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in))){
             System.out.println("Username: ");
-            String username = System.in.toString();
+            String username = keyboard.readLine();
             System.out.println("Password: ");
-            String pw = System.in.toString();
+            String pw = keyboard.readLine();
 
             if (am.tryLogin(username, pw)){
                 return am.getAccount(username);
-            }
+            } else { throw new AccountNotFoundException(); }
         } catch (AccountNotFoundException e){
             System.out.println("Invalid Username or Password. Please try again.");
             //return signIn(am);
@@ -88,8 +88,5 @@ public class AccountSystem {
         return am.getAccount(username);
     }
 
-    private String getAccountsPath(){
-        return accountsPath;
-    }
 
 }

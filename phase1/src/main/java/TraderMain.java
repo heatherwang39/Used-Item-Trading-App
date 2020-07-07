@@ -6,7 +6,7 @@ public class TraderMain {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
 
-        TradeSystem em = new TradeSystem();
+        TextUI em = new TextUI();
         em.run();
 
     }

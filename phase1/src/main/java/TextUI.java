@@ -6,7 +6,7 @@ import java.io.*;
  *
  */
 
-public class TradeSystem {
+public class TextUI {
 
     String tradesPath = "phase1/src/main/resources/serializedtrades.ser";
     String itemsPath = "phase1/src/main/resources/serializeditems.ser";
@@ -14,9 +14,8 @@ public class TradeSystem {
 
     private TradeManager tm = new TradeManager(tradesPath);
     private ItemManager im = new ItemManager(itemsPath);
-    //private AccountManager am = new AccountManager(accountsPath);
 
-    public TradeSystem() throws IOException, ClassNotFoundException {
+    public TextUI() throws IOException, ClassNotFoundException {
     }
 
 
@@ -24,10 +23,10 @@ public class TradeSystem {
         System.out.println("Welcome to Phase1 Project. At anytime you may type 'exit' to quit.");
         Account currUser;
         System.out.println("Please choose any of the following by typing the option number.");
-        try {
+        try (BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in))) { //from readWrite lecture
             AccountSystem as = new AccountSystem(accountsPath);
             System.out.println("1. Sign In    2.Register");
-            String input = System.in.toString();
+            String input = keyboard.readLine();
             currUser = as.login(input);
             System.out.println("Login Successful. Welcome to Trader, " + currUser.getUsername());
             System.out.println("1. View Account information    2. View trade listings    3. View my trade activity");
