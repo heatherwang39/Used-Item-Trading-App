@@ -73,7 +73,7 @@ public class AccountManager {
     }
 
     private void isValidAccount(String username, String password, String email) throws InvalidEmailException, InvalidLoginException, UsernameInUseException, EmailInUseException {
-        if (isInvalidLogin(username, password)){ throw new InvalidLoginException(); }
+        if (isInvalidLogin(username, password)){ throw new InvalidLoginException(); } //TODO: remove this since to create an account we still don't have the new account saved in system yet.
         if (isInvalidEmail(email)) {throw new InvalidEmailException(); }
         if (isUsernameInUse(username)) {throw new UsernameInUseException(); }
         if (isEmailInUse(username)) {throw new EmailInUseException(); }

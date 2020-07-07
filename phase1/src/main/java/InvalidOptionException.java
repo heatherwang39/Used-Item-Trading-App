@@ -8,11 +8,24 @@ package main.java;
  */
 public class InvalidOptionException extends Exception {
 
+    private String message = "Invalid Option detected. Please try again.";
+
     /**
      * Class Constructor
      */
-    public InvalidOptionException() {
+    public InvalidOptionException(){
         super();
     }
 
+    public InvalidOptionException(String message) {
+        super();
+        this.message = message;
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
 }
+
+//TODO: might delete these extra methods and replace with toString method if it's correct to do so.
