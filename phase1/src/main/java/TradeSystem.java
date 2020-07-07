@@ -8,12 +8,12 @@ import java.io.IOException;
 
 public class TradeSystem {
 
-    String tradesPath = "./resources/serializedtrades.ser";
-    String itemsPath = "./resources/serializeditems.ser"; //TODO: check what the paths are for each file
-    String accountsPath = "./resources/serializedaccounts.ser";
+    String tradesPath = "src/main/resources/serializedtrades.ser";
+    String itemsPath = "src/main/resources/serializeditems.ser";
+    String accountsPath = "src/main/resources/serializedaccounts.ser";
 
     private TradeManager tm = new TradeManager(tradesPath);
-    private ItemSystem im = new ItemSystem(itemsPath);
+    private ItemManager im = new ItemManager(itemsPath);
     private AccountManager am = new AccountManager(accountsPath);
 
     public TradeSystem() throws IOException, ClassNotFoundException {
