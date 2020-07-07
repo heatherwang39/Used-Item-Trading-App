@@ -1,6 +1,6 @@
 package main.java;
 
-import java.io.IOException;
+import java.io.*;
 
 /**
  *
@@ -29,6 +29,11 @@ public class TradeSystem {
             System.out.println("1. Sign In    2.Register");
             String input = System.in.toString();
             currUser = as.login(input);
+            System.out.println("Login Successful. Welcome to Trader, " + currUser.getUsername());
+            System.out.println("1. View Account information    2. View trade listings    3. View my trade activity");
+            if (currUser.isAdmin()){
+                System.out.println("4. Show messages    5. Edit Customer Account information");
+            }
         } catch (InvalidOptionException e) {
             System.out.println("Invalid Option detected. Please try again.");
         } catch (IOException e) {

@@ -3,8 +3,8 @@ import java.io.IOException;
 
 public class AccountSystem {
 
-    private AccountManager am;
-    private String accountsPath;
+    private final AccountManager am;
+    private final String accountsPath;
 
     public AccountSystem(String accountsPath) throws IOException, ClassNotFoundException {
         this.accountsPath = accountsPath;
@@ -24,7 +24,7 @@ public class AccountSystem {
      *              2 represents option to Register a new account
      * @return  returns the logged in User Account
      * @throws AccountNotFoundException
-     * @throws InvalidLoginException
+     * @throws InvalidOptionException
      * @throws IOException
      */
     public Account login(String input) throws AccountNotFoundException, IOException, InvalidOptionException {
