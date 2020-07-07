@@ -65,9 +65,9 @@ public class AccountManager {
 
     private boolean isUsernameInUse(String username) { return accounts.containsKey(username); }
 
-    private boolean isEmailInUse(String username) {
+    private boolean isEmailInUse(String email) {
         for (Account account: accounts.values()) {
-            if (account.getEmail().equals(username)) return true;
+            if (account.getEmail().equals(email)) return true;
         }
         return false;
     }
@@ -79,20 +79,22 @@ public class AccountManager {
         if (isEmailInUse(username)) {throw new EmailInUseException(); }
     }
 
-    public void createUserAccount(String username, String password, String email, boolean isFrozen) throws IOException,
+    public UserAccount createUserAccount(String username, String password, String email, boolean isFrozen) throws IOException,
             InvalidLoginException, InvalidEmailException, UsernameInUseException, EmailInUseException {
         isValidAccount(username, password, email);
         UserAccount user = new UserAccount(username, password, email, isFrozen);
         accounts.put(username, user);
         saveToFile(path);
+        return user;
     }
 
-    public void createAdminAccount(String username, String password, String email) throws IOException,
+    public AdminAccount createAdminAccount(String username, String password, String email) throws IOException,
             EmailInUseException, InvalidEmailException, InvalidLoginException, UsernameInUseException {
         isValidAccount(username, password, email);
         AdminAccount user = new AdminAccount(username, password, email);
         accounts.put(username, user);
         saveToFile(path);
+        return user;
     }
 
     public void freezeAccount(String username) throws AccountNotFoundException, ClassCastException{
