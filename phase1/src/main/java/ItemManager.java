@@ -51,7 +51,7 @@ public class ItemManager {
         else if (typeOfItem.equals("Clothes")){
             newClothes(name, description, uniqueFeature);
         }
-        else throw new InvalidItemException;
+        else throw new InvalidItemException();
     }
 
     /**
