@@ -31,10 +31,10 @@ public class TradeSystem {
             currUser = as.login(input);
         } catch (InvalidOptionException e) {
             System.out.println("Invalid Option detected. Please try again.");
-        } catch (InvalidLoginException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             System.out.println("Something went wrong");
+        } catch (AccountNotFoundException e) { //needs edit/deleted later
+            e.printStackTrace();
         }
 
 
