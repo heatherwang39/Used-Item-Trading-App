@@ -63,24 +63,36 @@ public class AccountManager {
         return !p.matcher(email).matches();
     }
 
-    public UserAccount createUserAccount(String username, String password, String email, boolean isFrozen)
-            throws IOException, InvalidLoginException, InvalidEmailException {
-        if (isInvalidLogin(username, password)) { throw new InvalidLoginException(); }
+    private boolean isUsernameInUse(String username) { return accounts.containsKey(username); }
+
+    private boolean isEmailInUse(String username) {
+        for (Account account: accounts.values()) {
+            if (account.getEmail().equals(username)) return true;
+        }
+        return false;
+    }
+
+    private void isValidAccount(String username, String password, String email) throws InvalidEmailException, InvalidLoginException, UsernameInUseException, EmailInUseException {
+        if (isInvalidLogin(username, password)){ throw new InvalidLoginException(); }
         if (isInvalidEmail(email)) {throw new InvalidEmailException(); }
+        if (isUsernameInUse(username)) {throw new UsernameInUseException(); }
+        if (isEmailInUse(username)) {throw new EmailInUseException(); }
+    }
+
+    public void createUserAccount(String username, String password, String email, boolean isFrozen) throws IOException,
+            InvalidLoginException, InvalidEmailException, UsernameInUseException, EmailInUseException {
+        isValidAccount(username, password, email);
         UserAccount user = new UserAccount(username, password, email, isFrozen);
         accounts.put(username, user);
         saveToFile(path);
-        return user;
     }
 
-    public AdminAccount createAdminAccount(String username, String password, String email)
-            throws IOException, InvalidLoginException, InvalidEmailException {
-        if (isInvalidLogin(username, password)){ throw new InvalidLoginException(); }
-        if (isInvalidEmail(email)) {throw new InvalidEmailException(); }
+    public void createAdminAccount(String username, String password, String email) throws IOException,
+            EmailInUseException, InvalidEmailException, InvalidLoginException, UsernameInUseException {
+        isValidAccount(username, password, email);
         AdminAccount user = new AdminAccount(username, password, email);
         accounts.put(username, user);
         saveToFile(path);
-        return user;
     }
 
     public void freezeAccount(String username) throws AccountNotFoundException, ClassCastException{
