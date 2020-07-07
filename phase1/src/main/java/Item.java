@@ -5,7 +5,6 @@ import java.io.Serializable;
 public abstract class Item implements Serializable {
     private String name;
     private String description;
-    private static int numberOfItems;
     private int id;
     private boolean isVerified = false;
     private int currentStatus;
@@ -14,11 +13,10 @@ public abstract class Item implements Serializable {
     /**
      * Creates an Item with the name and description of Item
      */
-    public Item(String name, String description) {
+    public Item(String name, String description, int id) {
         this.name = name;
         this.description = description;
-        numberOfItems++;
-        this.id = numberOfItems;
+        this.id = id;
     }
 
     /**
