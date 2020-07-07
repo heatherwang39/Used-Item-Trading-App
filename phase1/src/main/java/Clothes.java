@@ -6,8 +6,8 @@ public class Clothes extends Item implements Serializable {
 
     private String brand;
 
-    public Clothes(String name, String description, String brand) {
-        super(name,description);
+    public Clothes(String name, String description, int id, String brand) {
+        super(name, description, id);
         this.brand = brand;
     }
 
