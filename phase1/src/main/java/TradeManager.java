@@ -16,7 +16,7 @@ public class TradeManager {
     public TradeManager(String filePath) throws IOException, ClassNotFoundException {
         File file = new File(filePath);
         if (file.exists()) {
-            readFromFile(filePath);
+            try {readFromFile(filePath);} catch(EOFException e) {}
         } else {
             file.createNewFile();
         }
@@ -99,7 +99,9 @@ public class TradeManager {
         InputStream buffer = new BufferedInputStream(file);
         ObjectInput input = new ObjectInputStream(buffer);
 
-        trades = (List<Trade>) input.readObject();
+        while (input.available() > 0) {
+            trades = (List<Trade>) input.readObject();
+        }
         input.close();
     }
 

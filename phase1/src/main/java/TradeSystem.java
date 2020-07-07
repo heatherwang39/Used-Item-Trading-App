@@ -8,9 +8,9 @@ import java.io.*;
 
 public class TradeSystem {
 
-    String tradesPath = "src/main/resources/serializedtrades.ser";
-    String itemsPath = "src/main/resources/serializeditems.ser";
-    String accountsPath = "src/main/resources/serializedaccounts.ser";
+    String tradesPath = "phase1/src/main/resources/serializedtrades.ser";
+    String itemsPath = "phase1/src/main/resources/serializeditems.ser";
+    String accountsPath = "phase1/src/main/resources/serializedaccounts.ser";
 
     private TradeManager tm = new TradeManager(tradesPath);
     private ItemManager im = new ItemManager(itemsPath);
