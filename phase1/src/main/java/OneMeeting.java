@@ -5,6 +5,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * An interface for transactions, events, etc. that involve one meeting
+ * @author Warren Zhu
+ * @version %I%, %G%
+ * @since Phase 1
+ */
 public interface OneMeeting {
 
 

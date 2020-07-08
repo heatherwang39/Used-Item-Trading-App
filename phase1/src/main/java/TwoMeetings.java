@@ -3,6 +3,12 @@ package main.java;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * An interface for transactions, events, etc. that involve two meetings
+ * @author Warren Zhu
+ * @version %I%, %G%
+ * @since Phase 1
+ */
 public interface TwoMeetings {
 
 

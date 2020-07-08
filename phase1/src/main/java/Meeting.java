@@ -3,6 +3,12 @@ package main.java;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * An interface representing a meeting between multiple attendees
+ * @author Warren Zhu
+ * @version %I%, %G%
+ * @since Phase 1
+ */
 public interface Meeting {
 
     /** Return the String representation of the location of this Meeting (i.e., Address)

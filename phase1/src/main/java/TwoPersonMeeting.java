@@ -6,6 +6,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A child entity of Trade. This class represents a meeting between two people. The time and data of the meeting can
+ * change a certain number of times, while the intended attendees cannot be changed.
+ * @author Warren Zhu
+ * @version %I%, %G%
+ * @since Phase 1
+ */
 public class TwoPersonMeeting implements Meeting, Serializable {
     private String place;
     private LocalDateTime time;
