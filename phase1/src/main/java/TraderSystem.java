@@ -6,9 +6,15 @@ import java.io.InputStreamReader;
 public class TraderSystem {
 
     private final AccountManager am;
+    private final TradeManager tm;
+    private final ItemManager im;
 
-    public TraderSystem(String accountsPath) throws IOException, ClassNotFoundException {
+    public TraderSystem(String tradesPath, String itemsPath, String accountsPath) throws IOException, ClassNotFoundException {
+
+        tm = new TradeManager(tradesPath);
+        im = new ItemManager(itemsPath);
         am = new AccountManager(accountsPath);
+
         try {
             am.createAdminAccount("admin", "admin", "admin@trader.org");
             am.createUserAccount("Sarah.alk", "123456", "sarah@trader.org", false);
