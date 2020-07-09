@@ -6,6 +6,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A child entity of Trade. This class represents a meeting between two people. The time and data of the meeting can
+ * change a certain number of times, while the intended attendees cannot be changed.
+ * @author Warren Zhu
+ * @version %I%, %G%
+ * @since Phase 1
+ */
 public class TwoPersonMeeting implements Meeting, Serializable {
     private String place;
     private LocalDateTime time;
@@ -42,7 +49,8 @@ public class TwoPersonMeeting implements Meeting, Serializable {
      * @param place The place where the meeting will take place
      * @param time The time where the meeting will take place
      * @return Whether or not the change was successfully made
-     * @throws TimeException Thrown if the suggested Meeting is at an invalid time
+     * @throws TimeException Thrown if the new time is inappropriate
+     * @throws TradeCancelledException Thrown if the trade
      */
     public boolean setPlaceTime(String place, LocalDateTime time) throws TimeException, TradeCancelledException {
         if(getConfirmed()){
@@ -75,7 +83,8 @@ public class TwoPersonMeeting implements Meeting, Serializable {
      * @param suggester The person suggesting the place and time
      * @return Whether or not the suggestion was successfully recorded
      * @throws WrongAccountException Thrown if the suggester is not supposed to be part of the Meeting
-     * @throws TimeException Thrown if the suggested time is at an invalid time
+     * @throws TimeException Thrown if the suggested time is inappropriate
+     * @throws TradeCancelledException Thrown if the trade will be cancelled after this suggestion is made
      */
     public boolean suggestPlaceTime(String place, LocalDateTime time,
                                     String suggester) throws WrongAccountException,

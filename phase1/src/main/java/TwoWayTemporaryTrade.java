@@ -4,6 +4,13 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Represents a two-way temporary trade in main.java.Trade system. The items that have been exchanged between the two
+ * traders will be returned. As such, these trades require two meetings.
+ * @author Warren Zhu
+ * @version %I%, %G%
+ * @since Phase 1
+ */
 public class TwoWayTemporaryTrade extends TwoWayTrade implements TwoMeetings, Serializable {
     private TwoPersonMeeting firstMeeting;
     private TwoPersonMeeting secondMeeting;

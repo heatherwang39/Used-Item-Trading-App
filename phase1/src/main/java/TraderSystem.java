@@ -3,11 +3,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class AccountSystem {
+public class TraderSystem {
 
     private final AccountManager am;
 
-    public AccountSystem(String accountsPath) throws IOException, ClassNotFoundException {
+    public TraderSystem(String accountsPath) throws IOException, ClassNotFoundException {
         am = new AccountManager(accountsPath);
         try {
             am.createAdminAccount("admin", "admin", "admin@trader.org");

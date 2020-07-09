@@ -4,6 +4,14 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
+/**
+ * Use case class for initializing, storing, and returning trades.
+ * @author Warren Zhu, Fadi Hareth
+ * @version %I%, %G%
+ * @since Phase 1
+ */
+
 public class TradeManager {
     private List<Trade> trades;
 

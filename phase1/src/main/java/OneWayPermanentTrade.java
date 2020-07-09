@@ -6,6 +6,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a one-way permanent trade in main.java.Trade system. Once the items have been given to the recipient,
+ * they will not be returned. As such, these trades require only one meeting.
+ * @author Warren Zhu
+ * @version %I%, %G%
+ * @since Phase 1
+ */
 public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting, Serializable {
     private TwoPersonMeeting meeting;
 

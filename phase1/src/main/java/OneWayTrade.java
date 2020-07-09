@@ -4,6 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * An abstract class in the main.java.Trade system representing a one-way trade in the program. In these trades,
+ * only one participant sends the other participant an item.
+ * @author Warren Zhu
+ * @version %I%, %G%
+ * @since Phase 1
+ */
 abstract class OneWayTrade extends Trade implements Serializable {
     private String sender;
     private String receiver;

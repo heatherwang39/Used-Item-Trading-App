@@ -3,6 +3,13 @@ package main.java;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * An abstract class in the main.java.Trade system representing a trade in the program. All trades
+ * store a trade number and a status, and there are associated items/traders for each trade.
+ * @author Warren Zhu
+ * @version %I%, %G%
+ * @since Phase 1
+ */
 abstract class Trade implements Serializable {
     private int tradeNumber;
     private int status;

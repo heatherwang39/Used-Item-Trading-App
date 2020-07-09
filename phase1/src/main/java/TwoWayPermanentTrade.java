@@ -5,6 +5,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a two-way permanent trade in main.java.Trade system. Once the items have been exchanged between the two
+ * traders, they will not be returned. As such, these trades require only one meeting.
+ * @author Warren Zhu
+ * @version %I%, %G%
+ * @since Phase 1
+ */
 public class TwoWayPermanentTrade extends TwoWayTrade implements OneMeeting, Serializable {
     private TwoPersonMeeting meeting;
 
