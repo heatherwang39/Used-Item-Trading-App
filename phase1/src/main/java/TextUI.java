@@ -12,11 +12,9 @@ public class TextUI {
     String itemsPath = "phase1/src/main/resources/serializeditems.ser";
     String accountsPath = "phase1/src/main/resources/serializedaccounts.ser";
 
-    private TradeManager tm = new TradeManager(tradesPath);
-    private ItemManager im = new ItemManager(itemsPath);
+    //private TradeManager tm = new TradeManager(tradesPath);
+    //private ItemManager im = new ItemManager(itemsPath);
 
-    public TextUI() throws IOException, ClassNotFoundException {
-    }
 
 
     public void run() throws IOException, ClassNotFoundException {
@@ -45,7 +43,5 @@ public class TextUI {
         //TODO: give options to view available/active/requested trade lists or user account info etc. UPDATE: create another presenter class
 
         }
-
-
 
 }

@@ -29,16 +29,16 @@ public class AccountSystem {
      */
     public Account login(String input) throws AccountNotFoundException, IOException, InvalidOptionException {
         if (input.equals("1")){
-            return signIn(am);
+            return signIn();
         }
         if (input.equals("2")) {
-            return register(am);
+            return register();
         }else{
             throw new InvalidOptionException();
         }
     }
 
-    private Account signIn(AccountManager am) throws IOException {
+    private Account signIn() throws IOException {
         try (BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in))){
             System.out.println("Username: ");
             String username = keyboard.readLine();
@@ -52,11 +52,11 @@ public class AccountSystem {
             System.out.println("Invalid Username or Password. Please try again.");
             //return signIn(am);
         }
-        return signIn(am);
+        return signIn();
 
     }
 
-    private Account register(AccountManager am) throws IOException, AccountNotFoundException { //this doesn't work properly yet need to fix some stuff
+    private Account register() throws IOException, AccountNotFoundException { //this doesn't work properly yet need to fix some stuff
 
         System.out.println("Enter email: "); //TODO make this method have less duplicate lines for errors
         String email = System.in.toString();
