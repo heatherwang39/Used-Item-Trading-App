@@ -276,4 +276,51 @@ public class OneWayTemporaryTrade extends OneWayTrade implements TwoMeetings, Se
     public List<Integer> getItemsFinal(){
         return getItemsOriginal();
     }
+
+
+
+
+
+
+
+
+
+
+    public String getMeetingPlace(int meetingNumber) throws MeetingNumberException{
+        if (meetingNumber == 1) {
+            return getFirstMeetingPlace();
+        }
+        if (meetingNumber == 2){
+            return getSecondMeetingPlace();
+        }
+        throw new MeetingNumberException();
+    }
+
+
+    public LocalDateTime getMeetingTime(int meetingNumber) throws MeetingNumberException{
+        if (meetingNumber == 1) {
+            return getFirstMeetingTime();
+        }
+        if (meetingNumber == 2) {
+            return getSecondMeetingTime();
+        }
+        throw new MeetingNumberException();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    int getNumMeetings() {
+        return 2;
+    }
 }

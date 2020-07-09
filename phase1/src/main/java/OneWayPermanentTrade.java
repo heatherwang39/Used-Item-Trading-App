@@ -169,4 +169,32 @@ public class OneWayPermanentTrade extends OneWayTrade implements OneMeeting, Ser
         items.add(getItem());
         return items;
     }
+
+    public String getMeetingPlace(int meetingNumber) throws MeetingNumberException{
+        if (meetingNumber == 1) {
+            return getMeetingPlace();
+        }
+        throw new MeetingNumberException();
+    }
+
+
+    public LocalDateTime getMeetingTime(int meetingNumber) throws MeetingNumberException{
+        if (meetingNumber == 1) {
+            return getMeetingTime();
+        }
+        throw new MeetingNumberException();
+    }
+
+
+
+
+
+
+
+
+
+
+    int getNumMeetings() {
+        return 1;
+    }
 }
