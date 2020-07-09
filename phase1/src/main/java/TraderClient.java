@@ -12,6 +12,8 @@ public class TraderClient {
     String itemsPath = "phase1/src/main/resources/serializeditems.ser";
     String accountsPath = "phase1/src/main/resources/serializedaccounts.ser";
 
+    private TradeManager tm = new TradeManager(tradesPath);
+    private ItemManager im = new ItemManager(itemsPath);
 
     public TraderClient() throws IOException, ClassNotFoundException {
     }
@@ -23,13 +25,18 @@ public class TraderClient {
         Account currUser;
 
         try (BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in))) { //from readWrite lecture
-            TraderSystem ts = new TraderSystem(tradesPath, itemsPath, accountsPath);
+            TraderSystem as = new TraderSystem(accountsPath);
             System.out.println("1. Sign In\n2.Register");
             String input = keyboard.readLine();
-            currUser = ts.login(input);
+            currUser = as.login(input);
             System.out.println("Login Successful. Welcome to Trader, " + currUser.getUsername());
-            layerTwo(ts, currUser);
 
+            if (curr.user.isUser()){
+                layerTwoUser(currUser);
+            }
+            if (currUser.isAdmin()){
+                layerTwoAdmin();
+            }
 
         } catch (InvalidOptionException e) {
             System.out.println("Invalid Option detected. Please try again.");
@@ -45,19 +52,23 @@ public class TraderClient {
     }
 
 
-    public void layerTwo(TraderSystem ts, Account user) throws IOException {
+    public void layerTwoUser(Account user) throws IOException {
         try (BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in))) {
-
             System.out.println("1. View Account Information\n2. Add Items\n3. Browse Listings\n4. My Activity\n" +
                     "5. Offers\n6. Active Trades");
-
-            if (keyboard.readLine().equals("1")) {
+            if (keyboard.readLine() == "1") {
                 System.out.println("Username: " + user.getUsername() + "\nEmail" + user.getEmail() + "\nInventory: " +
                         user.getInventory() + "\nWishlist" + user.getWishlist());
-            } else if (keyboard.readLine().equals("2")) {
+            } else if (keyboard.readLine() == "2") {
                 addItems();
-            } else if (keyboard.readLine().equals("3")) {
+            } else if (keyboard.readLine() == "3") {
                 browseListings();
+            } else if (keyboard.readLine() == "4") {
+                ;
+            } else if (keyboard.readLine() == "5") {
+                ;
+            } else if (keyboard.readLine() == "6"){
+                ;
             }
 
 
