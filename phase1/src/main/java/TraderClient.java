@@ -6,7 +6,7 @@ import java.io.*;
  *
  */
 
-public class TextUI {
+public class TraderClient {
 
     String tradesPath = "phase1/src/main/resources/serializedtrades.ser";
     String itemsPath = "phase1/src/main/resources/serializeditems.ser";
@@ -15,7 +15,7 @@ public class TextUI {
     private TradeManager tm = new TradeManager(tradesPath);
     private ItemManager im = new ItemManager(itemsPath);
 
-    public TextUI() throws IOException, ClassNotFoundException {
+    public TraderClient() throws IOException, ClassNotFoundException {
     }
 
 
@@ -24,7 +24,7 @@ public class TextUI {
         Account currUser;
         System.out.println("Please choose any of the following by typing the option number.");
         try (BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in))) { //from readWrite lecture
-            AccountSystem as = new AccountSystem(accountsPath);
+            TraderSystem as = new TraderSystem(accountsPath);
             System.out.println("1. Sign In    2.Register");
             String input = keyboard.readLine();
             currUser = as.login(input);
