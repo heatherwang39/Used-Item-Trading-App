@@ -13,7 +13,7 @@ import java.util.List;
  * @version %I%, %G%
  * @since Phase 1
  */
-public class TwoPersonMeeting implements Meeting, Serializable {
+public class TwoPersonMeeting implements Serializable {
     private String place;
     private LocalDateTime time;
     private String firstAttendee;

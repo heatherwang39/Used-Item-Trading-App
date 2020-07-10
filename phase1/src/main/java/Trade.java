@@ -12,8 +12,9 @@ import java.util.List;
  * @since Phase 1
  */
 abstract class Trade implements Serializable {
-    private int tradeNumber;
+    private final int tradeNumber;
     private int status;
+    private List<TwoPersonMeeting> meetings;
 
     /** Initialize a new instance of Trade. The default status of the trade will be set to 0,
      * and the Trade will be given a unique tradeNumber.
@@ -67,6 +68,7 @@ abstract class Trade implements Serializable {
         return true;
     }
 
+
     /** Returns whether or not the Trade is permanent. Iff the Trade is permanent, return true.
      *
      * @return whether the Trade is Permanent
@@ -108,9 +110,168 @@ abstract class Trade implements Serializable {
     abstract List<Integer> getItemsFinal();
 
 
+    protected void setMeetings(List<TwoPersonMeeting> meetings){
+        this.meetings = meetings;
+    }
 
 
+    /** Return the place of the suggested meetingNumber-th Meeting for this Trade. If no Meeting has been suggested,
+     * return null
+     *
+     * @param meetingNumber The meeting in which you're interested in
+     * @return The place of the suggested meetingNumber-th Meeting
+     * @throws MeetingNumberException Thrown when the meetingNumber-th isn't supposed to occur
+     */
+    public String getMeetingPlace(int meetingNumber) throws MeetingNumberException{
+        return getMeeting(meetingNumber).getPlace();
+    }
+
+    /** Return the time of the suggested meetingNumber-th Meeting for this Trade. If no Meeting has been suggested,
+     * return null
+     *
+     * @param meetingNumber The meeting in which you're interested in
+     * @return The place of the suggested meetingNumber-th Meeting
+     * @throws MeetingNumberException Thrown when the meetingNumber-th isn't supposed to occur
+     */
+    public LocalDateTime getMeetingTime(int meetingNumber) throws MeetingNumberException{
+        return getMeeting(meetingNumber).getTime();
+    }
 
 
+    /** Set the meetingNumber-th Meeting for this Trade to be at this place and this time. This Meeting will still need
+     * to be confirmed. Return True if the meeting was successfully set.
+     *
+     * @param meetingNumber The meeting you're going to set
+     * @param place The place where the meeting will take place
+     * @param time The time where the meeting will take place
+     * @return Whether or not the change was successfully made
+     * @throws TimeException Thrown if the suggested Meeting is at an invalid time
+     * @throws MeetingNumberException Thrown when the meetingNumber-th isn't supposed to occur
+     */
+    public boolean setMeeting(int meetingNumber, String place, LocalDateTime time,
+                                String suggester) throws TimeException, MeetingNumberException{
+        boolean value;
+        try{value = getMeeting(meetingNumber).setPlaceTime(place, time);}
+        catch(TradeCancelledException e){
+            setStatus(-1);
+            return false;
+        }
+        return value;
+    }
 
+
+    /** Suggest that the meetingNumber-th Meeting for this Trade to be at this place and this time. The person
+     * suggesting this Meeting automatically accepts this Meeting. Return True if the change was successfully made.
+     *
+     * @param meetingNumber The meeting you're going to set
+     * @param place The place where the meeting will take place
+     * @param time The time where the meeting will take place
+     * @param suggester The person suggesting the meeting
+     * @return Whether or not the suggestion was successfully recorded
+     * @throws WrongAccountException Thrown if the suggester is not supposed to be part of the Meeting
+     * @throws TimeException Thrown if the suggested Meeting is at an invalid time
+     * @throws MeetingNumberException Thrown when the meetingNumber-th isn't supposed to occur
+     */
+    public boolean suggestMeeting(int meetingNumber, String place, LocalDateTime time,
+                                    String suggester) throws WrongAccountException, TimeException,
+            MeetingNumberException{
+        boolean value;
+        try{value = getMeeting(meetingNumber).suggestPlaceTime(place, time, suggester);}
+        catch(TradeCancelledException e){
+            setStatus(-1);
+            return false;
+        }
+        return value;
+    }
+
+
+    /** Attempt to record the fact that acceptor has accepted the suggested meetingNumber-th Meeting. If this fact is
+     * successfully recorded, return True.
+     *
+     * @param meetingNumber The meeting that is trying to be accepted
+     * @param acceptor The attendee that is agreeing to a suggested Meeting
+     * @return Whether the change has been successfully recorded
+     * @throws NoMeetingException Thrown if no meeting has been suggested
+     * @throws WrongAccountException Thrown if the acceptor has not been invited to this meeting
+     * @throws MeetingNumberException Thrown when the meetingNumber-th isn't supposed to occur
+     */
+    public boolean acceptMeeting(int meetingNumber, String acceptor) throws NoMeetingException, WrongAccountException,
+            MeetingNumberException{
+        return getMeeting(meetingNumber).acceptMeeting(acceptor);
+    }
+
+
+    /** Attempt to record the fact that attendee has confirmed the suggested meetingNumber-th Meeting. If this fact is
+     * successfully recorded, return True.
+     *
+     * @param meetingNumber The meeting that is trying to be confirmed
+     * @param attendee The attendee confirming that the Meeting has happened
+     * @return Whether the change has been successfully recorded
+     * @throws NoMeetingException Thrown if no meeting has been suggested
+     * @throws WrongAccountException Thrown if the attendee was not been invited to this meeting
+     * @throws TimeException Thrown if the Meeting was confirmed before it was supposed to take place
+     * @throws MeetingNumberException Thrown when the meetingNumber-th isn't supposed to occur
+     */
+    public boolean confirmMeeting(int meetingNumber, String attendee) throws NoMeetingException,
+            WrongAccountException, TimeException, MeetingNumberException{
+        boolean value;
+        value = getMeeting(meetingNumber).confirmMeeting(attendee);
+        if(meetingNumber == getNumMeetings()){
+                if(getMeeting(meetingNumber).getConfirmed()){
+                    setStatus(2);
+                }
+        }
+        return value;
+    }
+
+
+    /** Return True iff the meetingNumber-th Meeting has been accepted
+     *
+     * @param meetingNumber The meeting that you're trying to obtain information about
+     * @return whether the Meeting has been accepted.
+     * @throws MeetingNumberException Thrown when the meetingNumber-th isn't supposed to occur
+     */
+    public boolean getMeetingAccepted(int meetingNumber) throws MeetingNumberException{
+        return getMeeting(meetingNumber).getAccepted();
+    }
+
+
+    /** Return True iff the meetingNumber-th Meeting has been confirmed
+     *
+     * @param meetingNumber The meeting that you're trying to obtain information about
+     * @return whether the Meeting has been confirmed.
+     * @throws MeetingNumberException Thrown when the meetingNumber-th isn't supposed to occur
+     */
+    public boolean getMeetingConfirmed(int meetingNumber) throws MeetingNumberException{
+        return getMeeting(meetingNumber).getConfirmed();
+    }
+
+
+    /** Returns the number of meetings that will occur over the course of the trade
+     *
+     * @return The number of meetings that will occur over the course of the trade
+     */
+    public int getNumMeetings(){
+        return meetings.size();
+    }
+
+    private TwoPersonMeeting getMeeting(int meetingNumber) throws MeetingNumberException{
+        if(1 <= meetingNumber && meetingNumber <= getNumMeetings()){
+            return meetings.get(meetingNumber - 1);
+        }
+        throw new MeetingNumberException();
+    }
+
+    /** Resets the Warnings for all of the meetings to 0.
+     *
+     */
+    public void resetWarnings(){
+        int i;
+        i = 1;
+        while(i <= getNumMeetings()){
+            try{getMeeting(i).resetWarnings();}
+            catch(MeetingNumberException e){}
+            i++;
+        }
+    }
 }
