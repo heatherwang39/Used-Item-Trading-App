@@ -78,4 +78,47 @@ public class TraderSystem {
     }
 
 
+    public void addItems(){
+        ;
+    }
+
+    public void browseListings(){
+        ;
+    }
+
+    public void addAdmin() throws UserNotFoundException{
+
+        System.out.println("Enter the username of the user you would like to promote to Admin status: ");
+        // search in existing users, find if they exist
+        ;
+        // if they exist, promote them to admin
+        // else:
+        System.out.println("User with corresponding username was not found in the database");
+        }
+
+
+    public void showActivity() {
+        ;
+    }
+
+    public void showOffers(){
+        ;
+    }
+
+    public void showActiveTrades(){
+        ;
+    }
+
+    public void showItemRequests(){
+        ;
+    }
+
+    public void showFreezeUsers(){
+        ;
+    }
+
+    public void updateTradeThreshold(int newThreshold){
+        ;
+    }
+
 }

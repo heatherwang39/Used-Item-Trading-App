@@ -74,19 +74,19 @@ public class TraderClient {
                     System.out.println("Username: " + user.getUsername() + "\nEmail: " + user.getEmail() + "\nInventory: " +
                             user.getInventory() + "\nWishlist" + user.getWishlist());
                 case "2":
-                    addItems();
+                    ts.addItems();
                     break;
                 case "3":
-                    browseListings();
+                    ts.browseListings();
                     break;
                 case "4":
-                    ;
+                    ts.showActivity();
                     break;
                 case "5":
-                    ;
+                    ts.showOffers();
                     break;
                 case "6":
-                    ;
+                    ts.showActiveTrades();
                     break;
                 case "7":
                     if (user.isAdmin()){ adminOptions(user); }
@@ -108,16 +108,19 @@ public class TraderClient {
             switch (keyboard.readLine()) {
                 case "1":
                     // print an arraylist of all user requests of items to be added to their inventory,either accept or deny
+                    ts.showItemRequests();
                     break;
                 case "2":
                     // get and print out users the system thinks the admin should freeze
                     // this should take the input for each individual user, and accept either a yes or no
+                    ts.showFreezeUsers();
                     break;
                 case "3":
                     System.out.println("Enter the new trading threshold: ");
+                    ts.updateTradeThreshold(Integer.parseInt(keyboard.readLine())); // this might not work, but the idea is there
                     break;
                 case "4":
-                    // add new admins
+                    ts.addAdmin();
                     break;
                 default:
                     throw new InvalidOptionException();
@@ -128,15 +131,5 @@ public class TraderClient {
         }
 
     }
-
-    public void addItems(){
-        ;
-    }
-
-    public void browseListings(){
-        ;
-    }
-
-
 
 }
