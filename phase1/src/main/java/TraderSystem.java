@@ -1,17 +1,21 @@
 package main.java;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
+import java.io.*;
 
 public class TraderSystem {
+
+    String tradesPath = "phase1/src/main/resources/serializedtrades.ser";
+    String itemsPath = "phase1/src/main/resources/serializeditems.ser";
+    String accountsPath = "phase1/src/main/resources/serializedaccounts.ser";
 
     private final AccountManager am;
     private final TradeManager tm;
     private final ItemManager im;
-    private BufferedReader input;
+    private final BufferedReader input;
 
-    public TraderSystem(String tradesPath, String itemsPath, String accountsPath) throws IOException, ClassNotFoundException {
+    public TraderSystem(BufferedReader keyboard) throws IOException, ClassNotFoundException {
 
+        input = keyboard;
         tm = new TradeManager(tradesPath);
         im = new ItemManager(itemsPath);
         am = new AccountManager(accountsPath);
@@ -24,30 +28,8 @@ public class TraderSystem {
         }
     }
 
-    /**
-     * returns an Account associated with the input info of the user after signing in to an existing
-     * @param input the input options:
-     *              1 represents option to Sign In to an existing account
-     *              2 represents option to Register a new account
-     * @return  returns the logged in User Account
-     * @throws AccountNotFoundException
-     * @throws InvalidOptionException
-     * @throws IOException
-     */
-    public Account login(BufferedReader input) throws AccountNotFoundException, IOException, InvalidOptionException {
-        this.input = input;
-        String i = input.readLine();
-        if (i.equals("1")){
-            return signIn();
-        }
-        if (i.equals("2")) {
-            return register();
-        }else{
-            throw new InvalidOptionException();
-        }
-    }
 
-    private Account signIn() throws IOException {
+    public Account signIn() throws IOException {
         try {
             System.out.println("Username: ");
             String username = input.readLine();
@@ -64,7 +46,7 @@ public class TraderSystem {
 
     }
 
-    private Account register() throws IOException, AccountNotFoundException { //this doesn't work properly yet need to fix some stuff
+    public Account register() throws IOException, AccountNotFoundException { //this doesn't work properly yet need to fix some stuff
 
         System.out.println("Enter email: "); //TODO make this method have less duplicate lines for errors
         String email = input.readLine();

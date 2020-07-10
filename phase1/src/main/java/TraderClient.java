@@ -8,10 +8,6 @@ import java.io.*;
 
 public class TraderClient {
 
-    String tradesPath = "phase1/src/main/resources/serializedtrades.ser";
-    String itemsPath = "phase1/src/main/resources/serializeditems.ser";
-    String accountsPath = "phase1/src/main/resources/serializedaccounts.ser";
-
     private TraderSystem ts;
     private BufferedReader keyboard;
 
@@ -23,16 +19,16 @@ public class TraderClient {
 
         try (BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in))) { //from readWrite lecture
             this.keyboard = keyboard;
-            ts = new TraderSystem(tradesPath, itemsPath, accountsPath);
+            ts = new TraderSystem(keyboard);
             System.out.println("1. Sign In\n2. Register");
-            currUser = ts.login(keyboard);
+            currUser = login();
             System.out.println("Login Successful. Welcome to Trader, " + currUser.getUsername());
             System.out.println("1. View Account Information\n2. Add Items\n3. Browse Listings\n4. My Activity\n" +
                     "5. Offers\n6. Active Trades");
             if (currUser.isAdmin()){ System.out.println("7. Admin Options"); }
             layerTwo(currUser);
 
-        } catch (InvalidOptionException e) {
+        } catch (InvalidOptionException e) { //TODO: fix register and remove this from run().
             System.out.println("Invalid Option detected. Please try again.");
         } catch (IOException e) {
             System.out.println("Something went wrong.");
@@ -47,13 +43,35 @@ public class TraderClient {
 
     }
 
+    /**
+     * returns an Account associated with the input info of the user after signing in to an existing
+     * the input options:
+     *      1 represents option to Sign In to an existing account
+     *      2 represents option to Register a new account
+     * @return  returns the logged in User Account
+     * @throws AccountNotFoundException
+     * @throws InvalidOptionException
+     * @throws IOException
+     */
+    public Account login() throws AccountNotFoundException, IOException, InvalidOptionException {
+        String i = keyboard.readLine();
+        if (i.equals("1")){
+            return ts.signIn();
+        }
+        if (i.equals("2")) {
+            return ts.register();
+        } else { throw new InvalidOptionException(); }
+    }
+
+
+
 
     public void layerTwo(Account user) throws IOException {
         String option = keyboard.readLine();
         try {
             switch (option) {
                 case "1":
-                    System.out.println("Username: " + user.getUsername() + "\nEmail" + user.getEmail() + "\nInventory: " +
+                    System.out.println("Username: " + user.getUsername() + "\nEmail: " + user.getEmail() + "\nInventory: " +
                             user.getInventory() + "\nWishlist" + user.getWishlist());
                 case "2":
                     addItems();
@@ -84,7 +102,7 @@ public class TraderClient {
 
     }
 
-    public void adminOptions(Account admin) throws IOException {
+    private void adminOptions(Account admin) throws IOException {
         try {
             System.out.println("1. View Requests\n2. Freeze Accounts\n3. Update Trade Threshold\n4. Add Admins");
             switch (keyboard.readLine()) {
