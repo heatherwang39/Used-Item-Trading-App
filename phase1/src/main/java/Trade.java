@@ -289,15 +289,13 @@ abstract class Trade implements Serializable {
 
 
 
-
-
-
-
-
-
-
-
-
+    /**
+     * An inner class of Trade. This class represents a meeting between two people. The time and data of the meeting can
+     * change a certain number of times, while the intended attendees cannot be changed.
+     * @author Warren Zhu
+     * @version %I%, %G%
+     * @since Phase 1
+     */
     protected class TwoPersonMeeting implements Serializable {
         private String place;
         private LocalDateTime time;
