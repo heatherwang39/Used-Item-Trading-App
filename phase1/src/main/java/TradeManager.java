@@ -14,6 +14,8 @@ import java.util.List;
 
 public class TradeManager {
     private List<Trade> trades;
+    private String path;
+    private FileReadWriter frw;
 
     /**
      * Creates a new TradeManager.
@@ -22,9 +24,13 @@ public class TradeManager {
      * @throws ClassNotFoundException
      */
     public TradeManager(String filePath) throws IOException, ClassNotFoundException {
-        File file = new File(filePath);
+        path = filePath;
+        frw = new FileReadWriter(path);
+        File file = new File(path);
         if (file.exists()) {
-            try {readFromFile(filePath);} catch(EOFException e) {}
+            try {
+                trades = (List<Trade>)frw.readFromFile(path);
+            } catch(EOFException e) {}
         } else {
             file.createNewFile();
         }
@@ -101,7 +107,7 @@ public class TradeManager {
      *
      * @param path the file to read the trades from
      * @throws IOException
-     */
+
     public void readFromFile(String path) throws ClassNotFoundException, IOException {
         InputStream file = new FileInputStream(path);
         InputStream buffer = new BufferedInputStream(file);
@@ -112,6 +118,7 @@ public class TradeManager {
         }
         input.close();
     }
+     */
 
     /**
      * Writes the trades to the file at filepath.

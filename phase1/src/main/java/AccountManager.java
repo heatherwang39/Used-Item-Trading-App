@@ -17,7 +17,7 @@ public class AccountManager {
 
     Map<String, Account> accounts;
     String path;
-
+    private FileReadWriter frw;
     /**
      * Class constructor
      * @param path Path of serialized accounts
@@ -28,8 +28,11 @@ public class AccountManager {
         accounts = new HashMap<>();
         this.path = path;
         File file = new File(path);
+        frw = new FileReadWriter(path);
         if (file.exists()) {
-            try {readFromFile(path);} catch(EOFException e) {}
+            try {
+                accounts = (Map<String, Account>)frw.readFromFile(path);
+            } catch(EOFException e) {}
         } else {
             file.createNewFile();
         }
@@ -40,7 +43,7 @@ public class AccountManager {
      * @param path Path of serialized accounts
      * @throws IOException if file can't be read
      * @throws ClassNotFoundException if serialized class doesn't exist
-     */
+
     private void readFromFile(String path) throws ClassNotFoundException, IOException {
         InputStream file = new FileInputStream(path);
         InputStream buffer = new BufferedInputStream(file);
@@ -48,12 +51,12 @@ public class AccountManager {
         accounts = (Map<String, Account>) input.readObject();
         input.close();
     }
+     */
 
     /**
      * Class constructor
      * @param path Path of serialized accounts
      * @throws IOException if file can't be written
-     */
     private void saveToFile(String path) throws IOException {
         OutputStream file = new FileOutputStream(path);
         OutputStream buffer = new BufferedOutputStream(file);
@@ -62,6 +65,7 @@ public class AccountManager {
         output.writeObject(accounts);
         output.close();
     }
+    */
 
     /**
      * Checks if username and password are valid alphanumeric + dash/underscore strings
@@ -142,7 +146,7 @@ public class AccountManager {
         isValidAccount(username, password, email);
         UserAccount user = new UserAccount(username, password, email, isFrozen);
         accounts.put(username, user);
-        saveToFile(path);
+        frw.saveToFile(accounts,path);
     }
 
     /**
@@ -160,7 +164,7 @@ public class AccountManager {
         isValidAccount(username, password, email);
         AdminAccount user = new AdminAccount(username, password, email);
         accounts.put(username, user);
-        saveToFile(path);
+        frw.saveToFile(accounts,path);
     }
 
     /**
@@ -169,8 +173,9 @@ public class AccountManager {
      * @throws AccountNotFoundException account not found under username
      * @throws ClassCastException account is an admin account
      */
-    public void freezeAccount(String username) throws AccountNotFoundException, ClassCastException{
+    public void freezeAccount(String username) throws AccountNotFoundException, ClassCastException, IOException {
         ((UserAccount)getAccount(username)).freeze();
+        frw.saveToFile(accounts,path);
     }
 
     /**
@@ -179,8 +184,9 @@ public class AccountManager {
      * @throws AccountNotFoundException account not found under username
      * @throws ClassCastException account is an admin account
      */
-    public void unfreezeAccount(String username) throws AccountNotFoundException, ClassCastException{
+    public void unfreezeAccount(String username) throws AccountNotFoundException, ClassCastException, IOException {
         ((UserAccount)getAccount(username)).unfreeze();
+        frw.saveToFile(accounts,path);
     }
 
     /**
@@ -218,7 +224,7 @@ public class AccountManager {
      */
     public void addInventory(String username, int itemID) throws AccountNotFoundException, IOException {
         getAccount(username).addInventory(itemID);
-        saveToFile(path);
+        frw.saveToFile(accounts,path);
     }
 
     /**
@@ -229,7 +235,7 @@ public class AccountManager {
     public void addInventory(String username, List<Integer> itemIDs) throws AccountNotFoundException, IOException {
         Account account = getAccount(username);
         for (int id: itemIDs) { account.addInventory(id);}
-        saveToFile(path);
+        frw.saveToFile(accounts,path);
     }
 
     /**
@@ -239,7 +245,7 @@ public class AccountManager {
      */
     public void addWishlist(String username, int itemID) throws AccountNotFoundException, IOException {
         getAccount(username).addWishlist(itemID);
-        saveToFile(path);
+        frw.saveToFile(accounts,path);
     }
 
     /**
@@ -250,7 +256,7 @@ public class AccountManager {
     public void addWishlist(String username, List<Integer> itemIDs) throws AccountNotFoundException, IOException {
         Account account = getAccount(username);
         for (int id: itemIDs) { account.addWishlist(id);}
-        saveToFile(path);
+        frw.saveToFile(accounts,path);
     }
 
     /**
@@ -260,7 +266,7 @@ public class AccountManager {
      */
     public void removeInventory(String username, int itemID) throws AccountNotFoundException, IOException {
         getAccount(username).removeInventory(itemID);
-        saveToFile(path);
+        frw.saveToFile(accounts,path);
     }
 
     /**
@@ -272,7 +278,7 @@ public class AccountManager {
             IOException {
         Account account = getAccount(username);
         for (int id: itemIDs) { account.removeInventory(id);}
-        saveToFile(path);
+        frw.saveToFile(accounts,path);
     }
 
     /**
@@ -282,7 +288,7 @@ public class AccountManager {
      */
     public void removeWishlist(String username, int itemID) throws AccountNotFoundException, IOException {
         getAccount(username).removeWishlist(itemID);
-        saveToFile(path);
+        frw.saveToFile(accounts,path);
     }
 
     /**
@@ -295,7 +301,7 @@ public class AccountManager {
         for (int id : itemIDs) {
             account.removeWishlist(id);
         }
-        saveToFile(path);
+        frw.saveToFile(accounts,path);
     }
 
     /**
@@ -305,7 +311,7 @@ public class AccountManager {
      */
     public void addTradesOffered(String username, int tradeNumber) throws AccountNotFoundException, IOException {
         getAccount(username).addTradesOffered(tradeNumber);
-        saveToFile(path);
+        frw.saveToFile(accounts,path);
     }
 
     /**
@@ -317,7 +323,7 @@ public class AccountManager {
             IOException {
         Account account = getAccount(username);
         for (int number: tradeNumbers) { account.addTradesOffered(number);}
-        saveToFile(path);
+        frw.saveToFile(accounts,path);
     }
 
     /**
@@ -327,7 +333,7 @@ public class AccountManager {
      */
     public void addTradesReceived(String username, int tradeNumber) throws AccountNotFoundException, IOException {
         getAccount(username).addTradesReceived(tradeNumber);
-        saveToFile(path);
+        frw.saveToFile(accounts,path);
     }
 
     /**
@@ -339,7 +345,7 @@ public class AccountManager {
             IOException {
         Account account = getAccount(username);
         for (int number: tradeNumbers) { account.addTradesReceived(number);}
-        saveToFile(path);
+        frw.saveToFile(accounts,path);
     }
 
     /**
@@ -349,7 +355,7 @@ public class AccountManager {
      */
     public void removeTradesOffered(String username, int tradeNumber) throws AccountNotFoundException, IOException {
         getAccount(username).removeTradesOffered(tradeNumber);
-        saveToFile(path);
+        frw.saveToFile(accounts,path);
     }
 
     /**
@@ -361,7 +367,7 @@ public class AccountManager {
             IOException {
         Account account = getAccount(username);
         for (int number: tradeNumbers) { account.removeTradesOffered(number);}
-        saveToFile(path);
+        frw.saveToFile(accounts,path);
     }
 
     /**
@@ -371,7 +377,7 @@ public class AccountManager {
      */
     public void removeTradesReceived(String username, int tradeNumber) throws AccountNotFoundException, IOException {
         getAccount(username).removeTradesReceived(tradeNumber);
-        saveToFile(path);
+        frw.saveToFile(accounts,path);
     }
 
     /**
@@ -385,6 +391,6 @@ public class AccountManager {
         for (int number : tradeNumbers) {
             account.removeTradesReceived(number);
         }
-        saveToFile(path);
+        frw.saveToFile(accounts,path);
     }
 }
