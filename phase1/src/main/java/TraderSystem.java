@@ -8,6 +8,7 @@ public class TraderSystem {
     private final AccountManager am;
     private final TradeManager tm;
     private final ItemManager im;
+    private BufferedReader input;
 
     public TraderSystem(String tradesPath, String itemsPath, String accountsPath) throws IOException, ClassNotFoundException {
 
@@ -24,7 +25,7 @@ public class TraderSystem {
     }
 
     /**
-     * returns a User Account associated with the input info of the user after signing in to an existing
+     * returns an Account associated with the input info of the user after signing in to an existing
      * @param input the input options:
      *              1 represents option to Sign In to an existing account
      *              2 represents option to Register a new account
@@ -33,11 +34,13 @@ public class TraderSystem {
      * @throws InvalidOptionException
      * @throws IOException
      */
-    public Account login(String input) throws AccountNotFoundException, IOException, InvalidOptionException {
-        if (input.equals("1")){
+    public Account login(BufferedReader input) throws AccountNotFoundException, IOException, InvalidOptionException {
+        this.input = input;
+        String i = input.readLine();
+        if (i.equals("1")){
             return signIn();
         }
-        if (input.equals("2")) {
+        if (i.equals("2")) {
             return register();
         }else{
             throw new InvalidOptionException();
@@ -45,18 +48,17 @@ public class TraderSystem {
     }
 
     private Account signIn() throws IOException {
-        try (BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in))){
+        try {
             System.out.println("Username: ");
-            String username = keyboard.readLine();
+            String username = input.readLine();
             System.out.println("Password: ");
-            String pw = keyboard.readLine();
+            String pw = input.readLine();
 
             if (am.tryLogin(username, pw)){
                 return am.getAccount(username);
             } else { throw new AccountNotFoundException(); }
         } catch (AccountNotFoundException e){
             System.out.println("Invalid Username or Password. Please try again.");
-            //return signIn(am);
         }
         return signIn();
 
@@ -65,12 +67,11 @@ public class TraderSystem {
     private Account register() throws IOException, AccountNotFoundException { //this doesn't work properly yet need to fix some stuff
 
         System.out.println("Enter email: "); //TODO make this method have less duplicate lines for errors
-        String email = System.in.toString();
-
+        String email = input.readLine();
         System.out.println("Enter Username: ");
-        String username = System.in.toString();
+        String username = input.readLine();
         System.out.println("Enter Password: ");
-        String pw = System.in.toString();
+        String pw = input.readLine();
 
         try {
             if (!am.isUsernameInUse(username)) {
