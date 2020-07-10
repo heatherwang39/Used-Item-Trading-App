@@ -28,8 +28,6 @@ public class TraderClient {
             if (currUser.isAdmin()){ System.out.println("7. Admin Options"); }
             layerTwo(currUser);
 
-        } catch (InvalidOptionException e) { //TODO: fix register and remove this from run().
-            System.out.println("Invalid Option detected. Please try again.");
         } catch (IOException e) {
             System.out.println("Something went wrong.");
         } catch (ClassNotFoundException e) {
@@ -37,10 +35,6 @@ public class TraderClient {
         } catch (AccountNotFoundException e) { //TODO: IMPORTANT needs edit/deleted later!!!!
             e.printStackTrace();
         }
-
-
-        //TODO: give options to view available/active/requested trade lists or user account info etc. UPDATE: create another presenter class
-
     }
 
     /**
@@ -50,23 +44,27 @@ public class TraderClient {
      *      2 represents option to Register a new account
      * @return  returns the logged in User Account
      * @throws AccountNotFoundException
-     * @throws InvalidOptionException
      * @throws IOException
      */
-    public Account login() throws AccountNotFoundException, IOException, InvalidOptionException {
+    public Account login() throws AccountNotFoundException, IOException {
         String i = keyboard.readLine();
-        if (i.equals("1")){
-            return ts.signIn();
+        try {
+            if (i.equals("1")) {
+                return ts.signIn();
+            }
+            if (i.equals("2")) {
+                return ts.register();
+            } else {
+                throw new InvalidOptionException();
+            }
+        } catch (InvalidOptionException e) {
+            System.out.println("Invalid Option detected. Please try again.");
+            return login();
         }
-        if (i.equals("2")) {
-            return ts.register();
-        } else { throw new InvalidOptionException(); }
     }
 
 
-
-
-    public void layerTwo(Account user) throws IOException {
+    public void layerTwo(Account user) throws IOException { //TODO: give options to view available/active/requested trade lists or user account info etc.
         String option = keyboard.readLine();
         try {
             switch (option) {
@@ -104,7 +102,7 @@ public class TraderClient {
 
     private void adminOptions(Account admin) throws IOException {
         try {
-            System.out.println("1. View Requests\n2. Freeze Accounts\n3. Update Trade Threshold\n4. Add Admins");
+            System.out.println("1. View Requests\n2. Freeze Accounts\n3. Update Trade Threshold\n4. Add new Admins");
             switch (keyboard.readLine()) {
                 case "1":
                     // print an arraylist of all user requests of items to be added to their inventory,either accept or deny

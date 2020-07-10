@@ -78,15 +78,15 @@ public class TraderSystem {
     }
 
 
-    public void addItems(){
+    public void addItems() {
         ;
     }
 
-    public void browseListings(){
+    public void browseListings() {
         ;
     }
 
-    public void addAdmin() throws UserNotFoundException{
+    public void addAdmin() {
 
         System.out.println("Enter the username of the user you would like to promote to Admin status: ");
         // search in existing users, find if they exist
