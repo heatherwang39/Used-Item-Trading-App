@@ -44,7 +44,7 @@ public class TraderClient {
     }
 
 
-    public void layerTwo(TraderSystem ts, Account user) {
+    public void layerTwo(TraderSystem ts, Account user) throws IOException, InvalidOptionException {
         try (BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in))) {
             System.out.println("1. View Account Information\n2. Add Items\n3. Browse Listings\n4. My Activity\n" +
                     "5. Offers\n6. Active Trades");
@@ -64,16 +64,10 @@ public class TraderClient {
                 ;
             } else { throw new InvalidOptionException(); }
 
-
-        } catch (InvalidOptionException e) { // I have a suspicion that these try catches may be redundant, lmk if theres a way around it - Charles
-            System.out.println("Invalid Option detected. Please try again.");
-        } catch (IOException e) {
-            System.out.println("Something went wrong");
-
         }
     }
 
-    public void layerTwoAdmin(TraderSystem ts){
+    public void layerTwoAdmin(TraderSystem ts) throws IOException, InvalidOptionException {
         try (BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in))) {
             System.out.println("1. View Requests\n2. Freeze Accounts\n3. Update Trade Threshold\n4. Add Admins");
 
@@ -92,11 +86,6 @@ public class TraderClient {
             } else {
                 throw new InvalidOptionException();
             }
-
-        } catch (InvalidOptionException e) {
-            System.out.println("Invalid Option detected. Please try again.");
-        } catch (IOException e) {
-            System.out.println("Something went wrong");
         }
     }
 
