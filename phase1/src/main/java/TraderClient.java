@@ -13,11 +13,7 @@ public class TraderClient {
     String accountsPath = "phase1/src/main/resources/serializedaccounts.ser";
 
 
-    public TraderClient() throws IOException, ClassNotFoundException {
-    }
-
-
-    public void run() throws IOException, ClassNotFoundException {
+    public void run() throws ClassNotFoundException {
         System.out.println("Welcome to Trader. At anytime you may type 'exit' to quit.\n" +
                 "Please choose any of the following by typing the option number.");
         Account currUser;
@@ -29,13 +25,16 @@ public class TraderClient {
             currUser = ts.login(input);
             System.out.println("Login Successful. Welcome to Trader, " + currUser.getUsername());
             layerTwo(ts, currUser);
+            if (currUser.isAdmin()){
+                layerTwoAdmin(ts);
+            }
 
 
         } catch (InvalidOptionException e) {
             System.out.println("Invalid Option detected. Please try again.");
         } catch (IOException e) {
             System.out.println("Something went wrong");
-        } catch (AccountNotFoundException e) { //needs edit/deleted later
+        } catch (AccountNotFoundException e) { //TODO: IMPORTANT needs edit/deleted later!!!!
             e.printStackTrace();
         }
 
@@ -45,7 +44,7 @@ public class TraderClient {
     }
 
 
-    public void layerTwo(TraderSystem ts, Account user) throws IOException {
+    public void layerTwo(TraderSystem ts, Account user) {
         try (BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in))) {
             System.out.println("1. View Account Information\n2. Add Items\n3. Browse Listings\n4. My Activity\n" +
                     "5. Offers\n6. Active Trades");
@@ -74,11 +73,11 @@ public class TraderClient {
         }
     }
 
-    public void layerTwoAdmin(){
+    public void layerTwoAdmin(TraderSystem ts){
         try (BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in))) {
             System.out.println("1. View Requests\n2. Freeze Accounts\n3. Update Trade Threshold\n4. Add Admins");
 
-            if (keyboard.readLine() == "1") {
+            if (keyboard.readLine() == "1") { //TODO: fix .equals() thing
                 // print an arraylist of all user requests of items to be added to their inventory,either accept or deny
                 ;
             } else if (keyboard.readLine() == "2") {
