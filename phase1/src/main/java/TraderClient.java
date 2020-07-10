@@ -26,7 +26,7 @@ public class TraderClient {
             System.out.println("Login Successful. Welcome to Trader, " + currUser.getUsername());
             layerTwo(ts, currUser);
             if (currUser.isAdmin()){
-                layerTwoAdmin(ts);
+                adminOptions(ts);
             }
 
 
@@ -67,25 +67,35 @@ public class TraderClient {
         }
     }
 
-    public void layerTwoAdmin(TraderSystem ts) throws IOException, InvalidOptionException {
+    public void adminOptions(TraderSystem ts) throws IOException, InvalidOptionException {
         try (BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in))) {
-            System.out.println("1. View Requests\n2. Freeze Accounts\n3. Update Trade Threshold\n4. Add Admins");
-
-            if (keyboard.readLine() == "1") { //TODO: fix .equals() thing
-                // print an arraylist of all user requests of items to be added to their inventory,either accept or deny
-                ;
-            } else if (keyboard.readLine() == "2") {
-                // get and print out users the system thinks the admin should freeze
-                // this should take the input for each individual user, and accept either a yes or no
-                ;
-            } else if (keyboard.readLine() == "3") {
-                System.out.println("Enter the new trading threshold: ");
-            } else if (keyboard.readLine() == "4") {
-                // add new admins
-                ;
-            } else {
-                throw new InvalidOptionException();
+            System.out.println("7. Admin Options");
+            if (keyboard.readLine().equals("7")) {
+                System.out.println("1. View Requests\n2. Freeze Accounts\n3. Update Trade Threshold\n4. Add Admins");
+                switch (keyboard.readLine()) {
+                    case "1":
+                        // print an arraylist of all user requests of items to be added to their inventory,either accept or deny
+                        ;
+                        break;
+                    case "2":
+                        // get and print out users the system thinks the admin should freeze
+                        // this should take the input for each individual user, and accept either a yes or no
+                        ;
+                        break;
+                    case "3":
+                        System.out.println("Enter the new trading threshold: ");
+                        break;
+                    case "4":
+                        // add new admins
+                        ;
+                        break;
+                    default:
+                        throw new InvalidOptionException();
+                }
             }
+
+
+
         }
     }
 
