@@ -6,8 +6,7 @@ import java.util.Map;
 
 public class FileReadWriter {
 
-    private String filepath;
-    //private Object obj;
+    private String filepath; //private Object obj;
 
     public FileReadWriter(String filePath) {
         this.filepath = filePath;

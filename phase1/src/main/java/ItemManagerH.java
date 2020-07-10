@@ -9,7 +9,8 @@ import java.util.Map;
 public class ItemManagerH {
     /** A mapping of item ids to item. */
     private Map<Integer, Item> items;
-
+    private FileReadWriter frw;
+    private String path;
     /**
      * Creates an ItemManager with lists of Item that are empty
      *
@@ -18,12 +19,13 @@ public class ItemManagerH {
      * @throws ClassNotFoundException
      */
     public ItemManagerH(String filePath) throws IOException, ClassNotFoundException {
+        this.path = filePath;
         items = new HashMap<>();
-        File file = new File(filePath);
-        FileReadWriter frw = new FileReadWriter(filePath);
+        File file = new File(path);
+        frw = new FileReadWriter(path);
         if (file.exists()) {
             try {
-                items = (Map<Integer, Item>)frw.readFromFile(filePath);
+                items = (Map<Integer, Item>)frw.readFromFile(path);
             } catch(EOFException e) {
                 System.out.println("Cannot read from file");
             }
@@ -48,7 +50,7 @@ public class ItemManagerH {
      * @param uniqueFeature Feature associated with the type of item. Author if it is a book, brand if it is clothes
      * @throws InvalidItemException Throws exception if the typeOfItem is not valid, i.e. not Book or Clothes
      */
-    public void newItem(String name, String description, String typeOfItem, String uniqueFeature) throws InvalidItemException {
+    public void newItem(String name, String description, String typeOfItem, String uniqueFeature) throws InvalidItemException, IOException {
         if (typeOfItem.equals("Book")){
             newBook(name, description, uniqueFeature);
         }
@@ -65,7 +67,7 @@ public class ItemManagerH {
      * @param description The description of the book
      * @param author The author of the book
      */
-    public void newBook(String name, String description, String author) {
+    public void newBook(String name, String description, String author) throws IOException {
         Book book = new Book(name, description, getNumberOfItems(), author);
         addItem(book);
     }
@@ -77,7 +79,7 @@ public class ItemManagerH {
      * @param description The description of the clothing
      * @param brand The brand of the clothing
      */
-    public void newClothes(String name, String description, String brand) {
+    public void newClothes(String name, String description, String brand) throws IOException {
         Clothes clothes = new Clothes(name, description, getNumberOfItems(), brand);
         addItem(clothes);
     }
@@ -85,8 +87,9 @@ public class ItemManagerH {
      * Adds the id and the instance of Item to the overall list of Items
      * @param item The Item object that needs to be added
      */
-    public void addItem(Item item){
+    public void addItem(Item item) throws IOException {
         items.put(item.getID(), item);
+        frw.saveToFile(items,path);
         System.out.println("added successfully");
     }
 
@@ -95,8 +98,9 @@ public class ItemManagerH {
      * @param itemId The id of the Item object that needs to be removed
      * @throws ItemNotFoundException
      */
-    public void removeItem(int itemId) throws ItemNotFoundException{
+    public void removeItem(int itemId) throws ItemNotFoundException, IOException {
         items.remove(itemId);
+        frw.saveToFile(items,path);
         System.out.println("removed successfully");
     }
 
@@ -105,8 +109,9 @@ public class ItemManagerH {
      * @param itemId The id of the Item object that needs to be verified
      * @throws ItemNotFoundException
      */
-    public void verifyItem(int itemId) throws ItemNotFoundException{
+    public void verifyItem(int itemId) throws ItemNotFoundException, IOException {
         items.get(itemId).setIsVerified(true);
+        frw.saveToFile(items,path);
         System.out.println("verified successfully");
     }
 
