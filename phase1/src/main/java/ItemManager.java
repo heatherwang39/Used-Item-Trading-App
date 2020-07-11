@@ -8,8 +8,12 @@ import java.util.Map;
 
 public class ItemManager {
 
-    /** A mapping of item ids to item. */
+    /**
+     * A mapping of item ids to item.
+     */
     private Map<Integer, Item> items;
+
+    String path;
 
     /**
      * Creates an ItemManager with lists of Item that are empty
@@ -20,9 +24,13 @@ public class ItemManager {
      */
     public ItemManager(String filePath) throws IOException, ClassNotFoundException {
         items = new HashMap<Integer, Item>();
+        path = filePath;
         File file = new File(filePath);
         if (file.exists()) {
-            try {readFromFile(filePath);} catch(EOFException e) {}
+            try {
+                readFromFile(filePath);
+            } catch (EOFException e) {
+            }
         } else {
             file.createNewFile();
         }
@@ -30,11 +38,12 @@ public class ItemManager {
 
     /**
      * Gets an item based on id
+     *
      * @param itemID integer item ID
-     * @throws ItemNotFoundException if no item with ID
      * @return item
+     * @throws ItemNotFoundException if no item with ID
      */
-    public Item getItem(int itemID) throws ItemNotFoundException{
+    public Item getItem(int itemID) throws ItemNotFoundException {
         Item item = items.get(itemID);
         if (item == null) {
             throw new ItemNotFoundException();
@@ -47,25 +56,29 @@ public class ItemManager {
      *
      * @return the size of items
      */
-    public int getNumberOfItems() {return items.size();}
+    public int getNumberOfItems() {
+        return items.size();
+    }
 
     /**
      * Initializes a new item based on the given parameters
      *
-     * @param name The name of the item
-     * @param description The description of the item
-     * @param typeOfItem The type of item, can be a Book or Clothes
-     * @param uniqueFeature Feature associated with the type of item. Author if it is a book, brand if it is clothes
-     * @throws InvalidItemException Throws exception if the typeOfItem is not valid, i.e. not Book or Clothes
+     * @param name          The name of the item
+     * @param description   The description of the item
+     * @param typeOfItem    The type of item, can be a Book or Clothing
+     * @param uniqueFeature Feature associated with the type of item. Author if it is a book, brand if it is clothing
+     * @throws InvalidItemException Throws exception if the typeOfItem is not valid, i.e. not Book or Clothing
+     * @throws IOException file cannot be read
      */
-    public void newItem(String name, String description, String typeOfItem, String uniqueFeature) throws InvalidItemException {
-        if (typeOfItem.equals("Book")){
-            newBook(name, description, uniqueFeature);
+    public Item newItem(String name, String description, String typeOfItem, String uniqueFeature) throws IOException,
+            ItemNotFoundException {
+        if (typeOfItem.equals("Book")) {
+            return newBook(name, description, uniqueFeature);
+        } else if (typeOfItem.equals("Clothing")) {
+            return newClothing(name, description, uniqueFeature);
+        } else {
+            return newMiscItem(name, description);
         }
-        else if (typeOfItem.equals("Clothes")){
-            newClothes(name, description, uniqueFeature);
-        }
-        else throw new InvalidItemException();
     }
 
     /**
@@ -74,10 +87,14 @@ public class ItemManager {
      * @param name The name of the book
      * @param description The description of the book
      * @param author The author of the book
+     * @throws IOException file cannot be read
+     * @return book
      */
-    public void newBook(String name, String description, String author) {
-        Book book = new Book(name, description, getNumberOfItems(), author);
+    public Item newBook(String name, String description, String author) throws IOException, ItemNotFoundException {
+        int id = getNumberOfItems();
+        Book book = new Book(name, description, id, author);
         addItem(book);
+        return book;
     }
 
     /**
@@ -86,38 +103,59 @@ public class ItemManager {
      * @param name The name of the clothing
      * @param description The description of the clothing
      * @param brand The brand of the clothing
+     * @throws IOException file cannot be read
+     * @return clothing
      */
-    public void newClothes(String name, String description, String brand) {
+    public Clothing newClothing(String name, String description, String brand) throws IOException {
         Clothing clothing = new Clothing(name, description, getNumberOfItems(), brand);
         addItem(clothing);
+        return clothing;
     }
+
+    /**
+     * Initializes a new misc item based on the given parameters. Adds the item to items
+     *
+     * @param name The name of the item
+     * @param description The description of the item
+     * @throws IOException file cannot be read
+     * @return miscItem
+     */
+    public Item newMiscItem(String name, String description) throws IOException {
+        MiscItem miscItem = new MiscItem(name, description, getNumberOfItems());
+        addItem(miscItem);
+        return miscItem;
+    }
+
     /**
      * Adds the id and the instance of Item to the overall list of Items
      * @param item The Item object that needs to be added
+     * @throws IOException file cannot be read
      */
-    public void addItem(Item item){
+    public void addItem(Item item) throws IOException {
         items.put(item.getID(), item);
-        System.out.println("added successfully");
+        saveToFile(path);
     }
 
     /**
      * Removes an instance of Item from the overall list of Items
      * @param itemId The id of the Item object that needs to be removed
-     * @throws ItemNotFoundException
+     * @throws ItemNotFoundException item not in system
+     * @throws IOException file cannot be read
      */
-    public void removeItem(int itemId) throws ItemNotFoundException{
+    public void removeItem(int itemId) throws ItemNotFoundException, IOException {
         items.remove(itemId);
-        System.out.println("removed successfully");
+        saveToFile(path);
     }
 
     /**
      * Verify an Item in the overall list of Items
      * @param itemId The id of the Item object that needs to be verified
      * @throws ItemNotFoundException
+     * @throws IOException file cannot be read
      */
-    public void verifyItem(int itemId) throws ItemNotFoundException{
+    public void verifyItem(int itemId) throws ItemNotFoundException, IOException {
         items.get(itemId).setIsVerified(true);
-        System.out.println("verified successfully");
+        saveToFile(path);
     }
 
 

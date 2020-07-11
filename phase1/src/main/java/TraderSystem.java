@@ -91,9 +91,13 @@ public class TraderSystem {
         addItem(item);
     }
 
-
     public void browseListings() {
-        ;
+        System.out.println("Here are all available item listings: ");
+        Item<List> itemList = getVerifiedItems();
+        for (int i = 0; i < itemList.size(); i++){
+            System.out.println(itemList.get(i) + "\n");
+        }
+        // Here there should be an extension for the user to either do a Trade Request or a Borrow Request for an item
     }
 
     public void addAdmin() throws IOException{
@@ -156,9 +160,7 @@ public class TraderSystem {
                 System.out.println("Option not valid");
 
             }
-
         }
-
     }
 
     public void showFreezeUsers(){
