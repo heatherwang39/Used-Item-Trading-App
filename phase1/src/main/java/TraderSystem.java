@@ -7,6 +7,7 @@ public class TraderSystem {
     String tradesPath = "phase1/src/main/resources/serializedtrades.ser";
     String itemsPath = "phase1/src/main/resources/serializeditems.ser";
     String accountsPath = "phase1/src/main/resources/serializedaccounts.ser";
+    String itemRequestsPath = "phase1/src/main/resources/serializeditemrequests.ser";
 
     private final AccountManager am;
     private final TradeManager tm;
@@ -83,9 +84,13 @@ public class TraderSystem {
         ;
     }
 
+
     public void addItems() {
-        ;
+        System.out.println("Enter the name of the item you wish to add to your inventory: ");
+        String item = input.readLine();
+        addItem(item);
     }
+
 
     public void browseListings() {
         ;
@@ -93,7 +98,7 @@ public class TraderSystem {
 
     public void addAdmin() {
         //
-        System.out.println("Enter the username the user you would like to promote to admin: ");
+        System.out.println("Enter the username of the user you would like to promote to admin: ");
         String username = input.readLine();
         try {
             Account user = am.getAccount(username);
@@ -129,7 +134,29 @@ public class TraderSystem {
     }
 
     public void showItemRequests(){
-        ;
+        System.out.println("Here are the current item requests. Press 1 to accept and 2 to deny: ");
+        List<Item> unverifiedItemList = getUnverifiedItems();
+        int i = 0;
+
+        while (i < unverifiedItemList.size()){
+            try {
+                System.out.println(unverifiedItemList.get(i));
+
+                String input = input.readLine();
+                if (input.equals("1")) {
+                    verifyItem(unverifiedItemList.get(i));
+                    i++;
+                } else if (input.equals("2")) {
+                    removeItem(unverifiedItemList.get(i));
+                    i++;
+                }
+            } catch(InvalidOptionException e){
+                System.out.println("Option not valid");
+
+            }
+
+        }
+
     }
 
     public void showFreezeUsers(){

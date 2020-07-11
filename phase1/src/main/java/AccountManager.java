@@ -146,7 +146,7 @@ public class AccountManager {
         isValidAccount(username, password, email);
         UserAccount user = new UserAccount(username, password, email, isFrozen);
         accounts.put(username, user);
-        frw.saveToFile(accounts,path);
+        frw.saveToFile(accounts, path);
     }
 
     /**
@@ -164,7 +164,7 @@ public class AccountManager {
         isValidAccount(username, password, email);
         AdminAccount user = new AdminAccount(username, password, email);
         accounts.put(username, user);
-        frw.saveToFile(accounts,path);
+        frw.saveToFile(accounts, path);
     }
 
     /**

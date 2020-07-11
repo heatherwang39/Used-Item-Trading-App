@@ -9,7 +9,7 @@ public class FileReadWriter {
         this.filepath = filePath;
     }
 
-    public void saveToFile(Object obj,String filePath) throws IOException {
+    public void saveToFile(Object obj, String filePath) throws IOException {
         OutputStream file = new FileOutputStream(filePath);
         OutputStream buffer = new BufferedOutputStream(file);
         ObjectOutput output = new ObjectOutputStream(buffer);
