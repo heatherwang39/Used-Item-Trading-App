@@ -1,6 +1,9 @@
 package main.java;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public abstract class Item implements Serializable, Entity {
     private String name;
@@ -82,6 +85,29 @@ public abstract class Item implements Serializable, Entity {
      */
     public void setCurrentStatus(int currentStatus) {
         this.currentStatus = currentStatus;
+    }
+
+    public List<List<String>> getData(){
+        List<List<String>> data = new ArrayList<>();
+        data.add(new ArrayList<>(Arrays.asList("Name", name)));
+        data.add(new ArrayList<>(Arrays.asList("ID", Integer.toString(id))));
+        data.add(new ArrayList<>(Arrays.asList("Description", description)));
+        data.add(new ArrayList<>(Arrays.asList("Verified", Boolean.toString(isVerified))));
+        String status;
+        switch (currentStatus){
+            case 1:
+                status = "Processing/Trading";
+                break;
+            case 2:
+                status = "Borrowed";
+                break;
+            default:
+                status = "Available";
+                break;
+        }
+        data.add(new ArrayList<>(Arrays.asList("Status", status)));
+        data.add(new ArrayList<>(Arrays.asList("Time Limit", timeLimit + " days")));
+        return data;
     }
 
 }

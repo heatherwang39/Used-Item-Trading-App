@@ -1,6 +1,6 @@
 package main.java;
 
-import java.util.HashMap;
+import java.util.List;
 
 /**
  * Distinguishes between Entities (singular units of associated data), and non Entities (aggregators of data, lists of
@@ -15,5 +15,5 @@ public interface Entity {
      * Returns a HashMap of all displayable and obtainable information from the Entity
      * @return The map's key is the attribute name and the value is the attribute data
      */
-    public HashMap<String, String> getData();
+    List<List<String>> getData();
 }
