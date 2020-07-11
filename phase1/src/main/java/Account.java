@@ -65,6 +65,14 @@ abstract class Account implements Serializable, Entity {
     }
 
     /**
+     * Get the account password
+     * @return password
+     */
+    public String getPassword(){
+        return password;
+    }
+
+    /**
      * Get the account email
      * @return email
      */

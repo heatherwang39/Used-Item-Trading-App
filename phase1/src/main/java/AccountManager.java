@@ -168,6 +168,16 @@ public class AccountManager {
     }
 
     /**
+     * Removes a user account
+     * @param username username of the user account to be removed
+     * @throws IOException
+     */
+    public void removeUserAccount(String username) throws IOException {
+        accounts.remove(username);
+        frw.saveToFile(accounts, path);
+    }
+
+    /**
      * Sets a user account to be be frozen
      * @param username input username
      * @throws AccountNotFoundException account not found under username

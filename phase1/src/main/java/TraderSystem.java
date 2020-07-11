@@ -91,15 +91,28 @@ public class TraderSystem {
         ;
     }
 
-    public void addAdmin() {
-
-        System.out.println("Enter the username of the user you would like to promote to Admin status: ");
-        // search in existing users, find if they exist
-        ;
-        // if they exist, promote them to admin
-        // else:
-        System.out.println("User with corresponding username was not found in the database");
+    public void addAdmin() throws IOException {
+        System.out.println("Enter the username the user you would like to promote to admin: ");
+        String username = input.readLine();
+        try {
+            Account user = am.getAccount(username);
+            if (user.isAdmin()) System.out.println("User with corresponding username is already an admin");
+            else {
+                am.removeUserAccount(username);
+                am.createAdminAccount(username, user.getPassword(), user.getEmail());
+            }
+        } catch (AccountNotFoundException e){
+            System.out.println("User with corresponding username was not found in the database");
+        } catch (InvalidLoginException e) {
+            System.out.println("The corresponding username is invalid");
+        } catch (InvalidEmailException e) {
+            System.out.println("The corresponding email is invalid");
+        } catch (EmailInUseException e) {
+            System.out.println("The corresponding email is already in use");
+        } catch (UsernameInUseException e) {
+            System.out.println("The corresponding username is already in use");
         }
+    }
 
 
     public void showActivity() {
