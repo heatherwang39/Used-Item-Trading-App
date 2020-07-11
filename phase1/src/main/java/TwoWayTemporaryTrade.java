@@ -26,18 +26,8 @@ public class TwoWayTemporaryTrade extends TwoWayTrade implements Serializable {
 
         super(tradeNumber, firstTrader, firstItem, secondTrader, secondItem);
 
-        List<TwoPersonMeeting> meetings = new ArrayList();
-
-        TwoPersonMeeting firstMeeting;
-        TwoPersonMeeting secondMeeting;
-
-        firstMeeting = new TwoPersonMeeting(firstTrader, secondTrader);
-        secondMeeting = new TwoPersonMeeting(firstTrader, secondTrader);
-
-        meetings.add(firstMeeting);
-        meetings.add(secondMeeting);
-
-        setMeetings(meetings);
+        newMeeting(getTraders());
+        newMeeting(getTraders());
     }
 
 

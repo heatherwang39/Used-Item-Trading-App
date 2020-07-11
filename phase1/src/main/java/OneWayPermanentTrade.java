@@ -24,15 +24,7 @@ public class OneWayPermanentTrade extends OneWayTrade implements Serializable {
     public OneWayPermanentTrade(int tradeNumber, String sender, String receiver, int item){
         super(tradeNumber, sender, receiver, item);
 
-        TwoPersonMeeting meeting;
-
-        List<TwoPersonMeeting> meetings = new ArrayList();
-
-        meeting = new TwoPersonMeeting(sender, receiver);
-
-        meetings.add(meeting);
-
-        setMeetings(meetings);
+        newMeeting(getTraders());
     }
 
 

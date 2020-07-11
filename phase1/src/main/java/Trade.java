@@ -1,5 +1,6 @@
 package main.java;
 
+import javax.security.auth.x500.X500PrivateCredential;
 import java.io.Serializable;
 import java.sql.Time;
 import java.time.LocalDateTime;
@@ -17,7 +18,36 @@ import java.util.List;
 abstract class Trade implements Serializable, Entity {
     private final int tradeNumber;
     private int status;
-    private List<TwoPersonMeeting> meetings;
+
+    //Information regarding meetings are stored below
+
+    private List<String> meetingPlaces;
+    private List<LocalDateTime> meetingTimes;
+    private List<List<String>> meetingAttendees;
+    private List<List<Boolean>> meetingAccepted;
+    private List<List<Boolean>> meetingConfirmed;
+    private int warnings;
+    private int maxWarnings;
+
+
+
+
+
+
+    //Basic Trade Methods begin here
+
+
+
+
+
+
+
+    /**
+     * Method required by implementations of Entity
+     * @return this class's attributes name and value in String format in a HashMap
+     */
+    public HashMap<String, String> getData(){return new HashMap<>();}
+
 
     /** Initialize a new instance of Trade. The default status of the trade will be set to 0,
      * and the Trade will be given a unique tradeNumber.
@@ -26,6 +56,12 @@ abstract class Trade implements Serializable, Entity {
     public Trade(int tradeNumber){
         this.tradeNumber = tradeNumber;
         status = 0;
+        meetingPlaces = new ArrayList();
+        meetingTimes = new ArrayList();
+        meetingAttendees = new ArrayList();
+        meetingAccepted = new ArrayList();
+        meetingConfirmed = new ArrayList();
+        maxWarnings = 6;
     }
 
 
@@ -86,6 +122,17 @@ abstract class Trade implements Serializable, Entity {
     abstract boolean isOneWay();
 
 
+
+
+
+
+    //Methods regarding the before-and-after states of a User's inventory begin here
+
+
+
+
+
+
     /** Returns a List of Traders (i.e., their usernames) involved in this trade
      *
      * @return Usernames of Traders involved in this trade
@@ -113,13 +160,15 @@ abstract class Trade implements Serializable, Entity {
     abstract List<Integer> getItemsFinal();
 
 
-    /** Sets the meetings in Trade to be equal to this. Each meeting
-     *
-     * @param meetings What you want to set the meetings in Trade to be equal to.
-     */
-    protected void setMeetings(List<TwoPersonMeeting> meetings){
-        this.meetings = meetings;
-    }
+
+
+
+
+    //Methods regarding meetings begin here
+
+
+
+
 
 
     /** Return the place of the suggested meetingNumber-th Meeting for this Trade. If no Meeting has been suggested,
@@ -130,7 +179,8 @@ abstract class Trade implements Serializable, Entity {
      * @throws MeetingNumberException Thrown when the meetingNumber-th isn't supposed to occur
      */
     public String getMeetingPlace(int meetingNumber) throws MeetingNumberException{
-        return getMeeting(meetingNumber).getPlace();
+        checkMeetingNumber(meetingNumber);
+        return meetingPlaces.get(meetingNumber - 1);
     }
 
     /** Return the time of the suggested meetingNumber-th Meeting for this Trade. If no Meeting has been suggested,
@@ -141,7 +191,8 @@ abstract class Trade implements Serializable, Entity {
      * @throws MeetingNumberException Thrown when the meetingNumber-th isn't supposed to occur
      */
     public LocalDateTime getMeetingTime(int meetingNumber) throws MeetingNumberException{
-        return getMeeting(meetingNumber).getTime();
+        checkMeetingNumber(meetingNumber);
+        return meetingTimes.get(meetingNumber - 1);
     }
 
 
@@ -154,16 +205,36 @@ abstract class Trade implements Serializable, Entity {
      * @return Whether or not the change was successfully made
      * @throws TimeException Thrown if the suggested Meeting is at an invalid time
      * @throws MeetingNumberException Thrown when the meetingNumber-th isn't supposed to occur
+     * @throws TradeCancelledException Thrown if the trade has been cancelled due to the request or has previously been
+     * cancelled
      */
-    public boolean setMeeting(int meetingNumber, String place, LocalDateTime time,
-                                String suggester) throws TimeException, MeetingNumberException{
-        boolean value;
-        try{value = getMeeting(meetingNumber).setPlaceTime(place, time);}
-        catch(TradeCancelledException e){
-            setStatus(-1);
+    public boolean setMeeting(int meetingNumber, String place, LocalDateTime time)
+            throws TimeException, MeetingNumberException, TradeCancelledException{
+        checkTradeCancelled();
+        if(getMeetingConfirmed(meetingNumber)){
             return false;
         }
-        return value;
+        if(time.compareTo(LocalDateTime.now()) < 0){
+            throw new TimeException();
+        }
+        if(getMeetingPlace(meetingNumber).equals(place) && getMeetingTime(meetingNumber).equals(time)){
+            return false;
+        }
+
+
+        //Right now, the trade is set so that it will only cancel itself if the first meeting HASN'T been made
+        //This may change in the future.
+
+        if(meetingNumber == 1) {
+            warnings += 1;
+            if (warnings > maxWarnings) {
+                setStatus(-1);
+                throw new TradeCancelledException();
+            }
+        }
+        meetingPlaces.set(meetingNumber - 1, place);
+        meetingTimes.set(meetingNumber - 1, time);
+        return true;
     }
 
 
@@ -178,20 +249,15 @@ abstract class Trade implements Serializable, Entity {
      * @throws WrongAccountException Thrown if the suggester is not supposed to be part of the Meeting
      * @throws TimeException Thrown if the suggested Meeting is at an invalid time
      * @throws MeetingNumberException Thrown when the meetingNumber-th isn't supposed to occur
+     * @throws TradeCancelledException Thrown if the trade has been cancelled due to the request or has previously been
+     * cancelled
      */
     public boolean suggestMeeting(int meetingNumber, String place, LocalDateTime time,
                                     String suggester) throws WrongAccountException, TimeException,
-            MeetingNumberException{
-        boolean value;
-        try{value = getMeeting(meetingNumber).suggestPlaceTime(place, time, suggester);}
-        catch(TradeCancelledException e){
-            if(meetingNumber == 1){
-            setStatus(-1);
-            }else{
-                resetWarnings();
-            }
-            return false;
-        }
+            MeetingNumberException, TradeCancelledException{
+        boolean value = setMeeting(meetingNumber, place, time);
+        try{acceptMeeting(meetingNumber, suggester);}
+        catch(NoMeetingException e){}
         return value;
     }
 
@@ -205,10 +271,21 @@ abstract class Trade implements Serializable, Entity {
      * @throws NoMeetingException Thrown if no meeting has been suggested
      * @throws WrongAccountException Thrown if the acceptor has not been invited to this meeting
      * @throws MeetingNumberException Thrown when the meetingNumber-th isn't supposed to occur
+     * @throws TradeCancelledException Thrown if the trade is cancelled
      */
     public boolean acceptMeeting(int meetingNumber, String acceptor) throws NoMeetingException, WrongAccountException,
-            MeetingNumberException{
-        return getMeeting(meetingNumber).acceptMeeting(acceptor);
+            MeetingNumberException, TradeCancelledException{
+        checkMeetingExists(meetingNumber);
+        checkTradeCancelled();
+        List<String> users = meetingAttendees.get(meetingNumber - 1);
+        int i = users.indexOf(acceptor);
+        if(i == -1){throw new WrongAccountException();}
+        List<Boolean> a = meetingAccepted.get(meetingNumber - 1);
+        if(a.get(i)){
+            return false;
+        }
+        a.set(i, true);
+        return true;
     }
 
 
@@ -222,17 +299,29 @@ abstract class Trade implements Serializable, Entity {
      * @throws WrongAccountException Thrown if the attendee was not been invited to this meeting
      * @throws TimeException Thrown if the Meeting was confirmed before it was supposed to take place
      * @throws MeetingNumberException Thrown when the meetingNumber-th isn't supposed to occur
+     * @throws TradeCancelledException Thrown if the trade is cancelled
      */
     public boolean confirmMeeting(int meetingNumber, String attendee) throws NoMeetingException,
-            WrongAccountException, TimeException, MeetingNumberException{
-        boolean value;
-        value = getMeeting(meetingNumber).confirmMeeting(attendee);
-        if(meetingNumber == getNumMeetings()){
-                if(getMeeting(meetingNumber).getConfirmed()){
-                    setStatus(2);
-                }
+            WrongAccountException, TimeException, MeetingNumberException, TradeCancelledException{
+        checkMeetingExists(meetingNumber);
+        if(!getMeetingConfirmed(meetingNumber)){throw new NoMeetingException();}
+        if(getMeetingTime(meetingNumber).compareTo(LocalDateTime.now()) < 0){
+            throw new TimeException();
         }
-        return value;
+        checkTradeCancelled();
+        List<String> users = meetingAttendees.get(meetingNumber - 1);
+        int i = users.indexOf(attendee);
+        if(i == -1){throw new WrongAccountException();}
+        List<Boolean> a = meetingConfirmed.get(meetingNumber - 1);
+        if(a.get(i)){
+            return false;
+        }
+        a.set(i, true);
+        if(getMeetingConfirmed(meetingNumber) && meetingNumber == getNumMeetings()){
+            setStatus(2);
+        }
+
+        return true;
     }
 
 
@@ -243,7 +332,14 @@ abstract class Trade implements Serializable, Entity {
      * @throws MeetingNumberException Thrown when the meetingNumber-th isn't supposed to occur
      */
     public boolean getMeetingAccepted(int meetingNumber) throws MeetingNumberException{
-        return getMeeting(meetingNumber).getAccepted();
+        checkMeetingNumber(meetingNumber);
+        List<Boolean> meeting = meetingAccepted.get(meetingNumber);
+        for(Boolean v : meeting){
+            if(!v){
+                return false;
+            }
+        }
+        return true;
     }
 
 
@@ -254,7 +350,14 @@ abstract class Trade implements Serializable, Entity {
      * @throws MeetingNumberException Thrown when the meetingNumber-th isn't supposed to occur
      */
     public boolean getMeetingConfirmed(int meetingNumber) throws MeetingNumberException{
-        return getMeeting(meetingNumber).getConfirmed();
+        checkMeetingNumber(meetingNumber);
+        List<Boolean> meeting = meetingConfirmed.get(meetingNumber);
+        for(Boolean v : meeting){
+            if(!v){
+                return false;
+            }
+        }
+        return true;
     }
 
 
@@ -263,258 +366,71 @@ abstract class Trade implements Serializable, Entity {
      * @return The number of meetings that will occur over the course of the trade
      */
     public int getNumMeetings(){
-        return meetings.size();
+        return meetingPlaces.size();
     }
 
-    private TwoPersonMeeting getMeeting(int meetingNumber) throws MeetingNumberException{
-        if(1 <= meetingNumber && meetingNumber <= getNumMeetings()){
-            return meetings.get(meetingNumber - 1);
-        }
-        throw new MeetingNumberException();
-    }
 
-    /** Resets the Warnings for all of the meetings to 0.
+    /** Resets the Warnings for meetings to 0.
      *
      */
     public void resetWarnings(){
-        int i;
-        i = 1;
-        while(i <= getNumMeetings()){
-            try{getMeeting(i).resetWarnings();}
-            catch(MeetingNumberException e){}
-            i++;
-        }
+        warnings = 0;
     }
 
 
 
 
 
-    /**
-     * An inner class of Trade. This class represents a meeting between two people. The time and data of the meeting can
-     * change a certain number of times, while the intended attendees cannot be changed.
-     * @author Warren Zhu
-     * @version %I%, %G%
-     * @since Phase 1
+
+    //Protected and private Methods are below.
+
+
+
+
+
+
+    /** Adds another required meeting for this trade involving the attendees
+     *
+     * @param attendees A list containing the attendees that must attend the Trade.
      */
-    protected class TwoPersonMeeting implements Serializable {
-        private String place;
-        private LocalDateTime time;
-        private String firstAttendee;
-        private String secondAttendee;
-        private List<Boolean> accepted;
-        private List<Boolean> confirmed;
-        private int warnings;
-        private int max_warnings = 6;
+    protected void newMeeting(List<String> attendees){
+        meetingPlaces.add(null);
 
-        /** Initialize a new instance of TwoPersonMeeting based on the given parameters
-         *
-         * @param firstAttendee The first Attendee of the meeting
-         * @param secondAttendee The second Attendee of the meeting
-         */
-        public TwoPersonMeeting(String firstAttendee, String secondAttendee){
-            this.firstAttendee = firstAttendee;
-            this.secondAttendee = secondAttendee;
+        meetingTimes.add(null);
 
-            accepted = new ArrayList();
-            accepted.add(false);
-            accepted.add(false);
+        List<String> copy = new ArrayList(attendees);
+        meetingAttendees.add(copy);
 
-            confirmed = new ArrayList();
-            confirmed.add(false);
-            confirmed.add(false);
-        }
+        List<Boolean> accepted = new ArrayList();
+
+        accepted.add(false);
+        accepted.add(false);
+        meetingAccepted.add(accepted);
+
+        List<Boolean> confirmed = new ArrayList();
+        confirmed.add(false);
+        confirmed.add(false);
+        meetingConfirmed.add(confirmed);
+    }
 
 
-
-        /** Set the Meeting for this Trade to be at this place and this time. This Meeting will still need
-         * to be confirmed. Return True if the meeting was successfully set.
-         *
-         * @param place The place where the meeting will take place
-         * @param time The time where the meeting will take place
-         * @return Whether or not the change was successfully made
-         * @throws TimeException Thrown if the new time is inappropriate
-         * @throws TradeCancelledException Thrown if the trade
-         */
-        public boolean setPlaceTime(String place, LocalDateTime time) throws TimeException, TradeCancelledException {
-            if(getConfirmed()){
-                return false;
-            }
-            if(time.compareTo(LocalDateTime.now()) < 0){
-                throw new TimeException();
-            }
-            if(this.place.equals(place) && this.time.equals(time)){
-                return false;
-            }
-            warnings += 1;
-            if(warnings > max_warnings){
-                throw new TradeCancelledException();
-            }
-            this.place = place;
-            this.time = time;
-            accepted.set(0, false);
-            accepted.set(1, false);
-            return true;
-        }
-
-
-
-        /** Suggest a place and time for this Meeting. The person suggesting this Meeting
-         * automatically accepts this Meeting. Return True if the change was successfully made.
-         *
-         * @param place The place where the meeting will take place
-         * @param time The time where the meeting will occur
-         * @param suggester The person suggesting the place and time
-         * @return Whether or not the suggestion was successfully recorded
-         * @throws WrongAccountException Thrown if the suggester is not supposed to be part of the Meeting
-         * @throws TimeException Thrown if the suggested time is inappropriate
-         * @throws TradeCancelledException Thrown if the trade will be cancelled after this suggestion is made
-         */
-        public boolean suggestPlaceTime(String place, LocalDateTime time,
-                                        String suggester) throws WrongAccountException,
-                TimeException, TradeCancelledException {
-            if(suggester.equals(firstAttendee) || suggester.equals(secondAttendee)){
-                if(!setPlaceTime(place, time)){
-                    return false;
-                }
-                try{acceptMeeting(suggester);}
-                catch(NoMeetingException e){return false;}
-            }
-            else{throw new WrongAccountException();}
-            return true;
-        }
-
-
-        /** Return the String representation of the location of this Meeting (i.e., Address)
-         *
-         * @return The String representation of the location of this Meeting
-         */
-        public String getPlace(){
-            return place;
-        }
-
-
-        /** Return the time at which this Meeting will take place
-         *
-         * @return The time at which this Meeting will take place
-         */
-        public LocalDateTime getTime(){
-            return time;
-        }
-
-
-        /** Return a List of Attendees for this Meeting
-         *
-         * @return A list of Attendees for this Meeting
-         */
-        public List<String> getAttendees(){
-            List attendees = new ArrayList();
-            attendees.add(firstAttendee);
-            attendees.add(secondAttendee);
-            return attendees;
-        }
-
-        /** Record that the meeting has been accepted by the given attendee.
-         * Return True if this change has successfully been recorded
-         * Throws WrongAccountException iff the given attendee is not actually an attendee
-         * for this meeting.
-         *
-         * @param attendee The attendee that is accepting the meeting took place
-         * @return Whether the change has been successfully recorded
-         * @throws NoMeetingException Thrown if no place and time have been suggested
-         * @throws WrongAccountException Thrown if the attendee was not been invited to this meeting
-         */
-        public boolean acceptMeeting(String attendee) throws NoMeetingException, WrongAccountException{
-            if(place.isEmpty()){
-                throw new NoMeetingException();
-            }
-            if(attendee.equals(firstAttendee)){
-                if(accepted.get(0)){
-                    return false;
-                }
-                accepted.set(0, true);
-                return true;
-            }
-            if(attendee.equals(secondAttendee)){
-                if(accepted.get(1)){
-                    return false;
-                }
-                accepted.set(1, true);
-                return true;
-            }
-            if(getAccepted()){
-                resetWarnings();
-            }
-            throw new WrongAccountException();
-        }
-
-
-        /** Record that the meeting has been confirmed by the given attendee.
-         * Return True if this change has successfully been recorded
-         * Throws WrongAccountException iff the given attendee is not actually an attendee
-         * for this meeting.
-         *
-         * @param attendee The attendee that is confirming the meeting took place
-         * @return Whether the change has been successfully recorded
-         * @throws NoMeetingException Thrown if place and time have been agreed upon
-         * @throws WrongAccountException Thrown if the attendee was not been invited to this meeting
-         * @throws TimeException Thrown if the meeting is supposed to take place in the future
-         */
-        public boolean confirmMeeting(String attendee) throws NoMeetingException, TimeException, WrongAccountException{
-            if(!getAccepted()){
-                throw new NoMeetingException();
-            }
-            if(time.compareTo(LocalDateTime.now()) < 0){
-                throw new TimeException();
-            }
-            if(attendee.equals(firstAttendee)){
-                if(confirmed.get(0)){
-                    return false;
-                }
-                confirmed.set(0, true);
-                return true;
-            }
-            if(attendee.equals(secondAttendee)){
-                if(confirmed.get(1)){
-                    return false;
-                }
-                confirmed.set(1, true);
-                return true;
-            }
-            throw new WrongAccountException();
-        }
-
-
-        /** Return whether or not the Meeting has been accepted by both Attendees
-         *
-         * @return whether the Meeting has been accepted
-         */
-        public boolean getAccepted(){
-            return accepted.get(0) && accepted.get(1);
-        }
-
-
-        /** Return whether or not the Meeting has been confirmed by both Attendees
-         *
-         * @return whether the Meeting has been confirmed
-         */
-        public boolean getConfirmed(){
-            return confirmed.get(0) && confirmed.get(1);
-        }
-
-
-        /**Reset the number of warnings (i.e., the number of times a meeting has been
-         * suggested without confirming) back to 0
-         *
-         */
-        public void resetWarnings(){
-            warnings = 0;
+    private void checkMeetingNumber(int meetingNumber) throws MeetingNumberException{
+        if(!(1 <= meetingNumber && meetingNumber <= getNumMeetings())){
+            throw new MeetingNumberException();
         }
     }
 
-    /**
-     * Method required by implementations of Entity
-     * @return this class's attributes name and value in String format in a HashMap
-     */
-    public HashMap<String, String> getData(){return new HashMap<>();}
+
+    private void checkMeetingExists(int meetingNumber) throws NoMeetingException, MeetingNumberException{
+        if(getMeetingPlace(meetingNumber) == null && getMeetingTime(meetingNumber) == null){
+            throw new NoMeetingException();
+        }
+    }
+
+
+    private void checkTradeCancelled() throws TradeCancelledException{
+        if(getStatus() == -1){
+            throw new TradeCancelledException();
+        }
+    }
 }

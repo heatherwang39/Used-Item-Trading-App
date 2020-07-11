@@ -23,18 +23,8 @@ public class OneWayTemporaryTrade extends OneWayTrade implements Serializable {
     public OneWayTemporaryTrade(int tradeNumber, String sender, String receiver, int item){
         super(tradeNumber, sender, receiver, item);
 
-        List<TwoPersonMeeting> meetings = new ArrayList();
-
-        TwoPersonMeeting firstMeeting;
-        TwoPersonMeeting secondMeeting;
-
-        firstMeeting = new TwoPersonMeeting(sender, receiver);
-        secondMeeting = new TwoPersonMeeting(sender, receiver);
-
-        meetings.add(firstMeeting);
-        meetings.add(secondMeeting);
-
-        setMeetings(meetings);
+        newMeeting(getTraders());
+        newMeeting(getTraders());
     }
 
 
