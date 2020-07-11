@@ -91,7 +91,8 @@ public class TraderSystem {
         ;
     }
 
-    public void addAdmin() throws IOException {
+    public void addAdmin() {
+        //
         System.out.println("Enter the username the user you would like to promote to admin: ");
         String username = input.readLine();
         try {
