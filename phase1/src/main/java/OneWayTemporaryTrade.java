@@ -16,6 +16,7 @@ public class OneWayTemporaryTrade extends OneWayTrade implements Serializable {
 
     /** Initializes an instance of OneWayTemporaryTrade based on the given parameters
      *
+     * @param tradeNumber The trade number of the trade
      * @param sender The trader (their username) that sent the item
      * @param receiver The trader (their username) that received the item
      * @param item The item (its ID) that was traded from the sender to the receiver

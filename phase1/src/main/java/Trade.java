@@ -50,8 +50,9 @@ abstract class Trade implements Serializable, Entity {
 
 
     /** Initialize a new instance of Trade. The default status of the trade will be set to 0,
-     * and the Trade will be given a unique tradeNumber.
+     * and the Trade will be assigned the tradeNumber that's given
      *
+     * @param tradeNumber The tradeNumber
      */
     public Trade(int tradeNumber){
         this.tradeNumber = tradeNumber;

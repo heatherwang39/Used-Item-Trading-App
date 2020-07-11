@@ -16,6 +16,7 @@ public class TwoWayPermanentTrade extends TwoWayTrade implements Serializable {
 
     /** Initializes an instance of TwoWayPermanentTrade based on the given parameters
      *
+     * @param tradeNumber The trade number of the trade
      * @param firstTrader The first trader (their username) involved in this trade
      * @param firstItem The item (its ID) the first trader traded away
      * @param secondTrader The second trader (their username) involved in this trade
