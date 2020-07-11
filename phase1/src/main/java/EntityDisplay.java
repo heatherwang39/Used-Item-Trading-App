@@ -9,15 +9,15 @@ import java.util.List;
  * @since Phase 1
  */
 public class EntityDisplay {
-
-    private final StringBuilder string = new StringBuilder();
+    private String title;
+    private final StringBuilder body = new StringBuilder();
     private int count = 1;
 
     /**
      * Class Constructor
      */
     public EntityDisplay(String title){
-        string.append(title).append(":\n\n");
+        this.title = title + ":\n\n";
     }
 
     /**
@@ -25,11 +25,11 @@ public class EntityDisplay {
      * @param entity input Entity
      */
     public void insert(Entity entity){
-        string.append("( ").append(count).append(" )");
+        body.append("( ").append(count).append(" )");
         for (List<String> lst: entity.getData()) {
-            string.append(lst.get(0)).append(": ").append(lst.get(1)).append("\n");
+            body.append(lst.get(0)).append(": ").append(lst.get(1)).append("\n");
         }
-        string.append("\n");
+        body.append("\n");
         count += 1;
     }
 
@@ -37,6 +37,11 @@ public class EntityDisplay {
      * Prints out inserted Entities' data in a readable format
      */
     public void display(){
-        System.out.println(string);
+
+        if (count > 1){
+            System.out.println(title + body);
+        } else {
+            System.out.println(title + "(Empty)");
+        }
     }
 }
