@@ -17,7 +17,7 @@ public class AccountManager {
 
     Map<String, Account> accounts;
     String path;
-    private FileReadWriter frw;
+    private final FileReadWriter frw;
     /**
      * Class constructor
      * @param path Path of serialized accounts
@@ -43,6 +43,7 @@ public class AccountManager {
      * @param path Path of serialized accounts
      * @throws IOException if file can't be read
      * @throws ClassNotFoundException if serialized class doesn't exist
+     */
 
     private void readFromFile(String path) throws ClassNotFoundException, IOException {
         InputStream file = new FileInputStream(path);
@@ -51,12 +52,12 @@ public class AccountManager {
         accounts = (Map<String, Account>) input.readObject();
         input.close();
     }
-     */
 
     /**
      * Class constructor
      * @param path Path of serialized accounts
      * @throws IOException if file can't be written
+     */
     private void saveToFile(String path) throws IOException {
         OutputStream file = new FileOutputStream(path);
         OutputStream buffer = new BufferedOutputStream(file);
@@ -65,7 +66,6 @@ public class AccountManager {
         output.writeObject(accounts);
         output.close();
     }
-    */
 
     /**
      * Checks if username and password are valid alphanumeric + dash/underscore strings

@@ -1,6 +1,8 @@
 package main.java;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Represents an admin account in the main.java.Trade system. Admins are users with additional privileges, meaning they can
@@ -30,8 +32,8 @@ class AdminAccount extends Account {
 
     /**
      * Method required by implementations of Entity
-     * @return this class's attributes name and value in String format in a HashMap
+     * @return this class's attributes name and value in String format in a 2D List
      */
-    public HashMap<String, String> getData(){return new HashMap<>();}
+    public List<List<String>> getData(){return new ArrayList<>();}
 
 }

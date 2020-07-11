@@ -96,7 +96,7 @@ public class TraderSystem {
         ;
     }
 
-    public void addAdmin() {
+    public void addAdmin() throws IOException{
         //
         System.out.println("Enter the username of the user you would like to promote to admin: ");
         String username = input.readLine();
@@ -117,6 +117,8 @@ public class TraderSystem {
             System.out.println("The corresponding email is already in use");
         } catch (UsernameInUseException e) {
             System.out.println("The corresponding username is already in use");
+        } catch (IOException e) {
+            System.out.println("File could not be updated");
         }
     }
 

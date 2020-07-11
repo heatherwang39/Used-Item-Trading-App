@@ -44,9 +44,9 @@ abstract class Trade implements Serializable, Entity {
 
     /**
      * Method required by implementations of Entity
-     * @return this class's attributes name and value in String format in a HashMap
+     * @return this class's attributes name and value in String format in a 2D List
      */
-    public HashMap<String, String> getData(){return new HashMap<>();}
+    public List<List<String>> getData(){return new ArrayList<>();}
 
 
     /** Initialize a new instance of Trade. The default status of the trade will be set to 0,
