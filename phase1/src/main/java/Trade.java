@@ -210,13 +210,25 @@ abstract class Trade implements Serializable, Entity {
      */
     public boolean setMeeting(int meetingNumber, String place, LocalDateTime time)
             throws TimeException, MeetingNumberException, TradeCancelledException{
+
+        //Check if the Trade Cancelled (Throws TradeCancelledException)
+
         checkTradeCancelled();
+
+        //Check if the Meeting is already Confirmed
+
         if(getMeetingConfirmed(meetingNumber)){
             return false;
         }
+
+        //Check if the time of the Meeting is before now
+
         if(time.compareTo(LocalDateTime.now()) < 0){
             throw new TimeException();
         }
+
+        //Check if the previously suggested Meeting is at the same time as now
+
         if(getMeetingPlace(meetingNumber).equals(place) && getMeetingTime(meetingNumber).equals(time)){
             return false;
         }
@@ -234,6 +246,15 @@ abstract class Trade implements Serializable, Entity {
         }
         meetingPlaces.set(meetingNumber - 1, place);
         meetingTimes.set(meetingNumber - 1, time);
+
+        //Reset the status of the trade back to unaccepted and unconfirmed
+
+        int i = 0;
+        while(i < meetingAttendees.get(meetingNumber - 1).size()) {
+            meetingAccepted.get(meetingNumber).set(i, false);
+            meetingConfirmed.get(meetingNumber).set(i, false);
+            i++;
+        }
         return true;
     }
 
@@ -275,27 +296,40 @@ abstract class Trade implements Serializable, Entity {
      */
     public boolean acceptMeeting(int meetingNumber, String acceptor) throws NoMeetingException, WrongAccountException,
             MeetingNumberException, TradeCancelledException{
+
         checkMeetingExists(meetingNumber);
         checkTradeCancelled();
+
+        //Attempt to find the acceptor in the meeting
+
         List<String> users = meetingAttendees.get(meetingNumber - 1);
         int i = users.indexOf(acceptor);
+
+        //If the acceptor to this meeting doesn't exist, throw a WrongAccountException
+
         if(i == -1){throw new WrongAccountException();}
+
+        //Now we know the acceptor does exist. If the acceptor already accepted, return false
+
         List<Boolean> a = meetingAccepted.get(meetingNumber - 1);
         if(a.get(i)){
             return false;
         }
+
+        //Now we know the acceptor should finish accepting. Finish recording, and return true
+
         a.set(i, true);
         return true;
     }
 
 
-    /** Attempt to record the fact that attendee has confirmed the suggested meetingNumber-th Meeting. If this fact is
+    /** Attempt to record the fact that attendee has confirmed the accepted meetingNumber-th Meeting. If this fact is
      * successfully recorded, return True.
      *
      * @param meetingNumber The meeting that is trying to be confirmed
      * @param attendee The attendee confirming that the Meeting has happened
      * @return Whether the change has been successfully recorded
-     * @throws NoMeetingException Thrown if no meeting has been suggested
+     * @throws NoMeetingException Thrown if no meeting has been accepted
      * @throws WrongAccountException Thrown if the attendee was not been invited to this meeting
      * @throws TimeException Thrown if the Meeting was confirmed before it was supposed to take place
      * @throws MeetingNumberException Thrown when the meetingNumber-th isn't supposed to occur
@@ -303,24 +337,39 @@ abstract class Trade implements Serializable, Entity {
      */
     public boolean confirmMeeting(int meetingNumber, String attendee) throws NoMeetingException,
             WrongAccountException, TimeException, MeetingNumberException, TradeCancelledException{
+
         checkMeetingExists(meetingNumber);
-        if(!getMeetingConfirmed(meetingNumber)){throw new NoMeetingException();}
-        if(getMeetingTime(meetingNumber).compareTo(LocalDateTime.now()) < 0){
+        checkTradeCancelled();
+
+        //If the meeting hasn't been accepted, throw the NoMeetingException
+
+        if(!getMeetingAccepted(meetingNumber)){throw new NoMeetingException();}
+
+        //If the meeting isn't supposed to have happened yet, throw the TimeException.
+
+        if(getMeetingTime(meetingNumber).compareTo(LocalDateTime.now()) > 0){
             throw new TimeException();
         }
-        checkTradeCancelled();
+
+        //Try to find the person attempting to confirm the meeting
+
         List<String> users = meetingAttendees.get(meetingNumber - 1);
         int i = users.indexOf(attendee);
         if(i == -1){throw new WrongAccountException();}
+
+        //
+
         List<Boolean> a = meetingConfirmed.get(meetingNumber - 1);
         if(a.get(i)){
             return false;
         }
         a.set(i, true);
+
+        //If this is the last meeting and this meeting has been confirmed, finish the trade
+
         if(getMeetingConfirmed(meetingNumber) && meetingNumber == getNumMeetings()){
             setStatus(2);
         }
-
         return true;
     }
 
@@ -333,7 +382,7 @@ abstract class Trade implements Serializable, Entity {
      */
     public boolean getMeetingAccepted(int meetingNumber) throws MeetingNumberException{
         checkMeetingNumber(meetingNumber);
-        List<Boolean> meeting = meetingAccepted.get(meetingNumber);
+        List<Boolean> meeting = meetingAccepted.get(meetingNumber - 1);
         for(Boolean v : meeting){
             if(!v){
                 return false;
@@ -351,7 +400,7 @@ abstract class Trade implements Serializable, Entity {
      */
     public boolean getMeetingConfirmed(int meetingNumber) throws MeetingNumberException{
         checkMeetingNumber(meetingNumber);
-        List<Boolean> meeting = meetingConfirmed.get(meetingNumber);
+        List<Boolean> meeting = meetingConfirmed.get(meetingNumber - 1);
         for(Boolean v : meeting){
             if(!v){
                 return false;
@@ -402,7 +451,6 @@ abstract class Trade implements Serializable, Entity {
         meetingAttendees.add(copy);
 
         List<Boolean> accepted = new ArrayList();
-
         accepted.add(false);
         accepted.add(false);
         meetingAccepted.add(accepted);
