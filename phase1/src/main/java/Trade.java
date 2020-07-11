@@ -205,11 +205,11 @@ abstract class Trade implements Serializable, Entity {
      * @return Whether or not the change was successfully made
      * @throws TimeException Thrown if the suggested Meeting is at an invalid time
      * @throws MeetingNumberException Thrown when the meetingNumber-th isn't supposed to occur
-     * @throws TradeCancelledException Thrown if the trade has been cancelled due to the request or has previously been
-     * cancelled
+     * @throws TradeCancelledException Thrown if the trade has previously been cancelled
+     * @throws NoMoreWarningsException Thrown if the trade has been cancelled as a result of this action
      */
     public boolean setMeeting(int meetingNumber, String place, LocalDateTime time)
-            throws TimeException, MeetingNumberException, TradeCancelledException{
+            throws TimeException, MeetingNumberException, TradeCancelledException, NoMoreWarningsException{
 
         //Check if the Trade Cancelled (Throws TradeCancelledException)
 
@@ -241,7 +241,7 @@ abstract class Trade implements Serializable, Entity {
             warnings += 1;
             if (warnings > maxWarnings) {
                 setStatus(-1);
-                throw new TradeCancelledException();
+                throw new NoMoreWarningsException();
             }
         }
         meetingPlaces.set(meetingNumber - 1, place);
@@ -270,12 +270,12 @@ abstract class Trade implements Serializable, Entity {
      * @throws WrongAccountException Thrown if the suggester is not supposed to be part of the Meeting
      * @throws TimeException Thrown if the suggested Meeting is at an invalid time
      * @throws MeetingNumberException Thrown when the meetingNumber-th isn't supposed to occur
-     * @throws TradeCancelledException Thrown if the trade has been cancelled due to the request or has previously been
-     * cancelled
+     * @throws TradeCancelledException Thrown if the trade has previously been cancelled
+     * @throws NoMoreWarningsException Thrown if the trade has been cancelled as a result of this action
      */
     public boolean suggestMeeting(int meetingNumber, String place, LocalDateTime time,
                                     String suggester) throws WrongAccountException, TimeException,
-            MeetingNumberException, TradeCancelledException{
+            MeetingNumberException, TradeCancelledException, NoMoreWarningsException{
         boolean value = setMeeting(meetingNumber, place, time);
         try{acceptMeeting(meetingNumber, suggester);}
         catch(NoMeetingException e){}
