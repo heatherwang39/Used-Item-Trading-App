@@ -80,8 +80,8 @@ public class ItemManagerH {
      * @param brand The brand of the clothing
      */
     public void newClothes(String name, String description, String brand) throws IOException {
-        Clothes clothes = new Clothes(name, description, getNumberOfItems(), brand);
-        addItem(clothes);
+        Clothing clothing = new Clothing(name, description, getNumberOfItems(), brand);
+        addItem(clothing);
     }
     /**
      * Adds the id and the instance of Item to the overall list of Items

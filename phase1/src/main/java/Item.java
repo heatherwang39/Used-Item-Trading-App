@@ -2,7 +2,7 @@ package main.java;
 
 import java.io.Serializable;
 
-public abstract class Item implements Serializable {
+public abstract class Item implements Serializable, Entity {
     private String name;
     private String description;
     private int id;

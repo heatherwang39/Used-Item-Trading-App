@@ -29,6 +29,20 @@ public class ItemManager {
     }
 
     /**
+     * Gets an item based on id
+     * @param itemID integer item ID
+     * @throws ItemNotFoundException if no item with ID
+     * @return item
+     */
+    public Item getItem(int itemID) throws ItemNotFoundException{
+        Item item = items.get(itemID);
+        if (item == null) {
+            throw new ItemNotFoundException();
+        }
+        return item;
+    }
+
+    /**
      * Gets the total number of items added
      *
      * @return the size of items
@@ -74,8 +88,8 @@ public class ItemManager {
      * @param brand The brand of the clothing
      */
     public void newClothes(String name, String description, String brand) {
-        Clothes clothes = new Clothes(name, description, getNumberOfItems(), brand);
-        addItem(clothes);
+        Clothing clothing = new Clothing(name, description, getNumberOfItems(), brand);
+        addItem(clothing);
     }
     /**
      * Adds the id and the instance of Item to the overall list of Items

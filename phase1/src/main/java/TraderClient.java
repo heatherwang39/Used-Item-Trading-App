@@ -29,9 +29,9 @@ public class TraderClient {
             layerTwo(currUser);
 
         } catch (IOException e) {
-            System.out.println("Something went wrong.");
+            System.out.println("Files could not be read from.");
         } catch (ClassNotFoundException e) {
-            System.out.println("Required file(s) not found.");
+            System.out.println("Fiels are corrupt/improper.");
         } catch (AccountNotFoundException e) { //TODO: IMPORTANT needs edit/deleted later!!!!
             e.printStackTrace();
         }
@@ -50,7 +50,7 @@ public class TraderClient {
         String i = keyboard.readLine();
         try {
             if (i.equals("1")) {
-                return ts.signIn();
+                return ts.login();
             }
             if (i.equals("2")) {
                 return ts.register();

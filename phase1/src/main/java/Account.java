@@ -2,6 +2,7 @@ package main.java;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ import java.util.List;
  * @version %I%, %G%
  * @since Phase 1
  */
-abstract class Account implements Serializable {
+abstract class Account implements Serializable, Entity {
 
     private final String username;
     private final String password;
@@ -142,4 +143,10 @@ abstract class Account implements Serializable {
      * @param tradeNumber trade number
      */
     public void removeTradesReceived(int tradeNumber) { tradesReceived.remove(tradeNumber); }
+
+    /**
+     * Method required by implementations of Entity
+     * @return this class's attributes name and value in String format in a HashMap
+     */
+    public HashMap<String, String> getData(){return new HashMap<>();}
 }

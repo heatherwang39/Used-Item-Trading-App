@@ -1,8 +1,8 @@
 package main.java;
 
-import java.io.Serializable;
+import java.util.HashMap;
 
-public class Book extends Item implements Serializable {
+public class Book extends Item {
 
     private String author;
 
@@ -19,4 +19,10 @@ public class Book extends Item implements Serializable {
     public String toString(){
         return "Book name: " + getName() +", description: " + getDescription() + ", author: " + getAuthor() ;
     }
+
+    /**
+     * Method required by implementations of Entity
+     * @return this class's attributes name and value in String format in a HashMap
+     */
+    public HashMap<String, String> getData(){return new HashMap<>();}
 }

@@ -3,7 +3,7 @@ import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-abstract class Message{
+abstract class Message implements Entity {
     private String title;
     private String content;
     private String from;

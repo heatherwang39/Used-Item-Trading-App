@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
  * @version %I%, %G%
  * @since Phase 1
  */
-abstract class Trade implements Serializable {
+abstract class Trade implements Serializable, Entity {
     private final int tradeNumber;
     private int status;
     private List<TwoPersonMeeting> meetings;
@@ -510,4 +511,10 @@ abstract class Trade implements Serializable {
             warnings = 0;
         }
     }
+
+    /**
+     * Method required by implementations of Entity
+     * @return this class's attributes name and value in String format in a HashMap
+     */
+    public HashMap<String, String> getData(){return new HashMap<>();}
 }

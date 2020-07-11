@@ -1,5 +1,7 @@
 package main.java;
 
+import java.util.HashMap;
+
 /**
  * Represents an user account in the main.java.Trade system. Users have basic privileges, and can make offers so long as their
  * account isn't frozen.
@@ -40,7 +42,10 @@ public class UserAccount extends Account {
         return false;
     }
 
-
-
+    /**
+     * Method required by implementations of Entity
+     * @return this class's attributes name and value in String format in a HashMap
+     */
+    public HashMap<String, String> getData(){return new HashMap<>();}
 
 }

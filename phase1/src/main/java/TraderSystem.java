@@ -13,6 +13,8 @@ public class TraderSystem {
     private final ItemManager im;
     private final BufferedReader input;
 
+    private Account account;
+
     public TraderSystem(BufferedReader keyboard) throws IOException, ClassNotFoundException {
 
         input = keyboard;
@@ -29,7 +31,7 @@ public class TraderSystem {
     }
 
 
-    public Account signIn() throws IOException {
+    public Account login() throws IOException {
         try {
             System.out.println("Username: ");
             String username = input.readLine();
@@ -42,7 +44,7 @@ public class TraderSystem {
         } catch (AccountNotFoundException e){
             System.out.println("Invalid Username or Password. Please try again.");
         }
-        return signIn();
+        return login();
 
     }
 
@@ -77,6 +79,9 @@ public class TraderSystem {
         return am.getAccount(username);
     }
 
+    public void viewInventory(){
+        ;
+    }
 
     public void addItems() {
         ;
