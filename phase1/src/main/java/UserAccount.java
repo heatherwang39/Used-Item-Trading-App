@@ -1,6 +1,8 @@
 package main.java;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Represents an user account in the main.java.Trade system. Users have basic privileges, and can make offers so long as their
@@ -44,8 +46,8 @@ public class UserAccount extends Account {
 
     /**
      * Method required by implementations of Entity
-     * @return this class's attributes name and value in String format in a HashMap
+     * @return this class's attributes name and value in String format in a 2D List
      */
-    public HashMap<String, String> getData(){return new HashMap<>();}
+    public List<List<String>> getData(){return new ArrayList<>();}
 
 }

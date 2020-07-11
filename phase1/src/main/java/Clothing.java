@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Clothing extends Item {
 
-    private String brand;
+    private final String brand;
 
     public Clothing(String name, String description, int id, String brand) {
         super(name, description, id);
