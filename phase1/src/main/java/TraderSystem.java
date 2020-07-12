@@ -142,34 +142,63 @@ public class TraderSystem {
         }
     }
 
-    public void browseListings() throws IOException, AccountNotFoundException {
+    public void browseListings(Account user) {
         System.out.println("Here are all available item listings: ");
         List<Item> itemList = im.getVerifiedItems();
         int itemId;
         String usernameOfOwner;
+        int tradeId;
         for (int i = 0; i < itemList.size(); i++) {
             System.out.println(itemList.get(i).getName() + ", id:" + itemList.get(i).getID() + "\n");
         }
         System.out.println("What kind of request you want to make? 1.one way trade 2.two way trade");
-        switch (Integer.parseInt(input.readLine())) {
-            case 1:
-                System.out.println("Enter the id of the item you wish to trade:");
-                itemId = Integer.parseInt(input.readLine());
-                usernameOfOwner = am.getItemOwner(itemId);
-                System.out.println("What kind of trade you want to make? 1.temporary trade 2.Permanent trade");
-                switch (Integer.parseInt(input.readLine())) {
-                    case 1:
-                        //tm.newOWPTrade();
-                    case 2:
-                }
-
-            case 2:
-                System.out.println("Enter the id of the item you wish to trade:");
-                itemId = Integer.parseInt(input.readLine());
-                usernameOfOwner = am.getItemOwner(itemId);
-
+        try{
+            switch (Integer.parseInt(input.readLine())) {
+                case 1:
+                    System.out.println("Enter the id of the item you wish to trade:");
+                    itemId = Integer.parseInt(input.readLine());
+                    usernameOfOwner = am.getItemOwner(itemId);
+                    System.out.println("What kind of trade you want to make? 1.temporary trade 2.Permanent trade");
+                    switch (Integer.parseInt(input.readLine())) {
+                        case 1:
+                            tm.newOneWayTrade(false,usernameOfOwner,user.getUsername(),itemId);
+                            break;
+                        case 2:
+                            tm.newOneWayTrade(true,usernameOfOwner,user.getUsername(),itemId);
+                            break;
+                        default:
+                            throw new InvalidOptionException();
+                    }
+                    break;
+                case 2:
+                    System.out.println("Enter the id of the item you wish to trade:");
+                    itemId = Integer.parseInt(input.readLine());
+                    usernameOfOwner = am.getItemOwner(itemId);
+                    System.out.println("Enter the id of the your own item you wish to trade:");
+                    int itemIdOwn = Integer.parseInt(input.readLine());
+                    System.out.println("What kind of trade you want to make? 1.temporary trade 2.Permanent trade");
+                    switch (Integer.parseInt(input.readLine())) {
+                        case 1:
+                            tm.newTwoWayTrade(false,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
+                            break;
+                        case 2:
+                            tm.newTwoWayTrade(true,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
+                            break;
+                        default:
+                            throw new InvalidOptionException();
+                    }
+                    break;
+                default:
+                    throw new InvalidOptionException();
+            }
+        }catch(InvalidOptionException e){
+            System.out.println("Invalid Option detected. Please try again.");
+            browseListings(user);
+        }catch(AccountNotFoundException e){
+            System.out.println("Cannot get the owner of the selected item.");
+        }catch (IOException e) {
+            System.out.println("Unable to read file. Please restart the program.");
         }
-        // Here there should be an extension for the user to either do a Trade Request or a Borrow Request for an item
     }
 
 
@@ -258,22 +287,24 @@ public class TraderSystem {
 
     public void showItemRequests () {
         System.out.println("Here are the current item requests. Press 1 to accept and 2 to deny: ");
-        List<Item> unverifiedItemList = getUnverifiedItems();
+        List<Item> unverifiedItemList = im.getUnverifiedItems();
         int i = 0;
         while (i < unverifiedItemList.size()) {
             try {
                 System.out.println(unverifiedItemList.get(i));
 
-                String input = input.readLine();
-                if (input.equals("1")) {
-                    verifyItem(unverifiedItemList.get(i));
+                String userInput = input.readLine();
+                if (userInput.equals("1")) {
+                    im.verifyItem(unverifiedItemList.get(i).getID());
                     i++;
-                } else if (input.equals("2")) {
-                    removeItem(unverifiedItemList.get(i));
+                } else if (userInput.equals("2")) {
+                    im.removeItem(unverifiedItemList.get(i).getID());
                     i++;
                 }
-            } catch (InvalidOptionException e) {
-                System.out.println("Option not valid");
+            } catch (IOException e) {
+                System.out.println("Unable to read file. Please restart the program.");
+            } catch (ItemNotFoundException e) {
+                System.out.println("Unable to read file. Please restart the program.");
             }
         }
     }

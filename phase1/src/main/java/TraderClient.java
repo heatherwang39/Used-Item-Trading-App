@@ -75,7 +75,7 @@ public class TraderClient {
                     ts.addItem();
                     break;
                 case "3":
-                    ts.browseListings();
+                    ts.browseListings(user);
                     break;
                 case "4":
                     ts.showActivity();
