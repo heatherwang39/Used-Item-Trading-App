@@ -81,35 +81,75 @@ public class TraderSystem {
         return am.getAccount(username);
     }
 
-    public void viewInventory(){
-        ;
+    public void viewInventory() throws IOException{
+        EntityDisplay ed = new EntityDisplay("Your Inventory");
+        List<Integer> contraband = new ArrayList<>();
+        try {
+            for (int id: account.getInventory()){
+                try {
+                    ed.insert(im.getItem(id));
+                } catch (ItemNotFoundException e) {
+                    contraband.add(id);
+                }
+            }
+            if (!contraband.isEmpty()){
+                am.removeInventory(account.getUsername(), contraband);
+                System.out.println(Integer.toString(contraband.size()) + " item(s) were found to invalid and have " +
+                        "been removed from your account.");
+            }
+            ed.display();
+        } catch (AccountNotFoundException e) {
+            System.out.println("Your account is missing/deleted from the system. Please restart this program.");
+        }
     }
 
 
-    public void addItems() {
-        System.out.println("Enter the name of the item you wish to add to your inventory: ");
-        String item = input.readLine();
-        addItem(item);
+    public void addItem() throws IOException {
+        System.out.println("Enter the name of the item:");
+        String name = input.readLine();
+        System.out.println("Enter a short description:");
+        String description = input.readLine();
+        System.out.println("Enter the type of item (Book, Clothing, misc.):");
+        switch (input.readLine().toLowerCase()){
+            case "book":
+                System.out.println("Enter the name of the author:");
+                String author = input.readLine();
+                try {
+                    im.newBook(name, description, author);
+                } catch (IOException e) {
+                    System.out.println("Unable to read file. Please restart the program.");
+                }
+                System.out.println("Item was successfully added!");
+            case "clothing":
+                System.out.println("Enter the name of the brand:");
+                String brand = input.readLine();
+                try {
+                    im.newClothing(name, description, brand);
+                } catch (IOException e) {
+                    System.out.println("Unable to read file. Please restart the program.");
+                }
+                System.out.println("Item was successfully added!");
+            default:
+                System.out.println("Type not recognize/is misc.");
+                try {
+                    im.newMiscItem(name, description);
+                } catch (IOException e) {
+                    System.out.println("Unable to read file. Please restart the program.");
+                }
+                System.out.println("Item was successfully added!");
+        }
     }
 
     public void browseListings() {
         System.out.println("Here are all available item listings: ");
-        List<Item> itemList = im.getVerifiedItems();
+        Item<List> itemList = getVerifiedItems();
         for (int i = 0; i < itemList.size(); i++){
-            System.out.println(itemList.get(i).getName() + ", id:" + itemList.get(i).getID()+ "\n");
+            System.out.println(itemList.get(i) + "\n");
         }
         // Here there should be an extension for the user to either do a Trade Request or a Borrow Request for an item
     }
 
-    public void RequestTrade() throws IOException, AccountNotFoundException {
-        System.out.println("Enter the id of the item you wish to trade:");
-        int itemId = Integer.parseInt(input.readLine());
-        String usernameOfOwner = am.getItemOwner(itemId);
-    }
-
-
-
-    public void addAdmin() throws IOException{
+    public void addAdmin() throws IOException {
         System.out.println("Enter the username of the user you would like to promote to admin: ");
         String username = input.readLine();
         try {
@@ -167,13 +207,12 @@ public class TraderSystem {
 
     /**
      * Shows the user what trades they currently have active
-     * @param user the user who is checking their active trades
      */
-    public void showActiveTrades(Account user) {
+    public void showActiveTrades() {
         try {
             StringBuilder sb = new StringBuilder("Here are your active trades");
-            List<Integer> allTrades = new ArrayList<Integer>(am.getTradesReceived(user));
-            allTrades.addAll(am.getTradesOffered(user));
+            List<Integer> allTrades = new ArrayList<Integer>(account.getTradesReceived());
+            allTrades.addAll(account.getTradesOffered());
             for (Integer tradeNumber : allTrades) {
                 if (tm.checkActiveTrade(tradeNumber)){
                     sb.append(", ");
@@ -189,7 +228,7 @@ public class TraderSystem {
 
     public void showItemRequests(){
         System.out.println("Here are the current item requests. Press 1 to accept and 2 to deny: ");
-        List<Item> unverifiedItemList = im.getUnverifiedItems();
+        List<Item> unverifiedItemList = getUnverifiedItems();
         int i = 0;
 
         while (i < unverifiedItemList.size()){
@@ -198,20 +237,21 @@ public class TraderSystem {
 
                 String input = input.readLine();
                 if (input.equals("1")) {
-                    im.verifyItem(unverifiedItemList.get(i));
+                    verifyItem(unverifiedItemList.get(i));
                     i++;
                 } else if (input.equals("2")) {
-                    im.removeItem(unverifiedItemList.get(i));
+                    removeItem(unverifiedItemList.get(i));
                     i++;
                 }
             } catch(InvalidOptionException e){
                 System.out.println("Option not valid");
+
             }
         }
     }
 
     public void showFreezeUsers(){
-        ;
+
     }
 
     public void updateTradeThreshold(int newThreshold){
