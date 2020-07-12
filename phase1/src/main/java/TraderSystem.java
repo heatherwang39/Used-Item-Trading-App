@@ -81,8 +81,26 @@ public class TraderSystem {
         return am.getAccount(username);
     }
 
-    public void viewInventory(){
-        ;
+    public void viewInventory() throws IOException{
+        EntityDisplay ed = new EntityDisplay("Your Inventory");
+        List<Integer> contraband = new ArrayList<>();
+        try {
+            for (int id: account.getInventory()){
+                try {
+                    ed.insert(im.getItem(id));
+                } catch (ItemNotFoundException e) {
+                    contraband.add(id);
+                }
+            }
+            if (!contraband.isEmpty()){
+                am.removeInventory(account.getUsername(), contraband);
+                System.out.println(Integer.toString(contraband.size()) + " item(s) were found to invalid and have " +
+                        "been removed from your account.");
+            }
+            ed.display();
+        } catch (AccountNotFoundException e) {
+            System.out.println("Your account is missing/deleted from the system. Please restart this program.");
+        }
     }
 
 
@@ -189,13 +207,12 @@ public class TraderSystem {
 
     /**
      * Shows the user what trades they currently have active
-     * @param user the user who is checking their active trades
      */
-    public void showActiveTrades(Account user) {
+    public void showActiveTrades() {
         try {
             StringBuilder sb = new StringBuilder("Here are your active trades");
-            List<Integer> allTrades = new ArrayList<Integer>(am.getTradesReceived(user));
-            allTrades.addAll(am.getTradesOffered(user));
+            List<Integer> allTrades = new ArrayList<Integer>(account.getTradesReceived());
+            allTrades.addAll(account.getTradesOffered());
             for (Integer tradeNumber : allTrades) {
                 if (tm.checkActiveTrade(tradeNumber)){
                     sb.append(", ");
@@ -234,7 +251,7 @@ public class TraderSystem {
     }
 
     public void showFreezeUsers(){
-        ;
+
     }
 
     public void updateTradeThreshold(int newThreshold){
