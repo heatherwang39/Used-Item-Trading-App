@@ -86,10 +86,40 @@ public class TraderSystem {
     }
 
 
-    public void addItems() {
-        System.out.println("Enter the name of the item you wish to add to your inventory: ");
-        String item = input.readLine();
-        addItem(item);
+    public void addItem() throws IOException {
+        System.out.println("Enter the name of the item:");
+        String name = input.readLine();
+        System.out.println("Enter a short description:");
+        String description = input.readLine();
+        System.out.println("Enter the type of item (Book, Clothing, misc.):");
+        switch (input.readLine().toLowerCase()){
+            case "book":
+                System.out.println("Enter the name of the author:");
+                String author = input.readLine();
+                try {
+                    im.newBook(name, description, author);
+                } catch (IOException e) {
+                    System.out.println("Unable to read file. Please restart the program.");
+                }
+                System.out.println("Item was successfully added!");
+            case "clothing":
+                System.out.println("Enter the name of the brand:");
+                String brand = input.readLine();
+                try {
+                    im.newClothing(name, description, brand);
+                } catch (IOException e) {
+                    System.out.println("Unable to read file. Please restart the program.");
+                }
+                System.out.println("Item was successfully added!");
+            default:
+                System.out.println("Type not recognize/is misc.");
+                try {
+                    im.newMiscItem(name, description);
+                } catch (IOException e) {
+                    System.out.println("Unable to read file. Please restart the program.");
+                }
+                System.out.println("Item was successfully added!");
+        }
     }
 
     public void browseListings() {
@@ -101,7 +131,7 @@ public class TraderSystem {
         // Here there should be an extension for the user to either do a Trade Request or a Borrow Request for an item
     }
 
-    public void addAdmin() throws IOException{
+    public void addAdmin() throws IOException {
         System.out.println("Enter the username of the user you would like to promote to admin: ");
         String username = input.readLine();
         try {
