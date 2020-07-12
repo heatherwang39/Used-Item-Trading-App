@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  * @version %I%, %G%
  * @since Phase 1
  */
-public class AccountManager {
+public class AccountStorage {
 
     Map<String, Account> accounts;
     String path;
@@ -24,7 +24,7 @@ public class AccountManager {
      * @throws IOException if file can't be read
      * @throws ClassNotFoundException if serialized class doesn't exist
      */
-    public AccountManager(String path) throws IOException, ClassNotFoundException {
+    public AccountStorage(String path) throws IOException, ClassNotFoundException {
         accounts = new HashMap<>();
         this.path = path;
         File file = new File(path);

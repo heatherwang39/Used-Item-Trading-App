@@ -10,8 +10,8 @@ public class TraderSystem {
     String accountsPath = "phase1/src/main/resources/serializedaccounts.ser";
     String itemRequestsPath = "phase1/src/main/resources/serializeditemrequests.ser";
 
-    private final AccountManager am;
-    private final TradeManager tm;
+    private final AccountStorage am;
+    private final TradeStorage tm;
     private final ItemStorage im;
     private final BufferedReader input;
 
@@ -20,9 +20,9 @@ public class TraderSystem {
     public TraderSystem(BufferedReader keyboard) throws IOException, ClassNotFoundException {
 
         input = keyboard;
-        tm = new TradeManager(tradesPath);
+        tm = new TradeStorage(tradesPath);
         im = new ItemStorage(itemsPath);
-        am = new AccountManager(accountsPath);
+        am = new AccountStorage(accountsPath);
 
         try {
             am.createAdminAccount("admin", "admin", "admin@trader.org");
@@ -142,20 +142,36 @@ public class TraderSystem {
         }
     }
 
-    public void browseListings() {
+    public void browseListings() throws IOException, AccountNotFoundException {
         System.out.println("Here are all available item listings: ");
         List<Item> itemList = im.getVerifiedItems();
+        int itemId;
+        String usernameOfOwner;
         for (int i = 0; i < itemList.size(); i++) {
             System.out.println(itemList.get(i).getName() + ", id:" + itemList.get(i).getID() + "\n");
+        }
+        System.out.println("What kind of request you want to make? 1.one way trade 2.two way trade");
+        switch (Integer.parseInt(input.readLine())) {
+            case 1:
+                System.out.println("Enter the id of the item you wish to trade:");
+                itemId = Integer.parseInt(input.readLine());
+                usernameOfOwner = am.getItemOwner(itemId);
+                System.out.println("What kind of trade you want to make? 1.temporary trade 2.Permanent trade");
+                switch (Integer.parseInt(input.readLine())) {
+                    case 1:
+                        //tm.newOWPTrade();
+                    case 2:
+                }
+
+            case 2:
+                System.out.println("Enter the id of the item you wish to trade:");
+                itemId = Integer.parseInt(input.readLine());
+                usernameOfOwner = am.getItemOwner(itemId);
+
         }
         // Here there should be an extension for the user to either do a Trade Request or a Borrow Request for an item
     }
 
-    public void RequestTrade() throws IOException, AccountNotFoundException {
-        System.out.println("Enter the id of the item you wish to trade:");
-        int itemId = Integer.parseInt(input.readLine());
-        String usernameOfOwner = am.getItemOwner(itemId);
-    }
 
 
     public void addAdmin() throws IOException {

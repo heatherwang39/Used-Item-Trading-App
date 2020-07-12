@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 abstract class Message implements Entity {
     private String title;
     private String content;
-    private String from;
+    private String sender;
     private String to;
     private Date generatedDate;
     private static final DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");

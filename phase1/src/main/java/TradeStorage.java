@@ -12,18 +12,18 @@ import java.util.List;
  * @since Phase 1
  */
 
-public class TradeManager {
+public class TradeStorage {
     private List<Trade> trades;
     private String path;
     private FileReadWriter frw;
 
     /**
-     * Creates a new TradeManager.
+     * Creates a new TradeStorage.
      *
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public TradeManager(String filePath) throws IOException, ClassNotFoundException {
+    public TradeStorage(String filePath) throws IOException, ClassNotFoundException {
         path = filePath;
         frw = new FileReadWriter(path);
         File file = new File(path);
@@ -102,38 +102,6 @@ public class TradeManager {
         return t.getTradeNumber();
     }
 
-    /**
-     * Reads the trades from file at filepath, populating trades.
-     *
-     * @param path the file to read the trades from
-     * @throws IOException
-
-    public void readFromFile(String path) throws ClassNotFoundException, IOException {
-        InputStream file = new FileInputStream(path);
-        InputStream buffer = new BufferedInputStream(file);
-        ObjectInput input = new ObjectInputStream(buffer);
-
-        while (input.available() > 0) {
-            trades = (List<Trade>) input.readObject();
-        }
-        input.close();
-    }
-     */
-
-    /**
-     * Writes the trades to the file at filepath.
-     *
-     * @param filePath the file to write the trades to
-     * @throws IOException
-
-    public void saveToFile(String filePath) throws IOException {
-        OutputStream file = new FileOutputStream(filePath);
-        OutputStream buffer = new BufferedOutputStream(file);
-        ObjectOutput output = new ObjectOutputStream(buffer);
-
-        output.writeObject(trades);
-        output.close();
-    }*/
 
     /** Returns the Trade that corresponds to the given tradeNumber
      *
