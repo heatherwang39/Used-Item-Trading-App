@@ -149,4 +149,24 @@ public class TradeManager {
         }
         throw new TradeNumberException();
     }
+
+    public List<Integer> getItemsInTrade(int tradeNumber) throws TradeNumberException{
+        for(Trade t:trades){
+            if(t.getTradeNumber() == tradeNumber){
+                return t.getItemsOriginal();
+            }
+        }
+        throw new TradeNumberException();
+    }
+
+    /**
+     * Returns whether the trade with the corresponding trade number is currently ongoing
+     * @param tradeNumber the tradeNumber of the Trade that is to be checked
+     * @return true if trade is on going, false if it is not
+     * @throws TradeNumberException if no Trade with the given tradeNumber can be found
+     */
+    public boolean checkActiveTrade(int tradeNumber) throws TradeNumberException {
+        Trade trade = trades.get(tradeNumber);
+        return trade.getStatus() == 1;
+    }
 }

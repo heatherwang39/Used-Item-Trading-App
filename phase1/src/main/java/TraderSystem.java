@@ -1,9 +1,7 @@
 package main.java;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class TraderSystem {
 
@@ -17,7 +15,7 @@ public class TraderSystem {
     private final ItemManager im;
     private final BufferedReader input;
 
-    private String username;
+    private Account account;
 
     public TraderSystem(BufferedReader keyboard) throws IOException, ClassNotFoundException {
 
@@ -43,13 +41,13 @@ public class TraderSystem {
             String pw = input.readLine();
 
             if (am.tryLogin(username, pw)){
-                this.username = username;
                 return am.getAccount(username);
             } else { throw new AccountNotFoundException(); }
         } catch (AccountNotFoundException e){
             System.out.println("Invalid Username or Password. Please try again.");
         }
         return login();
+
     }
 
     public Account register() throws IOException, AccountNotFoundException { //this doesn't work properly yet need to fix some stuff
@@ -83,69 +81,49 @@ public class TraderSystem {
         return am.getAccount(username);
     }
 
-    public void viewInventory() throws IOException{
-        EntityDisplay ed = new EntityDisplay("Your Inventory");
-        List<Integer> contraband = new ArrayList<>();
-        try {
-            for (int id: am.getAccount(username).getInventory()){
-                try {
-                    ed.insert(im.getItem(id));
-                } catch (ItemNotFoundException e) {
-                    contraband.add(id);
-                }
-            }
-            if (!contraband.isEmpty()){
-                am.removeInventory(username, contraband);
-                System.out.println(Integer.toString(contraband.size()) + " item(s) were found to invalid and have " +
-                        "been removed from your account.");
-                }
-            ed.display();
-        } catch (AccountNotFoundException e) {
-            System.out.println("Your account is missing/deleted from the system. Please restart this program.");
-        }
-
-
+    public void viewInventory(){
+        ;
     }
 
-    public void addItem() throws IOException {
-        System.out.println("Enter the name of the item:");
-        String name = input.readLine();
-        Item item = im.addItem(name);
 
+    public void addItems() {
+        System.out.println("Enter the name of the item you wish to add to your inventory: ");
+        String item = input.readLine();
+        addItem(item);
     }
 
     public void browseListings() {
         System.out.println("Here are all available item listings: ");
-        List<Item> itemList = getVerifiedItems();
-        for (Item item : itemList) {
-            System.out.println(item + "\n");
+        Item<List> itemList = getVerifiedItems();
+        for (int i = 0; i < itemList.size(); i++){
+            System.out.println(itemList.get(i) + "\n");
         }
         // Here there should be an extension for the user to either do a Trade Request or a Borrow Request for an item
     }
 
     public void addAdmin() throws IOException{
-        //
         System.out.println("Enter the username of the user you would like to promote to admin: ");
         String username = input.readLine();
         try {
             Account user = am.getAccount(username);
-            if (user.isAdmin()) System.out.println("User with corresponding username is already an admin");
+            if (user.isAdmin()) System.out.println("User with corresponding username is already an admin.");
             else {
                 am.removeUserAccount(username);
                 am.createAdminAccount(username, user.getPassword(), user.getEmail());
+                System.out.println("User has been promoted to an admin account.");
             }
         } catch (AccountNotFoundException e){
-            System.out.println("User with corresponding username was not found in the database");
+            System.out.println("User with corresponding username was not found in the database.");
         } catch (InvalidLoginException e) {
-            System.out.println("The corresponding username is invalid");
+            System.out.println("The corresponding username is invalid.");
         } catch (InvalidEmailException e) {
-            System.out.println("The corresponding email is invalid");
+            System.out.println("The corresponding email is invalid.");
         } catch (EmailInUseException e) {
-            System.out.println("The corresponding email is already in use");
+            System.out.println("The corresponding email is already in use.");
         } catch (UsernameInUseException e) {
-            System.out.println("The corresponding username is already in use");
+            System.out.println("The corresponding username is already in use.");
         } catch (IOException e) {
-            System.out.println("File could not be updated");
+            System.out.println("File could not be updated.");
         }
     }
 
@@ -154,13 +132,52 @@ public class TraderSystem {
         ;
     }
 
-    public void showOffers(){
-        ;
+    /**
+     * Shows the user what offers have been made to them.
+     * @param user the user who is checking their received offers
+     * @throws TradeNumberException
+     * @throws ItemNotFoundException
+     */
+    public void showOffers(Account user) throws TradeNumberException, ItemNotFoundException {
+        try {
+            List<Integer> tradesReceived = am.getTradesReceived(user);
+            StringBuilder sb = new StringBuilder("Here are offers you have received");
+            for (Integer tradeNumber : tradesReceived) {
+                sb.append(", ");
+                Trade trade = tm.getTrade(tradeNumber);
+                sb.append(am.getAccountOffering(tradeNumber));
+                sb.append(" asks for ");
+                sb.append(im.getItemName(tm.getItemsInTrade(tradeNumber).get(0)));
+            }
+            System.out.println(sb);
+        } catch (TradeNumberException e){
+            System.out.println("There is an error in the trade inventory, the trade number should not exist.");
+        } catch (ItemNotFoundException e){
+            System.out.println("There is an error in the item inventory, the item should not exist.");
+        }
     }
 
-    public void showActiveTrades(){
-        ;
-    }
+    /**
+     * Shows the user what trades they currently have active
+     * @param user the user who is checking their active trades
+     */
+    public void showActiveTrades(Account user) {
+        try {
+            StringBuilder sb = new StringBuilder("Here are your active trades");
+            List<Integer> allTrades = new ArrayList<Integer>(am.getTradesReceived(user));
+            allTrades.addAll(am.getTradesOffered(user));
+            for (Integer tradeNumber : allTrades) {
+                if (tm.checkActiveTrade(tradeNumber)){
+                    sb.append(", ");
+                    sb.append(im.getItemName(tm.getItemsInTrade(tradeNumber).get(0)));
+                }
+            }
+            System.out.println(sb);
+        } catch (ItemNotFoundException e) {
+            System.out.println("There is an error in the trade inventory, the trade number should not exist.");
+        } catch (TradeNumberException e) {
+            System.out.println("There is an error in the item inventory, the item should not exist.");
+        }
 
     public void showItemRequests(){
         System.out.println("Here are the current item requests. Press 1 to accept and 2 to deny: ");
