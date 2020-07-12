@@ -1,6 +1,7 @@
 package main.java;
 
 import java.io.*;
+import java.util.*;
 
 public class TraderSystem {
 
@@ -11,7 +12,7 @@ public class TraderSystem {
 
     private final AccountManager am;
     private final TradeManager tm;
-    private final ItemManager im;
+    private final ItemStorage im;
     private final BufferedReader input;
 
     private Account account;
@@ -20,7 +21,7 @@ public class TraderSystem {
 
         input = keyboard;
         tm = new TradeManager(tradesPath);
-        im = new ItemManager(itemsPath);
+        im = new ItemStorage(itemsPath);
         am = new AccountManager(accountsPath);
 
         try {
@@ -101,28 +102,28 @@ public class TraderSystem {
     }
 
     public void addAdmin() throws IOException{
-        //
         System.out.println("Enter the username of the user you would like to promote to admin: ");
         String username = input.readLine();
         try {
             Account user = am.getAccount(username);
-            if (user.isAdmin()) System.out.println("User with corresponding username is already an admin");
+            if (user.isAdmin()) System.out.println("User with corresponding username is already an admin.");
             else {
                 am.removeUserAccount(username);
                 am.createAdminAccount(username, user.getPassword(), user.getEmail());
+                System.out.println("User has been promoted to an admin account.");
             }
         } catch (AccountNotFoundException e){
-            System.out.println("User with corresponding username was not found in the database");
+            System.out.println("User with corresponding username was not found in the database.");
         } catch (InvalidLoginException e) {
-            System.out.println("The corresponding username is invalid");
+            System.out.println("The corresponding username is invalid.");
         } catch (InvalidEmailException e) {
-            System.out.println("The corresponding email is invalid");
+            System.out.println("The corresponding email is invalid.");
         } catch (EmailInUseException e) {
-            System.out.println("The corresponding email is already in use");
+            System.out.println("The corresponding email is already in use.");
         } catch (UsernameInUseException e) {
-            System.out.println("The corresponding username is already in use");
+            System.out.println("The corresponding username is already in use.");
         } catch (IOException e) {
-            System.out.println("File could not be updated");
+            System.out.println("File could not be updated.");
         }
     }
 
@@ -131,13 +132,52 @@ public class TraderSystem {
         ;
     }
 
-    public void showOffers(){
-        ;
+    /**
+     * Shows the user what offers have been made to them.
+     * @param user the user who is checking their received offers
+     * @throws TradeNumberException
+     * @throws ItemNotFoundException
+     */
+    public void showOffers(Account user) throws TradeNumberException, ItemNotFoundException {
+        try {
+            List<Integer> tradesReceived = am.getTradesReceived(user);
+            StringBuilder sb = new StringBuilder("Here are offers you have received");
+            for (Integer tradeNumber : tradesReceived) {
+                sb.append(", ");
+                Trade trade = tm.getTrade(tradeNumber);
+                sb.append(am.getAccountOffering(tradeNumber));
+                sb.append(" asks for ");
+                sb.append(im.getItemName(tm.getItemsInTrade(tradeNumber).get(0)));
+            }
+            System.out.println(sb);
+        } catch (TradeNumberException e){
+            System.out.println("There is an error in the trade inventory, the trade number should not exist.");
+        } catch (ItemNotFoundException e){
+            System.out.println("There is an error in the item inventory, the item should not exist.");
+        }
     }
 
-    public void showActiveTrades(){
-        ;
-    }
+    /**
+     * Shows the user what trades they currently have active
+     * @param user the user who is checking their active trades
+     */
+    public void showActiveTrades(Account user) {
+        try {
+            StringBuilder sb = new StringBuilder("Here are your active trades");
+            List<Integer> allTrades = new ArrayList<Integer>(am.getTradesReceived(user));
+            allTrades.addAll(am.getTradesOffered(user));
+            for (Integer tradeNumber : allTrades) {
+                if (tm.checkActiveTrade(tradeNumber)){
+                    sb.append(", ");
+                    sb.append(im.getItemName(tm.getItemsInTrade(tradeNumber).get(0)));
+                }
+            }
+            System.out.println(sb);
+        } catch (ItemNotFoundException e) {
+            System.out.println("There is an error in the trade inventory, the trade number should not exist.");
+        } catch (TradeNumberException e) {
+            System.out.println("There is an error in the item inventory, the item should not exist.");
+        }
 
     public void showItemRequests(){
         System.out.println("Here are the current item requests. Press 1 to accept and 2 to deny: ");
