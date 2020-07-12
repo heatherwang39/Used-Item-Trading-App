@@ -190,16 +190,13 @@ public class TraderSystem {
     /**
      * Shows the user what offers have been made to them.
      * @param user the user who is checking their received offers
-     * @throws TradeNumberException
-     * @throws ItemNotFoundException
      */
-    public void showOffers(Account user) throws TradeNumberException, ItemNotFoundException {
+    public void showOffers(Account user) {
         try {
             List<Integer> tradesReceived = am.getTradesReceived(user);
             StringBuilder sb = new StringBuilder("Here are offers you have received");
             for (Integer tradeNumber : tradesReceived) {
                 sb.append(", ");
-                Trade trade = tm.getTrade(tradeNumber);
                 sb.append(am.getAccountOffering(tradeNumber));
                 sb.append(" asks for ");
                 sb.append(im.getItemName(tm.getItemsInTrade(tradeNumber).get(0)));
@@ -209,17 +206,20 @@ public class TraderSystem {
             System.out.println("There is an error in the trade inventory, the trade number should not exist.");
         } catch (ItemNotFoundException e){
             System.out.println("There is an error in the item inventory, the item should not exist.");
+        } catch (AccountNotFoundException e) {
+            System.out.println("There is an error in the item inventory, the account should not exist.");
         }
     }
 
     /**
      * Shows the user what trades they currently have active
+     * @param user the user who is checking their active trades
      */
-    public void showActiveTrades() {
+    public void showActiveTrades(Account user) {
         try {
             StringBuilder sb = new StringBuilder("Here are your active trades");
-            List<Integer> allTrades = new ArrayList<Integer>(account.getTradesReceived());
-            allTrades.addAll(account.getTradesOffered());
+            List<Integer> allTrades = new ArrayList<>(am.getTradesReceived(user));
+            allTrades.addAll(am.getTradesOffered(user));
             for (Integer tradeNumber : allTrades) {
                 if (tm.checkActiveTrade(tradeNumber)){
                     sb.append(", ");
@@ -231,9 +231,11 @@ public class TraderSystem {
             System.out.println("There is an error in the trade inventory, the trade number should not exist.");
         } catch (TradeNumberException e) {
             System.out.println("There is an error in the item inventory, the item should not exist.");
+        } catch (AccountNotFoundException e) {
+            e.printStackTrace();
         }
 
-    public void showItemRequests(){
+        public void showItemRequests(){
         System.out.println("Here are the current item requests. Press 1 to accept and 2 to deny: ");
         List<Item> unverifiedItemList = getUnverifiedItems();
         int i = 0;

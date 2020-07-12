@@ -254,6 +254,34 @@ public class AccountManager {
     }
 
     /**
+     * Returns the trade offers the user has received.
+     * @param user the user account
+     * @return list of trade IDs
+     * @throws AccountNotFoundException no account is found
+     */
+    public List<Integer> getTradesReceived(Account user) throws AccountNotFoundException {
+        if (accounts.containsKey(user.getUsername())){
+            return user.getTradesReceived();
+        } else {
+            throw new AccountNotFoundException();
+        }
+    }
+
+    /**
+     * Returns the trade offers the user has sent.
+     * @param user the user account
+     * @return list of trade IDs
+     * @throws AccountNotFoundException no account is found
+     */
+    public List<Integer> getTradesOffered(Account user) throws AccountNotFoundException {
+        if (accounts.containsKey(user.getUsername())){
+            return user.getTradesOffered();
+        } else {
+            throw new AccountNotFoundException();
+        }
+    }
+
+    /**
      * Add item ID to account inventory
      * @throws AccountNotFoundException account not found under username
      * @throws IOException if file can't be saved to
