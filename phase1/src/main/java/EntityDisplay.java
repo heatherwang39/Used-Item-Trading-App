@@ -9,7 +9,7 @@ import java.util.List;
  * @since Phase 1
  */
 public class EntityDisplay {
-    private String title;
+    private final String title;
     private final StringBuilder body = new StringBuilder();
     private int count = 1;
 
