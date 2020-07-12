@@ -272,6 +272,94 @@ public class TraderSystem {
 
 
 
+    //Does not update the users wishlist
+    //WILL RETURN ALL ITEMS BACK TO THEIR ORIGINAL OWNERS
+    private void processCancelledTrade(int tradeNumber) throws TradeNumberException, AccountNotFoundException{
+        Trade trade = tm.getTrade(tradeNumber);
+        List<String> users = trade.getTraders();
+        List<Integer> items = trade.getItemsOriginal();
+        int i = 0;
+        while(i < users.size()){
+            if(!(items.get(i) == null)){
+                Account a = am.getAccount(users.get(i));
+                a.addInventory(items.get(i));
+            }
+
+            i++;
+        }
+        //The below line is purely optional
+        trade.setStatus(-1);
+    }
 
 
+    //Does not update the users wishlist
+    //WILL CANCEL ALL TRADES THAT CONTAIN ONE OF THE ITEMS
+    //WILL REMOVE ALL ITEMS BACK TO THEIR ORIGINAL OWNERS
+    private void processAcceptedTrade(int tradeNumber) throws TradeNumberException, AccountNotFoundException,
+            ItemNotFoundException{
+        Trade trade = tm.getTrade(tradeNumber);
+        List<String> users = trade.getTraders();
+        List<Integer> items = trade.getItemsOriginal();
+        int i = 0;
+
+        while(i < users.size()){
+
+            //Check if you need to do anything to the user
+
+            if(!(items.get(i) == null)){
+                Account a = am.getAccount(users.get(i));
+
+                //Cancel Trades Offered by the Original User that contain the item
+
+                List<Integer> tradesOffered = a.getTradesOffered();
+                for(Integer x: tradesOffered){
+                    Trade tx = tm.getTrade(x);
+                    if(tx.getStatus() == 0){
+                        if(tx.getItemsOriginal().contains(items.get(i))){
+                            tx.setStatus(-1);
+                        }
+                    }
+                }
+
+                //Cancel Trades Received by the Original User that contain the item
+
+                List<Integer> tradesReceived = a.getTradesReceived();
+                for(Integer x: tradesReceived){
+                    Trade tx = tm.getTrade(x);
+                    if(tx.getStatus() == 0){
+                        if(tx.getItemsOriginal().contains(items.get(i))) {
+                            tx.setStatus(-1);
+                        }
+                    }
+                }
+
+                //Remove the item from the User
+
+                a.removeInventory(items.get(i));
+            }
+
+            i++
+        }
+        trade.setStatus(1);
+    }
+
+
+    //Does not update the users wishlist
+    //WILL GIVE ALL ITEMS TO THEIR NEW OWNERS
+    private void processCompletedTrade(int tradeNumber) throws TradeNumberException, AccountNotFoundException{
+        Trade trade = tm.getTrade(tradeNumber);
+        List<String> users = trade.getTraders();
+        List<Integer> items = trade.getItemsFinal();
+        int i = 0;
+        while(i < users.size()){
+            if(!(items.get(i) == null)){
+                Account a = am.getAccount(users.get(i));
+                a.addInventory(items.get(i));
+            }
+
+            i++;
+        }
+        //The below line is purely optional
+        trade.setStatus(2);
+    }
 }
