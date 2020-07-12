@@ -94,12 +94,20 @@ public class TraderSystem {
 
     public void browseListings() {
         System.out.println("Here are all available item listings: ");
-        Item<List> itemList = getVerifiedItems();
+        List<Item> itemList = im.getVerifiedItems();
         for (int i = 0; i < itemList.size(); i++){
-            System.out.println(itemList.get(i) + "\n");
+            System.out.println(itemList.get(i).getName() + ", id:" + itemList.get(i).getID()+ "\n");
         }
         // Here there should be an extension for the user to either do a Trade Request or a Borrow Request for an item
     }
+
+    public void RequestTrade() throws IOException, AccountNotFoundException {
+        System.out.println("Enter the id of the item you wish to trade:");
+        int itemId = Integer.parseInt(input.readLine());
+        String usernameOfOwner = am.getItemOwner(itemId);
+    }
+
+
 
     public void addAdmin() throws IOException{
         System.out.println("Enter the username of the user you would like to promote to admin: ");
@@ -181,7 +189,7 @@ public class TraderSystem {
 
     public void showItemRequests(){
         System.out.println("Here are the current item requests. Press 1 to accept and 2 to deny: ");
-        List<Item> unverifiedItemList = getUnverifiedItems();
+        List<Item> unverifiedItemList = im.getUnverifiedItems();
         int i = 0;
 
         while (i < unverifiedItemList.size()){
@@ -190,15 +198,14 @@ public class TraderSystem {
 
                 String input = input.readLine();
                 if (input.equals("1")) {
-                    verifyItem(unverifiedItemList.get(i));
+                    im.verifyItem(unverifiedItemList.get(i));
                     i++;
                 } else if (input.equals("2")) {
-                    removeItem(unverifiedItemList.get(i));
+                    im.removeItem(unverifiedItemList.get(i));
                     i++;
                 }
             } catch(InvalidOptionException e){
                 System.out.println("Option not valid");
-
             }
         }
     }

@@ -125,7 +125,7 @@ public class TradeManager {
      *
      * @param filePath the file to write the trades to
      * @throws IOException
-     */
+
     public void saveToFile(String filePath) throws IOException {
         OutputStream file = new FileOutputStream(filePath);
         OutputStream buffer = new BufferedOutputStream(file);
@@ -133,7 +133,7 @@ public class TradeManager {
 
         output.writeObject(trades);
         output.close();
-    }
+    }*/
 
     /** Returns the Trade that corresponds to the given tradeNumber
      *
