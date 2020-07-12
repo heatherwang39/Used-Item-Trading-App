@@ -11,7 +11,7 @@ public class TraderSystem {
 
     private final AccountManager am;
     private final TradeManager tm;
-    private final ItemManager im;
+    private final ItemStorage im;
     private final BufferedReader input;
 
     private Account account;
@@ -20,7 +20,7 @@ public class TraderSystem {
 
         input = keyboard;
         tm = new TradeManager(tradesPath);
-        im = new ItemManager(itemsPath);
+        im = new ItemStorage(itemsPath);
         am = new AccountManager(accountsPath);
 
         try {
