@@ -1,6 +1,9 @@
 package main.java;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class TraderSystem {
 
@@ -14,7 +17,7 @@ public class TraderSystem {
     private final ItemManager im;
     private final BufferedReader input;
 
-    private Account account;
+    private String username;
 
     public TraderSystem(BufferedReader keyboard) throws IOException, ClassNotFoundException {
 
@@ -40,13 +43,13 @@ public class TraderSystem {
             String pw = input.readLine();
 
             if (am.tryLogin(username, pw)){
+                this.username = username;
                 return am.getAccount(username);
             } else { throw new AccountNotFoundException(); }
         } catch (AccountNotFoundException e){
             System.out.println("Invalid Username or Password. Please try again.");
         }
         return login();
-
     }
 
     public Account register() throws IOException, AccountNotFoundException { //this doesn't work properly yet need to fix some stuff
@@ -80,8 +83,28 @@ public class TraderSystem {
         return am.getAccount(username);
     }
 
-    public void viewInventory(){
-        ;
+    public void viewInventory() throws IOException{
+        EntityDisplay ed = new EntityDisplay("Your Inventory");
+        List<Integer> contraband = new ArrayList<>();
+        try {
+            for (int id: am.getAccount(username).getInventory()){
+                try {
+                    ed.insert(im.getItem(id));
+                } catch (ItemNotFoundException e) {
+                    contraband.add(id);
+                }
+            }
+            if (!contraband.isEmpty()){
+                am.removeInventory(username, contraband);
+                System.out.println(Integer.toString(contraband.size()) + " item(s) were found to invalid and have " +
+                        "been removed from your account.");
+                }
+            ed.display();
+        } catch (AccountNotFoundException e) {
+            System.out.println("Your account is missing/deleted from the system. Please restart this program.");
+        }
+
+
     }
 
     public void addItem() throws IOException {
