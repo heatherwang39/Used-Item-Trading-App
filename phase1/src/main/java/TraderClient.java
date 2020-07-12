@@ -72,7 +72,7 @@ public class TraderClient {
                     System.out.println("Username: " + user.getUsername() + "\nEmail: " + user.getEmail() + "\nInventory: " +
                             user.getInventory() + "\nWishlist" + user.getWishlist());
                 case "2":
-                    ts.addItems();
+                    ts.addItem();
                     break;
                 case "3":
                     ts.browseListings();

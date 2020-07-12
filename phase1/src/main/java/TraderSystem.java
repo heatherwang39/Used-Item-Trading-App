@@ -301,7 +301,6 @@ public class TraderSystem {
     }
 
 
-
     //Does not update the users wishlist
     //WILL RETURN ALL ITEMS BACK TO THEIR ORIGINAL OWNERS
     private void processCancelledTrade(int tradeNumber) throws TradeNumberException, AccountNotFoundException{
