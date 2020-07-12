@@ -53,6 +53,17 @@ public class ItemStorage {
     }
 
     /**
+     * Gets the name of an item based on id
+     * @param itemID integer item ID
+     * @return String name of item
+     * @throws ItemNotFoundException if no item with ID
+     */
+    public String getItemName(int itemID) throws ItemNotFoundException {
+        Item item = getItem(itemID);
+        return item.getName();
+    }
+
+    /**
      * Gets the total number of items added
      *
      * @return the size of items
