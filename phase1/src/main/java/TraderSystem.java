@@ -142,12 +142,19 @@ public class TraderSystem {
 
     public void browseListings() {
         System.out.println("Here are all available item listings: ");
-        Item<List> itemList = getVerifiedItems();
+        List<Item> itemList = im.getVerifiedItems();
         for (int i = 0; i < itemList.size(); i++){
-            System.out.println(itemList.get(i) + "\n");
+            System.out.println(itemList.get(i).getName() + ", id:" + itemList.get(i).getID()+ "\n");
         }
         // Here there should be an extension for the user to either do a Trade Request or a Borrow Request for an item
     }
+
+    public void RequestTrade() throws IOException, AccountNotFoundException {
+        System.out.println("Enter the id of the item you wish to trade:");
+        int itemId = Integer.parseInt(input.readLine());
+        String usernameOfOwner = am.getItemOwner(itemId);
+    }
+
 
     public void addAdmin() throws IOException {
         System.out.println("Enter the username of the user you would like to promote to admin: ");
