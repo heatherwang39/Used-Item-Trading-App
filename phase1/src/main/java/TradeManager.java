@@ -2,6 +2,7 @@ package main.java;
 
 import java.io.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -168,5 +169,31 @@ public class TradeManager {
     public boolean checkActiveTrade(int tradeNumber) throws TradeNumberException {
         Trade trade = trades.get(tradeNumber);
         return trade.getStatus() == 1;
+    }
+
+    /**
+     * Returns whether the user with given username should be frozen based on if they borrowed more than they have lent.
+     * @param username username of the user
+     * @return true if user should be frozen, false if not
+     */
+    public boolean checkUserShouldFreeze(String username) {
+        int freezeScore = 0;
+        for (OneWayTrade oneWayTrade : getOneWayTrades()){
+            if (oneWayTrade.getSender().equals(username)) freezeScore--;
+            else if (oneWayTrade.getReceiver().equals(username)) freezeScore++;
+        }
+        return freezeScore > 0;
+    }
+
+    private List<OneWayTrade> getOneWayTrades() {
+        List<OneWayTrade> oneWayTrades = new ArrayList<>();
+        for (Trade trade : trades){
+            if (trade instanceof OneWayTrade && checkOngoingComplete(trade)) oneWayTrades.add((OneWayTrade) trade);
+        }
+        return oneWayTrades;
+    }
+
+    private boolean checkOngoingComplete(Trade trade) {
+        return (trade.getStatus() == 1 || trade.getStatus() == 2);
     }
 }

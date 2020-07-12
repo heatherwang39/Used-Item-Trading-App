@@ -238,33 +238,63 @@ public class TraderSystem {
         } catch (AccountNotFoundException e) {
             e.printStackTrace();
         }
+    }
 
-        public void showItemRequests () {
-            System.out.println("Here are the current item requests. Press 1 to accept and 2 to deny: ");
-            List<Item> unverifiedItemList = getUnverifiedItems();
-            int i = 0;
+    public void showItemRequests () {
+        System.out.println("Here are the current item requests. Press 1 to accept and 2 to deny: ");
+        List<Item> unverifiedItemList = getUnverifiedItems();
+        int i = 0;
+        while (i < unverifiedItemList.size()) {
+            try {
+                System.out.println(unverifiedItemList.get(i));
 
-            while (i < unverifiedItemList.size()) {
-                try {
-                    System.out.println(unverifiedItemList.get(i));
-
-                    String input = input.readLine();
-                    if (input.equals("1")) {
-                        verifyItem(unverifiedItemList.get(i));
-                        i++;
-                    } else if (input.equals("2")) {
-                        removeItem(unverifiedItemList.get(i));
-                        i++;
-                    }
-                } catch (InvalidOptionException e) {
-                    System.out.println("Option not valid");
-
+                String input = input.readLine();
+                if (input.equals("1")) {
+                    verifyItem(unverifiedItemList.get(i));
+                    i++;
+                } else if (input.equals("2")) {
+                    removeItem(unverifiedItemList.get(i));
+                    i++;
                 }
+            } catch (InvalidOptionException e) {
+                System.out.println("Option not valid");
             }
         }
     }
 
-    public void showFreezeUsers(){}
+    /**
+     * Shows an admin which users have borrowed more than they have lent, letting the admin to choose to freeze their account.
+     */
+    public void showFreezeUsers(){
+        List<String> usernames = am.getUsernames();
+        for (String username : usernames){
+            if (tm.checkUserShouldFreeze(username)) chooseToFreezeUser(username);
+        }
+        System.out.println("There are no more users that need to be checked.");
+    }
+
+    private void chooseToFreezeUser(String username){
+        try {
+            System.out.println("The user " + username + " has received more than they have sent. Would you like to freeze their account?");
+            System.out.println("Click (1) for yes, (2) for no.");
+            String option = input.readLine();
+            switch (option){
+                case "1":
+                    am.freezeAccount(username);
+                    System.out.println("Account " + username + " has been frozen.");
+                case "2":
+                    System.out.println("Account " + username + " has not been frozen.");
+                default:
+                    throw new InvalidOptionException();
+            }
+        } catch (AccountNotFoundException e) {
+            System.out.println("No such account exists.");
+        } catch (IOException e) {
+            System.out.println("File could not be read from.");
+        } catch (InvalidOptionException e) {
+            System.out.println("Invalid option detected. Please try again.");
+        }
+    }
 
     public void updateTradeThreshold(int newThreshold){
         ;

@@ -12,7 +12,7 @@ public class TraderClient {
     private BufferedReader keyboard;
 
 
-    public void run() throws {
+    public void run() {
         System.out.println("Welcome to Trader. At anytime you may type 'exit' to quit.\n" +
                 "Please choose any of the following by typing the option number.");
         Account currUser;
