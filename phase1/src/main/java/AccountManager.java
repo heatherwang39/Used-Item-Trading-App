@@ -43,7 +43,7 @@ public class AccountManager {
      * @param path Path of serialized accounts
      * @throws IOException if file can't be read
      * @throws ClassNotFoundException if serialized class doesn't exist
-     */
+
 
     private void readFromFile(String path) throws ClassNotFoundException, IOException {
         InputStream file = new FileInputStream(path);
@@ -52,12 +52,12 @@ public class AccountManager {
         accounts = (Map<String, Account>) input.readObject();
         input.close();
     }
-
+     */
     /**
      * Class constructor
      * @param path Path of serialized accounts
      * @throws IOException if file can't be written
-     */
+
     private void saveToFile(String path) throws IOException {
         OutputStream file = new FileOutputStream(path);
         OutputStream buffer = new BufferedOutputStream(file);
@@ -66,6 +66,7 @@ public class AccountManager {
         output.writeObject(accounts);
         output.close();
     }
+     */
 
     /**
      * Checks if username and password are valid alphanumeric + dash/underscore strings
@@ -228,20 +229,6 @@ public class AccountManager {
     }
 
     /**
-     * Returns a list of trades the user has offered
-     * @param user input user
-     * @return list of integers of the user's offers
-     */
-    public List<Integer> getTradesOffered(Account user){return user.getTradesOffered(); }
-
-    /**
-     * Returns a list of trades the user has recieved
-     * @param user input user
-     * @return list of intergers of the user's received trades
-     */
-    public List<Integer> getTradesReceived(Account user){return user.getTradesReceived(); }
-
-    /**
      * Returns the username of the account who is offering the trade with the trade number. Returns null if there is no account
      * @param tradeNumber trade number of the trade
      * @return username of the account who made the offer or null
@@ -252,6 +239,48 @@ public class AccountManager {
         }
         return null;
     }
+
+    /**
+     * Returns the username of the account who has the item with the itemId.
+     * @param itemId id of the item
+     * @return username of the account who made the offer or null
+     * @throws AccountNotFoundException no account is found
+     */
+    public String getItemOwner(int itemId) throws AccountNotFoundException{
+        for (Account user : getAccounts()){
+            if (user.getInventory().contains(itemId)) {return user.getUsername(); }
+        }
+        throw new AccountNotFoundException();
+    }
+
+    /**
+     * Returns the trade offers the user has received.
+     * @param user the user account
+     * @return list of trade IDs
+     * @throws AccountNotFoundException no account is found
+     */
+    public List<Integer> getTradesReceived(Account user) throws AccountNotFoundException {
+        if (accounts.containsKey(user.getUsername())){
+            return user.getTradesReceived();
+        } else {
+            throw new AccountNotFoundException();
+        }
+    }
+
+    /**
+     * Returns the trade offers the user has sent.
+     * @param user the user account
+     * @return list of trade IDs
+     * @throws AccountNotFoundException no account is found
+     */
+    public List<Integer> getTradesOffered(Account user) throws AccountNotFoundException {
+        if (accounts.containsKey(user.getUsername())){
+            return user.getTradesOffered();
+        } else {
+            throw new AccountNotFoundException();
+        }
+    }
+
     /**
      * Add item ID to account inventory
      * @throws AccountNotFoundException account not found under username
