@@ -368,7 +368,7 @@ public class TraderSystem {
                 a.removeInventory(items.get(i));
             }
 
-            i++
+            i++;
         }
         trade.setStatus(1);
     }
