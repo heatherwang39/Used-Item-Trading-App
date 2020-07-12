@@ -228,6 +228,31 @@ public class AccountManager {
     }
 
     /**
+     * Returns a list of trades the user has offered
+     * @param user input user
+     * @return list of integers of the user's offers
+     */
+    public List<Integer> getTradesOffered(Account user){return user.getTradesOffered(); }
+
+    /**
+     * Returns a list of trades the user has recieved
+     * @param user input user
+     * @return list of intergers of the user's received trades
+     */
+    public List<Integer> getTradesReceived(Account user){return user.getTradesReceived(); }
+
+    /**
+     * Returns the username of the account who is offering the trade with the trade number. Returns null if there is no account
+     * @param tradeNumber trade number of the trade
+     * @return username of the account who made the offer or null
+     */
+    public String getAccountOffering(int tradeNumber){
+        for (Account user : getAccounts()){
+            if (user.getTradesOffered().contains(tradeNumber)) {return user.getUsername(); }
+        }
+        return null;
+    }
+    /**
      * Add item ID to account inventory
      * @throws AccountNotFoundException account not found under username
      * @throws IOException if file can't be saved to

@@ -12,7 +12,7 @@ public class TraderClient {
     private BufferedReader keyboard;
 
 
-    public void run() {
+    public void run() throws {
         System.out.println("Welcome to Trader. At anytime you may type 'exit' to quit.\n" +
                 "Please choose any of the following by typing the option number.");
         Account currUser;
@@ -81,10 +81,10 @@ public class TraderClient {
                     ts.showActivity();
                     break;
                 case "5":
-                    ts.showOffers();
+                    ts.showOffers(user);
                     break;
                 case "6":
-                    ts.showActiveTrades();
+                    ts.showActiveTrades(user);
                     break;
                 case "7":
                     if (user.isAdmin()){ adminOptions(user); }

@@ -90,7 +90,7 @@ public class ItemManager {
      * @throws IOException file cannot be read
      * @return book
      */
-    public Item newBook(String name, String description, String author) throws IOException, ItemNotFoundException {
+    public Item newBook(String name, String description, String author) throws IOException {
         int id = getNumberOfItems();
         Book book = new Book(name, description, id, author);
         addItem(book);
