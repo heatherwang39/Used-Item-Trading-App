@@ -221,6 +221,12 @@ public class AccountStorage {
     public List<Account> getAccounts() { return new ArrayList<>(accounts.values()); }
 
     /**
+     * Get all account usernames
+     * @return copy of account usernames List
+     */
+    public List<String> getUsernames() {return new ArrayList<>(accounts.keySet()); }
+
+    /**
      * If login matches an account in system
      * @return boolean
      */

@@ -12,7 +12,7 @@ public class TraderClient {
     private BufferedReader keyboard;
 
 
-    public void run() throws {
+    public void run() {
         System.out.println("Welcome to Trader. At anytime you may type 'exit' to quit.\n" +
                 "Please choose any of the following by typing the option number.");
         Account currUser;
@@ -72,7 +72,7 @@ public class TraderClient {
                     System.out.println("Username: " + user.getUsername() + "\nEmail: " + user.getEmail() + "\nInventory: " +
                             user.getInventory() + "\nWishlist" + user.getWishlist());
                 case "2":
-                    ts.addItems();
+                    ts.addItem();
                     break;
                 case "3":
                     ts.browseListings();
