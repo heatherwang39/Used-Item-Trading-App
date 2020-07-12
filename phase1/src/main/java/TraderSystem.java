@@ -84,18 +84,18 @@ public class TraderSystem {
         ;
     }
 
+    public void addItem() throws IOException {
+        System.out.println("Enter the name of the item:");
+        String name = input.readLine();
+        Item item = im.addItem(name);
 
-    public void addItems() {
-        System.out.println("Enter the name of the item you wish to add to your inventory: ");
-        String item = input.readLine();
-        addItem(item);
     }
 
     public void browseListings() {
         System.out.println("Here are all available item listings: ");
-        Item<List> itemList = getVerifiedItems();
-        for (int i = 0; i < itemList.size(); i++){
-            System.out.println(itemList.get(i) + "\n");
+        List<Item> itemList = getVerifiedItems();
+        for (Item item : itemList) {
+            System.out.println(item + "\n");
         }
         // Here there should be an extension for the user to either do a Trade Request or a Borrow Request for an item
     }
