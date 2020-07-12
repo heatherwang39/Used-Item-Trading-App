@@ -27,7 +27,7 @@ public class TraderSystem {
         try {
             am.createAdminAccount("admin", "admin", "admin@trader.org");
             am.createUserAccount("Sarah.alk", "123456", "sarah@trader.org", false);
-        } catch (UsernameInUseException | EmailInUseException | InvalidEmailException | InvalidLoginException e){
+        } catch (UsernameInUseException | EmailInUseException | InvalidEmailException | InvalidLoginException e) {
             //it's okay if this is not the first time the code is getting run
         }
     }
@@ -40,10 +40,12 @@ public class TraderSystem {
             System.out.println("Password: ");
             String pw = input.readLine();
 
-            if (am.tryLogin(username, pw)){
+            if (am.tryLogin(username, pw)) {
                 return am.getAccount(username);
-            } else { throw new AccountNotFoundException(); }
-        } catch (AccountNotFoundException e){
+            } else {
+                throw new AccountNotFoundException();
+            }
+        } catch (AccountNotFoundException e) {
             System.out.println("Invalid Username or Password. Please try again.");
         }
         return login();
@@ -71,28 +73,28 @@ public class TraderSystem {
             System.out.println("This Username is already in use. Please choose another Username.");
             System.out.println("Enter Username: ");
             username = System.in.toString();
-        } catch (EmailInUseException e){
+        } catch (EmailInUseException e) {
             System.out.println("This email address is already in use. Please try again.");
-        } catch (InvalidEmailException e){
+        } catch (InvalidEmailException e) {
             System.out.println("Invalid email. Please try again.");
-        } catch (InvalidLoginException e){
+        } catch (InvalidLoginException e) {
             System.out.println("Invalid Username or Password format. Please try again with alphanumerics and special characters only.");
         }
         return am.getAccount(username);
     }
 
-    public void viewInventory() throws IOException{
+    public void viewInventory() throws IOException {
         EntityDisplay ed = new EntityDisplay("Your Inventory");
         List<Integer> contraband = new ArrayList<>();
         try {
-            for (int id: account.getInventory()){
+            for (int id : account.getInventory()) {
                 try {
                     ed.insert(im.getItem(id));
                 } catch (ItemNotFoundException e) {
                     contraband.add(id);
                 }
             }
-            if (!contraband.isEmpty()){
+            if (!contraband.isEmpty()) {
                 am.removeInventory(account.getUsername(), contraband);
                 System.out.println(Integer.toString(contraband.size()) + " item(s) were found to invalid and have " +
                         "been removed from your account.");
@@ -110,7 +112,7 @@ public class TraderSystem {
         System.out.println("Enter a short description:");
         String description = input.readLine();
         System.out.println("Enter the type of item (Book, Clothing, misc.):");
-        switch (input.readLine().toLowerCase()){
+        switch (input.readLine().toLowerCase()) {
             case "book":
                 System.out.println("Enter the name of the author:");
                 String author = input.readLine();
@@ -143,8 +145,8 @@ public class TraderSystem {
     public void browseListings() {
         System.out.println("Here are all available item listings: ");
         List<Item> itemList = im.getVerifiedItems();
-        for (int i = 0; i < itemList.size(); i++){
-            System.out.println(itemList.get(i).getName() + ", id:" + itemList.get(i).getID()+ "\n");
+        for (int i = 0; i < itemList.size(); i++) {
+            System.out.println(itemList.get(i).getName() + ", id:" + itemList.get(i).getID() + "\n");
         }
         // Here there should be an extension for the user to either do a Trade Request or a Borrow Request for an item
     }
@@ -167,7 +169,7 @@ public class TraderSystem {
                 am.createAdminAccount(username, user.getPassword(), user.getEmail());
                 System.out.println("User has been promoted to an admin account.");
             }
-        } catch (AccountNotFoundException e){
+        } catch (AccountNotFoundException e) {
             System.out.println("User with corresponding username was not found in the database.");
         } catch (InvalidLoginException e) {
             System.out.println("The corresponding username is invalid.");
@@ -189,6 +191,7 @@ public class TraderSystem {
 
     /**
      * Shows the user what offers have been made to them.
+     *
      * @param user the user who is checking their received offers
      */
     public void showOffers(Account user) {
@@ -202,9 +205,9 @@ public class TraderSystem {
                 sb.append(im.getItemName(tm.getItemsInTrade(tradeNumber).get(0)));
             }
             System.out.println(sb);
-        } catch (TradeNumberException e){
+        } catch (TradeNumberException e) {
             System.out.println("There is an error in the trade inventory, the trade number should not exist.");
-        } catch (ItemNotFoundException e){
+        } catch (ItemNotFoundException e) {
             System.out.println("There is an error in the item inventory, the item should not exist.");
         } catch (AccountNotFoundException e) {
             System.out.println("There is an error in the item inventory, the account should not exist.");
@@ -213,6 +216,7 @@ public class TraderSystem {
 
     /**
      * Shows the user what trades they currently have active
+     *
      * @param user the user who is checking their active trades
      */
     public void showActiveTrades(Account user) {
@@ -221,7 +225,7 @@ public class TraderSystem {
             List<Integer> allTrades = new ArrayList<>(am.getTradesReceived(user));
             allTrades.addAll(am.getTradesOffered(user));
             for (Integer tradeNumber : allTrades) {
-                if (tm.checkActiveTrade(tradeNumber)){
+                if (tm.checkActiveTrade(tradeNumber)) {
                     sb.append(", ");
                     sb.append(im.getItemName(tm.getItemsInTrade(tradeNumber).get(0)));
                 }
@@ -235,36 +239,39 @@ public class TraderSystem {
             e.printStackTrace();
         }
 
-        public void showItemRequests(){
-        System.out.println("Here are the current item requests. Press 1 to accept and 2 to deny: ");
-        List<Item> unverifiedItemList = getUnverifiedItems();
-        int i = 0;
+        public void showItemRequests () {
+            System.out.println("Here are the current item requests. Press 1 to accept and 2 to deny: ");
+            List<Item> unverifiedItemList = getUnverifiedItems();
+            int i = 0;
 
-        while (i < unverifiedItemList.size()){
-            try {
-                System.out.println(unverifiedItemList.get(i));
+            while (i < unverifiedItemList.size()) {
+                try {
+                    System.out.println(unverifiedItemList.get(i));
 
-                String input = input.readLine();
-                if (input.equals("1")) {
-                    verifyItem(unverifiedItemList.get(i));
-                    i++;
-                } else if (input.equals("2")) {
-                    removeItem(unverifiedItemList.get(i));
-                    i++;
+                    String input = input.readLine();
+                    if (input.equals("1")) {
+                        verifyItem(unverifiedItemList.get(i));
+                        i++;
+                    } else if (input.equals("2")) {
+                        removeItem(unverifiedItemList.get(i));
+                        i++;
+                    }
+                } catch (InvalidOptionException e) {
+                    System.out.println("Option not valid");
+
                 }
-            } catch(InvalidOptionException e){
-                System.out.println("Option not valid");
-
             }
         }
     }
 
-    public void showFreezeUsers(){
-
-    }
+    public void showFreezeUsers(){}
 
     public void updateTradeThreshold(int newThreshold){
         ;
     }
+
+
+
+
 
 }
