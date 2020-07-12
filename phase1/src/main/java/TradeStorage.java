@@ -144,13 +144,13 @@ public class TradeStorage {
      * @param username username of the user
      * @return true if user should be frozen, false if not
      */
-    public boolean checkUserShouldFreeze(String username) {
+    public boolean checkUserShouldFreeze(String username, int tradeThreshold) {
         int freezeScore = 0;
         for (OneWayTrade oneWayTrade : getOneWayTrades()){
             if (oneWayTrade.getSender().equals(username)) freezeScore--;
             else if (oneWayTrade.getReceiver().equals(username)) freezeScore++;
         }
-        return freezeScore > 0;
+        return freezeScore > tradeThreshold;
     }
 
     private List<OneWayTrade> getOneWayTrades() {

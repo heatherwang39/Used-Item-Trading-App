@@ -8,12 +8,12 @@ public class TraderSystem {
     String tradesPath = "phase1/src/main/resources/serializedtrades.ser";
     String itemsPath = "phase1/src/main/resources/serializeditems.ser";
     String accountsPath = "phase1/src/main/resources/serializedaccounts.ser";
-    String itemRequestsPath = "phase1/src/main/resources/serializeditemrequests.ser";
 
     private final AccountStorage am;
     private final TradeStorage tm;
     private final ItemStorage im;
     private final BufferedReader input;
+    private int tradeThreshold; //TODO: have configuration file set this
 
     private Account account;
 
@@ -284,7 +284,7 @@ public class TraderSystem {
     public void showFreezeUsers(){
         List<String> usernames = am.getUsernames();
         for (String username : usernames){
-            if (tm.checkUserShouldFreeze(username)) chooseToFreezeUser(username);
+            if (tm.checkUserShouldFreeze(username, tradeThreshold)) chooseToFreezeUser(username);
         }
         System.out.println("There are no more users that need to be checked.");
     }
@@ -312,9 +312,11 @@ public class TraderSystem {
         }
     }
 
-    public void updateTradeThreshold(int newThreshold){
-        ;
-    }
+    /**
+     * Updates the trade threshold.
+     * @param newThreshold the new threshold to replace current one.
+     */
+    public void updateTradeThreshold(int newThreshold){ tradeThreshold = newThreshold; }
 
 
     //Does not update the users wishlist
