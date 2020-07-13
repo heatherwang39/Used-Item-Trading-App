@@ -31,7 +31,9 @@ public class TradeStorage {
         if (file.exists()) {
             try {
                 trades = (List<Trade>)frw.readFromFile(path);
-            } catch(EOFException e) {}
+            } catch(EOFException e) {
+                System.out.println("Cannot read from trades file");
+            }
         } else {
             file.createNewFile();
         }
