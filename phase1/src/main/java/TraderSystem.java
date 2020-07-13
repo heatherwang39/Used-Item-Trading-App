@@ -240,7 +240,7 @@ public class TraderSystem {
     public void showOffers(Account user) {
         try {
             List<Integer> tradesReceived = am.getTradesReceived(user);
-            i = 0;
+            int i = 0;
             while (i < tradesReceived.size()) {
                 String userInput = input.readLine();
                 System.out.println("Enter 1 to accept, 2 to deny, or 3 to decide later");
@@ -257,14 +257,14 @@ public class TraderSystem {
                 }
                 i++;
             }
-        } catch (InvalidOptionException e){
-            System.out.println("This is an invalid option.");
         } catch (TradeNumberException e) {
             System.out.println("There is an error in the trade inventory, the trade number should not exist.");
         } catch (ItemNotFoundException e) {
             System.out.println("There is an error in the item inventory, the item should not exist.");
         } catch (AccountNotFoundException e) {
             System.out.println("There is an error in the item inventory, the account should not exist.");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

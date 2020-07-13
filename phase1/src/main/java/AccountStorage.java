@@ -32,7 +32,7 @@ public class AccountStorage {
         if (file.exists()) {
             try {
                 accounts = (Map<String, Account>)frw.readFromFile(path);
-            } catch(EOFException e) {}
+            } catch(EOFException ignored) {}
         } else {
             file.createNewFile();
         }
