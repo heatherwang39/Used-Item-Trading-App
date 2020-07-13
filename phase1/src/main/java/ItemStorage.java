@@ -38,9 +38,7 @@ public class ItemStorage {
         if (file.exists()) {
             try {
                 items = (Map<Integer, Item>) frw.readFromFile(path);
-            } catch (EOFException e) {
-                System.out.println("Cannot read from items file");
-            }
+            } catch (EOFException ignored) {}
         } else {
             file.createNewFile();
         }

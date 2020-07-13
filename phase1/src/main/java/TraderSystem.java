@@ -278,14 +278,22 @@ public class TraderSystem {
         try {
             StringBuilder sb = new StringBuilder("Here are your active trades");
             List<Integer> allTrades = new ArrayList<>(am.getTradesReceived(user));
-            allTrades.addAll(am.getTradesOffered(user));
-            for (Integer tradeNumber : allTrades) {
-                if (tm.checkActiveTrade(tradeNumber)) {
-                    sb.append(", ");
-                    sb.append(im.getItemName(tm.getItemsInTrade(tradeNumber).get(0)));
+            for (int i = 0; i < allTrades.size(); i++){
+                System.out.println("Trade ID: " + allTrades.get(i));
+                System.out.println("Enter 1 to view next active trade, 2 to mark this trade as completed, 3 to cancel this trade");
+                String userInput = input.readLine();
+                if (userInput.equals("1")){
+                    ; // if the user enters 1 itll just print out the next trade
+                } else if (userInput.equals("2")){
+                    System.out.println("Trade marked as completed!");
+                    processCompletedTrade(allTrades.get(i));
+                    user.removeTradesReceieved(allTrades.get(i));
+                } else if (userInput.equals("3")){
+                    System.out.println("Trade has been cancelled");
+                    processCancelledTrade(allTrades.get(i));
+                    user.removeTradesReceived(allTrades.get(i));
                 }
             }
-            System.out.println(sb);
         } catch (ItemNotFoundException e) {
             System.out.println("There is an error in the trade inventory, the trade number should not exist.");
         } catch (TradeNumberException e) {
@@ -402,7 +410,7 @@ public class TraderSystem {
                 List<Integer> tradesOffered = a.getTradesOffered();
                 for(Integer x: tradesOffered){
                     Trade tx = tm.getTrade(x);
-                    if(tx.getStatus() == 0){
+                    if(tx.getStatus().equals("")){
                         if(tx.getItemsOriginal().contains(items.get(i))){
                             tx.setStatus(-1);
                         }
