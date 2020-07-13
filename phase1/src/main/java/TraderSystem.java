@@ -281,26 +281,34 @@ public class TraderSystem {
             for (int i = 0; i < allTrades.size(); i++){
                 System.out.println("Trade ID: " + allTrades.get(i));
                 System.out.println("Enter 1 to view next active trade, 2 to mark this trade as completed, 3 to cancel this trade");
+
                 String userInput = input.readLine();
+
+
                 if (userInput.equals("1")){
-                    ; // if the user enters 1 itll just print out the next trade
+                    ; // if the user enters 1 it'll just print out the next trade
                 } else if (userInput.equals("2")){
                     System.out.println("Trade marked as completed!");
                     processCompletedTrade(allTrades.get(i));
-                    user.removeTradesReceieved(allTrades.get(i));
+                    user.removeTradesReceived(allTrades.get(i));
                 } else if (userInput.equals("3")){
                     System.out.println("Trade has been cancelled");
                     processCancelledTrade(allTrades.get(i));
                     user.removeTradesReceived(allTrades.get(i));
                 }
             }
-        } catch (ItemNotFoundException e) {
-            System.out.println("There is an error in the trade inventory, the trade number should not exist.");
+        //} catch (ItemNotFoundException e) {
+            //System.out.println("There is an error in the trade inventory, the trade number should not exist.");
         } catch (TradeNumberException e) {
             System.out.println("There is an error in the item inventory, the item should not exist.");
         } catch (AccountNotFoundException e) {
             e.printStackTrace();
         }
+
+        //Added this to see if the code would run VVVV
+        //MAY NEED TO DELETE LATER
+
+        catch (IOException e){}
     }
 
     public void showItemRequests () {
@@ -410,7 +418,7 @@ public class TraderSystem {
                 List<Integer> tradesOffered = a.getTradesOffered();
                 for(Integer x: tradesOffered){
                     Trade tx = tm.getTrade(x);
-                    if(tx.getStatus().equals("")){
+                    if(tx.getStatus() == 0){
                         if(tx.getItemsOriginal().contains(items.get(i))){
                             tx.setStatus(-1);
                         }
