@@ -96,7 +96,7 @@ public class TraderSystem {
             }
             if (!contraband.isEmpty()) {
                 am.removeInventory(account.getUsername(), contraband);
-                System.out.println(Integer.toString(contraband.size()) + " item(s) were found to invalid and have " +
+                System.out.println(contraband.size() + " item(s) were found to invalid and have " +
                         "been removed from your account.");
             }
             ed.display();
@@ -147,9 +147,8 @@ public class TraderSystem {
         List<Item> itemList = im.getVerifiedItems();
         int itemId;
         String usernameOfOwner;
-        int tradeId;
-        for (int i = 0; i < itemList.size(); i++) {
-            System.out.println(itemList.get(i).getName() + ", id:" + itemList.get(i).getID() + "\n");
+        for (Item item : itemList) {
+            System.out.println(item.getName() + ", id:" + item.getID() + "\n");
         }
         System.out.println("What kind of request you want to make? 1.one way trade 2.two way trade");
         try{

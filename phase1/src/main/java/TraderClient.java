@@ -127,7 +127,6 @@ public class TraderClient {
             System.out.println("Invalid Option detected. Please try again.");
             adminOptions(admin);
         }
-
     }
 
 }
