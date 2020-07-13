@@ -53,6 +53,7 @@ public class AccountStorage {
         input.close();
     }
      */
+
     /**
      * Class constructor
      * @param path Path of serialized accounts
@@ -171,7 +172,7 @@ public class AccountStorage {
     /**
      * Removes a user account
      * @param username username of the user account to be removed
-     * @throws IOException
+     * @throws IOException file cannot be written
      */
     public void removeUserAccount(String username) throws IOException {
         accounts.remove(username);
