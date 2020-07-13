@@ -387,10 +387,20 @@ public class TraderSystem {
             if(!(items.get(i) == null)){
                 Account a = am.getAccount(users.get(i));
                 a.addInventory(items.get(i));
+
+                //Remove the Trade
+
+                a.removeTradesReceived(tradeNumber);
+                a.removeTradesOffered(tradeNumber);
             }
 
             i++;
         }
+
+        //
+
+
+
         //The below line is purely optional
         trade.setStatus(-1);
     }
