@@ -32,9 +32,7 @@ public class AccountStorage {
         if (file.exists()) {
             try {
                 accounts = (Map<String, Account>)frw.readFromFile(path);
-            } catch(EOFException e) {
-                System.out.println("Cannot read from accounts file");
-            }
+            } catch(EOFException ignored) {}
         } else {
             file.createNewFile();
         }
