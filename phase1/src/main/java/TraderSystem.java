@@ -24,11 +24,17 @@ public class TraderSystem {
         im = new ItemStorage(itemsPath);
         am = new AccountStorage(accountsPath);
 
-        try {
+        try {   //TODO:delete this whole try clause after we're done with register.
             am.createAdminAccount("admin", "admin", "admin@trader.org");
             am.createUserAccount("Sarah.alk", "123456", "sarah@trader.org", false);
-        } catch (UsernameInUseException | EmailInUseException | InvalidEmailException | InvalidLoginException e) {
-            //it's okay if this is not the first time the code is getting run
+        } catch (UsernameInUseException e) {
+            System.out.println("UsernameInUseException.");
+        } catch (EmailInUseException e) {
+        System.out.println("EmailInUseException");
+        } catch (InvalidEmailException e) {
+            System.out.println("InvalidEmailException");
+        } catch ( InvalidLoginException e) {
+            System.out.println("InvalidLoginException");
         }
     }
 
@@ -151,7 +157,7 @@ public class TraderSystem {
             System.out.println(item.getName() + ", id:" + item.getID() + "\n");
         }
         System.out.println("What kind of request you want to make? 1.one way trade 2.two way trade");
-        try{
+        try {
             switch (Integer.parseInt(input.readLine())) {
                 case 1:
                     System.out.println("Enter the id of the item you wish to trade:");

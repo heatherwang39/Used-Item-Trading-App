@@ -47,7 +47,7 @@ public class AccountStorage {
      */
     private boolean isInvalidLogin(String username, String password) {
         // Regex from: https://stackoverflow.com/questions/34916716
-        Pattern p = Pattern.compile("^[a-zA-Z0-9-_]$");
+        Pattern p = Pattern.compile("^[a-zA-Z0-9-_.!@#$%^&*()]*$");
         return !p.matcher(username).matches() || !p.matcher(password).matches();
     }
 

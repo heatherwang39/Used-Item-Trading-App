@@ -31,7 +31,7 @@ public class TraderClient {
         } catch (IOException e) {
             System.out.println("Files could not be read from.");
         } catch (ClassNotFoundException e) {
-            System.out.println("Fiels are corrupt/improper.");
+            System.out.println("Files are corrupt/improper.");
         } catch (AccountNotFoundException e) { //TODO: IMPORTANT needs edit/deleted later!!!!
             e.printStackTrace();
         }
