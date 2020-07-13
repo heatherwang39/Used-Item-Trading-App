@@ -228,9 +228,8 @@ public class TraderSystem {
         }
     }
 
-
     public void showActivity() {
-        ;
+        ; // save to implement this until phase 2 (potentially)
     }
 
     /**
@@ -241,14 +240,25 @@ public class TraderSystem {
     public void showOffers(Account user) {
         try {
             List<Integer> tradesReceived = am.getTradesReceived(user);
-            StringBuilder sb = new StringBuilder("Here are offers you have received");
-            for (Integer tradeNumber : tradesReceived) {
-                sb.append(", ");
-                sb.append(am.getAccountOffering(tradeNumber));
-                sb.append(" asks for ");
-                sb.append(im.getItemName(tm.getItemsInTrade(tradeNumber).get(0)));
+            i = 0;
+            while (i < tradesReceived.size()) {
+                String userInput = input.readLine();
+                System.out.println("Enter 1 to accept, 2 to deny, or 3 to decide later");
+                System.out.println(tradesReceived.get(i)); // this only print trade ID (for now)
+                if (userInput.equals("1")) {
+                    System.out.println("Offer accepted!");
+                    processAcceptedTrade(tradesReceived.get(i));
+                    user.removeTradesReceived(tradesReceived.get(i));
+                } else if (userInput.equals("2")) {
+                    System.out.println("Offer denied!");
+                    user.removeTradesReceived(tradesReceived.get(i));
+                } else if (userInput.equals("3")) {
+                    System.out.println("Don't forget to check back soon!");
+                }
+                i++;
             }
-            System.out.println(sb);
+        } catch (InvalidOptionException e){
+            System.out.println("This is an invalid option.");
         } catch (TradeNumberException e) {
             System.out.println("There is an error in the trade inventory, the trade number should not exist.");
         } catch (ItemNotFoundException e) {
@@ -257,6 +267,7 @@ public class TraderSystem {
             System.out.println("There is an error in the item inventory, the account should not exist.");
         }
     }
+
 
     /**
      * Shows the user what trades they currently have active
