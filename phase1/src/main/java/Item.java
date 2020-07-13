@@ -5,6 +5,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ *  An abstract Item class in the main.java.Trade system representing an item object of the program. All items
+ *  store the name, description, id, isVerified, currentStatus and timeLimit
+ * @author Heather Wang
+ * @version %I%, %G%
+ * @since Phase 1
+ */
+
 public abstract class Item implements Serializable, Entity {
     private String name;
     private String description;

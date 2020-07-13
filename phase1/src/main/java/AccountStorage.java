@@ -40,36 +40,6 @@ public class AccountStorage {
         }
     }
 
-    /**
-     * Deserialize accounts data
-     * @param path Path of serialized accounts
-     * @throws IOException if file can't be read
-     * @throws ClassNotFoundException if serialized class doesn't exist
-
-
-    private void readFromFile(String path) throws ClassNotFoundException, IOException {
-        InputStream file = new FileInputStream(path);
-        InputStream buffer = new BufferedInputStream(file);
-        ObjectInput input = new ObjectInputStream(buffer);
-        accounts = (Map<String, Account>) input.readObject();
-        input.close();
-    }
-     */
-
-    /**
-     * Class constructor
-     * @param path Path of serialized accounts
-     * @throws IOException if file can't be written
-
-    private void saveToFile(String path) throws IOException {
-        OutputStream file = new FileOutputStream(path);
-        OutputStream buffer = new BufferedOutputStream(file);
-        ObjectOutput output = new ObjectOutputStream(buffer);
-
-        output.writeObject(accounts);
-        output.close();
-    }
-     */
 
     /**
      * Checks if username and password are valid alphanumeric + dash/underscore strings

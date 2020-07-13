@@ -4,6 +4,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * A Clothing class in the main.java.Trade system representing a concrete item object of the program.
+ * @author Heather Wang
+ * @version %I%, %G%
+ * @since Phase 1
+ */
+
 public class Clothing extends Item {
 
     private final String brand;

@@ -6,6 +6,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Use case class for storing items, creating new concrete items like book or clothing, verifying items
+ * and get all the verified items in the program.
+ * @author Heather Wang, Robbert Liu
+ * @version %I%, %G%
+ * @since Phase 1
+ */
+
+
 public class ItemStorage {
     /**
      * A mapping of item ids to item.
