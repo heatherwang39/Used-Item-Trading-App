@@ -540,11 +540,13 @@ public class TraderSystem {
                             tradeId = tm.newOneWayTrade(false,usernameOfOwner,user.getUsername(),itemId);
                             user.addTradesOffered(tradeId);
                             am.getAccount(usernameOfOwner).addTradesReceived(tradeId);
+                            System.out.println("Made a temporary one way trade to "+usernameOfOwner+" of item No."+itemId+" successfully!");
                             break;
                         case 2:
                             tradeId = tm.newOneWayTrade(true,usernameOfOwner,user.getUsername(),itemId);
                             user.addTradesOffered(tradeId);
                             am.getAccount(usernameOfOwner).addTradesReceived(tradeId);
+                            System.out.println("Made a permanent one way trade to "+usernameOfOwner+" of item No."+itemId+" successfully!");
                             break;
                         default:
                             throw new InvalidOptionException();
@@ -562,11 +564,13 @@ public class TraderSystem {
                             tradeId = tm.newTwoWayTrade(false,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
                             user.addTradesOffered(tradeId);
                             am.getAccount(usernameOfOwner).addTradesReceived(tradeId);
+                            System.out.println("Made a temporary two way trade with "+usernameOfOwner+" of item No."+itemId+" and No. "+itemIdOwn+"successfully!");
                             break;
                         case 2:
                             tradeId = tm.newTwoWayTrade(true,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
                             user.addTradesOffered(tradeId);
                             am.getAccount(usernameOfOwner).addTradesReceived(tradeId);
+                            System.out.println("Made a permanent two way trade with "+usernameOfOwner+" of item No."+itemId+" and No. "+itemIdOwn+"successfully!");
                             break;
                         default:
                             throw new InvalidOptionException();
