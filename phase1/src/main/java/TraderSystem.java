@@ -286,8 +286,6 @@ public class TraderSystem {
             }
         } catch (TradeNumberException e) {
             System.out.println("There is an error in the system, the trade number should not exist.");
-        } catch (ItemNotFoundException e) {
-            System.out.println("There is an error in the system, the item should not exist.");
         } catch (AccountNotFoundException e) {
             System.out.println("There is an error in the system, the account should not exist.");
         } catch (IOException e) {
