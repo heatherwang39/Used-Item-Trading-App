@@ -80,27 +80,6 @@ public class ItemStorage {
     }
 
     /**
-     * Initializes a new item based on the given parameters
-     *
-     * @param name          The name of the item
-     * @param description   The description of the item
-     * @param typeOfItem    The type of item, can be a Book or Clothes
-     * @param uniqueFeature Feature associated with the type of item. Author if it is a book, brand if it is clothes
-     * @throws InvalidItemException Throws exception if the typeOfItem is not valid, i.e. not Book or Clothes
-     * @throws IOException          file cannot be read
-     */
-    public Item newItem(String name, String description, String typeOfItem, String uniqueFeature) throws InvalidItemException, IOException {
-        if (typeOfItem.equals("Book")) {
-            return newBook(name, description, uniqueFeature);
-        } else if (typeOfItem.equals("Clothing")) {
-            return newClothing(name, description, uniqueFeature);
-        } else {
-            return newMiscItem(name, description);
-        }
-        //else throw new InvalidItemException();
-    }
-
-    /**
      * Initializes a new book based on the given parameters. Adds the item to items
      *
      * @param name        The name of the book

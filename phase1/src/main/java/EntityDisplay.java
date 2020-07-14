@@ -25,7 +25,7 @@ public class EntityDisplay {
      * @param entity input Entity
      */
     public void insert(Entity entity){
-        body.append("( ").append(count).append(" )");
+        body.append("(").append(count).append(") ");
         for (List<String> lst: entity.getData()) {
             body.append(lst.get(0)).append(": ").append(lst.get(1)).append("\n");
         }

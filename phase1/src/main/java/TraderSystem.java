@@ -183,7 +183,7 @@ public class TraderSystem {
     }
 
 
-    public void addItem() throws IOException {
+    public void addItem(Account account) throws IOException {
         System.out.println("Enter the name of the item:");
         String name = input.readLine();
         System.out.println("Enter a short description:");
@@ -194,26 +194,29 @@ public class TraderSystem {
                 System.out.println("Enter the name of the author:");
                 String author = input.readLine();
                 try {
-                    im.newBook(name, description, author);
-                } catch (IOException e) {
-                    System.out.println("Unable to read file. Please restart the program.");
+                    Item item = im.newBook(name, description, author);
+                    am.addInventory(account.getUsername(), item.getID());
+                } catch (IOException | AccountNotFoundException e) {
+                    System.out.println("Unable to read file/Account not found. Please restart the program.");
                 }
                 System.out.println("Item was successfully added!");
             case "clothing":
                 System.out.println("Enter the name of the brand:");
                 String brand = input.readLine();
                 try {
-                    im.newClothing(name, description, brand);
-                } catch (IOException e) {
-                    System.out.println("Unable to read file. Please restart the program.");
+                    Item item = im.newClothing(name, description, brand);
+                    am.addInventory(account.getUsername(), item.getID());
+                } catch (IOException | AccountNotFoundException e) {
+                    System.out.println("Unable to read file/Account not found. Please restart the program.");
                 }
                 System.out.println("Item was successfully added!");
             default:
                 System.out.println("Type not recognize/is misc.");
                 try {
-                    im.newMiscItem(name, description);
-                } catch (IOException e) {
-                    System.out.println("Unable to read file. Please restart the program.");
+                    Item item = im.newMiscItem(name, description);
+                    am.addInventory(account.getUsername(), item.getID());
+                } catch (IOException | AccountNotFoundException e) {
+                    System.out.println("Unable to read file/Account not found. Please restart the program.");
                 }
                 System.out.println("Item was successfully added!");
         }
