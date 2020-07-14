@@ -174,6 +174,7 @@ public class TradeStorage {
      */
     public boolean checkUserShouldFreeze(String username, int tradeThreshold) {
         int freezeScore = 0;
+        if (trades == null) return freezeScore > tradeThreshold;
         for (OneWayTrade oneWayTrade : getOneWayTrades()) {
             if (oneWayTrade.getSender().equals(username)) freezeScore--;
             else if (oneWayTrade.getReceiver().equals(username)) freezeScore++;
@@ -203,6 +204,7 @@ public class TradeStorage {
      */
     public boolean checkUserWeeklyTrades(String username, int weeklyThreshold, LocalDateTime oneWeekAgo) {
         int numTradesInWeek = 0;
+        if (trades == null) return numTradesInWeek > weeklyThreshold;
         try {
             for (Trade trade : trades) {
                 if (trade.getTraders().contains(username) && trade.getMeetingTime(1).isAfter(oneWeekAgo)) {
@@ -223,6 +225,7 @@ public class TradeStorage {
      */
     public boolean checkUserIncompleteTrades(String username, int incompleteThreshold) {
         int numIncompleteTrades = 0;
+        if (trades == null) return numIncompleteTrades > incompleteThreshold;
         for (Trade trade : trades) {
             if (trade.getTraders().contains(username) && trade.getStatus() == -1) numIncompleteTrades++;
         }
@@ -237,6 +240,7 @@ public class TradeStorage {
     public List<List<Integer>> recentTradedItems(String username) {
         List<List<Integer>> threeRecentItems = new ArrayList<>();
         TreeMap<LocalDateTime, Trade> userTrades = new TreeMap<>();
+        if (trades == null) return threeRecentItems;
         for (Trade trade : trades) {
             if (trade.getTraders().contains(username) && checkOngoingComplete(trade)){
                 try {
@@ -266,6 +270,7 @@ public class TradeStorage {
      */
     public Set<String> frequentTradingPartners(String username) {
         Map<String, Integer> threeMostFrequentPartners = new HashMap<>();
+        if (trades == null) return threeMostFrequentPartners.keySet();
         Map<String, Integer> tradingPartners = getTradingPartners(username);
         int minTrades = Collections.max(tradingPartners.values());
         String minUser = null;

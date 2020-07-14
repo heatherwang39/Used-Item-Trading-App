@@ -273,34 +273,27 @@ public class TraderSystem {
     }
 
     /**
-     * Allows a user with the given username to check their activity. There are two activities they can check:
+     * Allows a user with the given username to check their activity. There are two activities they will see:
      * (1) Their three most recently traded items
      * (2) Their three most frequent trading partners
      * @param account account of the user who requested their activity
-     * @throws IOException user input is invalid
      */
-    public void showActivity(Account account) throws IOException {
+    public void showActivity(Account account) {
         String username = account.getUsername();
-        System.out.println("Which activity would you like to see?\n1. Most recent traded items\n2. Most frequent trading partners");
-        String option = input.readLine();
-        switch(option) {
-            case "1":
-                System.out.println("Here are the most recent items traded:");
-                List<List<Integer>> threeRecentItems = tm.recentTradedItems(username);
-                if (threeRecentItems.isEmpty()) System.out.println("Empty");
-                else{
-                    for (List<Integer> tradeItems : threeRecentItems){
-                        if (tradeItems.size() == 1) System.out.println(tradeItems.get(0) + " was traded.");
-                        else System.out.println(tradeItems.get(0) + " and " + tradeItems.get(1) + " were traded.");
-                    }
-                }
-            case "2":
-                System.out.println("Here are the most frequent trading partners:");
-                Set<String> frequentTradingPartners = tm.frequentTradingPartners(username);
-                if (frequentTradingPartners.isEmpty()) System.out.println("Empty");
-                else {
-                    for (String user : frequentTradingPartners) System.out.println(user);
-                }
+        System.out.println("Here are the most recent items traded:");
+        List<List<Integer>> threeRecentItems = tm.recentTradedItems(username);
+        if (threeRecentItems.isEmpty()) System.out.println("Empty");
+        else{
+            for (List<Integer> tradeItems : threeRecentItems){
+                if (tradeItems.size() == 1) System.out.println(tradeItems.get(0) + " was traded.");
+                else System.out.println(tradeItems.get(0) + " and " + tradeItems.get(1) + " were traded.");
+            }
+        }
+        System.out.println("Here are the most frequent trading partners:");
+        Set<String> frequentTradingPartners = tm.frequentTradingPartners(username);
+        if (frequentTradingPartners.isEmpty()) System.out.println("Empty");
+        else {
+            for (String user : frequentTradingPartners) System.out.println(user);
         }
     }
 
