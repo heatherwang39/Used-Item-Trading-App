@@ -56,8 +56,9 @@ public class TradeStorage {
      * @param receiver  The username of the Receiver of the Trade
      * @param item      The ID of the item involved in the Trade
      * @return The tradeNumber of the newly initialized Trade.
+     * @throws IOException Cannot save to file
      */
-    public int newOneWayTrade(Boolean permanent, String sender, String receiver, int item) {
+    public int newOneWayTrade(Boolean permanent, String sender, String receiver, int item) throws IOException {
         int t;
         if (permanent) {
             t = newOWPTrade(sender, receiver, item);
@@ -67,15 +68,17 @@ public class TradeStorage {
         return t;
     }
 
-    private int newOWPTrade(String sender, String receiver, int item) {
+    private int newOWPTrade(String sender, String receiver, int item) throws IOException {
         Trade t = new OneWayPermanentTrade(getNumberOfTrades(), sender, receiver, item);
         trades.add(t);
+        frw.saveToFile(trades,path);
         return t.getTradeNumber();
     }
 
-    private int newOWTTrade(String sender, String receiver, int item) {
+    private int newOWTTrade(String sender, String receiver, int item) throws IOException {
         Trade t = new OneWayTemporaryTrade(getNumberOfTrades(), sender, receiver, item);
         trades.add(t);
+        frw.saveToFile(trades,path);
         return t.getTradeNumber();
     }
 
@@ -90,9 +93,10 @@ public class TradeStorage {
      * @param secondTrader The username of the second trader.
      * @param secondItem   The ID of the item the second trader sent in this trade
      * @return The tradeNumber of the newly initialized Trade.
+     * @throws IOException Cannot save to file
      */
     public int newTwoWayTrade(Boolean permanent, String firstTrader, int firstItem,
-                              String secondTrader, int secondItem) {
+                              String secondTrader, int secondItem) throws IOException {
         int t;
         if (permanent) {
             t = newTWPTrade(firstTrader, firstItem, secondTrader, secondItem);
@@ -102,15 +106,17 @@ public class TradeStorage {
         return t;
     }
 
-    private int newTWPTrade(String firstTrader, int firstItem, String secondTrader, int secondItem) {
+    private int newTWPTrade(String firstTrader, int firstItem, String secondTrader, int secondItem) throws IOException {
         Trade t = new TwoWayPermanentTrade(getNumberOfTrades(), firstTrader, firstItem, secondTrader, secondItem);
         trades.add(t);
+        frw.saveToFile(trades,path);
         return t.getTradeNumber();
     }
 
-    private int newTWTTrade(String firstTrader, int firstItem, String secondTrader, int secondItem) {
+    private int newTWTTrade(String firstTrader, int firstItem, String secondTrader, int secondItem) throws IOException {
         Trade t = new TwoWayTemporaryTrade(getNumberOfTrades(), firstTrader, firstItem, secondTrader, secondItem);
         trades.add(t);
+        frw.saveToFile(trades,path);
         return t.getTradeNumber();
     }
 
