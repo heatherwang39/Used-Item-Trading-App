@@ -298,7 +298,7 @@ public class AccountStorage {
     /**
      * Add item IDs to account inventory
      * @throws AccountNotFoundException account not found under username
-     * @throws IOException if file can't be saved to
+     * @throws IOException if file can't be saved to.
      */
     public void addInventory(String username, List<Integer> itemIDs) throws AccountNotFoundException, IOException {
         Account account = getAccount(username);
