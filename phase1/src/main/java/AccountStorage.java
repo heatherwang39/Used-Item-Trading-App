@@ -45,7 +45,7 @@ public class AccountStorage {
      * @param password input password
      * @return a boolean representing whether the combination is valid
      */
-    private boolean isInvalidLogin(String username, String password) {
+    protected boolean isInvalidLogin(String username, String password) {
         // Regex from: https://stackoverflow.com/questions/34916716
         Pattern p = Pattern.compile("^[a-zA-Z0-9-_.!@#$%^&*()]*$");
         return !p.matcher(username).matches() || !p.matcher(password).matches();
@@ -56,7 +56,7 @@ public class AccountStorage {
      * @param email input email
      * @return a boolean representing whether the email is valid
      */
-    private boolean isInvalidEmail(String email) {
+    protected boolean isInvalidEmail(String email) {
 
         Pattern p = Pattern.compile("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-" +
                 "\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(" +
@@ -71,14 +71,14 @@ public class AccountStorage {
      * @param username input username
      * @return a boolean representing if username is in use
      */
-    public boolean isUsernameInUse(String username) { return accounts.containsKey(username); }
+    protected boolean isUsernameInUse(String username) { return accounts.containsKey(username); }
 
     /**
      * Checks if email is used in another account
      * @param email input email
      * @return a boolean representing if email is in use
      */
-    private boolean isEmailInUse(String email) {
+    protected boolean isEmailInUse(String email) {
         for (Account account: accounts.values()) {
             if (account.getEmail().equals(email)) return true;
         }
@@ -113,12 +113,13 @@ public class AccountStorage {
      * @throws UsernameInUseException username is in use
      * @throws EmailInUseException email is in use
      */
-    public void createUserAccount(String username, String password, String email, boolean isFrozen) throws IOException,
+    public Account createUserAccount(String username, String password, String email, boolean isFrozen) throws IOException,
             InvalidLoginException, InvalidEmailException, UsernameInUseException, EmailInUseException {
         isValidAccount(username, password, email);
         UserAccount user = new UserAccount(username, password, email, isFrozen);
         accounts.put(username, user);
         frw.saveToFile(accounts, path);
+        return user;
     }
 
     /**
@@ -131,12 +132,13 @@ public class AccountStorage {
      * @throws UsernameInUseException username is in use
      * @throws EmailInUseException email is in use
      */
-    public void createAdminAccount(String username, String password, String email) throws IOException,
+    protected Account createAdminAccount(String username, String password, String email) throws IOException,
             EmailInUseException, InvalidEmailException, InvalidLoginException, UsernameInUseException {
         isValidAccount(username, password, email);
-        AdminAccount user = new AdminAccount(username, password, email);
-        accounts.put(username, user);
+        AdminAccount admin = new AdminAccount(username, password, email);
+        accounts.put(username, admin);
         frw.saveToFile(accounts, path);
+        return admin;
     }
 
     /**

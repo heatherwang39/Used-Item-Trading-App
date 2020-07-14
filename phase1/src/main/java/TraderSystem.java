@@ -17,6 +17,7 @@ public class TraderSystem {
     private int tradeThreshold; //TODO: have configuration file set this
     private int weeklyThreshold;
     private int incompleteThreshold;
+    private Account account;
 
     public TraderSystem(BufferedReader keyboard) throws IOException, ClassNotFoundException {
 
@@ -40,7 +41,7 @@ public class TraderSystem {
     }
 
 
-    public Account login() throws IOException {
+    public Account signIn() throws IOException {
         try {
             System.out.println("Username: ");
             String username = input.readLine();
@@ -49,39 +50,83 @@ public class TraderSystem {
 
             if (am.tryLogin(username, pw)) {
                 return am.getAccount(username);
-            } else {
-                throw new AccountNotFoundException();
             }
         } catch (AccountNotFoundException e) {
             System.out.println("Invalid Username or Password. Please try again.");
         }
-        return login();
+        return signIn();
 
     }
 
-    public Account register() throws IOException, AccountNotFoundException { //this doesn't work properly yet need to fix some stuff
+    public Account register() throws IOException {
+        Account acc = null;
         System.out.println("Enter email: "); //TODO make this method have less duplicate lines for errors
         String email = input.readLine();
+        boolean emailChecker = false;
+        do {
+            try {
+                if (!am.isEmailInUse(email)) {
+                    if (!am.isInvalidEmail(email)) {
+                        emailChecker = true;
+                    } else {
+                        throw new InvalidEmailException();
+                    }
+                } else {
+                    throw new EmailInUseException();
+                }
+            } catch (EmailInUseException e) {
+                System.out.println("This email address is already in use. Please try again.");
+            } catch (InvalidEmailException e) {
+                System.out.println("Invalid email. Please try again.");
+            } finally {
+                if (!emailChecker) System.out.println("Enter email: ");
+            }
+        } while (!emailChecker);
+
         System.out.println("Enter Username: ");
         String username = input.readLine();
+        boolean usernameChecker = false;
+        do {
+            try {
+                if (!am.isUsernameInUse(username)) {
+                    if (!am.isInvalidLogin(username, "a")){ usernameChecker = true; }
+                    else { throw new InvalidLoginException(); }
+                } else { throw new UsernameInUseException(); }
+            } catch (UsernameInUseException e) {
+                //e.printStackTrace(); // TODO: check if I can just override .toString in the exception, instead of  writing the following print lines
+                //edit = I'll leave the above line for now to come back to it later.
+                System.out.println("This Username is already in use. Please choose another Username.");
+            } catch (InvalidLoginException e) {
+                System.out.println("Invalid Username format.\n Please try again with letters, numbers, periods and special characters only.");
+            } finally {
+                if (!usernameChecker) System.out.println("Enter Username: ");
+            }
+        } while (!usernameChecker);
+
         System.out.println("Enter Password: ");
         String pw = input.readLine();
+        boolean pwChecker = false;
+        do {
+            try {
+                if (!am.isInvalidLogin(username, pw)){
+                    pwChecker = true;
+                } else {
+                    throw new InvalidLoginException();
+                }
+            } catch (InvalidLoginException e){
+                System.out.println("Invalid Password format.\n Please try again with letters, numbers, periods and special characters only.");
+            } finally {
+                if (!pwChecker) System.out.println("Enter Password: ");
+            }
+        } while (!pwChecker);
 
-        try {
-            am.createUserAccount(username, pw, email, false);
-        } catch (UsernameInUseException e) {
-            e.printStackTrace(); // TODO: check if I can just override .toString in the exception, instead of  writing the following print lines
-            System.out.println("This Username is already in use. Please choose another Username.");
-            System.out.println("Enter Username: ");
-            username = System.in.toString();
-        } catch (EmailInUseException e) {
-            System.out.println("This email address is already in use. Please try again.");
-        } catch (InvalidEmailException e) {
-            System.out.println("Invalid email. Please try again.");
-        } catch (InvalidLoginException e) {
-            System.out.println("Invalid Username or Password format. Please try again with alphanumerics and special characters only.");
+        try{
+            acc = am.createUserAccount(username, pw, email, false);
+        } catch (InvalidLoginException | InvalidEmailException | EmailInUseException | //I need to clean this smell.
+                UsernameInUseException e) {
+            e.printStackTrace();
         }
-        return am.getAccount(username);
+        return acc;
     }
 
     public void accountInformation(Account account) throws IOException {

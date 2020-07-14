@@ -10,7 +10,7 @@ public class TraderClient {
 
     private TraderSystem ts;
     private BufferedReader keyboard;
-
+    private Account currUser;
 
     public void run() {
         System.out.println("Welcome to Trader. At anytime you may type 'exit' to quit.\n" +
@@ -29,8 +29,6 @@ public class TraderClient {
             System.out.println("Files could not be read from.");
         } catch (ClassNotFoundException e) {
             System.out.println("Files are corrupt/improper.");
-        } catch (AccountNotFoundException e) { //TODO: IMPORTANT needs edit/deleted later!!!!
-            e.printStackTrace();
         }
     }
 
@@ -40,14 +38,13 @@ public class TraderClient {
      *      1 represents option to Sign In to an existing account
      *      2 represents option to Register a new account
      * @return  returns the logged in User Account
-     * @throws AccountNotFoundException
      * @throws IOException
      */
-    public Account login() throws AccountNotFoundException, IOException {
+    public Account login() throws IOException {
         String i = keyboard.readLine();
         try {
             if (i.equals("1")) {
-                return ts.login();
+                return ts.signIn();
             }
             if (i.equals("2")) {
                 return ts.register();
@@ -62,8 +59,8 @@ public class TraderClient {
 
     public void layerTwoMenu(Account user){
         System.out.println("1. View Account Information\n2. Add Items\n3. Browse Listings\n4. My Activity\n" +
-                "5. Offers\n6. Active Trades");
-        if (user.isAdmin()){ System.out.println("7. Admin Options"); }
+                "5. Offers\n6. Active Trades\n 7.Sign out");
+        if (user.isAdmin()){ System.out.println("8. Admin Options"); }
     }
 
     public void layerTwo(Account user) throws IOException { //TODO: give options to view available/active/requested trade lists or user account info etc.
@@ -89,6 +86,8 @@ public class TraderClient {
                     ts.showActiveTrades(user);
                     break;
                 case "7":
+                    signOut();
+                case "8":
                     if (user.isAdmin()){ adminOptions(user); }
                     else { throw new InvalidOptionException(); }
                     break;
@@ -143,6 +142,10 @@ public class TraderClient {
             System.out.println("Invalid Option detected. Please try again.");
             adminOptions(admin);
         }
+    }
+
+    public void signOut(){
+        ; //TODO: implement this later.
     }
 
 }
