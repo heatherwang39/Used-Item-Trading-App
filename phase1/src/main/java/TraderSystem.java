@@ -196,7 +196,8 @@ public class TraderSystem {
                 } catch (IOException | AccountNotFoundException e) {
                     System.out.println("Unable to read file/Account not found. Please restart the program.");
                 }
-                System.out.println("Item was successfully added!");
+                System.out.println("Book Item " + name + " was successfully added!");
+                break;
             case "clothing":
                 System.out.println("Enter the name of the brand:");
                 String brand = input.readLine();
@@ -206,16 +207,17 @@ public class TraderSystem {
                 } catch (IOException | AccountNotFoundException e) {
                     System.out.println("Unable to read file/Account not found. Please restart the program.");
                 }
-                System.out.println("Item was successfully added!");
+                System.out.println("Clothing Item " + name + " was successfully added!");
+                break;
             default:
-                System.out.println("Type not recognize/is misc.");
                 try {
                     Item item = im.newMiscItem(name, description);
                     am.addInventory(account.getUsername(), item.getID());
                 } catch (IOException | AccountNotFoundException e) {
                     System.out.println("Unable to read file/Account not found. Please restart the program.");
                 }
-                System.out.println("Item was successfully added!");
+                System.out.println("Misc Item " + name + " was successfully added!");
+                break;
         }
     }
 
@@ -275,11 +277,13 @@ public class TraderSystem {
                         System.out.println("Offer accepted!");
                         processAcceptedTrade(tradesReceived.get(i));
                         user.removeTradesReceived(tradesReceived.get(i));
+                        break;
                     case "2":
                         System.out.println("Offer denied!");
                         user.removeTradesReceived(tradesReceived.get(i));
-
+                        break;
                     case "3": System.out.println("Don't forget to check back soon!");
+                        break;
                 }
                 i++;
             }
@@ -384,8 +388,10 @@ public class TraderSystem {
                 case "1":
                     am.freezeAccount(username);
                     System.out.println("Account " + username + " has been frozen.");
+                    break;
                 case "2":
                     System.out.println("Account " + username + " has not been frozen.");
+                    break;
                 default:
                     throw new InvalidOptionException();
             }

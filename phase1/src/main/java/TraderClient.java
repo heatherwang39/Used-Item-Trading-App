@@ -33,7 +33,7 @@ public class TraderClient {
      *      1 represents option to Sign In to an existing account
      *      2 represents option to Register a new account
      * @return  returns the logged in User Account
-     * @throws IOException
+     * @throws IOException file could no tbe written to after adding an account
      */
     public Account login() throws IOException {
         String i = keyboard.readLine();
@@ -54,7 +54,7 @@ public class TraderClient {
 
     public void layerTwoMenu(Account user){
         System.out.println("1. View Account Information\n2. Add Items\n3. Browse Listings\n4. Create Request\n" +
-                "5. My Activity\n6. Offers\n7. Active Trades\n 8.Sign out");
+                "5. My Activity\n6. Offers\n7. Active Trades\n8. Sign out");
         if (user.isAdmin()){ System.out.println("9. Admin Options"); }
     }
 
@@ -143,7 +143,7 @@ public class TraderClient {
     }
 
     public void signOut(){
-        ; //TODO: implement this later.
+        //TODO: implement this later.
     }
 
 }
