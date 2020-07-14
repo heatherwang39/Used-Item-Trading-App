@@ -178,33 +178,29 @@ public class TraderSystem {
     }
 
     public void browseListings(Account user) {
-        System.out.println("Here are all available item listings: ");
-        List<Item> itemList = im.getVerifiedItems();
         int itemId;
         String usernameOfOwner;
-        for (Item item : itemList) {
-            System.out.println(item.getName() + ", id:" + item.getID() + "\n");
+        EntityDisplay ed = new EntityDisplay("Available Items");
+        for (Item item: im.getVerifiedItems()){
+            ed.insert(item);
         }
-        System.out.println("What kind of request you want to make? 1.one way trade 2.two way trade");
+        ed.display();
+        System.out.println("What kind of request you want to make? 1. One way trade 2. Two way trade");
+        System.out.println("-----------------");
         try {
             switch (Integer.parseInt(input.readLine())) {
-                case 1:
+                case 1 -> {
                     System.out.println("Enter the id of the item you wish to trade:");
                     itemId = Integer.parseInt(input.readLine());
                     usernameOfOwner = am.getItemOwner(itemId);
                     System.out.println("What kind of trade you want to make? 1.temporary trade 2.Permanent trade");
                     switch (Integer.parseInt(input.readLine())) {
-                        case 1:
-                            tm.newOneWayTrade(false,usernameOfOwner,user.getUsername(),itemId);
-                            break;
-                        case 2:
-                            tm.newOneWayTrade(true,usernameOfOwner,user.getUsername(),itemId);
-                            break;
-                        default:
-                            throw new InvalidOptionException();
+                        case 1 -> tm.newOneWayTrade(false, usernameOfOwner, user.getUsername(), itemId);
+                        case 2 -> tm.newOneWayTrade(true, usernameOfOwner, user.getUsername(), itemId);
+                        default -> throw new InvalidOptionException();
                     }
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     System.out.println("Enter the id of the item you wish to trade:");
                     itemId = Integer.parseInt(input.readLine());
                     usernameOfOwner = am.getItemOwner(itemId);
@@ -212,18 +208,12 @@ public class TraderSystem {
                     int itemIdOwn = Integer.parseInt(input.readLine());
                     System.out.println("What kind of trade you want to make? 1.temporary trade 2.Permanent trade");
                     switch (Integer.parseInt(input.readLine())) {
-                        case 1:
-                            tm.newTwoWayTrade(false,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
-                            break;
-                        case 2:
-                            tm.newTwoWayTrade(true,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
-                            break;
-                        default:
-                            throw new InvalidOptionException();
+                        case 1 -> tm.newTwoWayTrade(false, usernameOfOwner, itemId, user.getUsername(), itemIdOwn);
+                        case 2 -> tm.newTwoWayTrade(true, usernameOfOwner, itemId, user.getUsername(), itemIdOwn);
+                        default -> throw new InvalidOptionException();
                     }
-                    break;
-                default:
-                    throw new InvalidOptionException();
+                }
+                default -> throw new InvalidOptionException();
             }
         }catch(InvalidOptionException e){
             System.out.println("Invalid Option detected. Please try again.");
@@ -264,7 +254,7 @@ public class TraderSystem {
     }
 
     public void showActivity() {
-        ; // save to implement this until phase 2 (potentially)
+        // save to implement this until phase 2 (potentially)
     }
 
     /**
@@ -280,15 +270,17 @@ public class TraderSystem {
                 String userInput = input.readLine();
                 System.out.println("Enter 1 to accept, 2 to deny, or 3 to decide later");
                 System.out.println(tradesReceived.get(i)); // this only print trade ID (for now)
-                if (userInput.equals("1")) {
-                    System.out.println("Offer accepted!");
-                    processAcceptedTrade(tradesReceived.get(i));
-                    user.removeTradesReceived(tradesReceived.get(i));
-                } else if (userInput.equals("2")) {
-                    System.out.println("Offer denied!");
-                    user.removeTradesReceived(tradesReceived.get(i));
-                } else if (userInput.equals("3")) {
-                    System.out.println("Don't forget to check back soon!");
+                switch (userInput) {
+                    case "1" -> {
+                        System.out.println("Offer accepted!");
+                        processAcceptedTrade(tradesReceived.get(i));
+                        user.removeTradesReceived(tradesReceived.get(i));
+                    }
+                    case "2" -> {
+                        System.out.println("Offer denied!");
+                        user.removeTradesReceived(tradesReceived.get(i));
+                    }
+                    case "3" -> System.out.println("Don't forget to check back soon!");
                 }
                 i++;
             }
@@ -313,23 +305,28 @@ public class TraderSystem {
         try {
             StringBuilder sb = new StringBuilder("Here are your active trades");
             List<Integer> allTrades = new ArrayList<>(am.getTradesReceived(user));
-            for (int i = 0; i < allTrades.size(); i++){
-                System.out.println("Trade ID: " + allTrades.get(i));
+            for (Integer allTrade : allTrades) {
+                System.out.println("Trade ID: " + allTrade);
                 System.out.println("Enter 1 to view next active trade, 2 to mark this trade as completed, 3 to cancel this trade");
 
                 String userInput = input.readLine();
 
 
-                if (userInput.equals("1")){
-                    ; // if the user enters 1 it'll just print out the next trade
-                } else if (userInput.equals("2")){
-                    System.out.println("Trade marked as completed!");
-                    processCompletedTrade(allTrades.get(i));
-                    user.removeTradesReceived(allTrades.get(i));
-                } else if (userInput.equals("3")){
-                    System.out.println("Trade has been cancelled");
-                    processCancelledTrade(allTrades.get(i));
-                    user.removeTradesReceived(allTrades.get(i));
+                switch (userInput) {
+                    case "1":
+                        // if the user enters 1 it'll just print out the next trade
+
+                        break;
+                    case "2":
+                        System.out.println("Trade marked as completed!");
+                        processCompletedTrade(allTrade);
+                        user.removeTradesReceived(allTrade);
+                        break;
+                    case "3":
+                        System.out.println("Trade has been cancelled");
+                        processCancelledTrade(allTrade);
+                        user.removeTradesReceived(allTrade);
+                        break;
                 }
             }
         //} catch (ItemNotFoundException e) {
@@ -343,7 +340,7 @@ public class TraderSystem {
         //Added this to see if the code would run VVVV
         //MAY NEED TO DELETE LATER
 
-        catch (IOException e){}
+        catch (IOException ignored){}
     }
 
     public void showItemRequests () {
@@ -364,8 +361,7 @@ public class TraderSystem {
                 }
             } catch (IOException e) {
                 System.out.println("Unable to read file. Please restart the program.");
-            } catch (ItemNotFoundException e) {
-                System.out.println("Unable to read file. Please restart the program.");
+            } catch (ItemNotFoundException ignored) {
             }
         }
     }
@@ -459,8 +455,7 @@ public class TraderSystem {
     //Does not update the users wishlist
     //WILL CANCEL ALL TRADES THAT CONTAIN ONE OF THE ITEMS
     //WILL REMOVE ALL ITEMS BACK TO THEIR ORIGINAL OWNERS
-    private void processAcceptedTrade(int tradeNumber) throws TradeNumberException, AccountNotFoundException,
-            ItemNotFoundException{
+    private void processAcceptedTrade(int tradeNumber) throws TradeNumberException, AccountNotFoundException {
         Trade trade = tm.getTrade(tradeNumber);
         List<String> users = trade.getTraders();
         List<Integer> items = trade.getItemsOriginal();
