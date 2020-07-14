@@ -56,7 +56,7 @@ public class AccountStorage {
      * @param email input email
      * @return a boolean representing whether the email is valid
      */
-    protected boolean isInvalidEmail(String email) {
+    private boolean isInvalidEmail(String email) {
 
         Pattern p = Pattern.compile("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-" +
                 "\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(" +
@@ -67,23 +67,43 @@ public class AccountStorage {
     }
 
     /**
-     * Checks if username is used in another account
-     * @param username input username
-     * @return a boolean representing if username is in use
-     */
-    protected boolean isUsernameInUse(String username) { return accounts.containsKey(username); }
-
-    /**
      * Checks if email is used in another account
      * @param email input email
      * @return a boolean representing if email is in use
      */
-    protected boolean isEmailInUse(String email) {
+    private boolean isEmailInUse(String email) {
         for (Account account: accounts.values()) {
             if (account.getEmail().equals(email)) return true;
         }
         return false;
     }
+
+    protected boolean emailChecker(String email) throws InvalidEmailException, EmailInUseException {
+        if (!isEmailInUse(email)) {
+            if (!isInvalidEmail(email)) {
+                return true;
+            } else {
+                throw new InvalidEmailException();
+            }
+        } else {
+            throw new EmailInUseException();
+        }
+    }
+
+    /**
+     * Checks if username is used in another account
+     * @param username input username
+     * @return a boolean representing if username is in use
+     */
+    private boolean isUsernameInUse(String username) { return accounts.containsKey(username); }
+
+    protected boolean usernameChecker (String username) throws InvalidLoginException, UsernameInUseException {
+        if (!isUsernameInUse(username)) {
+            if (!isInvalidLogin(username, "a")){ return true; }
+            else { throw new InvalidLoginException(); }
+        } else { throw new UsernameInUseException(); }
+    }
+
 
     /**
      * Wraps all checks for a new account being valid
@@ -100,7 +120,7 @@ public class AccountStorage {
         if (isInvalidLogin(username, password)){ throw new InvalidLoginException(); }
         if (isInvalidEmail(email)) {throw new InvalidEmailException(); }
         if (isUsernameInUse(username)) {throw new UsernameInUseException(); }
-        if (isEmailInUse(username)) {throw new EmailInUseException(); }
+        if (isEmailInUse(email)) {throw new EmailInUseException(); }
     }
 
     /**

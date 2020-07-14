@@ -14,6 +14,7 @@ public class TraderSystem {
     private final TradeStorage tm;
     private final ItemStorage im;
     private final BufferedReader input;
+    private String lastInput;
     private int tradeThreshold; //TODO: have configuration file set this
     private int weeklyThreshold;
     private int incompleteThreshold;
@@ -25,31 +26,34 @@ public class TraderSystem {
         im = new ItemStorage(itemsPath);
         am = new AccountStorage(accountsPath);
 
-        try {   //TODO:delete this whole try clause after we're done with register.
+        /**
+        //TODO:delete this whole try clause after we're done with register.
             am.createAdminAccount("admin", "admin", "admin@trader.org");
             am.createUserAccount("Sarah.alk", "123456", "sarah@trader.org", false);
-        } catch (UsernameInUseException e) {
-            System.out.println("UsernameInUseException.");
-        } catch (EmailInUseException e) {
-        System.out.println("EmailInUseException");
-        } catch (InvalidEmailException e) {
-            System.out.println("InvalidEmailException");
-        } catch ( InvalidLoginException e) {
-            System.out.println("InvalidLoginException");
-        }
+         */
     }
 
+    public String getInput() {
+        try {
+            lastInput = input.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Something went wrong. Improper input detected.");
+        }
+        return lastInput;
+        //TODO: I'm working on eliminating .readLine from every other method so they don't throw IOexception
+    }
 
     public Account signIn() throws IOException {
         try {
             System.out.println("Username: ");
-            String username = input.readLine();
+            String username = getInput();
             System.out.println("Password: ");
-            String pw = input.readLine();
+            String pw = getInput();
 
             if (am.tryLogin(username, pw)) {
                 return am.getAccount(username);
-            }
+            } throw new AccountNotFoundException();
         } catch (AccountNotFoundException e) {
             System.out.println("Invalid Username or Password. Please try again.");
         }
@@ -64,17 +68,9 @@ public class TraderSystem {
         boolean emailChecker = false;
         do {
             System.out.println("Enter email: ");
-            email = input.readLine();
+            email = getInput();
             try {
-                if (!am.isEmailInUse(email)) {
-                    if (!am.isInvalidEmail(email)) {
-                        emailChecker = true;
-                    } else {
-                        throw new InvalidEmailException();
-                    }
-                } else {
-                    throw new EmailInUseException();
-                }
+                emailChecker = am.emailChecker(email);
             } catch (EmailInUseException e) {
                 System.out.println("This email address is already in use. Please try again.");
             } catch (InvalidEmailException e) {
@@ -86,15 +82,10 @@ public class TraderSystem {
         boolean usernameChecker = false;
         do {
             System.out.println("Enter Username: ");
-            username = input.readLine();
+            username = getInput();
             try {
-                if (!am.isUsernameInUse(username)) {
-                    if (!am.isInvalidLogin(username, "a")){ usernameChecker = true; }
-                    else { throw new InvalidLoginException(); }
-                } else { throw new UsernameInUseException(); }
+                usernameChecker = am.usernameChecker(username);
             } catch (UsernameInUseException e) {
-                //e.printStackTrace(); // TODO: check if I can just override .toString in the exception, instead of  writing the following print lines
-                //edit = I'll leave the above line for now to come back to it later.
                 System.out.println("This Username is already in use. Please choose another Username.");
             } catch (InvalidLoginException e) {
                 System.out.println("Invalid Username format.\n Please try again with letters, numbers, periods and special characters only.");
@@ -105,7 +96,7 @@ public class TraderSystem {
         boolean pwChecker = false;
         do {
             System.out.println("Enter Password: ");
-            pw = input.readLine();
+            pw = getInput();
             try {
                 if (!am.isInvalidLogin(username, pw)){
                     pwChecker = true;
@@ -121,7 +112,7 @@ public class TraderSystem {
             acc = am.createUserAccount(username, pw, email, false);
         } catch (InvalidLoginException | InvalidEmailException | EmailInUseException | //I need to clean this smell.
                 UsernameInUseException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // TODO: check if I can just override .toString in the exception, instead of  writing the following print lines
         }
         return acc;
     }
@@ -130,66 +121,62 @@ public class TraderSystem {
         System.out.println("Username: " + account.getUsername());
         System.out.println("Email Address: " + account.getEmail());
         System.out.println("-----------------");
-        viewInventory(account);
-        System.out.println("-----------------");
-        viewWishlist(account);
+        try {
+            viewInventory(account);
+            System.out.println("-----------------");
+            viewWishlist(account);
+        } catch (AccountNotFoundException e) {
+            System.out.println("Your account is missing/deleted from the system. Please restart this program.");
+        }
     }
 
-    public void viewInventory(Account account) throws IOException {
+    public void viewInventory(Account account) throws IOException, AccountNotFoundException {
         EntityDisplay ed = new EntityDisplay("Your Inventory");
         List<Integer> contraband = new ArrayList<>();
-        try {
-            for (int id : account.getInventory()) {
-                try {
-                    ed.insert(im.getItem(id));
-                } catch (ItemNotFoundException e) {
-                    contraband.add(id);
-                }
+        for (int id : account.getInventory()) {
+            try {
+                ed.insert(im.getItem(id));
+            } catch (ItemNotFoundException e) {
+                contraband.add(id);
             }
-            if (!contraband.isEmpty()) {
-                am.removeInventory(account.getUsername(), contraband);
-                System.out.println(contraband.size() + " item(s) were found to invalid and have " +
-                        "been removed from your inventory.");
-            }
-            ed.display();
-        } catch (AccountNotFoundException e) {
-            System.out.println("Your account is missing/deleted from the system. Please restart this program.");
         }
+        if (!contraband.isEmpty()) {
+            am.removeInventory(account.getUsername(), contraband);
+            System.out.println(contraband.size() + " item(s) were found to invalid and have " +
+                    "been removed from your inventory.");
+        }
+        ed.display();
     }
 
-    public void viewWishlist(Account account) throws IOException {
+    public void viewWishlist(Account account) throws IOException, AccountNotFoundException {
         EntityDisplay ed = new EntityDisplay("Your Wishlist");
         List<Integer> contraband = new ArrayList<>();
-        try {
-            for (int id : account.getWishlist()) {
-                try {
-                    ed.insert(im.getItem(id));
-                } catch (ItemNotFoundException e) {
-                    contraband.add(id);
-                }
+        for (int id : account.getWishlist()) {
+            try {
+                ed.insert(im.getItem(id));
+            } catch (ItemNotFoundException e) {
+                contraband.add(id);
             }
-            if (!contraband.isEmpty()) {
-                am.removeWishlist(account.getUsername(), contraband);
-                System.out.println(contraband.size() + " item(s) were found to invalid and have " +
-                        "been removed from your wishist.");
-            }
-            ed.display();
-        } catch (AccountNotFoundException e) {
-            System.out.println("Your account is missing/deleted from the system. Please restart this program.");
         }
+        if (!contraband.isEmpty()) {
+            am.removeWishlist(account.getUsername(), contraband);
+            System.out.println(contraband.size() + " item(s) were found to invalid and have " +
+                    "been removed from your wishist.");
+        }
+        ed.display();
     }
 
 
     public void addItem(Account account) throws IOException {
         System.out.println("Enter the name of the item:");
-        String name = input.readLine();
+        String name = getInput();
         System.out.println("Enter a short description:");
-        String description = input.readLine();
+        String description = getInput();
         System.out.println("Enter the type of item (Book, Clothing, misc.):");
         switch (input.readLine().toLowerCase()) {
             case "book":
                 System.out.println("Enter the name of the author:");
-                String author = input.readLine();
+                String author = getInput();
                 try {
                     Item item = im.newBook(name, description, author);
                     am.addInventory(account.getUsername(), item.getID());
@@ -200,7 +187,7 @@ public class TraderSystem {
                 break;
             case "clothing":
                 System.out.println("Enter the name of the brand:");
-                String brand = input.readLine();
+                String brand = getInput();
                 try {
                     Item item = im.newClothing(name, description, brand);
                     am.addInventory(account.getUsername(), item.getID());
@@ -231,7 +218,7 @@ public class TraderSystem {
 
     public void addAdmin() throws IOException {
         System.out.println("Enter the username of the user you would like to promote to admin: ");
-        String username = input.readLine();
+        String username = getInput();
         try {
             Account user = am.getAccount(username);
             if (user.isAdmin()) System.out.println("User with corresponding username is already an admin.");
@@ -269,7 +256,7 @@ public class TraderSystem {
             List<Integer> tradesReceived = am.getTradesReceived(user);
             int i = 0;
             while (i < tradesReceived.size()) {
-                String userInput = input.readLine();
+                String userInput = getInput();
                 System.out.println("Enter 1 to accept, 2 to deny, or 3 to decide later");
                 System.out.println(tradesReceived.get(i)); // this only print trade ID (for now)
                 switch (userInput) {
@@ -291,8 +278,6 @@ public class TraderSystem {
             System.out.println("There is an error in the system, the trade number should not exist.");
         } catch (AccountNotFoundException e) {
             System.out.println("There is an error in the system, the account should not exist.");
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -309,7 +294,7 @@ public class TraderSystem {
                 System.out.println("Trade ID: " + allTrade);
                 System.out.println("Enter 1 to view next active trade, 2 to mark this trade as completed, 3 to cancel this trade");
 
-                String userInput = input.readLine();
+                String userInput = getInput();
 
 
                 switch (userInput) {
@@ -335,11 +320,6 @@ public class TraderSystem {
         } catch (AccountNotFoundException e) {
             e.printStackTrace();
         }
-
-        //Added this to see if the code would run VVVV
-        //MAY NEED TO DELETE LATER
-
-        catch (IOException ignored){}
     }
 
     public void showItemRequests () {
@@ -350,7 +330,7 @@ public class TraderSystem {
             try {
                 System.out.println(unverifiedItemList.get(i));
 
-                String userInput = input.readLine();
+                String userInput = getInput();
                 if (userInput.equals("1")) {
                     im.verifyItem(unverifiedItemList.get(i).getID());
                     i++;
@@ -383,7 +363,7 @@ public class TraderSystem {
         try {
             System.out.println("The user " + username + reason + " Would you like to freeze their account?");
             System.out.println("Click (1) for yes, (2) for no.");
-            String option = input.readLine();
+            String option = getInput();
             switch (option){
                 case "1":
                     am.freezeAccount(username);
@@ -527,13 +507,13 @@ public class TraderSystem {
         System.out.println("What kind of request you want to make? 1. One way trade 2. Two way trade");
         System.out.println("-----------------");
         try {
-            switch (Integer.parseInt(input.readLine())) {
+            switch (Integer.parseInt(getInput())) {
                 case 1:
                     System.out.println("Enter the id of the item you wish to trade:");
-                    int itemId = Integer.parseInt(input.readLine());
+                    int itemId = Integer.parseInt(getInput());
                     String usernameOfOwner = am.getItemOwner(itemId);
                     System.out.println("What kind of trade you want to make? 1.temporary trade 2.Permanent trade");
-                    switch (Integer.parseInt(input.readLine())) {
+                    switch (Integer.parseInt(getInput())) {
                         case 1:
                             tm.newOneWayTrade(false,usernameOfOwner,user.getUsername(),itemId);
                             break;
@@ -546,12 +526,12 @@ public class TraderSystem {
                     break;
                 case 2:
                     System.out.println("Enter the id of the item you wish to trade:");
-                    itemId = Integer.parseInt(input.readLine());
+                    itemId = Integer.parseInt(getInput());
                     usernameOfOwner = am.getItemOwner(itemId);
                     System.out.println("Enter the id of the your own item you wish to trade:");
-                    int itemIdOwn = Integer.parseInt(input.readLine());
+                    int itemIdOwn = Integer.parseInt(getInput());
                     System.out.println("What kind of trade you want to make? 1.temporary trade 2.Permanent trade");
-                    switch (Integer.parseInt(input.readLine())) {
+                    switch (Integer.parseInt(getInput())) {
                         case 1:
                             tm.newTwoWayTrade(false,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
                             break;
