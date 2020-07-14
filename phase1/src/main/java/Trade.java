@@ -462,23 +462,33 @@ abstract class Trade implements Serializable, Entity {
         meetingConfirmed.add(confirmed);
     }
 
-
+    /** Throws an exception if the provided meeting number is invalid
+     *
+     * @param meetingNumber An int value which represents a meeting number
+     * @throws MeetingNumberException if meetingNumber is an invalid meeting number
+     */
     private void checkMeetingNumber(int meetingNumber) throws MeetingNumberException{
         if(!(1 <= meetingNumber && meetingNumber <= getNumMeetings())){
             throw new MeetingNumberException();
         }
     }
 
-
+    /** Throws an exception if the provided meeting number does not exist.
+     *
+     * @param meetingNumber An int value which represents a meeting number
+     * @throws NoMeetingException if meetingNumber is not associated with any meeting.
+     */
     private void checkMeetingExists(int meetingNumber) throws NoMeetingException, MeetingNumberException{
         if(getMeetingPlace(meetingNumber) == null && getMeetingTime(meetingNumber) == null){
             throw new NoMeetingException();
         }
     }
 
-
+    /** Throws a TradeCancelledException if the status variable of this trade equals -1
+     *
+     */
     private void checkTradeCancelled() throws TradeCancelledException{
-        if(getStatus() == -1){
+        if(getStatus().equals(-1)){
             throw new TradeCancelledException();
         }
     }

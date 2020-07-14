@@ -33,7 +33,7 @@ public class TraderClient {
      *      1 represents option to Sign In to an existing account
      *      2 represents option to Register a new account
      * @return  returns the logged in User Account
-     * @throws IOException file could no tbe written to after adding an account
+     * @throws IOException if the user enters an invalid option
      */
     public Account login() throws IOException {
         String i = keyboard.readLine();
@@ -52,12 +52,21 @@ public class TraderClient {
         }
     }
 
+    /** Prints out the layer two UI.
+     *
+     * @param user The instance of the user which is currently logged in.
+     */
     public void layerTwoMenu(Account user){
         System.out.println("1. View Account Information\n2. Add Items\n3. Browse Listings\n4. Create Request\n" +
                 "5. My Activity\n6. Offers\n7. Active Trades\n8. Sign out");
         if (user.isAdmin()){ System.out.println("9. Admin Options"); }
     }
 
+    /** Detects user input from the second layer, and calls the corresponding method from TraderSystem.
+     *
+     * @param user The instance of the user which is currently logged in.
+     * @throws IOException if the user enters an invalid option
+     */
     public void layerTwo(Account user) throws IOException { //TODO: give options to view available/active/requested trade lists or user account info etc.
         String option = keyboard.readLine();
         try {
@@ -103,6 +112,12 @@ public class TraderClient {
 
     }
 
+    /** A collection of features exclusive to admin users. Admins choose which feature they wish to access by
+     * entering the corresponding numeric option.
+     *
+     * @param admin The instance of the admin user which is currently logged in.
+     * @throws IOException if the user inputs an invalid option
+     */
     private void adminOptions(Account admin) throws IOException {
         try {
             System.out.println("1. View Requests\n2. Freeze Accounts\n3. Update Trade Threshold\n4. Add new Admins");

@@ -137,6 +137,14 @@ public class TradeStorage {
         throw new TradeNumberException();
     }
 
+
+    /**
+     * Returns all the items pertaining to tradeNumber.
+     *
+     * @param tradeNumber The tradeNumber of the Trade
+     * @return a list of Integer values which represent all the trade IDs involved in this trade
+     * @throws TradeNumberException If no Trade with the given tradeNumber can be found
+     */
     public List<Integer> getItemsInTrade(int tradeNumber) throws TradeNumberException {
         for (Trade t : trades) {
             if (t.getTradeNumber() == tradeNumber) {

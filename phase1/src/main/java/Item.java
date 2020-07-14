@@ -95,6 +95,11 @@ public abstract class Item implements Serializable, Entity {
         this.currentStatus = currentStatus;
     }
 
+    /**
+     * Returns a nested list containing information about this item
+     *
+     * @return a nested list of Strings containing info about this item
+     */
     public List<List<String>> getData(){
         List<List<String>> data = new ArrayList<>();
         data.add(new ArrayList<>(Arrays.asList("Name", name)));

@@ -19,6 +19,13 @@ public class TraderSystem {
     private int weeklyThreshold;
     private int incompleteThreshold;
 
+
+    /**
+     * Creates a new TraderSystem.
+     *
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public TraderSystem(BufferedReader keyboard) throws IOException, ClassNotFoundException {
 
         input = keyboard;
@@ -33,6 +40,11 @@ public class TraderSystem {
          */
     }
 
+    /**
+     * A method used to recieve input from the user.
+     *
+     * @return the user's input
+     */
     public String getInput() {
         try {
             lastInput = input.readLine();
@@ -44,7 +56,12 @@ public class TraderSystem {
         //TODO: I'm working on eliminating .readLine from every other method so they don't throw IOexception
     }
 
-
+    /**
+     * Checks if username and password are valid alphanumeric + dash/underscore strings
+     * @param username input username
+     * @param password input password
+     * @return a boolean representing whether the combination is valid
+     */
     public Account signIn() throws IOException {
         try {
             System.out.println("Username: ");
@@ -62,6 +79,12 @@ public class TraderSystem {
 
     }
 
+    /**
+     * Registers a new user
+     *
+     * @return the registered user's account instance
+     * @throws IOException
+     */
     public Account register() throws IOException {
         Account acc = null;
          //TODO make this method have less duplicate lines for errors
@@ -118,6 +141,11 @@ public class TraderSystem {
         return acc;
     }
 
+    /**
+     * Prints out information about account
+     * @param account an instance of Account
+     * @throws IOException
+     */
     public void accountInformation(Account account) throws IOException {
         System.out.println("Username: " + account.getUsername());
         System.out.println("Email Address: " + account.getEmail());
@@ -131,6 +159,13 @@ public class TraderSystem {
         }
     }
 
+    /**
+     * Displays the inventory of account
+     *
+     * @param account an instance of Account
+     * @throws IOException
+     * @throws AccountNotFoundException
+     */
     public void viewInventory(Account account) throws IOException, AccountNotFoundException {
         EntityDisplay ed = new EntityDisplay("Your Inventory");
         List<Integer> contraband = new ArrayList<>();
@@ -149,6 +184,13 @@ public class TraderSystem {
         ed.display();
     }
 
+    /**
+     * Displays the wishlist of account
+     *
+     * @param account an instance of Account
+     * @throws IOException
+     * @throws AccountNotFoundException
+     */
     public void viewWishlist(Account account) throws IOException, AccountNotFoundException {
         EntityDisplay ed = new EntityDisplay("Your Wishlist");
         List<Integer> contraband = new ArrayList<>();
@@ -167,7 +209,12 @@ public class TraderSystem {
         ed.display();
     }
 
-
+    /**
+     * Adds an item to account
+     *
+     * @param account an instance of Account
+     * @throws IOException
+     */
     public void addItem(Account account) throws IOException {
         System.out.println("Enter the name of the item:");
         String name = getInput();
@@ -209,6 +256,9 @@ public class TraderSystem {
         }
     }
 
+    /**
+     * Displays every available item listing
+     */
     public void browseListings() {
         EntityDisplay ed = new EntityDisplay("Available Items");
         for (Item item: im.getVerifiedItems()){
@@ -217,6 +267,11 @@ public class TraderSystem {
         ed.display();
     }
 
+    /**
+     * Adds a new admin account
+     *
+     * @throws IOException
+     */
     public void addAdmin() throws IOException {
         System.out.println("Enter the username of the user you would like to promote to admin: ");
         String username = getInput();
@@ -282,7 +337,6 @@ public class TraderSystem {
         }
     }
 
-
     /**
      * Shows the user what trades they currently have active
      *
@@ -323,6 +377,10 @@ public class TraderSystem {
         }
     }
 
+    /**
+     * Shows all requests sent by users to have items added to their inventories to an admin. Admins can choose to
+     * accept or deny this request.
+     */
     public void showItemRequests () {
         System.out.println("Here are the current item requests. Press 1 to accept and 2 to deny: ");
         List<Item> unverifiedItemList = im.getUnverifiedItems();
@@ -403,6 +461,79 @@ public class TraderSystem {
      */
     public void updateIncompleteThreshold(int newThreshold){ incompleteThreshold = newThreshold; }
 
+    /**
+     * Initializes a trade request meant to be sent by the user.
+     *
+     * @param user the user instance which is currently logged in
+     */
+    public void createRequest(Account user) {
+        System.out.println("What kind of request you want to make? 1. One way trade 2. Two way trade");
+        System.out.println("-----------------");
+        int itemId;
+        int tradeId;
+        try {
+            switch (Integer.parseInt(getInput())) {
+                case 1:
+                    System.out.println("Enter the id of the item you wish to trade:");
+                    itemId = Integer.parseInt(getInput());
+                    String usernameOfOwner = am.getItemOwner(itemId);
+                    System.out.println("Which type of trade would you like to make? 1.Temporary trade " +
+                            "2.Permanent trade");
+                    switch (Integer.parseInt(getInput())) {
+                        case 1:
+                            tradeId = tm.newOneWayTrade(false,usernameOfOwner,user.getUsername(),itemId);
+                            user.addTradesOffered(tradeId);
+                            am.getAccount(usernameOfOwner).addTradesReceived(tradeId);
+                            System.out.println("Made a temporary one way trade to "+ usernameOfOwner +" of item No."+
+                                    itemId + " successfully!");
+                            break;
+                        case 2:
+                            tradeId = tm.newOneWayTrade(true,usernameOfOwner,user.getUsername(),itemId);
+                            user.addTradesOffered(tradeId);
+                            am.getAccount(usernameOfOwner).addTradesReceived(tradeId);
+                            System.out.println("Made a permanent one way trade to "+usernameOfOwner+" of item No."+
+                                    itemId +" successfully!");
+                            break;
+                        default:
+                            throw new InvalidOptionException();
+                    }
+                    break;
+                case 2:
+                    System.out.println("Enter the id of the item you wish to trade:");
+                    itemId = Integer.parseInt(getInput());
+                    usernameOfOwner = am.getItemOwner(itemId);
+                    System.out.println("Enter the id of the your own item you wish to trade:");
+                    int itemIdOwn = Integer.parseInt(getInput());
+                    System.out.println("What kind of trade you want to make? 1.temporary trade 2.Permanent trade");
+                    switch (Integer.parseInt(getInput())) {
+                        case 1:
+                            tradeId = tm.newTwoWayTrade(false,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
+                            user.addTradesOffered(tradeId);
+                            am.getAccount(usernameOfOwner).addTradesReceived(tradeId);
+                            System.out.println("Made a temporary two way trade with "+usernameOfOwner+" of item No."+itemId+" and No. "+itemIdOwn+"successfully!");
+                            break;
+                        case 2:
+                            tradeId = tm.newTwoWayTrade(true,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
+                            user.addTradesOffered(tradeId);
+                            am.getAccount(usernameOfOwner).addTradesReceived(tradeId);
+                            System.out.println("Made a permanent two way trade with "+usernameOfOwner+" of item No."+itemId+" and No. "+itemIdOwn+"successfully!");
+                            break;
+                        default:
+                            throw new InvalidOptionException();
+                    }
+                    break;
+                default:
+                    throw new InvalidOptionException();
+            }
+        }catch(InvalidOptionException e){
+            System.out.println("Invalid Option detected. Please try again.");
+            createRequest(user);
+        }catch(AccountNotFoundException e){
+            System.out.println("Cannot get the owner of the selected item.");
+        }catch (IOException e) {
+            System.out.println("Unable to read file. Please restart the program.");
+        }
+    }
 
     //Does not update the users wishlist
     //WILL RETURN ALL ITEMS BACK TO THEIR ORIGINAL OWNERS
@@ -504,69 +635,5 @@ public class TraderSystem {
         trade.setStatus(2);
     }
 
-    public void createRequest(Account user) {
-        System.out.println("What kind of request you want to make? 1. One way trade 2. Two way trade");
-        System.out.println("-----------------");
-        int itemId;
-        int tradeId;
-        try {
-            switch (Integer.parseInt(getInput())) {
-                case 1:
-                    System.out.println("Enter the id of the item you wish to trade:");
-                    itemId = Integer.parseInt(getInput());
-                    String usernameOfOwner = am.getItemOwner(itemId);
-                    System.out.println("What kind of trade you want to make? 1.temporary trade 2.Permanent trade");
-                    switch (Integer.parseInt(getInput())) {
-                        case 1:
-                            tradeId = tm.newOneWayTrade(false,usernameOfOwner,user.getUsername(),itemId);
-                            user.addTradesOffered(tradeId);
-                            am.getAccount(usernameOfOwner).addTradesReceived(tradeId);
-                            System.out.println("Made a temporary one way trade to "+usernameOfOwner+" of item No."+itemId+" successfully!");
-                            break;
-                        case 2:
-                            tradeId = tm.newOneWayTrade(true,usernameOfOwner,user.getUsername(),itemId);
-                            user.addTradesOffered(tradeId);
-                            am.getAccount(usernameOfOwner).addTradesReceived(tradeId);
-                            System.out.println("Made a permanent one way trade to "+usernameOfOwner+" of item No."+itemId+" successfully!");
-                            break;
-                        default:
-                            throw new InvalidOptionException();
-                    }
-                    break;
-                case 2:
-                    System.out.println("Enter the id of the item you wish to trade:");
-                    itemId = Integer.parseInt(getInput());
-                    usernameOfOwner = am.getItemOwner(itemId);
-                    System.out.println("Enter the id of the your own item you wish to trade:");
-                    int itemIdOwn = Integer.parseInt(getInput());
-                    System.out.println("What kind of trade you want to make? 1.temporary trade 2.Permanent trade");
-                    switch (Integer.parseInt(getInput())) {
-                        case 1:
-                            tradeId = tm.newTwoWayTrade(false,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
-                            user.addTradesOffered(tradeId);
-                            am.getAccount(usernameOfOwner).addTradesReceived(tradeId);
-                            System.out.println("Made a temporary two way trade with "+usernameOfOwner+" of item No."+itemId+" and No. "+itemIdOwn+"successfully!");
-                            break;
-                        case 2:
-                            tradeId = tm.newTwoWayTrade(true,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
-                            user.addTradesOffered(tradeId);
-                            am.getAccount(usernameOfOwner).addTradesReceived(tradeId);
-                            System.out.println("Made a permanent two way trade with "+usernameOfOwner+" of item No."+itemId+" and No. "+itemIdOwn+"successfully!");
-                            break;
-                        default:
-                            throw new InvalidOptionException();
-                    }
-                    break;
-                default:
-                    throw new InvalidOptionException();
-            }
-        }catch(InvalidOptionException e){
-            System.out.println("Invalid Option detected. Please try again.");
-            createRequest(user);
-        }catch(AccountNotFoundException e){
-            System.out.println("Cannot get the owner of the selected item.");
-        }catch (IOException e) {
-            System.out.println("Unable to read file. Please restart the program.");
-        }
-    }
+
 }
