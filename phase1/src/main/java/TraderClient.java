@@ -1,7 +1,5 @@
 package main.java;
 
-import com.sun.xml.internal.ws.api.model.wsdl.WSDLFault;
-
 import java.io.*;
 
 public class TraderClient {
@@ -30,10 +28,9 @@ public class TraderClient {
     /**
      * returns an Account associated with the input info of the user after signing in to an existing
      * the input options:
-     * 1 represents option to Sign In to an existing account
-     * 2 represents option to Register a new account
+     *       1 represents option to Sign In to an existing account
+     *       2 represents option to Register a new account
      * sets currUser to the logged in User Account
-     *
      * @throws IOException file could no tbe written to after adding an account
      */
     public void login() throws IOException {
@@ -54,6 +51,8 @@ public class TraderClient {
         }
     }
 
+    /** Prints out the layer two UI.
+     */
     public void layerTwoMenu() {
         System.out.println("1. View Account Information\n2. Add Items\n3. Browse Listings\n4. Create Request\n" +
                 "5. My Activity\n6. Offers\n7. Active Trades\n8. Sign out");
@@ -62,6 +61,11 @@ public class TraderClient {
         }
     }
 
+    /** Detects user input from the second layer, and calls the corresponding method from TraderSystem.
+     *
+     * @param user The instance of the user which is currently logged in.
+     * @throws IOException if the user enters an invalid option
+     */
     public void layerTwo() throws IOException { //TODO: give options to view available/active/requested trade lists or user account info etc.
         layerTwoMenu();
         String option = keyboard.readLine();
@@ -91,11 +95,8 @@ public class TraderClient {
                 case "8":
                     signOut();
                 case "9":
-                    if (currUser.isAdmin()) {
-                        adminOptions();
-                    } else {
-                        throw new InvalidOptionException();
-                    }
+                    if (currUser.isAdmin()) { adminOptions(); }
+                    else { throw new InvalidOptionException(); }
                     break;
                 case "0":
                     layerTwoMenu();
@@ -110,8 +111,15 @@ public class TraderClient {
 
     }
 
-    private void adminOptions() throws IOException {
-        try {
+
+    /** A collection of features exclusive to admin users. Admins choose which feature they wish to access by
+     * entering the corresponding numeric option.
+     *
+     * @param admin The instance of the admin user which is currently logged in.
+     * @throws IOException if the user inputs an invalid option
+     */
+        private void adminOptions() throws IOException {
+            try {
             System.out.println("1. View Requests\n2. Freeze Accounts\n3. Update Trade Threshold\n4. Add new Admins");
             switch (keyboard.readLine()) {
                 case "1":
@@ -167,4 +175,5 @@ public class TraderClient {
             signOut();
         }
     }
+
 }

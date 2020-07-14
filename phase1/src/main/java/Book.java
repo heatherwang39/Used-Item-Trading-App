@@ -15,15 +15,28 @@ public class Book extends Item {
 
     private String author;
 
+    /**
+     * Creates a Book item with the name and description of Clothing
+     */
     public Book(String name, String description, int id, String author) {
         super(name, description, id);
         this.author = author;
     }
 
+    /**
+     * Get author of this Book
+     *
+     * @return name of the item
+     */
     public String getAuthor() {
         return author;
     }
 
+    /**
+     * The toString() method for Book instances
+     *
+     * @return stylized print message containing information about this book.
+     */
     @Override
     public String toString(){
         return "Book name: " + getName() +", description: " + getDescription() + ", author: " + getAuthor() ;
