@@ -198,6 +198,7 @@ public class TraderSystem {
                     System.out.println("Unable to read file/Account not found. Please restart the program.");
                 }
                 System.out.println("Item was successfully added!");
+                break;
             case "clothing":
                 System.out.println("Enter the name of the brand:");
                 String brand = input.readLine();
@@ -208,6 +209,7 @@ public class TraderSystem {
                     System.out.println("Unable to read file/Account not found. Please restart the program.");
                 }
                 System.out.println("Item was successfully added!");
+                break;
             default:
                 System.out.println("Type not recognize/is misc.");
                 try {
