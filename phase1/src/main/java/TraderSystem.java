@@ -279,22 +279,21 @@ public class TraderSystem {
                 String userInput = input.readLine();
                 System.out.println("Enter 1 to accept, 2 to deny, or 3 to decide later");
                 System.out.println(tradesReceived.get(i)); // this only print trade ID (for now)
-                if (userInput.equals("1")) {
-                    System.out.println("Offer accepted!");
-                    processAcceptedTrade(tradesReceived.get(i));
-                    user.removeTradesReceived(tradesReceived.get(i));
-                } else if (userInput.equals("2")) {
-                    System.out.println("Offer denied!");
-                    user.removeTradesReceived(tradesReceived.get(i));
-                } else if (userInput.equals("3")) {
-                    System.out.println("Don't forget to check back soon!");
+                switch (userInput) {
+                    case "1":
+                        System.out.println("Offer accepted!");
+                        processAcceptedTrade(tradesReceived.get(i));
+                        user.removeTradesReceived(tradesReceived.get(i));
+                    case "2":
+                        System.out.println("Offer denied!");
+                        user.removeTradesReceived(tradesReceived.get(i));
+
+                    case "3": System.out.println("Don't forget to check back soon!");
                 }
                 i++;
             }
         } catch (TradeNumberException e) {
             System.out.println("There is an error in the system, the trade number should not exist.");
-        } catch (ItemNotFoundException e) {
-            System.out.println("There is an error in the system, the item should not exist.");
         } catch (AccountNotFoundException e) {
             System.out.println("There is an error in the system, the account should not exist.");
         } catch (IOException e) {
@@ -310,25 +309,28 @@ public class TraderSystem {
      */
     public void showActiveTrades(Account user) {
         try {
-            StringBuilder sb = new StringBuilder("Here are your active trades");
             List<Integer> allTrades = new ArrayList<>(am.getTradesReceived(user));
-            for (int i = 0; i < allTrades.size(); i++){
-                System.out.println("Trade ID: " + allTrades.get(i));
+            for (Integer allTrade : allTrades) {
+                System.out.println("Trade ID: " + allTrade);
                 System.out.println("Enter 1 to view next active trade, 2 to mark this trade as completed, 3 to cancel this trade");
 
                 String userInput = input.readLine();
 
 
-                if (userInput.equals("1")){
-                    ; // if the user enters 1 it'll just print out the next trade
-                } else if (userInput.equals("2")){
-                    System.out.println("Trade marked as completed!");
-                    processCompletedTrade(allTrades.get(i));
-                    user.removeTradesReceived(allTrades.get(i));
-                } else if (userInput.equals("3")){
-                    System.out.println("Trade has been cancelled");
-                    processCancelledTrade(allTrades.get(i));
-                    user.removeTradesReceived(allTrades.get(i));
+                switch (userInput) {
+                    case "1":
+                        // if the user enters 1 it'll just print out the next trade
+                        break;
+                    case "2":
+                        System.out.println("Trade marked as completed!");
+                        processCompletedTrade(allTrade);
+                        user.removeTradesReceived(allTrade);
+                        break;
+                    case "3":
+                        System.out.println("Trade has been cancelled");
+                        processCancelledTrade(allTrade);
+                        user.removeTradesReceived(allTrade);
+                        break;
                 }
             }
         //} catch (ItemNotFoundException e) {
@@ -342,7 +344,7 @@ public class TraderSystem {
         //Added this to see if the code would run VVVV
         //MAY NEED TO DELETE LATER
 
-        catch (IOException e){}
+        catch (IOException ignored){}
     }
 
     public void showItemRequests () {
@@ -363,8 +365,7 @@ public class TraderSystem {
                 }
             } catch (IOException e) {
                 System.out.println("Unable to read file. Please restart the program.");
-            } catch (ItemNotFoundException e) {
-                System.out.println("Unable to read file. Please restart the program.");
+            } catch (ItemNotFoundException ignored) {
             }
         }
     }
@@ -458,8 +459,7 @@ public class TraderSystem {
     //Does not update the users wishlist
     //WILL CANCEL ALL TRADES THAT CONTAIN ONE OF THE ITEMS
     //WILL REMOVE ALL ITEMS BACK TO THEIR ORIGINAL OWNERS
-    private void processAcceptedTrade(int tradeNumber) throws TradeNumberException, AccountNotFoundException,
-            ItemNotFoundException{
+    private void processAcceptedTrade(int tradeNumber) throws TradeNumberException, AccountNotFoundException {
         Trade trade = tm.getTrade(tradeNumber);
         List<String> users = trade.getTraders();
         List<Integer> items = trade.getItemsOriginal();
