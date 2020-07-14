@@ -19,7 +19,7 @@ public class TraderSystem {
     private int incompleteThreshold;
     private Account account;
 
-    public TraderSystem(BufferedReader keyboard) throws IOException, ClassNotFoundException {
+    public TraderSystem(BufferedReader keyboard) throws IOException, ClassNotFoundException { //todo: this is test commit
 
         input = keyboard;
         tm = new TradeStorage(tradesPath);
