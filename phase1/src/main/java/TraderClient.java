@@ -2,15 +2,10 @@ package main.java;
 
 import java.io.*;
 
-/**
- *
- */
-
 public class TraderClient {
 
     private TraderSystem ts;
     private BufferedReader keyboard;
-    private Account currUser;
 
     public void run() {
         System.out.println("Welcome to Trader. At anytime you may type 'exit' to quit.\n" +
@@ -58,9 +53,9 @@ public class TraderClient {
     }
 
     public void layerTwoMenu(Account user){
-        System.out.println("1. View Account Information\n2. Add Items\n3. Browse Listings\n4. My Activity\n" +
-                "5. Offers\n6. Active Trades\n 7.Sign out");
-        if (user.isAdmin()){ System.out.println("8. Admin Options"); }
+        System.out.println("1. View Account Information\n2. Add Items\n3. Browse Listings\n4. Create Request\n" +
+                "5. My Activity\n6. Offers\n7. Active Trades\n 8.Sign out");
+        if (user.isAdmin()){ System.out.println("9. Admin Options"); }
     }
 
     public void layerTwo(Account user) throws IOException { //TODO: give options to view available/active/requested trade lists or user account info etc.
@@ -74,20 +69,23 @@ public class TraderClient {
                     ts.addItem(user);
                     break;
                 case "3":
-                    ts.browseListings(user);
+                    ts.browseListings();
                     break;
                 case "4":
-                    ts.showActivity();
+                    ts.createRequest(user);
                     break;
                 case "5":
-                    ts.showOffers(user);
+                    ts.showActivity();
                     break;
                 case "6":
-                    ts.showActiveTrades(user);
+                    ts.showOffers(user);
                     break;
                 case "7":
-                    signOut();
+                    ts.showActiveTrades(user);
+                    break;
                 case "8":
+                    signOut();
+                case "9":
                     if (user.isAdmin()){ adminOptions(user); }
                     else { throw new InvalidOptionException(); }
                     break;

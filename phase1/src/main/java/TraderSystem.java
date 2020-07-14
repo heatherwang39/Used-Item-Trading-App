@@ -17,7 +17,6 @@ public class TraderSystem {
     private int tradeThreshold; //TODO: have configuration file set this
     private int weeklyThreshold;
     private int incompleteThreshold;
-    private Account account;
 
     public TraderSystem(BufferedReader keyboard) throws IOException, ClassNotFoundException {
 
@@ -222,64 +221,13 @@ public class TraderSystem {
         }
     }
 
-    public void browseListings(Account user) {
+    public void browseListings() {
         EntityDisplay ed = new EntityDisplay("Available Items");
         for (Item item: im.getVerifiedItems()){
             ed.insert(item);
         }
         ed.display();
-        System.out.println("What kind of request you want to make? 1. One way trade 2. Two way trade");
-        System.out.println("-----------------");
-        try {
-            switch (Integer.parseInt(input.readLine())) {
-                case 1:
-                    System.out.println("Enter the id of the item you wish to trade:");
-                    int itemId = Integer.parseInt(input.readLine());
-                    String usernameOfOwner = am.getItemOwner(itemId);
-                    System.out.println("What kind of trade you want to make? 1.temporary trade 2.Permanent trade");
-                    switch (Integer.parseInt(input.readLine())) {
-                        case 1:
-                            tm.newOneWayTrade(false,usernameOfOwner,user.getUsername(),itemId);
-                            break;
-                        case 2:
-                            tm.newOneWayTrade(true,usernameOfOwner,user.getUsername(),itemId);
-                            break;
-                        default:
-                            throw new InvalidOptionException();
-                    }
-                    break;
-                case 2:
-                    System.out.println("Enter the id of the item you wish to trade:");
-                    itemId = Integer.parseInt(input.readLine());
-                    usernameOfOwner = am.getItemOwner(itemId);
-                    System.out.println("Enter the id of the your own item you wish to trade:");
-                    int itemIdOwn = Integer.parseInt(input.readLine());
-                    System.out.println("What kind of trade you want to make? 1.temporary trade 2.Permanent trade");
-                    switch (Integer.parseInt(input.readLine())) {
-                        case 1:
-                            tm.newTwoWayTrade(false,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
-                            break;
-                        case 2:
-                            tm.newTwoWayTrade(true,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
-                            break;
-                        default:
-                            throw new InvalidOptionException();
-                    }
-                    break;
-                default:
-                    throw new InvalidOptionException();
-            }
-        }catch(InvalidOptionException e){
-            System.out.println("Invalid Option detected. Please try again.");
-            browseListings(user);
-        }catch(AccountNotFoundException e){
-            System.out.println("Cannot get the owner of the selected item.");
-        }catch (IOException e) {
-            System.out.println("Unable to read file. Please restart the program.");
-        }
     }
-
-
 
     public void addAdmin() throws IOException {
         System.out.println("Enter the username of the user you would like to promote to admin: ");
@@ -308,7 +256,7 @@ public class TraderSystem {
     }
 
     public void showActivity() {
-        // save to implement this until phase 2 (potentially)
+        System.out.println("This will be implemented in phase 2 ;)");
     }
 
     /**
@@ -569,5 +517,57 @@ public class TraderSystem {
         }
         //The below line is purely optional
         trade.setStatus(2);
+    }
+
+    public void createRequest(Account user) {
+        System.out.println("What kind of request you want to make? 1. One way trade 2. Two way trade");
+        System.out.println("-----------------");
+        try {
+            switch (Integer.parseInt(input.readLine())) {
+                case 1:
+                    System.out.println("Enter the id of the item you wish to trade:");
+                    int itemId = Integer.parseInt(input.readLine());
+                    String usernameOfOwner = am.getItemOwner(itemId);
+                    System.out.println("What kind of trade you want to make? 1.temporary trade 2.Permanent trade");
+                    switch (Integer.parseInt(input.readLine())) {
+                        case 1:
+                            tm.newOneWayTrade(false,usernameOfOwner,user.getUsername(),itemId);
+                            break;
+                        case 2:
+                            tm.newOneWayTrade(true,usernameOfOwner,user.getUsername(),itemId);
+                            break;
+                        default:
+                            throw new InvalidOptionException();
+                    }
+                    break;
+                case 2:
+                    System.out.println("Enter the id of the item you wish to trade:");
+                    itemId = Integer.parseInt(input.readLine());
+                    usernameOfOwner = am.getItemOwner(itemId);
+                    System.out.println("Enter the id of the your own item you wish to trade:");
+                    int itemIdOwn = Integer.parseInt(input.readLine());
+                    System.out.println("What kind of trade you want to make? 1.temporary trade 2.Permanent trade");
+                    switch (Integer.parseInt(input.readLine())) {
+                        case 1:
+                            tm.newTwoWayTrade(false,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
+                            break;
+                        case 2:
+                            tm.newTwoWayTrade(true,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
+                            break;
+                        default:
+                            throw new InvalidOptionException();
+                    }
+                    break;
+                default:
+                    throw new InvalidOptionException();
+            }
+        }catch(InvalidOptionException e){
+            System.out.println("Invalid Option detected. Please try again.");
+            createRequest(user);
+        }catch(AccountNotFoundException e){
+            System.out.println("Cannot get the owner of the selected item.");
+        }catch (IOException e) {
+            System.out.println("Unable to read file. Please restart the program.");
+        }
     }
 }
