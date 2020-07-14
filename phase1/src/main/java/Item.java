@@ -14,9 +14,9 @@ import java.util.List;
  */
 
 public abstract class Item implements Serializable, Entity {
-    private String name;
-    private String description;
-    private int id;
+    private final String name;
+    private final String description;
+    private final int id;
     private boolean isVerified = false;
     private int currentStatus;
     private int timeLimit = 30;
