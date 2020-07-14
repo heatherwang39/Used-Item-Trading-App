@@ -33,15 +33,13 @@ public class TraderSystem {
         im = new ItemStorage(itemsPath);
         am = new AccountStorage(accountsPath);
 
-        /**
-        //TODO:delete this whole try clause after we're done with register.
+        /**TODO:delete this whole try clause after we're done with register.
             am.createAdminAccount("admin", "admin", "admin@trader.org");
-            am.createUserAccount("Sarah.alk", "123456", "sarah@trader.org", false);
-         */
+            am.createUserAccount("Sarah.alk", "123456", "sarah@trader.org", false);*/
     }
 
     /**
-     * A method used to recieve input from the user.
+     * A method used to receive input from the user.
      *
      * @return the user's input
      */
@@ -53,13 +51,13 @@ public class TraderSystem {
             System.out.println("Something went wrong. Improper input detected.");
         }
         return lastInput;
-        //TODO: I'm working on eliminating .readLine from every other method so they don't throw IOexception
+        //TODO: I'm working on eliminating .readLine from every other method so they don't throw IOexception for it.
     }
 
     /**
      * Checks if username and password are valid alphanumeric + dash/underscore strings
-     * @param username input username
-     * @param password input password
+     * username: input username
+     * password: input password
      * @return a boolean representing whether the combination is valid
      */
     public Account signIn() {
@@ -76,7 +74,6 @@ public class TraderSystem {
             System.out.println("Invalid Username or Password. Please try again.");
         }
         return signIn();
-
     }
 
     /**
@@ -135,24 +132,6 @@ public class TraderSystem {
             e.printStackTrace(); // TODO: check if I can just override .toString in the exception, instead of  writing the following print lines
         }
         return acc;
-    }
-
-    /**
-     * Prints out information about account
-     * @param account an instance of Account
-     * @throws IOException
-     */
-    public void accountInformation(Account account) throws IOException {
-        System.out.println("Username: " + account.getUsername());
-        System.out.println("Email Address: " + account.getEmail());
-        System.out.println("-----------------");
-        try {
-            viewInventory(account);
-            System.out.println("-----------------");
-            viewWishlist(account);
-        } catch (AccountNotFoundException e) {
-            System.out.println("Your account is missing/deleted from the system. Please restart this program.");
-        }
     }
 
     /**

@@ -63,16 +63,16 @@ public class TraderClient {
 
     /** Detects user input from the second layer, and calls the corresponding method from TraderSystem.
      *
-     * @param user The instance of the user which is currently logged in.
+     * currUser user: The instance of the user which is currently logged in.
      * @throws IOException if the user enters an invalid option
      */
-    public void layerTwo() throws IOException { //TODO: give options to view available/active/requested trade lists or user account info etc.
+    public void layerTwo() throws IOException {
         layerTwoMenu();
         String option = keyboard.readLine();
         try {
             switch (option) {
                 case "1":
-                    ts.accountInformation(currUser);
+                    accountInformation();
                     break;
                 case "2":
                     ts.addItem(currUser);
@@ -84,7 +84,7 @@ public class TraderClient {
                     ts.createRequest(currUser);
                     break;
                 case "5":
-                    ts.showActivity();
+                    ts.showActivity(currUser);
                     break;
                 case "6":
                     ts.showOffers(currUser);
@@ -115,7 +115,7 @@ public class TraderClient {
     /** A collection of features exclusive to admin users. Admins choose which feature they wish to access by
      * entering the corresponding numeric option.
      *
-     * @param admin The instance of the admin user which is currently logged in.
+     * currUser admin: The instance of the admin user which is currently logged in.
      * @throws IOException if the user inputs an invalid option
      */
         private void adminOptions() throws IOException {
@@ -154,6 +154,24 @@ public class TraderClient {
         } catch (InvalidOptionException e) {
             System.out.println("Invalid Option detected. Please try again.");
             adminOptions();
+        }
+    }
+
+    /**
+     * Prints out information about account
+     * @throws IOException
+     */
+    public void accountInformation() throws IOException {
+        Account account = currUser;
+        System.out.println("Username: " + account.getUsername());
+        System.out.println("Email Address: " + account.getEmail());
+        System.out.println("-----------------");
+        try {
+            ts.viewInventory(account);
+            System.out.println("-----------------");
+            ts.viewWishlist(account);
+        } catch (AccountNotFoundException e) {
+            System.out.println("Your account is missing/deleted from the system. Please restart this program.");
         }
     }
 
