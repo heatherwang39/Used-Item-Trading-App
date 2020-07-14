@@ -526,19 +526,25 @@ public class TraderSystem {
     public void createRequest(Account user) {
         System.out.println("What kind of request you want to make? 1. One way trade 2. Two way trade");
         System.out.println("-----------------");
+        int itemId;
+        int tradeId;
         try {
             switch (Integer.parseInt(input.readLine())) {
                 case 1:
                     System.out.println("Enter the id of the item you wish to trade:");
-                    int itemId = Integer.parseInt(input.readLine());
+                    itemId = Integer.parseInt(input.readLine());
                     String usernameOfOwner = am.getItemOwner(itemId);
                     System.out.println("What kind of trade you want to make? 1.temporary trade 2.Permanent trade");
                     switch (Integer.parseInt(input.readLine())) {
                         case 1:
-                            tm.newOneWayTrade(false,usernameOfOwner,user.getUsername(),itemId);
+                            tradeId = tm.newOneWayTrade(false,usernameOfOwner,user.getUsername(),itemId);
+                            user.addTradesOffered(tradeId);
+                            am.getAccount(usernameOfOwner).addTradesReceived(tradeId);
                             break;
                         case 2:
-                            tm.newOneWayTrade(true,usernameOfOwner,user.getUsername(),itemId);
+                            tradeId = tm.newOneWayTrade(true,usernameOfOwner,user.getUsername(),itemId);
+                            user.addTradesOffered(tradeId);
+                            am.getAccount(usernameOfOwner).addTradesReceived(tradeId);
                             break;
                         default:
                             throw new InvalidOptionException();
@@ -553,10 +559,14 @@ public class TraderSystem {
                     System.out.println("What kind of trade you want to make? 1.temporary trade 2.Permanent trade");
                     switch (Integer.parseInt(input.readLine())) {
                         case 1:
-                            tm.newTwoWayTrade(false,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
+                            tradeId = tm.newTwoWayTrade(false,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
+                            user.addTradesOffered(tradeId);
+                            am.getAccount(usernameOfOwner).addTradesReceived(tradeId);
                             break;
                         case 2:
-                            tm.newTwoWayTrade(true,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
+                            tradeId = tm.newTwoWayTrade(true,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
+                            user.addTradesOffered(tradeId);
+                            am.getAccount(usernameOfOwner).addTradesReceived(tradeId);
                             break;
                         default:
                             throw new InvalidOptionException();
