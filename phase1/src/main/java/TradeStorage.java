@@ -2,8 +2,7 @@ package main.java;
 
 import java.io.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -228,5 +227,85 @@ public class TradeStorage {
             if (trade.getTraders().contains(username) && trade.getStatus() == -1) numIncompleteTrades++;
         }
         return numIncompleteTrades > incompleteThreshold;
+    }
+
+    /**
+     * Returns a list of items from at most the three most recent trades user with given username participated in.
+     * @param username username of the user
+     * @return list of list of the item ids of items involved in the trades
+     */
+    public List<List<Integer>> recentTradedItems(String username) {
+        List<List<Integer>> threeRecentItems = new ArrayList<>();
+        TreeMap<LocalDateTime, Trade> userTrades = new TreeMap<>();
+        for (Trade trade : trades) {
+            if (trade.getTraders().contains(username) && checkOngoingComplete(trade)){
+                try {
+                    LocalDateTime time = trade.getMeetingTime(1);
+                    userTrades.put(time, trade);
+                } catch (MeetingNumberException e) {
+                    ; //TODO: I don't know what to do here
+                }
+            }
+        }
+        //The following code is from the citation: https://stackoverflow.com/questions/6928758/get-the-last-3-values-of-a-treemap
+        NavigableSet<LocalDateTime> reverseUserTrades = userTrades.descendingKeySet();
+        int i=0;
+        for(Iterator<LocalDateTime> it = reverseUserTrades.iterator(); it.hasNext() && i<3;) {
+            LocalDateTime time = it.next();
+            threeRecentItems.add(userTrades.get(time).getItemsOriginal());
+            i++;
+        }
+        //End of citation
+        return threeRecentItems;
+    }
+
+    /**
+     * Returns a set of the tree most frequent trading partners for user with given username.
+     * @param username username of the user
+     * @return set of usernames of the most frequent trading partners
+     */
+    public Set<String> frequentTradingPartners(String username) {
+        Map<String, Integer> threeMostFrequentPartners = new HashMap<>();
+        Map<String, Integer> tradingPartners = getTradingPartners(username);
+        int minTrades = Collections.max(tradingPartners.values());
+        String minUser = null;
+        for (Map.Entry<String, Integer> entry : tradingPartners.entrySet()){
+            if (threeMostFrequentPartners.size() < 3) {
+                threeMostFrequentPartners.put(entry.getKey(), entry.getValue());
+                if (entry.getValue() < minTrades) {
+                    minTrades = entry.getValue();
+                    minUser = entry.getKey();
+                }
+            }
+            else {
+                if (minTrades < entry.getValue()) {
+                    threeMostFrequentPartners.remove(minUser);
+                    threeMostFrequentPartners.put(entry.getKey(), entry.getValue());
+                    minTrades = Collections.max(threeMostFrequentPartners.values());
+                    for (Map.Entry<String, Integer> secondEntry : threeMostFrequentPartners.entrySet()){
+                        if (secondEntry.getValue() <= minTrades) {
+                            minTrades = entry.getValue();
+                            minUser = entry.getKey();
+                        }
+                    }
+                }
+            }
+        }
+        return threeMostFrequentPartners.keySet();
+    }
+
+    private Map<String, Integer> getTradingPartners(String username) {
+        Map<String, Integer> tradingPartners = new HashMap<>();
+        for (Trade trade : trades) {
+            List<String> tradeParticipants = trade.getTraders();
+            if (tradeParticipants.contains(username) && checkOngoingComplete(trade)){
+                String otherTrader;
+                if (tradeParticipants.get(0).equals(username)) otherTrader = tradeParticipants.get(1);
+                else otherTrader = tradeParticipants.get(0);
+                if (!tradingPartners.containsKey(otherTrader)) tradingPartners.put(otherTrader, 1);
+                else tradingPartners.replace(otherTrader, tradingPartners.get(otherTrader) + 1);
+            }
+        }
+        return tradingPartners;
     }
 }

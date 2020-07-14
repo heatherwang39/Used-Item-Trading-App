@@ -84,7 +84,7 @@ public class TraderClient {
                     ts.createRequest(user);
                     break;
                 case "5":
-                    ts.showActivity();
+                    ts.showActivity(user);
                     break;
                 case "6":
                     ts.showOffers(user);
