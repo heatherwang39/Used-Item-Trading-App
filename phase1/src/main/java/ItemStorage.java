@@ -27,8 +27,8 @@ public class ItemStorage {
      * Creates an ItemManager with lists of Item that are empty
      *
      * @param filePath the path of the data file
-     * @throws IOException
-     * @throws ClassNotFoundException
+     * @throws IOException cannot readFromFile
+     * @throws ClassNotFoundException if serialized class doesn't exist
      */
     public ItemStorage(String filePath) throws IOException, ClassNotFoundException {
         this.path = filePath;

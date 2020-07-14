@@ -1,14 +1,31 @@
 package main.java;
 import java.io.*;
 
+/**
+ * A gateway to read object from file and save object to file.
+ * @author Heather Wang
+ * @version %I%, %G%
+ * @since Phase 1
+ */
+
 public class FileReadWriter {
 
-    private String filepath; //private Object obj;
+    private String filepath;
 
+    /**
+     * Creates a FileReadWriter with the path of file
+     * @param filePath the path of file
+     */
     public FileReadWriter(String filePath) {
         this.filepath = filePath;
     }
 
+    /**
+     * Save object in the .ser file with the given filepath
+     * @param obj the object need to be saved
+     * @param filePath the path of file
+     * @throws IOException cannot save to file
+     */
     public void saveToFile(Object obj, String filePath) throws IOException {
         OutputStream file = new FileOutputStream(filePath);
         OutputStream buffer = new BufferedOutputStream(file);
@@ -17,6 +34,13 @@ public class FileReadWriter {
         output.close();
     }
 
+    /**
+     * Read object from the .ser file with the given filepath
+     * @param filePath the path of file
+     * @return object
+     * @throws ClassNotFoundException if serialized class doesn't exist
+     * @throws IOException cannot read from file
+     */
     public Object readFromFile(String filePath) throws ClassNotFoundException, IOException {
         InputStream file = new FileInputStream(filePath);
         InputStream buffer = new BufferedInputStream(file);
