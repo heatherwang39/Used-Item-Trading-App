@@ -69,8 +69,7 @@ public class TraderClient {
         try {
             switch (option) {
                 case "1":
-                    System.out.println("Username: " + user.getUsername() + "\nEmail: " + user.getEmail() + "\nInventory: " +
-                            user.getInventory() + "\nWishlist" + user.getWishlist());
+                    ts.accountInformation(user);
                 case "2":
                     ts.addItem();
                     break;

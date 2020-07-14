@@ -18,8 +18,6 @@ public class TraderSystem {
     private int weeklyThreshold;
     private int incompleteThreshold;
 
-    private Account account;
-
     public TraderSystem(BufferedReader keyboard) throws IOException, ClassNotFoundException {
 
         input = keyboard;
@@ -62,7 +60,6 @@ public class TraderSystem {
     }
 
     public Account register() throws IOException, AccountNotFoundException { //this doesn't work properly yet need to fix some stuff
-
         System.out.println("Enter email: "); //TODO make this method have less duplicate lines for errors
         String email = input.readLine();
         System.out.println("Enter Username: ");
@@ -71,12 +68,7 @@ public class TraderSystem {
         String pw = input.readLine();
 
         try {
-            if (!am.isUsernameInUse(username)) {
-                am.createUserAccount(username, pw, email, false);
-            } else {
-                throw new UsernameInUseException();
-            }
-
+            am.createUserAccount(username, pw, email, false);
         } catch (UsernameInUseException e) {
             e.printStackTrace(); // TODO: check if I can just override .toString in the exception, instead of  writing the following print lines
             System.out.println("This Username is already in use. Please choose another Username.");
@@ -92,7 +84,16 @@ public class TraderSystem {
         return am.getAccount(username);
     }
 
-    public void viewInventory() throws IOException {
+    public void accountInformation(Account account) throws IOException {
+        System.out.println("Username: " + account.getUsername());
+        System.out.println("Email Address: " + account.getEmail());
+        System.out.println("-----------------");
+        viewInventory(account);
+        System.out.println("-----------------");
+        viewWishlist(account);
+    }
+
+    public void viewInventory(Account account) throws IOException {
         EntityDisplay ed = new EntityDisplay("Your Inventory");
         List<Integer> contraband = new ArrayList<>();
         try {
@@ -106,7 +107,29 @@ public class TraderSystem {
             if (!contraband.isEmpty()) {
                 am.removeInventory(account.getUsername(), contraband);
                 System.out.println(contraband.size() + " item(s) were found to invalid and have " +
-                        "been removed from your account.");
+                        "been removed from your inventory.");
+            }
+            ed.display();
+        } catch (AccountNotFoundException e) {
+            System.out.println("Your account is missing/deleted from the system. Please restart this program.");
+        }
+    }
+
+    public void viewWishlist(Account account) throws IOException {
+        EntityDisplay ed = new EntityDisplay("Your Wishlist");
+        List<Integer> contraband = new ArrayList<>();
+        try {
+            for (int id : account.getWishlist()) {
+                try {
+                    ed.insert(im.getItem(id));
+                } catch (ItemNotFoundException e) {
+                    contraband.add(id);
+                }
+            }
+            if (!contraband.isEmpty()) {
+                am.removeWishlist(account.getUsername(), contraband);
+                System.out.println(contraband.size() + " item(s) were found to invalid and have " +
+                        "been removed from your wishist.");
             }
             ed.display();
         } catch (AccountNotFoundException e) {
@@ -267,11 +290,11 @@ public class TraderSystem {
                 i++;
             }
         } catch (TradeNumberException e) {
-            System.out.println("There is an error in the trade inventory, the trade number should not exist.");
+            System.out.println("There is an error in the system, the trade number should not exist.");
         } catch (ItemNotFoundException e) {
-            System.out.println("There is an error in the item inventory, the item should not exist.");
+            System.out.println("There is an error in the system, the item should not exist.");
         } catch (AccountNotFoundException e) {
-            System.out.println("There is an error in the item inventory, the account should not exist.");
+            System.out.println("There is an error in the system, the account should not exist.");
         } catch (IOException e) {
             e.printStackTrace();
         }
