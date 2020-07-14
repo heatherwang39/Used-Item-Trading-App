@@ -23,11 +23,8 @@ public class TraderClient {
             System.out.println("1. Sign In\n2. Register");
             currUser = login();
             System.out.println("Login Successful. Welcome to Trader, " + currUser.getUsername());
-            System.out.println("1. View Account Information\n2. Add Items\n3. Browse Listings\n4. My Activity\n" +
-                    "5. Offers\n6. Active Trades");
-            if (currUser.isAdmin()){ System.out.println("7. Admin Options"); }
+            layerTwoMenu(currUser);
             layerTwo(currUser);
-
         } catch (IOException e) {
             System.out.println("Files could not be read from.");
         } catch (ClassNotFoundException e) {
@@ -63,6 +60,11 @@ public class TraderClient {
         }
     }
 
+    public void layerTwoMenu(Account user){
+        System.out.println("1. View Account Information\n2. Add Items\n3. Browse Listings\n4. My Activity\n" +
+                "5. Offers\n6. Active Trades");
+        if (user.isAdmin()){ System.out.println("7. Admin Options"); }
+    }
 
     public void layerTwo(Account user) throws IOException { //TODO: give options to view available/active/requested trade lists or user account info etc.
         String option = keyboard.readLine();
@@ -70,8 +72,9 @@ public class TraderClient {
             switch (option) {
                 case "1":
                     ts.accountInformation(user);
+                    break;
                 case "2":
-                    ts.addItem();
+                    ts.addItem(user);
                     break;
                 case "3":
                     ts.browseListings(user);
@@ -89,11 +92,15 @@ public class TraderClient {
                     if (user.isAdmin()){ adminOptions(user); }
                     else { throw new InvalidOptionException(); }
                     break;
+                case "0":
+                    layerTwoMenu(user);
+                    break;
                 default:
                     throw new InvalidOptionException();
             }
         } catch (InvalidOptionException e) {
-            System.out.println("Invalid Option detected. Please try again.");
+            System.out.println("Invalid option detected. Please try again, or type 0 to print menu options.");
+        } finally {
             layerTwo(user);
         }
 
