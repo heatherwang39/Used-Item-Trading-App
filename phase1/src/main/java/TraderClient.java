@@ -59,7 +59,7 @@ public class TraderClient {
 
     public void layerTwoMenu(Account user){
         System.out.println("1. View Account Information\n2. Add Items\n3. Browse Listings\n4. My Activity\n" +
-                "5. Offers\n6. Active Trades\n 7.Sign out");
+                "5. Offers\n6. Active Trades\n7.Sign out");
         if (user.isAdmin()){ System.out.println("8. Admin Options"); }
     }
 

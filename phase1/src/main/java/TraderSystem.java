@@ -79,7 +79,10 @@ public class TraderSystem {
             } catch (InvalidEmailException e) {
                 System.out.println("Invalid email. Please try again.");
             } finally {
-                if (!emailChecker) System.out.println("Enter email: ");
+                if (!emailChecker) {
+                    System.out.println("Enter email: ");
+                    email = input.readLine();
+                }
             }
         } while (!emailChecker);
 
@@ -99,7 +102,10 @@ public class TraderSystem {
             } catch (InvalidLoginException e) {
                 System.out.println("Invalid Username format.\n Please try again with letters, numbers, periods and special characters only.");
             } finally {
-                if (!usernameChecker) System.out.println("Enter Username: ");
+                if (!usernameChecker) {
+                    System.out.println("Enter Username: ");
+                    username = input.readLine();
+                }
             }
         } while (!usernameChecker);
 
@@ -116,11 +122,14 @@ public class TraderSystem {
             } catch (InvalidLoginException e){
                 System.out.println("Invalid Password format.\n Please try again with letters, numbers, periods and special characters only.");
             } finally {
-                if (!pwChecker) System.out.println("Enter Password: ");
+                if (!pwChecker) {
+                    System.out.println("Enter Password: ");
+                    pw = input.readLine();
+                }
             }
         } while (!pwChecker);
 
-        try{
+        try {
             acc = am.createUserAccount(username, pw, email, false);
         } catch (InvalidLoginException | InvalidEmailException | EmailInUseException | //I need to clean this smell.
                 UsernameInUseException e) {
