@@ -156,12 +156,24 @@ public class TradeStorage {
     private List<OneWayTrade> getOneWayTrades() {
         List<OneWayTrade> oneWayTrades = new ArrayList<>();
         for (Trade trade : trades){
-            if (trade instanceof OneWayTrade && checkOngoingComplete(trade)) oneWayTrades.add((OneWayTrade) trade);
+            if (trade.isOneWay() && checkOngoingComplete(trade)) oneWayTrades.add((OneWayTrade) trade);
         }
         return oneWayTrades;
     }
 
-    private boolean checkOngoingComplete(Trade trade) {
-        return (trade.getStatus() == 1 || trade.getStatus() == 2);
+    private boolean checkOngoingComplete(Trade trade) {return (trade.getStatus() == 1 || trade.getStatus() == 2); }
+
+    public boolean checkUserWeeklyTrades(String username, int weeklyThreshold, LocalDateTime dateTime) {
+        int numTradesInWeek = 0;
+        try {
+            for (Trade trade : trades) {
+                if (trade.getTraders().contains(username) && trade.getMeetingTime(1).isAfter(dateTime)) {
+                    numTradesInWeek++;
+                }
+            }
+        } catch (MeetingNumberException e) {
+            ; //TODO: I don't know what to do here
+        }
+        return numTradesInWeek > weeklyThreshold;
     }
 }

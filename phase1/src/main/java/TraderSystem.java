@@ -1,6 +1,7 @@
 package main.java;
 
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class TraderSystem {
@@ -14,6 +15,7 @@ public class TraderSystem {
     private final ItemStorage im;
     private final BufferedReader input;
     private int tradeThreshold; //TODO: have configuration file set this
+    private int weeklyThreshold;
 
     private Account account;
 
@@ -346,15 +348,17 @@ public class TraderSystem {
      */
     public void showFreezeUsers(){
         List<String> usernames = am.getUsernames();
+        LocalDateTime now = LocalDateTime.now();
         for (String username : usernames){
-            if (tm.checkUserShouldFreeze(username, tradeThreshold)) chooseToFreezeUser(username);
+            if (tm.checkUserShouldFreeze(username, tradeThreshold)) chooseToFreezeUser(username, " has received more than they have sent.");
+            if (tm.checkUserWeeklyTrades(username, weeklyThreshold, now.minusDays(7))) chooseToFreezeUser(username, " has traded too much this week.");
         }
         System.out.println("There are no more users that need to be checked.");
     }
 
-    private void chooseToFreezeUser(String username){
+    private void chooseToFreezeUser(String username, String reason){
         try {
-            System.out.println("The user " + username + " has received more than they have sent. Would you like to freeze their account?");
+            System.out.println("The user " + username + reason + " Would you like to freeze their account?");
             System.out.println("Click (1) for yes, (2) for no.");
             String option = input.readLine();
             switch (option){
