@@ -488,7 +488,7 @@ abstract class Trade implements Serializable, Entity {
      *
      */
     private void checkTradeCancelled() throws TradeCancelledException{
-        if(getStatus().equals(-1)){
+        if(getStatus() == -1){
             throw new TradeCancelledException();
         }
     }
