@@ -44,6 +44,7 @@ public class TraderSystem {
         //TODO: I'm working on eliminating .readLine from every other method so they don't throw IOexception
     }
 
+
     public Account signIn() throws IOException {
         try {
             System.out.println("Username: ");
@@ -506,19 +507,27 @@ public class TraderSystem {
     public void createRequest(Account user) {
         System.out.println("What kind of request you want to make? 1. One way trade 2. Two way trade");
         System.out.println("-----------------");
+        int itemId;
+        int tradeId;
         try {
             switch (Integer.parseInt(getInput())) {
                 case 1:
                     System.out.println("Enter the id of the item you wish to trade:");
-                    int itemId = Integer.parseInt(getInput());
+                    itemId = Integer.parseInt(getInput());
                     String usernameOfOwner = am.getItemOwner(itemId);
                     System.out.println("What kind of trade you want to make? 1.temporary trade 2.Permanent trade");
                     switch (Integer.parseInt(getInput())) {
                         case 1:
-                            tm.newOneWayTrade(false,usernameOfOwner,user.getUsername(),itemId);
+                            tradeId = tm.newOneWayTrade(false,usernameOfOwner,user.getUsername(),itemId);
+                            user.addTradesOffered(tradeId);
+                            am.getAccount(usernameOfOwner).addTradesReceived(tradeId);
+                            System.out.println("Made a temporary one way trade to "+usernameOfOwner+" of item No."+itemId+" successfully!");
                             break;
                         case 2:
-                            tm.newOneWayTrade(true,usernameOfOwner,user.getUsername(),itemId);
+                            tradeId = tm.newOneWayTrade(true,usernameOfOwner,user.getUsername(),itemId);
+                            user.addTradesOffered(tradeId);
+                            am.getAccount(usernameOfOwner).addTradesReceived(tradeId);
+                            System.out.println("Made a permanent one way trade to "+usernameOfOwner+" of item No."+itemId+" successfully!");
                             break;
                         default:
                             throw new InvalidOptionException();
@@ -533,10 +542,16 @@ public class TraderSystem {
                     System.out.println("What kind of trade you want to make? 1.temporary trade 2.Permanent trade");
                     switch (Integer.parseInt(getInput())) {
                         case 1:
-                            tm.newTwoWayTrade(false,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
+                            tradeId = tm.newTwoWayTrade(false,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
+                            user.addTradesOffered(tradeId);
+                            am.getAccount(usernameOfOwner).addTradesReceived(tradeId);
+                            System.out.println("Made a temporary two way trade with "+usernameOfOwner+" of item No."+itemId+" and No. "+itemIdOwn+"successfully!");
                             break;
                         case 2:
-                            tm.newTwoWayTrade(true,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
+                            tradeId = tm.newTwoWayTrade(true,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
+                            user.addTradesOffered(tradeId);
+                            am.getAccount(usernameOfOwner).addTradesReceived(tradeId);
+                            System.out.println("Made a permanent two way trade with "+usernameOfOwner+" of item No."+itemId+" and No. "+itemIdOwn+"successfully!");
                             break;
                         default:
                             throw new InvalidOptionException();
