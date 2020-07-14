@@ -16,6 +16,7 @@ public class TraderSystem {
     private final BufferedReader input;
     private int tradeThreshold; //TODO: have configuration file set this
     private int weeklyThreshold;
+    private int incompleteThreshold;
 
     private Account account;
 
@@ -352,6 +353,7 @@ public class TraderSystem {
         for (String username : usernames){
             if (tm.checkUserShouldFreeze(username, tradeThreshold)) chooseToFreezeUser(username, " has received more than they have sent.");
             if (tm.checkUserWeeklyTrades(username, weeklyThreshold, now.minusDays(7))) chooseToFreezeUser(username, " has traded too much this week.");
+            if (tm.checkUserIncompleteTrades(username, incompleteThreshold)) chooseToFreezeUser(username, " has too many incomplete trades.");
         }
         System.out.println("There are no more users that need to be checked.");
     }
@@ -384,6 +386,18 @@ public class TraderSystem {
      * @param newThreshold the new threshold to replace current one.
      */
     public void updateTradeThreshold(int newThreshold){ tradeThreshold = newThreshold; }
+
+    /**
+     * Updates the weekly threshold.
+     * @param newThreshold the new threshold to replace current one.
+     */
+    public void updateWeeklyThreshold(int newThreshold){ weeklyThreshold = newThreshold; }
+
+    /**
+     * Updates the incomplete threshold.
+     * @param newThreshold the new threshold to replace current one.
+     */
+    public void updateIncompleteThreshold(int newThreshold){ incompleteThreshold = newThreshold; }
 
 
     //Does not update the users wishlist

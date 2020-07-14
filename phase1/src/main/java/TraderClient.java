@@ -114,8 +114,18 @@ public class TraderClient {
                     ts.showFreezeUsers();
                     break;
                 case "3":
-                    System.out.println("Enter the new trading threshold: ");
-                    ts.updateTradeThreshold(Integer.parseInt(keyboard.readLine())); // this might not work, but the idea is there
+                    System.out.println("Which threshold do you want to update? 1, Trade\n2. Weekly\n3. Incomplete");
+                    switch (keyboard.readLine()) {
+                        case "1":
+                            System.out.println("Enter the new trading threshold: ");
+                            ts.updateTradeThreshold(Integer.parseInt(keyboard.readLine()));
+                        case "2":
+                            System.out.println("Enter the new weekly threshold: ");
+                            ts.updateWeeklyThreshold(Integer.parseInt(keyboard.readLine()));
+                        case "3":
+                            System.out.println("Enter the new incomplete threshold: ");
+                            ts.updateIncompleteThreshold(Integer.parseInt(keyboard.readLine()));
+                    }
                     break;
                 case "4":
                     ts.addAdmin();
