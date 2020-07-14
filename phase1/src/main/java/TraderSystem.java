@@ -1,6 +1,7 @@
 package main.java;
 
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class TraderSystem {
@@ -14,7 +15,8 @@ public class TraderSystem {
     private final ItemStorage im;
     private final BufferedReader input;
     private int tradeThreshold; //TODO: have configuration file set this
-
+    private int weeklyThreshold;
+    private int incompleteThreshold;
     private Account account;
 
     public TraderSystem(BufferedReader keyboard) throws IOException, ClassNotFoundException {
@@ -127,7 +129,16 @@ public class TraderSystem {
         return acc;
     }
 
-    public void viewInventory() throws IOException {
+    public void accountInformation(Account account) throws IOException {
+        System.out.println("Username: " + account.getUsername());
+        System.out.println("Email Address: " + account.getEmail());
+        System.out.println("-----------------");
+        viewInventory(account);
+        System.out.println("-----------------");
+        viewWishlist(account);
+    }
+
+    public void viewInventory(Account account) throws IOException {
         EntityDisplay ed = new EntityDisplay("Your Inventory");
         List<Integer> contraband = new ArrayList<>();
         try {
@@ -141,7 +152,29 @@ public class TraderSystem {
             if (!contraband.isEmpty()) {
                 am.removeInventory(account.getUsername(), contraband);
                 System.out.println(contraband.size() + " item(s) were found to invalid and have " +
-                        "been removed from your account.");
+                        "been removed from your inventory.");
+            }
+            ed.display();
+        } catch (AccountNotFoundException e) {
+            System.out.println("Your account is missing/deleted from the system. Please restart this program.");
+        }
+    }
+
+    public void viewWishlist(Account account) throws IOException {
+        EntityDisplay ed = new EntityDisplay("Your Wishlist");
+        List<Integer> contraband = new ArrayList<>();
+        try {
+            for (int id : account.getWishlist()) {
+                try {
+                    ed.insert(im.getItem(id));
+                } catch (ItemNotFoundException e) {
+                    contraband.add(id);
+                }
+            }
+            if (!contraband.isEmpty()) {
+                am.removeWishlist(account.getUsername(), contraband);
+                System.out.println(contraband.size() + " item(s) were found to invalid and have " +
+                        "been removed from your wishist.");
             }
             ed.display();
         } catch (AccountNotFoundException e) {
@@ -302,11 +335,11 @@ public class TraderSystem {
                 i++;
             }
         } catch (TradeNumberException e) {
-            System.out.println("There is an error in the trade inventory, the trade number should not exist.");
+            System.out.println("There is an error in the system, the trade number should not exist.");
         } catch (ItemNotFoundException e) {
-            System.out.println("There is an error in the item inventory, the item should not exist.");
+            System.out.println("There is an error in the system, the item should not exist.");
         } catch (AccountNotFoundException e) {
-            System.out.println("There is an error in the item inventory, the account should not exist.");
+            System.out.println("There is an error in the system, the account should not exist.");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -384,15 +417,18 @@ public class TraderSystem {
      */
     public void showFreezeUsers(){
         List<String> usernames = am.getUsernames();
+        LocalDateTime now = LocalDateTime.now();
         for (String username : usernames){
-            if (tm.checkUserShouldFreeze(username, tradeThreshold)) chooseToFreezeUser(username);
+            if (tm.checkUserShouldFreeze(username, tradeThreshold)) chooseToFreezeUser(username, " has received more than they have sent.");
+            if (tm.checkUserWeeklyTrades(username, weeklyThreshold, now.minusDays(7))) chooseToFreezeUser(username, " has traded too much this week.");
+            if (tm.checkUserIncompleteTrades(username, incompleteThreshold)) chooseToFreezeUser(username, " has too many incomplete trades.");
         }
         System.out.println("There are no more users that need to be checked.");
     }
 
-    private void chooseToFreezeUser(String username){
+    private void chooseToFreezeUser(String username, String reason){
         try {
-            System.out.println("The user " + username + " has received more than they have sent. Would you like to freeze their account?");
+            System.out.println("The user " + username + reason + " Would you like to freeze their account?");
             System.out.println("Click (1) for yes, (2) for no.");
             String option = input.readLine();
             switch (option){
@@ -418,6 +454,18 @@ public class TraderSystem {
      * @param newThreshold the new threshold to replace current one.
      */
     public void updateTradeThreshold(int newThreshold){ tradeThreshold = newThreshold; }
+
+    /**
+     * Updates the weekly threshold.
+     * @param newThreshold the new threshold to replace current one.
+     */
+    public void updateWeeklyThreshold(int newThreshold){ weeklyThreshold = newThreshold; }
+
+    /**
+     * Updates the incomplete threshold.
+     * @param newThreshold the new threshold to replace current one.
+     */
+    public void updateIncompleteThreshold(int newThreshold){ incompleteThreshold = newThreshold; }
 
 
     //Does not update the users wishlist
