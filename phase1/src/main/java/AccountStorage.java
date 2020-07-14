@@ -78,7 +78,14 @@ public class AccountStorage {
         return false;
     }
 
-    protected boolean emailChecker(String email) throws InvalidEmailException, EmailInUseException {
+    /**
+     * Checks if username is used in another account
+     * @param username input username
+     * @return a boolean representing if username is in use
+     */
+    private boolean isUsernameInUse(String username) { return accounts.containsKey(username); }
+
+    public boolean emailChecker(String email) throws InvalidEmailException, EmailInUseException {
         if (!isEmailInUse(email)) {
             if (!isInvalidEmail(email)) {
                 return true;
@@ -90,14 +97,12 @@ public class AccountStorage {
         }
     }
 
-    /**
-     * Checks if username is used in another account
-     * @param username input username
-     * @return a boolean representing if username is in use
-     */
-    private boolean isUsernameInUse(String username) { return accounts.containsKey(username); }
+    public boolean passwordChecker(String pw) throws InvalidLoginException {
+        if (!isInvalidLogin("a", pw)){ return true; }
+        else { throw new InvalidLoginException(); }
+    }
 
-    protected boolean usernameChecker (String username) throws InvalidLoginException, UsernameInUseException {
+    public boolean usernameChecker (String username) throws InvalidLoginException, UsernameInUseException {
         if (!isUsernameInUse(username)) {
             if (!isInvalidLogin(username, "a")){ return true; }
             else { throw new InvalidLoginException(); }

@@ -1,25 +1,25 @@
 package main.java;
 
+import com.sun.xml.internal.ws.api.model.wsdl.WSDLFault;
+
 import java.io.*;
 
 public class TraderClient {
 
     private TraderSystem ts;
     private BufferedReader keyboard;
+    private Account currUser;
 
     public void run() {
         System.out.println("Welcome to Trader. At anytime you may type 'exit' to quit.\n" +
                 "Please choose any of the following by typing the option number.");
-        Account currUser;
 
         try (BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in))) { //from readWrite lecture
             this.keyboard = keyboard;
             ts = new TraderSystem(keyboard);
-            System.out.println("1. Sign In\n2. Register");
-            currUser = login();
+            login();
             System.out.println("Login Successful. Welcome to Trader, " + currUser.getUsername());
-            layerTwoMenu(currUser);
-            layerTwo(currUser);
+            layerTwo();
         } catch (IOException e) {
             System.out.println("Files could not be read from.");
         } catch (ClassNotFoundException e) {
@@ -30,80 +30,87 @@ public class TraderClient {
     /**
      * returns an Account associated with the input info of the user after signing in to an existing
      * the input options:
-     *      1 represents option to Sign In to an existing account
-     *      2 represents option to Register a new account
-     * @return  returns the logged in User Account
+     * 1 represents option to Sign In to an existing account
+     * 2 represents option to Register a new account
+     * sets currUser to the logged in User Account
+     *
      * @throws IOException file could no tbe written to after adding an account
      */
-    public Account login() throws IOException {
+    public void login() throws IOException {
+        System.out.println("1. Sign In\n2. Register");
         String i = keyboard.readLine();
         try {
             if (i.equals("1")) {
-                return ts.signIn();
+                currUser = ts.signIn();
             }
             if (i.equals("2")) {
-                return ts.register();
+                currUser = ts.register();
             } else {
                 throw new InvalidOptionException();
             }
         } catch (InvalidOptionException e) {
             System.out.println("Invalid Option detected. Please try again.");
-            return login();
+            login();
         }
     }
 
-    public void layerTwoMenu(Account user){
+    public void layerTwoMenu() {
         System.out.println("1. View Account Information\n2. Add Items\n3. Browse Listings\n4. Create Request\n" +
                 "5. My Activity\n6. Offers\n7. Active Trades\n8. Sign out");
-        if (user.isAdmin()){ System.out.println("9. Admin Options"); }
+        if (currUser.isAdmin()) {
+            System.out.println("9. Admin Options");
+        }
     }
 
-    public void layerTwo(Account user) throws IOException { //TODO: give options to view available/active/requested trade lists or user account info etc.
+    public void layerTwo() throws IOException { //TODO: give options to view available/active/requested trade lists or user account info etc.
+        layerTwoMenu();
         String option = keyboard.readLine();
         try {
             switch (option) {
                 case "1":
-                    ts.accountInformation(user);
+                    ts.accountInformation(currUser);
                     break;
                 case "2":
-                    ts.addItem(user);
+                    ts.addItem(currUser);
                     break;
                 case "3":
                     ts.browseListings();
                     break;
                 case "4":
-                    ts.createRequest(user);
+                    ts.createRequest(currUser);
                     break;
                 case "5":
                     ts.showActivity();
                     break;
                 case "6":
-                    ts.showOffers(user);
+                    ts.showOffers(currUser);
                     break;
                 case "7":
-                    ts.showActiveTrades(user);
+                    ts.showActiveTrades(currUser);
                     break;
                 case "8":
                     signOut();
                 case "9":
-                    if (user.isAdmin()){ adminOptions(user); }
-                    else { throw new InvalidOptionException(); }
+                    if (currUser.isAdmin()) {
+                        adminOptions();
+                    } else {
+                        throw new InvalidOptionException();
+                    }
                     break;
                 case "0":
-                    layerTwoMenu(user);
+                    layerTwoMenu();
                     break;
                 default:
                     throw new InvalidOptionException();
             }
         } catch (InvalidOptionException e) {
-            System.out.println("Invalid option detected. Please try again, or type 0 to print menu options.");
-        } finally {
-            layerTwo(user);
+            System.out.println("Invalid option detected. Please try again, or type 0 to print menu options again.");
+            layerTwo();
         }
 
     }
 
-    private void adminOptions(Account admin) throws IOException {
+    private void adminOptions() throws IOException {
         try {
             System.out.println("1. View Requests\n2. Freeze Accounts\n3. Update Trade Threshold\n4. Add new Admins");
             switch (keyboard.readLine()) {
@@ -138,12 +145,26 @@ public class TraderClient {
             }
         } catch (InvalidOptionException e) {
             System.out.println("Invalid Option detected. Please try again.");
-            adminOptions(admin);
+            adminOptions();
         }
     }
 
-    public void signOut(){
-        //TODO: implement this later.
+    public void signOut() throws IOException {
+        System.out.println("Please confirm Sign Out. \n1. Confirm \n2. Decline");
+        try {
+            switch (keyboard.readLine()) {
+                case "1":
+                    String prevUsername = currUser.getUsername();
+                    currUser = null;
+                    System.out.println("Signed Out Successfully. See you soon, " + prevUsername);
+                case "2":
+                    layerTwo();
+                default:
+                    throw new InvalidOptionException();
+            }
+        } catch (InvalidOptionException e) {
+            System.out.println("Invalid Option detected. Please try again.");
+            signOut();
+        }
     }
-
 }

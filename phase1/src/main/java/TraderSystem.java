@@ -45,7 +45,7 @@ public class TraderSystem {
     }
 
 
-    public Account signIn() throws IOException {
+    public Account signIn() {
         try {
             System.out.println("Username: ");
             String username = getInput();
@@ -99,11 +99,7 @@ public class TraderSystem {
             System.out.println("Enter Password: ");
             pw = getInput();
             try {
-                if (!am.isInvalidLogin(username, pw)){
-                    pwChecker = true;
-                } else {
-                    throw new InvalidLoginException();
-                }
+                pwChecker = am.passwordChecker(pw);
             } catch (InvalidLoginException e){
                 System.out.println("Invalid Password format.\n Please try again with letters, numbers, periods and special characters only.");
             }
@@ -162,19 +158,19 @@ public class TraderSystem {
         if (!contraband.isEmpty()) {
             am.removeWishlist(account.getUsername(), contraband);
             System.out.println(contraband.size() + " item(s) were found to invalid and have " +
-                    "been removed from your wishist.");
+                    "been removed from your wishlist.");
         }
         ed.display();
     }
 
 
-    public void addItem(Account account) throws IOException {
+    public void addItem(Account account) {
         System.out.println("Enter the name of the item:");
         String name = getInput();
         System.out.println("Enter a short description:");
         String description = getInput();
         System.out.println("Enter the type of item (Book, Clothing, misc.):");
-        switch (input.readLine().toLowerCase()) {
+        switch (getInput().toLowerCase()) {
             case "book":
                 System.out.println("Enter the name of the author:");
                 String author = getInput();
@@ -217,7 +213,7 @@ public class TraderSystem {
         ed.display();
     }
 
-    public void addAdmin() throws IOException {
+    public void addAdmin() throws IOException { //todo: needs fix. this would delete every other previous information/lists that the user had.
         System.out.println("Enter the username of the user you would like to promote to admin: ");
         String username = getInput();
         try {
@@ -238,8 +234,6 @@ public class TraderSystem {
             System.out.println("The corresponding email is already in use.");
         } catch (UsernameInUseException e) {
             System.out.println("The corresponding username is already in use.");
-        } catch (IOException e) {
-            System.out.println("File could not be updated.");
         }
     }
 
@@ -297,7 +291,6 @@ public class TraderSystem {
 
                 String userInput = getInput();
 
-
                 switch (userInput) {
                     case "1":
                         // if the user enters 1 it'll just print out the next trade
@@ -323,7 +316,7 @@ public class TraderSystem {
         }
     }
 
-    public void showItemRequests () {
+    public void showItemRequests() {
         System.out.println("Here are the current item requests. Press 1 to accept and 2 to deny: ");
         List<Item> unverifiedItemList = im.getUnverifiedItems();
         int i = 0;
@@ -349,7 +342,7 @@ public class TraderSystem {
     /**
      * Shows an admin which users have borrowed more than they have lent, letting the admin to choose to freeze their account.
      */
-    public void showFreezeUsers(){
+    public void showFreezeUsers() throws IOException {
         List<String> usernames = am.getUsernames();
         LocalDateTime now = LocalDateTime.now();
         for (String username : usernames){
@@ -360,7 +353,7 @@ public class TraderSystem {
         System.out.println("There are no more users that need to be checked.");
     }
 
-    private void chooseToFreezeUser(String username, String reason){
+    private void chooseToFreezeUser(String username, String reason) throws IOException {
         try {
             System.out.println("The user " + username + reason + " Would you like to freeze their account?");
             System.out.println("Click (1) for yes, (2) for no.");
@@ -378,8 +371,6 @@ public class TraderSystem {
             }
         } catch (AccountNotFoundException e) {
             System.out.println("No such account exists.");
-        } catch (IOException e) {
-            System.out.println("File could not be read from.");
         } catch (InvalidOptionException e) {
             System.out.println("Invalid option detected. Please try again.");
         }
@@ -406,13 +397,13 @@ public class TraderSystem {
 
     //Does not update the users wishlist
     //WILL RETURN ALL ITEMS BACK TO THEIR ORIGINAL OWNERS
-    private void processCancelledTrade(int tradeNumber) throws TradeNumberException, AccountNotFoundException{
+    private void processCancelledTrade(int tradeNumber) throws TradeNumberException, AccountNotFoundException {
         Trade trade = tm.getTrade(tradeNumber);
         List<String> users = trade.getTraders();
         List<Integer> items = trade.getItemsOriginal();
         int i = 0;
         while(i < users.size()){
-            if(!(items.get(i) == null)){
+            if(items.get(i) != null){
                 Account a = am.getAccount(users.get(i));
                 a.addInventory(items.get(i));
 
@@ -421,7 +412,6 @@ public class TraderSystem {
                 a.removeTradesReceived(tradeNumber);
                 a.removeTradesOffered(tradeNumber);
             }
-
             i++;
         }
 
@@ -504,7 +494,7 @@ public class TraderSystem {
         trade.setStatus(2);
     }
 
-    public void createRequest(Account user) {
+    public void createRequest(Account user) throws IOException {
         System.out.println("What kind of request you want to make? 1. One way trade 2. Two way trade");
         System.out.println("-----------------");
         int itemId;
@@ -512,10 +502,10 @@ public class TraderSystem {
         try {
             switch (Integer.parseInt(getInput())) {
                 case 1:
-                    System.out.println("Enter the id of the item you wish to trade:");
+                    System.out.println("Enter the ID of the item you wish to trade:");
                     itemId = Integer.parseInt(getInput());
                     String usernameOfOwner = am.getItemOwner(itemId);
-                    System.out.println("What kind of trade you want to make? 1.temporary trade 2.Permanent trade");
+                    System.out.println("What kind of trade you want to make?\n1.temporary trade \n2.Permanent trade");
                     switch (Integer.parseInt(getInput())) {
                         case 1:
                             tradeId = tm.newOneWayTrade(false,usernameOfOwner,user.getUsername(),itemId);
@@ -534,12 +524,12 @@ public class TraderSystem {
                     }
                     break;
                 case 2:
-                    System.out.println("Enter the id of the item you wish to trade:");
+                    System.out.println("Enter the id of the item you wish to trade: ");
                     itemId = Integer.parseInt(getInput());
                     usernameOfOwner = am.getItemOwner(itemId);
-                    System.out.println("Enter the id of the your own item you wish to trade:");
+                    System.out.println("Enter the id of the your own item you wish to trade: ");
                     int itemIdOwn = Integer.parseInt(getInput());
-                    System.out.println("What kind of trade you want to make? 1.temporary trade 2.Permanent trade");
+                    System.out.println("What kind of trade you want to make? \n1. Temporary trade \n2. Permanent trade");
                     switch (Integer.parseInt(getInput())) {
                         case 1:
                             tradeId = tm.newTwoWayTrade(false,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
@@ -565,8 +555,6 @@ public class TraderSystem {
             createRequest(user);
         }catch(AccountNotFoundException e){
             System.out.println("Cannot get the owner of the selected item.");
-        }catch (IOException e) {
-            System.out.println("Unable to read file. Please restart the program.");
         }
     }
 }
