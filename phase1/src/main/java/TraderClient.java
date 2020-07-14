@@ -15,7 +15,7 @@ public class TraderClient {
         try (BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in))) { //from readWrite lecture
             this.keyboard = keyboard;
             ts = new TraderSystem(keyboard);
-            login();
+            currUser = login();
             System.out.println("Login Successful. Welcome to Trader, " + currUser.getUsername());
             layerTwo();
         } catch (IOException e) {
@@ -33,21 +33,21 @@ public class TraderClient {
      * sets currUser to the logged in User Account
      * @throws IOException file could no tbe written to after adding an account
      */
-    public void login() throws IOException {
+    public Account login() throws IOException {
         System.out.println("1. Sign In\n2. Register");
         String i = keyboard.readLine();
         try {
             if (i.equals("1")) {
-                currUser = ts.signIn();
+                return ts.signIn();
             }
             if (i.equals("2")) {
-                currUser = ts.register();
+                return ts.register();
             } else {
                 throw new InvalidOptionException();
             }
         } catch (InvalidOptionException e) {
             System.out.println("Invalid Option detected. Please try again.");
-            login();
+            return login();
         }
     }
 
