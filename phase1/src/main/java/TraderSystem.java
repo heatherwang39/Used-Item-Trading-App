@@ -59,10 +59,12 @@ public class TraderSystem {
 
     public Account register() throws IOException {
         Account acc = null;
-        System.out.println("Enter email: "); //TODO make this method have less duplicate lines for errors
-        String email = input.readLine();
+         //TODO make this method have less duplicate lines for errors
+        String email;
         boolean emailChecker = false;
         do {
+            System.out.println("Enter email: ");
+            email = input.readLine();
             try {
                 if (!am.isEmailInUse(email)) {
                     if (!am.isInvalidEmail(email)) {
@@ -77,15 +79,14 @@ public class TraderSystem {
                 System.out.println("This email address is already in use. Please try again.");
             } catch (InvalidEmailException e) {
                 System.out.println("Invalid email. Please try again.");
-            } finally {
-                if (!emailChecker) System.out.println("Enter email: ");
             }
         } while (!emailChecker);
 
-        System.out.println("Enter Username: ");
-        String username = input.readLine();
+        String username;
         boolean usernameChecker = false;
         do {
+            System.out.println("Enter Username: ");
+            username = input.readLine();
             try {
                 if (!am.isUsernameInUse(username)) {
                     if (!am.isInvalidLogin(username, "a")){ usernameChecker = true; }
@@ -97,15 +98,14 @@ public class TraderSystem {
                 System.out.println("This Username is already in use. Please choose another Username.");
             } catch (InvalidLoginException e) {
                 System.out.println("Invalid Username format.\n Please try again with letters, numbers, periods and special characters only.");
-            } finally {
-                if (!usernameChecker) System.out.println("Enter Username: ");
             }
         } while (!usernameChecker);
 
-        System.out.println("Enter Password: ");
-        String pw = input.readLine();
+        String pw;
         boolean pwChecker = false;
         do {
+            System.out.println("Enter Password: ");
+            pw = input.readLine();
             try {
                 if (!am.isInvalidLogin(username, pw)){
                     pwChecker = true;
@@ -114,12 +114,10 @@ public class TraderSystem {
                 }
             } catch (InvalidLoginException e){
                 System.out.println("Invalid Password format.\n Please try again with letters, numbers, periods and special characters only.");
-            } finally {
-                if (!pwChecker) System.out.println("Enter Password: ");
             }
         } while (!pwChecker);
 
-        try{
+        try {
             acc = am.createUserAccount(username, pw, email, false);
         } catch (InvalidLoginException | InvalidEmailException | EmailInUseException | //I need to clean this smell.
                 UsernameInUseException e) {
