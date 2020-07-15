@@ -267,6 +267,7 @@ public class TradeStorage {
     public Set<String> frequentTradingPartners(String username) {
         Map<String, Integer> threeMostFrequentPartners = new HashMap<>();
         Map<String, Integer> tradingPartners = getTradingPartners(username);
+        if (tradingPartners.isEmpty()) return tradingPartners.keySet();
         int minTrades = Collections.max(tradingPartners.values());
         String minUser = null;
         for (Map.Entry<String, Integer> entry : tradingPartners.entrySet()){
