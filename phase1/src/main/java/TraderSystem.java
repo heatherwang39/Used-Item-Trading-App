@@ -306,20 +306,19 @@ public class TraderSystem {
             List<Integer> tradesReceived = am.getTradesReceived(user);
             int i = 0;
             while (i < tradesReceived.size()) {
-                String userInput = getInput();
                 System.out.println("Enter 1 to accept, 2 to deny, or 3 to decide later");
                 System.out.println(tradesReceived.get(i)); // this only print trade ID (for now)
-                switch (userInput) {
-                    case "1":
+                switch (Integer.parseInt(getInput())) {
+                    case 1:
                         System.out.println("Offer accepted!");
                         processAcceptedTrade(tradesReceived.get(i));
                         user.removeTradesReceived(tradesReceived.get(i));
                         break;
-                    case "2":
+                    case 2:
                         System.out.println("Offer denied!");
                         user.removeTradesReceived(tradesReceived.get(i));
                         break;
-                    case "3": System.out.println("Don't forget to check back soon!");
+                    case 3: System.out.println("Don't forget to check back soon!");
                         break;
                 }
                 i++;
@@ -344,18 +343,16 @@ public class TraderSystem {
                 System.out.println("Trade ID: " + allTrade);
                 System.out.println("Enter 1 to view next active trade, 2 to mark this trade as completed, 3 to cancel this trade");
 
-                String userInput = getInput();
-
-                switch (userInput) {
-                    case "1":
+                switch (Integer.parseInt(getInput())) {
+                    case 1:
                         // if the user enters 1 it'll just print out the next trade
                         break;
-                    case "2":
+                    case 2:
                         System.out.println("Trade marked as completed!");
                         processCompletedTrade(allTrade);
                         user.removeTradesReceived(allTrade);
                         break;
-                    case "3":
+                    case 3:
                         System.out.println("Trade has been cancelled");
                         processCancelledTrade(allTrade);
                         user.removeTradesReceived(allTrade);
@@ -417,12 +414,12 @@ public class TraderSystem {
             System.out.println("The user " + username + reason + " Would you like to freeze their account?");
             System.out.println("Click (1) for yes, (2) for no.");
             String option = getInput();
-            switch (option){
-                case "1":
+            switch (Integer.parseInt(getInput())){
+                case 1:
                     am.freezeAccount(username);
                     System.out.println("Account " + username + " has been frozen.");
                     break;
-                case "2":
+                case 2:
                     System.out.println("Account " + username + " has not been frozen.");
                     break;
                 default:
