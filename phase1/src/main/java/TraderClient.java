@@ -2,6 +2,13 @@ package main.java;
 
 import java.io.*;
 
+/** A presenter / User Interface for running the program and interacting with the program menu.
+ *
+ * @author Sarah Aliakbari
+ * @version %I%, %G%
+ * @since Phase 1
+ */
+
 public class TraderClient {
 
     private TraderSystem ts;
@@ -17,6 +24,7 @@ public class TraderClient {
             ts = new TraderSystem(keyboard);
             currUser = login();
             System.out.println("Login Successful. Welcome to Trader, " + currUser.getUsername());
+            layerTwoMenu();
             layerTwo();
         } catch (IOException e) {
             System.out.println("Files could not be read from.");
@@ -67,7 +75,6 @@ public class TraderClient {
      * @throws IOException if the user enters an invalid option
      */
     public void layerTwo() throws IOException {
-        layerTwoMenu();
         String option = keyboard.readLine();
         try {
             switch (option) {
@@ -108,7 +115,9 @@ public class TraderClient {
             System.out.println("Invalid option detected. Please try again, or type 0 to print menu options again.");
             layerTwo();
         }
-
+        System.out.println("Action Successful, returning to the Main Menu.\n");
+        layerTwoMenu();
+        layerTwo();
     }
 
 
@@ -170,6 +179,7 @@ public class TraderClient {
             ts.viewInventory(account);
             System.out.println("-----------------");
             ts.viewWishlist(account);
+            System.out.println("-----------------\n");
         } catch (AccountNotFoundException e) {
             System.out.println("Your account is missing/deleted from the system. Please restart this program.");
         }
