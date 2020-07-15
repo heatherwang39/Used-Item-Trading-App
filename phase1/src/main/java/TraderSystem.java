@@ -336,6 +336,7 @@ public class TraderSystem {
     public void showActiveTrades(Account user) {
         try {
             List<Integer> allTrades = new ArrayList<>(am.getTradesReceived(user));
+            allTrades.addAll(am.getTradesOffered(user));
             for (Integer allTrade : allTrades) {
                 System.out.println("Trade ID: " + allTrade);
                 System.out.println("Enter 1 to view next active trade, 2 to mark this trade as completed, 3 to cancel this trade");
@@ -470,15 +471,15 @@ public class TraderSystem {
                     switch (Integer.parseInt(getInput())) {
                         case 1:
                             tradeId = tm.newOneWayTrade(false,usernameOfOwner,user.getUsername(),itemId);
-                            user.addTradesOffered(tradeId);
-                            am.getAccount(usernameOfOwner).addTradesReceived(tradeId);
+                            am.addTradesOffered(user.getUsername(),tradeId);
+                            am.addTradesReceived(usernameOfOwner,tradeId);
                             System.out.println("Made a temporary one way trade to "+ usernameOfOwner +" of item No."+
                                     itemId + " successfully!");
                             break;
                         case 2:
                             tradeId = tm.newOneWayTrade(true,usernameOfOwner,user.getUsername(),itemId);
-                            user.addTradesOffered(tradeId);
-                            am.getAccount(usernameOfOwner).addTradesReceived(tradeId);
+                            am.addTradesOffered(user.getUsername(),tradeId);
+                            am.addTradesReceived(usernameOfOwner,tradeId);
                             System.out.println("Made a permanent one way trade to "+usernameOfOwner+" of item No."+
                                     itemId +" successfully!");
                             break;
@@ -496,14 +497,14 @@ public class TraderSystem {
                     switch (Integer.parseInt(getInput())) {
                         case 1:
                             tradeId = tm.newTwoWayTrade(false,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
-                            user.addTradesOffered(tradeId);
-                            am.getAccount(usernameOfOwner).addTradesReceived(tradeId);
+                            am.addTradesOffered(user.getUsername(),tradeId);
+                            am.addTradesReceived(usernameOfOwner,tradeId);
                             System.out.println("Made a temporary two way trade with "+usernameOfOwner+" of item No."+itemId+" and No. "+itemIdOwn+"successfully!");
                             break;
                         case 2:
                             tradeId = tm.newTwoWayTrade(true,usernameOfOwner,itemId,user.getUsername(),itemIdOwn);
-                            user.addTradesOffered(tradeId);
-                            am.getAccount(usernameOfOwner).addTradesReceived(tradeId);
+                            am.addTradesOffered(user.getUsername(),tradeId);
+                            am.addTradesReceived(usernameOfOwner,tradeId);
                             System.out.println("Made a permanent two way trade with "+usernameOfOwner+" of item No."+itemId+" and No. "+itemIdOwn+"successfully!");
                             break;
                         default:
@@ -537,8 +538,8 @@ public class TraderSystem {
 
                 //Remove the Trade
 
-                a.removeTradesReceived(tradeNumber);
-                a.removeTradesOffered(tradeNumber);
+                a.removeTradesReceived(tradeNumber - 1);
+                a.removeTradesOffered(tradeNumber - 1);
             }
             i++;
         }

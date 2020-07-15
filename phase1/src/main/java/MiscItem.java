@@ -17,4 +17,14 @@ public class MiscItem extends Item{
     public MiscItem(String name, String description, int id) {
         super(name, description, id);
     }
+
+    /**
+     * The toString() method for Misc instances
+     *
+     * @return stylized print message containing information about this misc item.
+     */
+    @Override
+    public String toString(){
+        return "Item name: " + getName() +", description: " + getDescription();
+    }
 }
