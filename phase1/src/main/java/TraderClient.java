@@ -182,7 +182,7 @@ public class TraderClient {
 
     /**
      * Prints out information about account
-     * @throws IOException
+     * @throws IOException if the files are corrupt or does not contain correct data.
      */
     public void accountInformation() throws IOException {
         Account account = currUser;
