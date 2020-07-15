@@ -241,7 +241,7 @@ public class TradeStorage {
             if (trade.getTraders().contains(username) && checkOngoingComplete(trade)){
                 try {
                     LocalDateTime time = trade.getMeetingTime(1);
-                    userTrades.put(time, trade);
+                    if (time!= null) userTrades.put(time, trade);
                 } catch (MeetingNumberException e) {
                     return threeRecentItems;
                 }

@@ -11,6 +11,7 @@ TraderClient is a local console interface trading system that allows accounts to
 - The initial admin can login with:
     - Username: normal
     - Password: normal
+- Type "exit" (without quotations) at any time to close the program
 ### Features
 - Create an account to interact with and make offers to other traders.
 - Set up inventories and wishlist which contain specific items.
