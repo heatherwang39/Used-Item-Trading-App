@@ -210,7 +210,7 @@ public class TradeStorage {
                 }
             }
         } catch (MeetingNumberException e) {
-            ; //TODO: I don't know what to do here
+            return false;
         }
         return numTradesInWeek > weeklyThreshold;
     }
@@ -243,7 +243,7 @@ public class TradeStorage {
                     LocalDateTime time = trade.getMeetingTime(1);
                     userTrades.put(time, trade);
                 } catch (MeetingNumberException e) {
-                    ; //TODO: I don't know what to do here
+                    return threeRecentItems;
                 }
             }
         }
