@@ -108,13 +108,27 @@ abstract class Account implements Serializable, Entity {
      * Remove an item ID from account inventory
      * @param id item id to be removed
      */
-    public void removeInventory(int id) { inventory.remove(id); }
+    public void removeInventory(int id) {
+        int i = 0;
+        for (Integer itemID : inventory){
+            if (itemID == id) break;
+            i++;
+        }
+        inventory.remove(i);
+    }
 
     /**
      * Remove an item from account wishlist
      * @param id item id to be removed
      */
-    public void removeWishlist(int id) { wishlist.remove(id); }
+    public void removeWishlist(int id) {
+        int i = 0;
+        for (Integer itemID : wishlist){
+            if (itemID == id) break;
+            i++;
+        }
+        wishlist.remove(i);
+    }
 
     /**
      * Get a shallow copy of trades offered
