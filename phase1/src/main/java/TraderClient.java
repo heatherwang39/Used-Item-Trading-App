@@ -14,6 +14,7 @@ public class TraderClient {
     private TraderSystem ts;
     private BufferedReader keyboard;
     private Account currUser;
+    private String userInput;
 
     public void run() {
         System.out.println("Welcome to Trader. At anytime you may type 'exit' to quit.\n" +
@@ -33,6 +34,19 @@ public class TraderClient {
         }
     }
 
+    public String getInput() {
+        try {
+            userInput = keyboard.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Something went wrong. Improper input detected.");
+        } 
+        if (userInput.equals("exit")){
+            System.out.println("Program terminated Successfully. Hope to see you soon!");
+            System.exit(0); }
+        return userInput;
+        }
+
     /**
      * returns an Account associated with the input info of the user after signing in to an existing
      * the input options:
@@ -43,7 +57,7 @@ public class TraderClient {
      */
     public Account login() throws IOException {
         System.out.println("1. Sign In\n2. Register");
-        String i = keyboard.readLine();
+        String i = getInput();
         try {
             if (i.equals("1")) {
                 return ts.signIn();
@@ -75,7 +89,7 @@ public class TraderClient {
      * @throws IOException if the user enters an invalid option
      */
     public void layerTwo() throws IOException {
-        String option = keyboard.readLine();
+        String option = getInput();
         try {
             switch (option) {
                 case "1":
@@ -130,7 +144,7 @@ public class TraderClient {
         private void adminOptions() throws IOException {
             try {
             System.out.println("1. View Requests\n2. Freeze Accounts\n3. Update Trade Threshold\n4. Add new Admins");
-            switch (keyboard.readLine()) {
+            switch (getInput()) {
                 case "1":
                     // print an arraylist of all user requests of items to be added to their inventory,either accept or deny
                     ts.showItemRequests();
@@ -142,16 +156,16 @@ public class TraderClient {
                     break;
                 case "3":
                     System.out.println("Which threshold do you want to update? 1, Trade\n2. Weekly\n3. Incomplete");
-                    switch (keyboard.readLine()) {
+                    switch (getInput()) {
                         case "1":
                             System.out.println("Enter the new trading threshold: ");
-                            ts.updateTradeThreshold(Integer.parseInt(keyboard.readLine()));
+                            ts.updateTradeThreshold(Integer.parseInt(getInput()));
                         case "2":
                             System.out.println("Enter the new weekly threshold: ");
-                            ts.updateWeeklyThreshold(Integer.parseInt(keyboard.readLine()));
+                            ts.updateWeeklyThreshold(Integer.parseInt(getInput()));
                         case "3":
                             System.out.println("Enter the new incomplete threshold: ");
-                            ts.updateIncompleteThreshold(Integer.parseInt(keyboard.readLine()));
+                            ts.updateIncompleteThreshold(Integer.parseInt(getInput()));
                     }
                     break;
                 case "4":
@@ -188,7 +202,7 @@ public class TraderClient {
     public void signOut() throws IOException {
         System.out.println("Please confirm Sign Out. \n1. Confirm \n2. Decline");
         try {
-            switch (keyboard.readLine()) {
+            switch (getInput()) {
                 case "1":
                     String prevUsername = currUser.getUsername();
                     currUser = null;

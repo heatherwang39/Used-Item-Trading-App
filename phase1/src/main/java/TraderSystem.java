@@ -51,7 +51,6 @@ public class TraderSystem {
             System.out.println("Something went wrong. Improper input detected.");
         }
         return lastInput;
-        //TODO: I'm working on eliminating .readLine from every other method so they don't throw IOexception for it.
     }
 
     /**
