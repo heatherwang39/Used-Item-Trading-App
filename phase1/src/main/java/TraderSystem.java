@@ -127,10 +127,9 @@ public class TraderSystem {
 
         try {
             acc = am.createUserAccount(username, pw, email, false);
-        } catch (InvalidLoginException | InvalidEmailException | EmailInUseException | //I need to clean this smell.
-                UsernameInUseException e) {
+        } catch (InvalidLoginException | InvalidEmailException | EmailInUseException | UsernameInUseException e) {
             e.printStackTrace(); // TODO: check if I can just override .toString in the exception, instead of  writing the following print lines
-        }
+        } //I need to clean this smell (the catch clause).
         return acc;
     }
 
