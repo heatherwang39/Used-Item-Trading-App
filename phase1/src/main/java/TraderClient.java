@@ -34,7 +34,7 @@ public class TraderClient {
         }
     }
 
-    public String getInput() {
+    public String getInput() { //this is duplicate from client. idk how to implement a global input taking yet.
         try {
             userInput = keyboard.readLine();
         } catch (IOException e) {

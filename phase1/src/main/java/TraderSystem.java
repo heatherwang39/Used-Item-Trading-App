@@ -50,6 +50,9 @@ public class TraderSystem {
             e.printStackTrace();
             System.out.println("Something went wrong. Improper input detected.");
         }
+        if (lastInput.equals("exit")){
+            System.out.println("Program terminated Successfully. Hope to see you soon!");
+            System.exit(0); }
         return lastInput;
     }
 
