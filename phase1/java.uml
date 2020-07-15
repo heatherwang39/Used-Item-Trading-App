@@ -149,8 +149,10 @@
       <point x="90.0" y="387.0" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="1.0" x="658.0" y="659.0" />
-  <SelectedNodes />
+  <settings layout="Hierarchic Group" zoom="0.4348364279398762" x="2805.5" y="2252.0" />
+  <SelectedNodes>
+    <node>main.java.TraderSystem</node>
+  </SelectedNodes>
   <Categories>
     <Category>Fields</Category>
     <Category>Constructors</Category>

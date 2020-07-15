@@ -23,10 +23,7 @@ public class TraderClient {
         try (BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in))) { //from readWrite lecture
             this.keyboard = keyboard;
             ts = new TraderSystem(keyboard);
-            currUser = login();
-            System.out.println("Login Successful. Welcome to Trader, " + currUser.getUsername());
-            layerTwoMenu();
-            layerTwo();
+            login();
         } catch (IOException e) {
             System.out.println("Files could not be read from.");
         } catch (ClassNotFoundException e) {
@@ -55,22 +52,27 @@ public class TraderClient {
      * sets currUser to the logged in User Account
      * @throws IOException file could no tbe written to after adding an account
      */
-    public Account login() throws IOException {
+    public void login() throws IOException {
         System.out.println("1. Sign In\n2. Register");
         String i = getInput();
         try {
-            if (i.equals("1")) {
-                return ts.signIn();
-            }
-            if (i.equals("2")) {
-                return ts.register();
-            } else {
-                throw new InvalidOptionException();
+            switch (i) {
+                case "1":
+                    currUser = ts.signIn();
+                    break;
+                case "2":
+                    currUser = ts.register();
+                    break;
+                default:
+                    throw new InvalidOptionException();
             }
         } catch (InvalidOptionException e) {
             System.out.println("Invalid Option detected. Please try again.");
-            return login();
+            login();
         }
+        System.out.println("Login Successful. Welcome to Trader, " + currUser.getUsername() + ".");
+        layerTwoMenu();
+        layerTwo();
     }
 
     /** Prints out the layer two UI.
@@ -205,8 +207,10 @@ public class TraderClient {
             switch (getInput()) {
                 case "1":
                     String prevUsername = currUser.getUsername();
+                    System.out.println("Signed Out Successfully. See you soon, " + prevUsername + "!");
+                    System.out.println("-----------------\n");
                     currUser = null;
-                    System.out.println("Signed Out Successfully. See you soon, " + prevUsername);
+                    login();
                 case "2":
                     layerTwo();
                 default:
