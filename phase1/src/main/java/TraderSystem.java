@@ -33,9 +33,9 @@ public class TraderSystem {
         im = new ItemStorage(itemsPath);
         am = new AccountStorage(accountsPath);
 
-        /**TODO:delete this whole try clause after we're done with register.
-            am.createAdminAccount("admin", "admin", "admin@trader.org");
-            am.createUserAccount("Sarah.alk", "123456", "sarah@trader.org", false);*/
+        //delete this whole try clause after we're done with register.
+            //am.createAdminAccount("admin", "admin", "admin@trader.org");
+            //am.createUserAccount("Sarah.alk", "123456", "sarah@trader.org", false);
     }
 
     /**
@@ -86,7 +86,7 @@ public class TraderSystem {
      */
     public Account register() throws IOException {
         Account acc = null;
-         //TODO make this method have less duplicate lines for errors
+         // make this method have less duplicate lines for errors later
         String email;
         boolean emailChecker = false;
         do {
@@ -130,7 +130,7 @@ public class TraderSystem {
         try {
             acc = am.createUserAccount(username, pw, email, false);
         } catch (InvalidLoginException | InvalidEmailException | EmailInUseException | UsernameInUseException e) {
-            e.printStackTrace(); // TODO: check if I can just override .toString in the exception, instead of  writing the following print lines
+            e.printStackTrace(); // later check if I can just override .toString in the exception, instead of  writing the following print lines
         } //I need to clean this smell (the catch clause).
         return acc;
     }
@@ -266,7 +266,7 @@ public class TraderSystem {
             System.out.println("The corresponding email is already in use.");
         } catch (UsernameInUseException e) {
             System.out.println("The corresponding username is already in use.");
-        } catch (IOException e) { //TODO: check if we can remove this and have the method that uses this catch it instead.
+        } catch (IOException e) { //later check if we can remove this and have the method that uses this catch it instead.
             System.out.println("File could not be updated.");
         }
     }
