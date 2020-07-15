@@ -15,15 +15,28 @@ public class Clothing extends Item {
 
     private final String brand;
 
+    /**
+     * Creates an Clothing item with the name and description of Clothing
+     */
     public Clothing(String name, String description, int id, String brand) {
         super(name, description, id);
         this.brand = brand;
     }
 
+    /**
+     * Get brand of the item
+     *
+     * @return brand of the item
+     */
     public String getBrand() {
         return brand;
     }
 
+    /**
+     * The toString() method for Clothing instances
+     *
+     * @return the stylized message which is printed when this method is called
+     */
     @Override
     public String toString(){
         // return "main.java.Book name: " + name +", description: " + description + ", brand: " + brand ;
