@@ -23,8 +23,8 @@ public class TraderSystem {
     /**
      * Creates a new TraderSystem.
      *
-     * @throws IOException
-     * @throws ClassNotFoundException
+     * @throws IOException if the files are corrupt or does not contain correct data.
+     * @throws ClassNotFoundException if there's a casting error for reading and writing files.
      */
     public TraderSystem(BufferedReader keyboard) throws IOException, ClassNotFoundException {
 
@@ -82,7 +82,7 @@ public class TraderSystem {
      * Registers a new user
      *
      * @return the registered user's account instance
-     * @throws IOException
+     * @throws IOException if the files are corrupt or does not contain correct data.
      */
     public Account register() throws IOException {
         Account acc = null;
@@ -139,8 +139,8 @@ public class TraderSystem {
      * Displays the inventory of account
      *
      * @param account an instance of Account
-     * @throws IOException
-     * @throws AccountNotFoundException
+     * @throws IOException if the files are corrupt or does not contain correct data.
+     * @throws AccountNotFoundException if there's a casting error for reading and writing files.
      */
     public void viewInventory(Account account) throws IOException, AccountNotFoundException {
         EntityDisplay ed = new EntityDisplay("Your Inventory");
@@ -164,8 +164,8 @@ public class TraderSystem {
      * Displays the wishlist of account
      *
      * @param account an instance of Account
-     * @throws IOException
-     * @throws AccountNotFoundException
+     * @throws IOException if the files are corrupt or does not contain correct data.
+     * @throws AccountNotFoundException if there's a casting error for reading and writing files.
      */
     public void viewWishlist(Account account) throws IOException, AccountNotFoundException {
         EntityDisplay ed = new EntityDisplay("Your Wishlist");
