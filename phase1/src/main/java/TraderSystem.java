@@ -15,9 +15,9 @@ public class TraderSystem {
     private final ItemStorage im;
     private final BufferedReader input;
     private String lastInput;
-    private int tradeThreshold; //TODO: have configuration file set this
-    private int weeklyThreshold;
-    private int incompleteThreshold;
+    private int tradeThreshold = 1;
+    private int weeklyThreshold = 5;
+    private int incompleteThreshold = 3;
 
 
     /**
@@ -242,10 +242,8 @@ public class TraderSystem {
 
     /**
      * Adds a new admin account
-     *
-     * @throws IOException
      */
-    public void addAdmin() throws IOException {
+    public void addAdmin() {
         System.out.println("Enter the username of the user you would like to promote to admin: ");
         String username = getInput();
         try {
