@@ -9,52 +9,52 @@
     <node x="1639.75" y="1206.0">main.java.OneWayTemporaryTrade</node>
     <node x="960.7500000000001" y="1206.0">main.java.TwoWayTemporaryTrade</node>
     <node x="735.0" y="2507.0">main.java.TimeException</node>
-    <node x="1662.0" y="2408.0">main.java.InvalidLoginException</node>
-    <node x="1124.0" y="2408.0">main.java.UsernameInUseException</node>
+    <node x="1662.0" y="2408.0">main.java.account.InvalidLoginException</node>
+    <node x="1124.0" y="2408.0">main.java.account.UsernameInUseException</node>
     <node x="570.0" y="2408.0">main.java.TradeCancelledException</node>
     <node x="2276.0" y="1369.0">main.java.FileReadWriter</node>
-    <node x="893.0000000000001" y="983.0">main.java.AdminAccount</node>
+    <node x="893.0000000000001" y="983.0">main.java.account.AdminAccount</node>
     <node x="498.0" y="2507.0">main.java.NoMeetingException</node>
     <node x="1923.0" y="2408.0">main.java.InvalidEmailException</node>
     <node x="2341.0" y="994.0">main.java.MiscItem</node>
     <node x="0.0" y="929.0">main.java.UserMessage</node>
     <node x="1674.0" y="1369.0">main.java.MessageStorage</node>
-    <node x="591.0000000000001" y="930.0">main.java.UserAccount</node>
+    <node x="591.0000000000001" y="930.0">main.java.account.UserAccount</node>
     <node x="2530.0" y="1369.0">main.java.InvalidOptionException</node>
     <node x="932.0" y="2507.0">main.java.TraderMain</node>
     <node x="707.0" y="1369.0">main.java.TradeStorage</node>
-    <node x="285.0" y="2408.0">main.java.AccountNotFoundException</node>
+    <node x="285.0" y="2408.0">main.java.account.AccountNotFoundException</node>
     <node x="253.0" y="2507.0">main.java.EmailInUseException</node>
     <node x="1432.4050925925926" y="104.0">main.java.Trade</node>
-    <node x="2184.0" y="2408.0">main.java.ItemNotFoundException</node>
+    <node x="2184.0" y="2408.0">main.java.item.ItemNotFoundException</node>
     <node x="0.0" y="2507.0">main.java.TradeNumberException</node>
     <node x="325.0" y="961.0">main.java.SystemMessage</node>
     <node x="1958.75" y="1206.0">main.java.OneWayPermanentTrade</node>
-    <node x="2090.0" y="962.0">main.java.Clothing</node>
+    <node x="2090.0" y="962.0">main.java.item.Clothing</node>
     <node x="2445.0" y="2408.0">main.java.WrongAccountException</node>
-    <node x="1241.25" y="0.0">main.java.Entity</node>
+    <node x="1241.25" y="0.0">main.java.account.Entity</node>
     <node x="2072.0" y="1369.0">main.java.EntityDisplay</node>
-    <node x="2353.5" y="367.0">main.java.Item</node>
-    <node x="0.0" y="1369.0">main.java.AccountStorage</node>
+    <node x="2353.5" y="367.0">main.java.item.Item</node>
+    <node x="0.0" y="1369.0">main.java.account.AccountStorage</node>
     <node x="847.0" y="2408.0">main.java.NoMoreWarningsException</node>
     <node x="1828.0" y="939.0">main.java.OneWayTrade</node>
     <node x="173.1550925925926" y="389.0">main.java.Message</node>
-    <node x="1116.0" y="1369.0">main.java.ItemStorage</node>
-    <node x="760.4050925925927" y="192.0">main.java.Account</node>
+    <node x="1116.0" y="1369.0">main.java.item.ItemStorage</node>
+    <node x="760.4050925925927" y="192.0">main.java.account.Account</node>
     <node x="1299.75" y="1206.0">main.java.TwoWayPermanentTrade</node>
     <node x="1393.0" y="2408.0">main.java.MeetingNumberException</node>
     <node x="1440.0" y="1369.0">main.java.TraderClient</node>
-    <node x="2558.0" y="962.0">main.java.Book</node>
+    <node x="2558.0" y="962.0">main.java.item.Book</node>
   </nodes>
   <notes />
   <edges>
-    <edge source="main.java.AdminAccount" target="main.java.Account">
+    <edge source="main.java.account.AdminAccount" target="main.java.account.Account">
       <point x="0.0" y="-59.0" />
       <point x="1016.0000000000001" y="903.0" />
       <point x="923.9050925925927" y="903.0" />
       <point x="54.5" y="299.0" />
     </edge>
-    <edge source="main.java.MiscItem" target="main.java.Item">
+    <edge source="main.java.MiscItem" target="main.java.item.Item">
       <point x="0.0" y="-48.0" />
       <point x="0.0" y="124.0" />
     </edge>
@@ -64,13 +64,13 @@
       <point x="1888.5" y="1181.0" />
       <point x="-60.5" y="103.0" />
     </edge>
-    <edge source="main.java.Book" target="main.java.Item">
+    <edge source="main.java.item.Book" target="main.java.item.Item">
       <point x="0.0" y="-80.0" />
       <point x="2664.0" y="903.0" />
       <point x="2496.8333333333335" y="903.0" />
       <point x="57.33333333333337" y="124.0" />
     </edge>
-    <edge source="main.java.Clothing" target="main.java.Item">
+    <edge source="main.java.item.Clothing" target="main.java.item.Item">
       <point x="0.0" y="-80.0" />
       <point x="2205.5" y="903.0" />
       <point x="2382.166666666667" y="903.0" />
@@ -82,13 +82,13 @@
       <point x="356.9050925925926" y="903.0" />
       <point x="61.25" y="102.0" />
     </edge>
-    <edge source="main.java.Account" target="main.java.Entity">
+    <edge source="main.java.account.Account" target="main.java.account.Entity">
       <point x="0.0" y="-299.0" />
       <point x="869.4050925925927" y="84.0" />
       <point x="1300.5" y="84.0" />
       <point x="-19.75" y="27.0" />
     </edge>
-    <edge source="main.java.UserAccount" target="main.java.Account">
+    <edge source="main.java.account.UserAccount" target="main.java.account.Account">
       <point x="0.0" y="-112.0" />
       <point x="732.0000000000001" y="903.0" />
       <point x="814.9050925925927" y="903.0" />
@@ -106,13 +106,13 @@
       <point x="1522.4050925925926" y="903.0" />
       <point x="-90.0" y="387.0" />
     </edge>
-    <edge source="main.java.Item" target="main.java.Entity">
+    <edge source="main.java.item.Item" target="main.java.account.Entity">
       <point x="0.0" y="-124.0" />
       <point x="2439.5" y="74.0" />
       <point x="1379.5" y="74.0" />
       <point x="59.25" y="27.0" />
     </edge>
-    <edge source="main.java.Trade" target="main.java.Entity">
+    <edge source="main.java.Trade" target="main.java.account.Entity">
       <point x="0.0" y="-387.0" />
       <point x="1612.4050925925926" y="84.0" />
       <point x="1340.0" y="84.0" />
@@ -130,7 +130,7 @@
       <point x="2009.5" y="1181.0" />
       <point x="60.5" y="103.0" />
     </edge>
-    <edge source="main.java.Message" target="main.java.Entity">
+    <edge source="main.java.Message" target="main.java.account.Entity">
       <point x="0.0" y="-102.0" />
       <point x="295.6550925925926" y="74.0" />
       <point x="1261.0" y="74.0" />

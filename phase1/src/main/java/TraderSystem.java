@@ -1,5 +1,10 @@
 package main.java;
 
+import main.java.account.*;
+import main.java.item.Item;
+import main.java.item.ItemNotFoundException;
+import main.java.item.ItemStorage;
+
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -34,8 +39,8 @@ public class TraderSystem {
         am = new AccountStorage(accountsPath);
 
         //delete this whole try clause after we're done with register.
-            //am.createAdminAccount("admin", "admin", "admin@trader.org");
-            //am.createUserAccount("Sarah.alk", "123456", "sarah@trader.org", false);
+            //am.createAdmin("admin", "admin", "admin@trader.org");
+            //am.createUser("Sarah.alk", "123456", "sarah@trader.org", false);
     }
 
     /**
@@ -128,7 +133,7 @@ public class TraderSystem {
         } while (!pwChecker);
 
         try {
-            acc = am.createUserAccount(username, pw, email, false);
+            acc = am.createUser(username, pw, email, false);
         } catch (InvalidLoginException | InvalidEmailException | EmailInUseException | UsernameInUseException e) {
             e.printStackTrace(); // later check if I can just override .toString in the exception, instead of  writing the following print lines
         } //I need to clean this smell (the catch clause).
@@ -253,7 +258,7 @@ public class TraderSystem {
             if (user.isAdmin()) System.out.println("User with corresponding username is already an admin.");
             else {
                 am.removeUserAccount(username);
-                am.createAdminAccount(username, user.getPassword(), user.getEmail());
+                am.createAdmin(username, user.getPassword(), user.getEmail());
                 System.out.println("User has been promoted to an admin account.");
             }
         } catch (AccountNotFoundException e) {

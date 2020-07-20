@@ -1,5 +1,8 @@
 package main.java;
 
+import main.java.account.Account;
+import main.java.account.AccountNotFoundException;
+
 import java.io.*;
 
 /** A presenter / User Interface for running the program and interacting with the program menu.

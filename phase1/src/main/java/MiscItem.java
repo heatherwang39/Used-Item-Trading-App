@@ -1,12 +1,14 @@
 package main.java;
 
+import main.java.item.Item;
+
 /**
  * Entity class representing a unique tradable Item
  * @author Robbert Liu
  * @version %I%, %G%
  * @since Phase 1
  */
-public class MiscItem extends Item{
+public class MiscItem extends Item {
     /**
      * Creates an Item with the name and description of Item
      *

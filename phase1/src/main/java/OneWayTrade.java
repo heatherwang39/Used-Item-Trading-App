@@ -15,7 +15,7 @@ import java.util.List;
 abstract class OneWayTrade extends Trade implements Serializable {
     private String sender;
     private String receiver;
-    private int item; //changed item from List<main.java.Item> to main.java.Item
+    private int item; //changed item from List<main.java.item.Item> to main.java.item.Item
 
 
     /** Initializes an instance of main.java.TwoWayTrade based on the given parameters

@@ -1,11 +1,8 @@
 package main.java;
 
-import javax.security.auth.x500.X500PrivateCredential;
 import java.io.Serializable;
-import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -15,7 +12,7 @@ import java.util.List;
  * @version %I%, %G%
  * @since Phase 1
  */
-abstract class Trade implements Serializable, Entity {
+abstract class Trade implements Serializable {
     private final int tradeNumber;
     private int status;
 
@@ -35,18 +32,6 @@ abstract class Trade implements Serializable, Entity {
 
 
     //Basic Trade Methods begin here
-
-
-
-
-
-
-
-    /**
-     * Method required by implementations of Entity
-     * @return this class's attributes name and value in String format in a 2D List
-     */
-    public List<List<String>> getData(){return new ArrayList<>();}
 
 
     /** Initialize a new instance of Trade. The default status of the trade will be set to 0,
