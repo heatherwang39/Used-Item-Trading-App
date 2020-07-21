@@ -205,7 +205,8 @@ public class TradeStorage {
         int numTradesInWeek = 0;
         try {
             for (Trade trade : trades) {
-                if (trade.getTraders().contains(username) && trade.getMeetingTime(1).isAfter(oneWeekAgo)) {
+                LocalDateTime meetingTime = trade.getMeetingTime(1);
+                if (trade.getTraders().contains(username) && !(meetingTime == null) && meetingTime.isAfter(oneWeekAgo)) {
                     numTradesInWeek++;
                 }
             }

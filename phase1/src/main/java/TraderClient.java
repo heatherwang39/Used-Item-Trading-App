@@ -82,9 +82,9 @@ public class TraderClient {
      */
     public void layerTwoMenu() {
         System.out.println("1. View Account Information\n2. Add Items\n3. Browse Listings\n4. Create Request\n" +
-                "5. My Activity\n6. Offers\n7. Active Trades\n8. Sign out");
+                "5. Add to Wishlist\n6. My Activity\n7. Offers\n8. Active Trades\n9. Sign out");
         if (currUser.isAdmin()) {
-            System.out.println("9. Admin Options");
+            System.out.println("10. Admin Options");
         }
     }
 
@@ -110,17 +110,20 @@ public class TraderClient {
                     ts.createRequest(currUser);
                     break;
                 case "5":
-                    ts.showActivity(currUser);
+                    ts.addWishlist(currUser);
                     break;
                 case "6":
-                    ts.showOffers(currUser);
+                    ts.showActivity(currUser);
                     break;
                 case "7":
-                    ts.showActiveTrades(currUser);
+                    ts.showOffers(currUser);
                     break;
                 case "8":
-                    signOut();
+                    ts.showActiveTrades(currUser);
+                    break;
                 case "9":
+                    signOut();
+                case "10":
                     if (currUser.isAdmin()) { adminOptions(); }
                     else { throw new InvalidOptionException(); }
                     break;
@@ -165,12 +168,17 @@ public class TraderClient {
                         case "1":
                             System.out.println("Enter the new trading threshold: ");
                             ts.updateTradeThreshold(Integer.parseInt(getInput()));
+                            break;
                         case "2":
                             System.out.println("Enter the new weekly threshold: ");
                             ts.updateWeeklyThreshold(Integer.parseInt(getInput()));
+                            break;
                         case "3":
                             System.out.println("Enter the new incomplete threshold: ");
                             ts.updateIncompleteThreshold(Integer.parseInt(getInput()));
+                            break;
+                        default:
+                            throw new InvalidOptionException();
                     }
                     break;
                 case "4":

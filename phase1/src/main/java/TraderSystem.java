@@ -317,11 +317,11 @@ public class TraderSystem {
                     case 1:
                         System.out.println("Offer accepted!");
                         processAcceptedTrade(tradesReceived.get(i));
-                        user.removeTradesReceived(tradesReceived.get(i));
+                        user.removeTradesReceived(i);
                         break;
                     case 2:
                         System.out.println("Offer denied!");
-                        user.removeTradesReceived(tradesReceived.get(i));
+                        user.removeTradesReceived(i);
                         break;
                     case 3: System.out.println("Don't forget to check back soon!");
                         break;
@@ -455,6 +455,28 @@ public class TraderSystem {
      */
     public void updateIncompleteThreshold(int newThreshold){ incompleteThreshold = newThreshold; }
 
+    /**
+     * Allows a user to add an item to their wishlist by inputting it's id
+     *
+     * @param user the user instance which is currently logged in
+     */
+    public void addWishlist(Account user){
+        System.out.println("Type the id of the item you would like to add to your wishlist.");
+        int itemId;
+        try {
+            itemId = Integer.parseInt(getInput());
+            Item item = im.getItem(itemId);
+            if (!(im.getVerifiedItems().contains(item))) throw new ItemNotFoundException();
+            if (!(user.inventory.contains(itemId) || user.wishlist.contains(itemId))) {
+                am.updateWishList(user, itemId);
+                System.out.println("Successfully added to your wishlist.");
+            }
+            else if (user.inventory.contains(itemId)) System.out.println("That item belongs to you!");
+            else if (user.wishlist.contains(itemId)) System.out.println("That item is already in your wishlist!");
+        } catch (ItemNotFoundException e) {
+            System.out.println("No approved item with that id exists");
+        }
+    }
     /**
      * Initializes a trade request meant to be sent by the user.
      *
