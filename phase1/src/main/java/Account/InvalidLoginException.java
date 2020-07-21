@@ -1,4 +1,4 @@
-package main.java.account;
+package main.java.Account;
 
 /**
  * Exception to be thrown when attempting to create an Account with improper username or password.

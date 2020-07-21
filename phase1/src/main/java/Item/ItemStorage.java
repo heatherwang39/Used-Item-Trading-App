@@ -1,6 +1,7 @@
-package main.java.item;
+package main.java.Item;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -99,16 +100,16 @@ public class ItemStorage {
      * @return all verified Items
      */
     public List<Item> getVerifiedItems() {
-        List<Item> verifiedItems = new ArrayList<>();
+        List<Item> items = new ArrayList<>();
         // From here:
         // https://stackoverflow.com/questions/46898/how-do-i-efficiently-iterate-over-each-entry-in-a-java-map
-        for (Map.Entry<Integer, Item> entry : items.entrySet()) {
+        for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
             Item item = entry.getValue();
             if (item.isVerified()) {
-                verifiedItems.add(item);
+                items.add(item);
             }
         }
-        return verifiedItems;
+        return items;
     }
 
     /**
@@ -117,17 +118,86 @@ public class ItemStorage {
      * @return all unverified Items
      */
     public List<Item> getUnverifiedItems() {
-        List<Item> unverifiedItems = new ArrayList<>();
-        // From here:
-        // https://stackoverflow.com/questions/46898/how-do-i-efficiently-iterate-over-each-entry-in-a-java-map
-        for (Map.Entry<Integer, Item> entry : items.entrySet()) {
+        List<Item> items = new ArrayList<>();
+        for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
             Item item = entry.getValue();
             if (!item.isVerified()) {
-                unverifiedItems.add(item);
+                items.add(item);
             }
         }
-        return unverifiedItems;
+        return items;
     }
 
-    public 
+    /**
+     * Get all an Account's verified items by username.
+     *
+     * @param username Account username
+     * @return verified inventory
+     */
+    public List<Item> getVerifiedInventory(String username) {
+        List<Item> items = new ArrayList<>();
+        for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
+            Item item = entry.getValue();
+            if (item.isVerified() && item.getOwner().equals(username)) {
+                items.add(item);
+            }
+        }
+        return items;
+    }
+
+    /**
+     * Get all an Account's unverified items by username.
+     *
+     * @param username Account username
+     * @return unverified inventory
+     */
+    public List<Item> getUnverifiedInventory(String username) {
+        List<Item> items = new ArrayList<>();
+        for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
+            Item item = entry.getValue();
+            if (!item.isVerified() && item.getOwner().equals(username)) {
+                items.add(item);
+            }
+        }
+        return items;
+    }
+
+    /**
+     * Get all items that match a search filter
+     *
+     * @param searchTerms keywords searched by the user
+     * @param tags enabled item tags
+     * @return items that match the search filter
+     */
+    public List<Item> getFilteredItem(List<String> searchTerms, List<String> tags) {
+        List<Item> items = new ArrayList<>();
+        for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
+            Item item = entry.getValue();
+            for (String term: searchTerms) {
+                if ((item.getName().contains(term) || item.getDescription().contains(term))
+                        && !Collections.disjoint(tags, item.getTags())) {
+                    items.add(item);
+                    break;
+                }
+            }
+        }
+        return items;
+    }
+
+    /**
+     * Get all an Account's wishlist by username.
+     *
+     * @param username Account username
+     * @return wishlist
+     */
+    public List<Item> getWishlist(String username) {
+        List<Item> items = new ArrayList<>();
+        for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
+            Item item = entry.getValue();
+            if (!item.isVerified() && item.getWishlist().contains(username)) {
+                items.add(item);
+            }
+        }
+        return items;
+    }
 }

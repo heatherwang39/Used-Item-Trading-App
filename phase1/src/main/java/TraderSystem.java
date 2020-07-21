@@ -1,9 +1,9 @@
 package main.java;
 
-import main.java.account.*;
-import main.java.item.Item;
-import main.java.item.ItemNotFoundException;
-import main.java.item.ItemStorage;
+import main.java.Account.*;
+import main.java.Item.Item;
+import main.java.Item.ItemNotFoundException;
+import main.java.Item.ItemStorage;
 
 import java.io.*;
 import java.time.LocalDateTime;

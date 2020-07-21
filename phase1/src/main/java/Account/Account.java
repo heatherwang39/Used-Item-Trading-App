@@ -1,4 +1,4 @@
-package main.java.account;
+package main.java.Account;
 
 import java.io.Serializable;
 

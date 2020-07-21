@@ -1,4 +1,4 @@
-package main.java.account;
+package main.java.Account;
 
 /**
  * UserAccount is a LoginAccount that possesses an inventory and wishlist, and can trade with others and be frozen.

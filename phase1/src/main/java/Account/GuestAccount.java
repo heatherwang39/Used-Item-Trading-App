@@ -1,4 +1,4 @@
-package main.java.account;
+package main.java.Account;
 
 /**
  * GuestAccount is an Account representing a non-unique member of the system who has limited actions and cannot save any

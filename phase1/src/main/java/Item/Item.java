@@ -1,4 +1,4 @@
-package main.java.item;
+package main.java.Item;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,7 +19,8 @@ class Item implements Serializable {
     private final String name;
     private final String description;
     private final List<String> tags;
-    private boolean isVerified = false;
+    private final List<String> wishlist;
+    private boolean isVerified;
 
     /**
      * Class constructor.
@@ -33,6 +34,8 @@ class Item implements Serializable {
         this.name = name;
         this.description = description;
         this.tags = tags;
+        this.wishlist = new ArrayList<>();
+        isVerified = false;
     }
 
     /**
@@ -71,7 +74,7 @@ class Item implements Serializable {
 
 
     /**
-     * Get item's tags.
+     * Get Item's tags.
      *
      * @return tags
      */
@@ -87,9 +90,35 @@ class Item implements Serializable {
     }
 
     /**
-     * Verify this item
+     * Verify this item.
      */
     public void verify() {
         isVerified = true;
+    }
+
+    /**
+     * Get usernames of Accounts that have wishlisted this Item.
+     *
+     * @return usernames
+     */
+    public List<String> getWishlist() {return new ArrayList<>(tags); }
+
+    /**
+     * Add username to wishlist.
+     *
+     * @param username Account username
+     */
+    public void addWishlist(String username) { wishlist.add(username); }
+
+    /**
+     * Remove username from wishlist
+     *
+     * @param username Account username
+     */
+    public void removeWishlist(String username) throws NotInWishlistException {
+        if (!wishlist.contains(username)) {
+            throw new NotInWishlistException();
+        }
+        wishlist.remove(username);
     }
 }

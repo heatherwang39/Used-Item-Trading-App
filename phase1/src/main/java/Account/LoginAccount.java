@@ -1,4 +1,4 @@
-package main.java.account;
+package main.java.Account;
 
 /**
  * LoginAccount is an abstract class representing a unique member of the system who can log in and access the system.

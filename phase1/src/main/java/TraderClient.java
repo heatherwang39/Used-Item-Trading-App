@@ -1,7 +1,7 @@
 package main.java;
 
-import main.java.account.Account;
-import main.java.account.AccountNotFoundException;
+import main.java.Account.Account;
+import main.java.Account.AccountNotFoundException;
 
 import java.io.*;
 
