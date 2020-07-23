@@ -1,5 +1,6 @@
-package main.java;
+package Message;
 
+import java.io.Serializable;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.List;
  * @version %I%, %G%
  * @since Phase 1
  */
-abstract class Message implements Entity {
+abstract class Message implements Entity, Serializable {
 
     private String title;
     private String content;
@@ -37,7 +38,7 @@ abstract class Message implements Entity {
      * Returns a HashMap of all displayable and obtainable information from the Entity
      * @return The map's key is the attribute name and the value is the attribute data
      */
-    @Override
+
     public List<List<String>> getData() {
         List<List<String>> lst = new ArrayList<>();
         lst.add(Arrays.asList("Title", title));

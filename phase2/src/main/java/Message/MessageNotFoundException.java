@@ -1,4 +1,4 @@
-package main.java;
+package Message;
 
 /**
  * Exception to be thrown when an account has no message.
