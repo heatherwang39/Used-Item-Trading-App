@@ -1,4 +1,4 @@
-package main.java;
+package main.java.Transactions.Trade;
 
 /**
  * Exception to be thrown when attempting to make changes to a meeting in a trade that is already cancelled.

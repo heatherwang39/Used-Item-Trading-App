@@ -4,6 +4,9 @@ import main.java.Account.*;
 import main.java.Item.Item;
 import main.java.Item.ItemNotFoundException;
 import main.java.Item.ItemStorage;
+import main.java.Transactions.Trade.Trade;
+import main.java.Transactions.Trade.TradeNumberException;
+import main.java.Transactions.Trade.TradeStorage;
 
 import java.io.*;
 import java.time.LocalDateTime;

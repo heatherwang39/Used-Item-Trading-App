@@ -1,6 +1,7 @@
-package main.java;
+package main.java.Transactions.Trade;
 
-import java.io.*;
+import main.java.Transactions.WrongAccountException;
+
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -13,29 +14,54 @@ import java.util.*;
  */
 
 public class TradeStorage {
-    private List<Trade> trades = new ArrayList<>();
-    private String path;
-    private FileReadWriter frw;
+    private List<Trade> trades;
 
-    /**
-     * Creates a new TradeStorage.
-     *
-     * @throws IOException
-     * @throws ClassNotFoundException
-     */
-    public TradeStorage(String filePath) throws IOException, ClassNotFoundException {
-        path = filePath;
-        frw = new FileReadWriter(path);
-        File file = new File(path);
-        if (file.exists()) {
-            try {
-                trades = (List<Trade>) frw.readFromFile(path);
-            } catch (EOFException ignored) {
-            }
-        } else {
-            file.createNewFile();
-        }
+
+    public TradeStorage(List<Trade> trades){
+        this.trades = trades;
     }
+
+
+
+
+    //Trade Constructor below
+
+
+    /** Initializes a new Trade based on the given parameters. Return the tradeNumber of the newly initialized Trade.
+     *
+     * @param permanent
+     * @param tan
+     * @param traders
+     * @param items
+     * @return
+     * @throws NoSuchTradeAlgorithmException
+     */
+    public int newTrade(boolean permanent, TradeAlgorithmName tan, List<String> traders, List<Integer> items)
+            throws NoSuchTradeAlgorithmException{
+
+        Trade t;
+
+        TradeAlgorithm ta;
+        switch(tan){
+            case CYCLE:
+                ta = new CycleTradeAlgorithm();
+                break;
+            default:
+                throw new NoSuchTradeAlgorithmException();
+        }
+
+        if(permanent){
+            t = new PermanentTrade(getNumberOfTrades() + 1, ta, traders, items);
+        } else{
+            t = new TemporaryTrade(getNumberOfTrades() + 1, ta, traders, items);
+        }
+
+        return t.getTradeNumber();
+    }
+
+
+    //TradeStorage and helper methods below
+
 
     /**
      * Gets the total number of trades made
@@ -46,88 +72,8 @@ public class TradeStorage {
         return trades.size();
     }
 
-    /**
-     * Initializes a new OneWayTrade based on the given parameters. Return the tradeNumber of the newly initialized
-     * OneWayTrade.
-     *
-     * @param permanent Whether or not the Trade is to be permanent
-     * @param sender    The username of the Sender of the Trade
-     * @param receiver  The username of the Receiver of the Trade
-     * @param item      The ID of the item involved in the Trade
-     * @return The tradeNumber of the newly initialized Trade.
-     * @throws IOException Cannot save to file
-     */
-    public int newOneWayTrade(Boolean permanent, String sender, String receiver, int item) throws IOException {
-        int t;
-        if (permanent) {
-            t = newOWPTrade(sender, receiver, item);
-        } else {
-            t = newOWTTrade(sender, receiver, item);
-        }
-        return t;
-    }
 
-    private int newOWPTrade(String sender, String receiver, int item) throws IOException {
-        Trade t = new OneWayPermanentTrade(getNumberOfTrades(), sender, receiver, item);
-        trades.add(t);
-        frw.saveToFile(trades,path);
-        return t.getTradeNumber();
-    }
-
-    private int newOWTTrade(String sender, String receiver, int item) throws IOException {
-        Trade t = new OneWayTemporaryTrade(getNumberOfTrades(), sender, receiver, item);
-        trades.add(t);
-        frw.saveToFile(trades,path);
-        return t.getTradeNumber();
-    }
-
-
-    /**
-     * Initializes a new TwoWayTrade based on the given parameters. Return the tradeNumber of the newly initialized
-     * TwoWayTrade
-     *
-     * @param permanent    Whether or not the Trade is to be permanent
-     * @param firstTrader  The username of the first trader.
-     * @param firstItem    The ID of the item the first trader sent in this trade
-     * @param secondTrader The username of the second trader.
-     * @param secondItem   The ID of the item the second trader sent in this trade
-     * @return The tradeNumber of the newly initialized Trade.
-     * @throws IOException Cannot save to file
-     */
-    public int newTwoWayTrade(Boolean permanent, String firstTrader, int firstItem,
-                              String secondTrader, int secondItem) throws IOException {
-        int t;
-        if (permanent) {
-            t = newTWPTrade(firstTrader, firstItem, secondTrader, secondItem);
-        } else {
-            t = newTWTTrade(firstTrader, firstItem, secondTrader, secondItem);
-        }
-        return t;
-    }
-
-    private int newTWPTrade(String firstTrader, int firstItem, String secondTrader, int secondItem) throws IOException {
-        Trade t = new TwoWayPermanentTrade(getNumberOfTrades(), firstTrader, firstItem, secondTrader, secondItem);
-        trades.add(t);
-        frw.saveToFile(trades,path);
-        return t.getTradeNumber();
-    }
-
-    private int newTWTTrade(String firstTrader, int firstItem, String secondTrader, int secondItem) throws IOException {
-        Trade t = new TwoWayTemporaryTrade(getNumberOfTrades(), firstTrader, firstItem, secondTrader, secondItem);
-        trades.add(t);
-        frw.saveToFile(trades,path);
-        return t.getTradeNumber();
-    }
-
-
-    /**
-     * Returns the Trade that corresponds to the given tradeNumber
-     *
-     * @param tradeNumber The tradeNumber of the Trade that is to be returned
-     * @return The Trade that corresponds to the given tradeNumber
-     * @throws TradeNumberException If no Trade with the given tradeNumber can be found
-     */
-    public Trade getTrade(int tradeNumber) throws TradeNumberException {
+    private Trade getTrade(int tradeNumber) throws TradeNumberException {
         for (Trade t : trades) {
             if (t.getTradeNumber() == tradeNumber) {
                 return t;
@@ -137,33 +83,173 @@ public class TradeStorage {
     }
 
 
-    /**
-     * Returns all the items pertaining to tradeNumber.
-     *
-     * @param tradeNumber The tradeNumber of the Trade
-     * @return a list of Integer values which represent all the trade IDs involved in this trade
-     * @throws TradeNumberException If no Trade with the given tradeNumber can be found
-     */
-    public List<Integer> getItemsInTrade(int tradeNumber) throws TradeNumberException {
-        for (Trade t : trades) {
-            if (t.getTradeNumber() == tradeNumber) {
-                return t.getItemsOriginal();
-            }
+    private void checkTradeCancelled(Trade t) throws TradeCancelledException{
+        if(t.getStatus() == -1){
+            throw new TradeCancelledException();
         }
-        throw new TradeNumberException();
     }
 
-    /**
-     * Returns whether the trade with the corresponding trade number is currently ongoing
-     *
-     * @param tradeNumber the tradeNumber of the Trade that is to be checked
-     * @return true if trade is on going, false if it is not
-     * @throws TradeNumberException if no Trade with the given tradeNumber can be found
-     */
-    public boolean checkActiveTrade(int tradeNumber) throws TradeNumberException {
-        Trade trade = trades.get(tradeNumber);
-        return trade.getStatus() == 1;
+
+
+
+    //Trade-related Methods Below
+
+
+    public int getStatus(int tradeNumber) throws TradeNumberException{
+        return getTrade(tradeNumber).getStatus();
     }
+
+    public boolean setStatus(int tradeNumber, int status) throws TradeNumberException{
+        return getTrade(tradeNumber).setStatus(status);
+    }
+
+
+    public boolean isPermanent(int tradeNumber) throws TradeNumberException{
+        return getTrade(tradeNumber).isPermanent();
+    }
+
+    public List<String> getTraders(int tradeNumber) throws TradeNumberException{
+        return getTrade(tradeNumber).getTraders();
+    }
+
+    public List<Integer> getItemsOriginal(int tradeNumber) throws TradeNumberException{
+        return getTrade(tradeNumber).getItemsOriginal();
+    }
+
+    public List<Integer> getItemsExchanged(int tradeNumber) throws TradeNumberException{
+        return getTrade(tradeNumber).getItemsExchanged();
+    }
+
+    public List<Integer> getItemsFinal(int tradeNumber) throws TradeNumberException{
+        return getTrade(tradeNumber).getItemsFinal();
+    }
+
+
+
+
+    //Meeting related Methods Below
+
+
+    public void setMeetings(int tradeNumber, List<Integer> meetings) throws TradeNumberException, TradeCancelledException{
+        Trade t = getTrade(tradeNumber);
+        checkTradeCancelled(t);
+        t.setMeetings(meetings);
+    }
+
+    public void addMeeting(int tradeNumber, int meetingID) throws TradeNumberException, TradeCancelledException{
+        Trade t = getTrade(tradeNumber);
+        checkTradeCancelled(t);
+        t.addMeeting(meetingID);
+    }
+
+    public void removeMeeting(int tradeNumber, int meetingID) throws TradeNumberException, TradeCancelledException{
+        Trade t = getTrade(tradeNumber);
+        checkTradeCancelled(t);
+        t.removeMeeting(meetingID);
+    }
+
+    public int getMeeting(int tradeNumber, int meetingNumber) throws TradeNumberException{
+        return getTrade(tradeNumber).getMeeting(meetingNumber);
+    }
+
+    public int getCurrNumMeetings(int tradeNumber) throws TradeNumberException{
+        return getTrade(tradeNumber).getCurrNumMeetings();
+    }
+
+    public int getTotalNumMeetings(int tradeNumber) throws TradeNumberException{
+        return getTrade(tradeNumber).getTotalNumMeetings();
+    }
+
+    public void setNumMeetings(int tradeNumber, int numMeetings) throws TradeNumberException, TradeCancelledException{
+        Trade t = getTrade(tradeNumber);
+        checkTradeCancelled(t);
+        t.setNumMeetings(numMeetings);
+    }
+
+
+
+
+    //Methods Regarding Trade Acceptance Below
+
+
+    public List<String> getUnacceptedTraders(int tradeNumber) throws TradeNumberException {
+        return getTrade(tradeNumber).getUnacceptedTraders();
+    }
+
+
+    public void acceptTrade(int tradeNumber, String trader)
+            throws TradeNumberException, TradeCancelledException, WrongAccountException{
+        Trade t = getTrade(tradeNumber);
+        checkTradeCancelled(t);
+        try{t.acceptTrade(trader);}
+        catch(IndexOutOfBoundsException e){throw new WrongAccountException();}
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //TODO: Implement the Mediator Pattern between TradeStorage and MeetingStorage
+
+
+    //TODO: Examine Fadi's Methods (below). They may need to change due to the dramatic changes in the Trade Class
+
+
+
 
     /**
      * Returns whether the user with given username should be frozen based on if they borrowed more than they have lent.
@@ -189,9 +275,12 @@ public class TradeStorage {
         return oneWayTrades;
     }
 
+
+
     private boolean checkOngoingComplete(Trade trade) {
         return (trade.getStatus() == 1 || trade.getStatus() == 2);
     }
+
 
     /**
      * Returns whether the user with given username should be frozen based on if they participated in too many trades the past week.
@@ -216,6 +305,7 @@ public class TradeStorage {
         return numTradesInWeek > weeklyThreshold;
     }
 
+
     /**
      * Returns whether the user with given username should be frozen based on if they have too many incomplete trades.
      * @param username username of the user
@@ -229,6 +319,7 @@ public class TradeStorage {
         }
         return numIncompleteTrades > incompleteThreshold;
     }
+
 
     /**
      * Returns a list of items from at most the three most recent trades user with given username participated in.
@@ -259,6 +350,8 @@ public class TradeStorage {
         //End of citation
         return threeRecentItems;
     }
+
+
 
     /**
      * Returns a set of the tree most frequent trading partners for user with given username.

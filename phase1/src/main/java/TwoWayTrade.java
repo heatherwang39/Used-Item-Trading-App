@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An abstract class in the main.java.Trade system representing a two-way trade in the program. In these trades,
+ * An abstract class in the main.java.Transactions.Trade system representing a two-way trade in the program. In these trades,
  * both participants send each other items.
  * @author Warren Zhu
  * @version %I%, %G%

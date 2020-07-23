@@ -1,4 +1,4 @@
-package main.java;
+package main.java.Transactions.Meeting;
 
 /**
  * Exception to be thrown when no such meeting corresponds to the meeting number

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents a one-way temporary trade in main.java.Trade system. The items have been given to the recipient will later
+ * Represents a one-way temporary trade in main.java.Transactions.Trade system. The items have been given to the recipient will later
  * be returned. As such, these trades require two meetings.
  * @author Warren Zhu
  * @version %I%, %G%

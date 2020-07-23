@@ -6,7 +6,7 @@ import java.util.List;
 
 
 /**
- * An abstract class in the main.java.Trade system representing a one-way trade in the program. In these trades,
+ * An abstract class in the main.java.Transactions.Trade system representing a one-way trade in the program. In these trades,
  * only one participant sends the other participant an item.
  * @author Warren Zhu
  * @version %I%, %G%

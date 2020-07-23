@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents a two-way temporary trade in main.java.Trade system. The items that have been exchanged between the two
+ * Represents a two-way temporary trade in main.java.Transactions.Trade system. The items that have been exchanged between the two
  * traders will be returned. As such, these trades require two meetings.
  * @author Warren Zhu
  * @version %I%, %G%
