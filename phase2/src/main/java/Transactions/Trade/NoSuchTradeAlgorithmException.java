@@ -12,7 +12,7 @@ public class NoSuchTradeAlgorithmException extends Exception{
      * Class Constructor
      */
     public NoSuchTradeAlgorithmException() {
-        super();
+        super("The input Trade Algorithm doesn't exist");
     }
 
 }

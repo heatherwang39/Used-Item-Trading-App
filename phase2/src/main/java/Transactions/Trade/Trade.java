@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An abstract class in the main.java.Transactions.Trade.Trade system representing a trade in the program. All trades
+ * An abstract class in the Trade system representing a trade in the program. All trades
  * store a trade number, a status, meeting IDs and associated items/traders for each trade.
  * @author Warren Zhu
  * @version %I%, %G%
@@ -32,14 +32,16 @@ abstract class Trade implements Serializable {
 
 
 
-
     //Basic Trade Methods begin here
 
 
     /** Initialize a new instance of Trade. The default status of the trade will be set to 0,
      * and the Trade will be assigned the tradeNumber that's given
      *
-     * @param tradeNumber The tradeNumber
+     * @param tradeNumber The unique TradeNumber associated with this trade
+     * @param tradeAlgorithm The algorithm that determines how the trade functions
+     * @param traders The traders involved in this trade
+     * @param items The items involved in this trade in the order of their owners (in traders)
      */
     public Trade(int tradeNumber, TradeAlgorithm tradeAlgorithm, List<String> traders, List<Integer> items){
         this.tradeNumber = tradeNumber;
@@ -59,22 +61,22 @@ abstract class Trade implements Serializable {
 
 
     /**
-     * Return the trade number of the main.java.Transactions.Trade.Trade object
+     * Return the trade number of the Trade object
      *
-     * @return the trade number of the main.java.Transactions.Trade.Trade object
+     * @return the trade number of the Trade object
      */
     public int getTradeNumber(){
         return tradeNumber;
     }
 
     /**
-     * Return the status of the main.java.Transactions.Trade.Trade Object.
+     * Return the status of the Trade Object.
      * -1 represents that the trade has been cancelled
      * 0 represents that the trade is awaiting confirmation
      * 1 represents that the trade is ongoing
      * 2 represents that the trade has been completed
      *
-     * @return the status of the main.java.Transactions.Trade.Trade Object.
+     * @return the status of the Trade Object.
      */
     public int getStatus(){
         return status;
@@ -82,14 +84,14 @@ abstract class Trade implements Serializable {
 
 
     /**
-     * Changes the status of the main.java.Transactions.Trade.Trade object. Iff the change was successfully made, return True.
+     * Changes the status of the Trade object. Iff the change was successfully made, return True.
      *
      * -1 represents that the trade has been cancelled
      * 0 represents that the trade is awaiting confirmation
      * 1 represents that the trade is ongoing
      * 2 represents that the trade has been completed
      *
-     * @param status The new status of the main.java.Transactions.Trade.Trade
+     * @param status The new status of the Trade
      * @return A boolean representing whether or not the change was made
      */
     public boolean setStatus(int status){
@@ -118,6 +120,10 @@ abstract class Trade implements Serializable {
     }
 
 
+    /** Return the name of the algorithm that determines how items are exchanged.
+     *
+     * @return The trade's algorithm's name.
+     */
     public String getAlgorithmName(){
         return tradeAlgorithm.getTradeAlgorithmName();
     }
@@ -225,7 +231,13 @@ abstract class Trade implements Serializable {
     }
 
 
-
+    /** Returns a List with a length equal to that of the number of traders involved in the trade. At each index,
+     * store the ID of the item that is involved in the trade and will be held by the Trader at the given
+     * index in getTraders() after the first transaction. Iff the specified Trader has no item that he/she is involving
+     * in trade and originally owned, store null at the particular index.
+     *
+     * @return A list of item IDs involved in this trade based on the owners after the first transaction
+     */
     public List<Integer> getItemsExchanged(){
         List<Integer> itemsCopy = new ArrayList(items);
         return tradeAlgorithm.getExchangedItems(itemsCopy);
@@ -247,6 +259,10 @@ abstract class Trade implements Serializable {
     //Methods regarding who has trade acceptance
 
 
+    /** Return the usernames of the Traders that haven't accepted this trade yet
+     *
+     * @return the traders that haven't accepted the trade
+     */
     public List<String> getUnacceptedTraders(){
         List unaccepted = new ArrayList();
         int i = 0;
@@ -258,12 +274,24 @@ abstract class Trade implements Serializable {
         return unaccepted;
     }
 
+
+    /** Record the fact that the trader has accepted the trade. If all traders have accepted the trade, automatically
+     * update the trade's status
+     *
+     * @param trader The trader accepting the trade
+     */
     public void acceptTrade(String trader){
         int i = traders.indexOf(trader);
         if(!accepted.get(i)){
             accepted.set(i, true);
         }
-        if(checkAccepted()){setStatus(1);}
+
+        //TODO: Think about the Trade's status (It may need to update the item's owner!)
+
+        if(checkAccepted()){
+            if(numberOfMeetings == 0){setStatus(2);}
+            else {setStatus(1);}
+        }
     }
 
     private boolean checkAccepted(){

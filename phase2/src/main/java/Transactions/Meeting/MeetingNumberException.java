@@ -12,6 +12,6 @@ public class MeetingNumberException extends Exception {
      * Class Constructor
      */
     public MeetingNumberException() {
-        super();
+        super("A Meeting was not found with the input Meeting ID.");
     }
 }

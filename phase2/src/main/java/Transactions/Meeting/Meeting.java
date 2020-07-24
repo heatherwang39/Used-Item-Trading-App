@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Meeting {
-    private int meetingNumber;
+    private int meetingID;
     private String place;
     private LocalDateTime time;
     private List<String> attendees;
@@ -16,8 +16,8 @@ public class Meeting {
     //Initializer
 
 
-    public Meeting(int meetingNumber, List<String> attendees, String place, LocalDateTime time){
-        this.meetingNumber = meetingNumber;
+    public Meeting(int meetingID, List<String> attendees, String place, LocalDateTime time){
+        this.meetingID = meetingID;
         this.place = place;
         this.time = time;
 
@@ -35,8 +35,8 @@ public class Meeting {
     //Getters
 
 
-    public int getMeetingNumber() {
-        return meetingNumber;
+    public int getmeetingID() {
+        return meetingID;
     }
 
 

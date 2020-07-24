@@ -12,7 +12,7 @@ public class TradeNumberException extends Exception {
      * Class Constructor
      */
     public TradeNumberException() {
-        super();
+        super("A Trade was not found with the input Trade Number.");
     }
 
 }

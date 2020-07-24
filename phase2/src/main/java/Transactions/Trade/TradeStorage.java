@@ -125,6 +125,27 @@ public class TradeStorage {
     }
 
 
+    public String getAlgorithmName(int tradeNumber) throws TradeNumberException{
+        return getTrade(tradeNumber).getAlgorithmName();
+    }
+
+
+    //Methods regarding Warnings below
+
+
+    public void warn(int tradeNumber) throws TradeNumberException{
+        getTrade(tradeNumber).warn();
+    }
+
+
+    public void resetWarnings(int tradeNumber) throws TradeNumberException{
+        getTrade(tradeNumber).resetWarnings();
+    }
+
+
+    public void setMaxWarnings(int tradeNumber, int maxWarnings) throws TradeNumberException{
+        getTrade(tradeNumber).setMaxWarnings(maxWarnings);
+    }
 
 
     //Meeting related Methods Below

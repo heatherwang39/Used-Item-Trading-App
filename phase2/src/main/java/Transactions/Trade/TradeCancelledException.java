@@ -12,7 +12,7 @@ public class TradeCancelledException extends Exception {
      * Class Constructor
      */
     public TradeCancelledException() {
-        super();
+        super("The Trade is cancelled; not changes were recorded.");
     }
 
 }
