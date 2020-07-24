@@ -4,7 +4,7 @@ package main.java.Transactions.Meeting;
  * Exception to be thrown when trying to confirming a meeting that hasn't been accepted yet.
  * @author Warren Zhu
  * @version %I%, %G%
- * @since Phase 1
+ * @since Phase 2
  */
 public class NotYetAcceptedException extends Exception {
 

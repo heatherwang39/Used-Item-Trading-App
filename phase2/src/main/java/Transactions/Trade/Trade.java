@@ -73,8 +73,9 @@ abstract class Trade implements Serializable {
      * Return the status of the Trade Object.
      * -1 represents that the trade has been cancelled
      * 0 represents that the trade is awaiting confirmation
-     * 1 represents that the trade is ongoing
-     * 2 represents that the trade has been completed
+     * 1 represents that the trade has been accepted but no items have been exchanged yet
+     * 2 represents that the trade is ongoing (items have been exchanged)
+     * 3 represents that the trade has been completed
      *
      * @return the status of the Trade Object.
      */
@@ -88,8 +89,9 @@ abstract class Trade implements Serializable {
      *
      * -1 represents that the trade has been cancelled
      * 0 represents that the trade is awaiting confirmation
-     * 1 represents that the trade is ongoing
-     * 2 represents that the trade has been completed
+     * 1 represents that the trade has been accepted but no items have been exchanged yet
+     * 2 represents that the trade is ongoing (items have been exchanged)
+     * 3 represents that the trade has been completed
      *
      * @param status The new status of the Trade
      * @return A boolean representing whether or not the change was made
@@ -289,7 +291,7 @@ abstract class Trade implements Serializable {
         //TODO: Think about the Trade's status (It may need to update the item's owner!)
 
         if(checkAccepted()){
-            if(numberOfMeetings == 0){setStatus(2);}
+            if(numberOfMeetings == 0){setStatus(3);}
             else {setStatus(1);}
         }
     }
