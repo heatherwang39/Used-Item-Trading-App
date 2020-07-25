@@ -107,4 +107,33 @@ public class MessageStorage {
             }
         }
     }
+
+    /**
+     * Allow user to check the received message
+     * @param username the username of the user
+     */
+    public List<List<List<String>>> checkInBox(String username){
+        List<List<List<String>>> info = new ArrayList<>();
+        List<Message> inBox = getSentMessageByUser(username);
+        for(Message ms: inBox){
+            List<List<String>> msData = ms.getData();
+            info.add(msData);
+        }
+        return info;
+    }
+
+    /**
+     * Allow user to check the sent message
+     * @param username the username of the user
+     */
+    public List<List<List<String>>> checkSentBox(String username){
+        List<List<List<String>>> info = new ArrayList<>();
+        List<Message> sentBox = getSentMessageByUser(username);
+        for(Message ms: sentBox){
+            List<List<String>> msData = ms.getData();
+            info.add(msData);
+        }
+        return info;
+    }
+
 }
