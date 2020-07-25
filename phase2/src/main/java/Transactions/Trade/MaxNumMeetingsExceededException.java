@@ -8,13 +8,13 @@ package main.java.Transactions.Trade;
  * @version %I%, %G%
  * @since Phase 2
  */
-public class MaxNumMeetingsExceeded extends Exception{
+public class MaxNumMeetingsExceededException extends Exception{
 
 
     /**
      * Class Constructor
      */
-    public MaxNumMeetingsExceeded() {
+    public MaxNumMeetingsExceededException() {
         super("Error: If this change is successfully made, the maximum number of meetings will be exceeded");
     }
 }

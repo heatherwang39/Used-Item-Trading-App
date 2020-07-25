@@ -4,8 +4,9 @@ import main.java.Transactions.WrongAccountException;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Observable;
 
-public class MeetingStorage {
+public class MeetingStorage extends Observable {
     private List<Meeting> meetings;
 
 
@@ -76,6 +77,7 @@ public class MeetingStorage {
         boolean b;
         try{b = m.acceptMeeting(attendee);}
         catch(IndexOutOfBoundsException e){throw new WrongAccountException();}
+        if(b && m.isAccepted()){notifyObservers("A" + meetingID);}
         return b;
     }
 
@@ -86,6 +88,7 @@ public class MeetingStorage {
         boolean b;
         try{b = m.confirmMeeting(attendee);}
         catch(IndexOutOfBoundsException e){throw new WrongAccountException();}
+        if(b && m.isConfirmed()){notifyObservers("C" + meetingID);}
         return b;
     }
 }
