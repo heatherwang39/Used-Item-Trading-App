@@ -21,7 +21,14 @@ public class Meeting {
 
     //Initializer
 
-
+    /**
+     * Class Constructor.
+     *
+     * @param meetingID The Unique ID of the meeting
+     * @param attendees The Attendees of the meeting
+     * @param place The place where the meeting will take place
+     * @param time The time where the meeting will take place
+     */
     public Meeting(int meetingID, List<String> attendees, String place, LocalDateTime time){
         this.meetingID = meetingID;
         this.place = place;
@@ -41,27 +48,45 @@ public class Meeting {
     //Getters
 
 
-    public int getmeetingID() {
+    /** Return the unique ID of the meeting
+     *
+     * @return The meeting ID
+     */
+    public int getMeetingID() {
         return meetingID;
     }
 
 
+    /** Return the place at which the meeting will take place
+     *
+     * @return The place where the meeting will occur
+     */
     public String getPlace(){
         return place;
     }
 
-
+    /** Return the time when the meeting will take place
+     *
+     * @return The time when the meeting will take place
+     */
     public LocalDateTime getTime(){
         return time;
     }
 
 
+    /** Return a list containing all the attendees of this meeting
+     *
+     * @return A list containing all the attendees of this meeting
+     */
     public List<String> getAttendees(){
-        List<String> attendeesCopy = new ArrayList(attendees);
-        return attendeesCopy;
+        return new ArrayList(attendees);
     }
 
 
+    /** Return whether or not the meeting has been accepted (by everyone)
+     *
+     * @return whether the meeting has been accepted
+     */
     public boolean isAccepted(){
         for(Boolean a: accepted){
             if(!a){
@@ -72,6 +97,10 @@ public class Meeting {
     }
 
 
+    /** Return whether or not the meeting has been confirmed (by everyone)
+     *
+     * @return whether the meeting has been confirmed
+     */
     public boolean isConfirmed(){
         for(Boolean a: accepted){
             if(!a){
@@ -82,6 +111,10 @@ public class Meeting {
     }
 
 
+    /** Return a list containing all the attendees that haven't accepted this meeting
+     *
+     * @return A list containing all the attendees that haven't accepted this meeting
+     */
     public List<String> getUnacceptedAttendees(){
         List Unaccepted = new ArrayList();
         int i = 0;
@@ -94,6 +127,10 @@ public class Meeting {
     }
 
 
+    /** Return a list containing all the attendees that haven't confirmed this meeting
+     *
+     * @return A list containing all the attendees that haven't confirmed this meeting
+     */
     public List<String> getUnconfirmedAttendees(){
         List unconfirmed = new ArrayList();
         int i = 0;
@@ -109,6 +146,16 @@ public class Meeting {
     //Pseudo-Setters
 
 
+
+
+    /** Record the fact that the attendee has accepted the meeting. Return true if this change has been successfully
+     * accepted.
+     *
+     * Pre-condition: The attendee is an actual attendee in the meeting
+     *
+     * @param attendee The attendee accepting the meeting
+     * @return Whether this change has been recorded
+     */
     public boolean acceptMeeting(String attendee){
         int i = attendees.indexOf(attendee);
         if(!accepted.get(i)){
@@ -119,6 +166,16 @@ public class Meeting {
     }
 
 
+    /** Record the fact that the attendee has confirmed the meeting. Return true if this change has been successfully
+     * accepted.
+     *
+     * Pre-conditions:
+     * 1) The attendee is an actual attendee in the meeting
+     * 2) The meeting has already taken place (i.e., in terms of time)
+     *
+     * @param attendee The attendee confirming the meeting
+     * @return Whether this change has been recorded
+     */
     public boolean confirmMeeting(String attendee){
         int i = attendees.indexOf(attendee);
         if(!confirmed.get(i)){

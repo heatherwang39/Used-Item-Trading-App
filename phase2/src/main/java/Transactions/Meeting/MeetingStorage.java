@@ -6,10 +6,21 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Observable;
 
+
+/**
+ * Use case class for initializing, storing, recording changes and retrieving information regarding Meeting.
+ * @author Warren Zhu
+ * @version %I%, %G%
+ * @since Phase 2
+ */
 public class MeetingStorage extends Observable {
     private List<Meeting> meetings;
 
 
+    /** Class Constructor
+     *
+     * @param meetings The list of meetings stored by this particular instance of MeetingStorage
+     */
     public MeetingStorage(List<Meeting> meetings){
         this.meetings = meetings;
     }
@@ -25,54 +36,118 @@ public class MeetingStorage extends Observable {
     }
 
 
-    private Meeting getMeeting(int meetingID) throws MeetingNumberException {
+    private Meeting getMeeting(int meetingID) throws MeetingIDException{
         for (Meeting m : meetings) {
-            if (m.getmeetingID() == meetingID) {
+            if (m.getMeetingID() == meetingID) {
                 return m;
             }
         }
-        throw new MeetingNumberException();
+        throw new MeetingIDException();
     }
 
 
+    /** Initializes a new Meeting based on the given parameters. Return the MeetingID of the newly initialized Meeting.
+     *
+     * @param attendees The Attendees of the meeting
+     * @param place The place where the meeting will take place
+     * @param time The time where the meeting will take place
+     * @return The MeetingID of the newly initialized Meeting.
+     */
     public int NewMeeting(List<String> attendees, String place, LocalDateTime time){
         Meeting m = new Meeting(getNumberOfMeetings() + 1, attendees, place, time);
         meetings.add(m);
-        return m.getmeetingID();
+        return m.getMeetingID();
     }
 
 
-    public String getPlace(int meetingID) throws MeetingNumberException{
+    /** Return the place at which the meeting (corresponding to the Meeting ID) will take place
+     *
+     * @param meetingID The meetingID of the meeting you're interested in
+     * @return The place where the meeting will occur
+     * @throws MeetingIDException Thrown if no Meeting corresponds to the given MeetingID
+     */
+    public String getPlace(int meetingID) throws MeetingIDException{
         return getMeeting(meetingID).getPlace();
     }
 
-    public LocalDateTime getTime(int meetingID) throws MeetingNumberException{
+
+    /** Return the time when the meeting (corresponding to the Meeting ID) will take place
+     *
+     * @param meetingID The meetingID of the meeting you're interested in
+     * @return The time when the meeting will take place
+     * @throws MeetingIDException Thrown if no Meeting corresponds to the given MeetingID
+     */
+    public LocalDateTime getTime(int meetingID) throws MeetingIDException{
         return getMeeting(meetingID).getTime();
     }
 
 
-    public List<String> getAttendees(int meetingID) throws MeetingNumberException{
+    /** Return a list containing all the attendees of the meeting (corresponding to the Meeting ID)
+     *
+     * @param meetingID The meetingID of the meeting you're interested in
+     * @return A list containing all the attendees of this meeting
+     * @throws MeetingIDException Thrown if no Meeting corresponds to the given MeetingID
+     */
+    public List<String> getAttendees(int meetingID) throws MeetingIDException{
         return getMeeting(meetingID).getAttendees();
     }
 
-    public boolean isAccepted(int meetingID) throws MeetingNumberException{
+
+    /** Return whether or not the meeting (corresponding to the Meeting ID) has been accepted (by everyone)
+     *
+     * @param meetingID The meetingID of the meeting you're interested in
+     * @return Whether the meeting has been accepted
+     * @throws MeetingIDException Thrown if no Meeting corresponds to the given MeetingID
+     */
+    public boolean isAccepted(int meetingID) throws MeetingIDException{
         return getMeeting(meetingID).isAccepted();
     }
 
-    public boolean isConfirmed(int meetingID) throws MeetingNumberException{
+
+    /** Return whether or not the meeting (corresponding to the Meeting ID) has been confirmed (by everyone)
+     *
+     * @param meetingID The meetingID of the meeting you're interested in
+     * @return Whether the meeting has been confirmed
+     * @throws MeetingIDException Thrown if no Meeting corresponds to the given MeetingID
+     */
+    public boolean isConfirmed(int meetingID) throws MeetingIDException{
         return getMeeting(meetingID).isConfirmed();
     }
 
-    public List<String> getUnacceptedAttendees(int meetingID) throws MeetingNumberException{
+
+    /** Return a list containing all the attendees that haven't accepted the meeting (corresponding to the Meeting ID)
+     *
+     * @param meetingID The meetingID of the meeting you're interested in
+     * @return A list containing all the attendees that haven't accepted this meeting
+     * @throws MeetingIDException Thrown if no Meeting corresponds to the given MeetingID
+     */
+    public List<String> getUnacceptedAttendees(int meetingID) throws MeetingIDException{
         return getMeeting(meetingID).getUnacceptedAttendees();
     }
 
-    public List<String> getUnconfirmedAttendees(int meetingID) throws MeetingNumberException{
+
+    /** Return a list containing all the attendees that haven't confirmed the meeting (corresponding to the Meeting ID)
+     *
+     * @param meetingID The meetingID of the meeting you're interested in
+     * @return A list containing all the attendees that haven't confirmed this meeting
+     * @throws MeetingIDException Thrown if no Meeting corresponds to the given MeetingID
+     */
+    public List<String> getUnconfirmedAttendees(int meetingID) throws MeetingIDException{
         return getMeeting(meetingID).getUnacceptedAttendees();
     }
 
+
+    /** Record the fact that the attendee has accepted the meeting (corresponding to the Meeting ID).
+     * Return true if this change has been successfully accepted.
+     *
+     * @param meetingID The meetingID of the meeting you're interested in
+     * @param attendee The attendee accepting the meeting
+     * @return Whether this change has been recorded
+     * @throws MeetingIDException Thrown if no Meeting corresponds to the given MeetingID
+     * @throws WrongAccountException The attendee is not an actual attendee in the meeting
+     */
     public boolean acceptMeeting(int meetingID, String attendee)
-            throws MeetingNumberException, WrongAccountException {
+            throws MeetingIDException, WrongAccountException {
         Meeting m = getMeeting(meetingID);
         boolean b;
         try{b = m.acceptMeeting(attendee);}
@@ -81,8 +156,19 @@ public class MeetingStorage extends Observable {
         return b;
     }
 
+
+    /** Record the fact that the attendee has confirmed the meeting (corresponding to the Meeting ID).
+     * Return true if this change has been successfully accepted.
+     *
+     * @param meetingID The meetingID of the meeting you're interested in
+     * @param attendee The attendee confirming the meeting
+     * @return Whether this change has been recorded
+     * @throws MeetingIDException Thrown if no Meeting corresponds to the given MeetingID
+     * @throws WrongAccountException The attendee is not an actual attendee in the meeting
+     * @throws TimeException The meeting isn't suppose to have taken place yet
+     */
     public boolean confirmMeeting(int meetingID, String attendee)
-            throws MeetingNumberException, WrongAccountException, TimeException{
+            throws MeetingIDException, WrongAccountException, TimeException{
         Meeting m = getMeeting(meetingID);
         if(m.getTime().compareTo(LocalDateTime.now()) > 0){throw new TimeException();}
         boolean b;

@@ -167,43 +167,80 @@ abstract class Trade implements Serializable {
 
     //Meetings Methods Below
 
-
+    /**Set the meetings for this trade.
+     *
+     * Precondition: meetings.size <= getTotalNumMeetings()
+     * Precondition: meetings contains no duplicate MeetingIDs
+     *
+     * @param meetings What the meetings for this trade will be set to.
+     */
     public void setMeetings(List<Integer> meetings) {
         this.meetings = meetings;
     }
 
 
+    /**Add a meetings to this trade.
+     *
+     * Precondition: meetings.size <= getTotalNumMeetings()
+     * Precondition: The meeting to be added isn't already in the list of meetings
+     *
+     * @param meetingID The meeting(ID) that you're adding to this trade
+     */
     public void addMeeting(int meetingID){
         meetings.add(meetingID);
         warn();
     }
 
 
+    /** Remove the last meeting that has been suggested in this trade
+     *
+     */
     public void removeLastMeeting(){
         meetings.remove(meetings.size() - 1);
     }
 
-
+    /** Returning the meetingID of the meetingNumber-th meeting, provided that it has been suggested
+     *
+     * Precondition: 0 < meetingNumber <= getCurrNumMeetings()
+     *
+     * @param meetingNumber The meeting that you want the meeting ID of
+     * @return The meetingID of the meetingNumber-th meeting
+     */
     public int getMeeting(int meetingNumber){
-        return meetings.get(meetingNumber);
+        return meetings.get(meetingNumber - 1);
     }
 
 
+    /** Return a list consisting of all the IDs of the suggested meetings
+     *
+     * @return A list consisting of all the IDs of the suggested meetings
+     */
     public List<Integer> getMeetings(){
         return new ArrayList(meetings);
     }
 
 
+    /** Get the current number of meetings that have already been confirmed or have been suggested
+     *
+     * @return The current number of meetings that have already been confirmed or have been suggested
+     */
     public int getCurrNumMeetings(){
         return meetings.size();
     }
 
 
+    /** Get the total number of meetings that should occur in this trade
+     *
+     */
     public int getTotalNumMeetings(){
         return numberOfMeetings;
     }
 
 
+    /** Set the total number of meetings that should occur in this trade to numMeetings
+     *
+     * @param numMeetings The total number of meetings that should occur for this trade
+     */
     public void setNumMeetings(int numMeetings){
         if(numMeetings >= 0){
             numberOfMeetings = numMeetings;
@@ -291,7 +328,7 @@ abstract class Trade implements Serializable {
             accepted.set(i, true);
         }
 
-        //TODO: Think about the Trade's status (It may need to update the item's owner!)
+        //Currently does not update the items owner
 
         if(checkAccepted()){
             if(numberOfMeetings == 0){setStatus(3);}

@@ -295,11 +295,26 @@ public class TradeStorage implements Observer {
     public List<Integer> getTradesWithItem(int itemID){
         List<Integer> tradesWithItems = new ArrayList();
         for (Trade t : trades) {
-            if (t.getTraders().contains(tradesWithItems)) {
+            if (t.getTraders().contains(itemID)) {
                 tradesWithItems.add(t.getTradeNumber());
             }
         }
         return tradesWithItems;
+    }
+
+    /** Return the Trade ID of the active trade that contains the given item. If no Trade is both active and contains
+     * the given item, return 0.
+     *
+     * @param itemID The ID of the item you're looking for
+     * @return The ID of the active trade with the item, or 0 if no trade contains the item
+     */
+    public int getActiveTradeWithItem(int itemID){
+        for (Trade t : trades) {
+            if (t.getTraders().contains(itemID)) {
+                if(t.getStatus() == 1 | t.getStatus() == 1){return t.getTradeNumber();}
+            }
+        }
+        return 0;
     }
 
 
@@ -311,6 +326,17 @@ public class TradeStorage implements Observer {
             }
         }
         return activeTrades;
+    }
+
+
+    public List<Integer> getCompletedTrades(){
+        List<Integer> completedTrades = new ArrayList();
+        for (Trade t : trades) {
+            if(t.getStatus() == 3){
+                completedTrades.add(t.getTradeNumber());
+            }
+        }
+        return completedTrades;
     }
 
 
@@ -349,62 +375,7 @@ public class TradeStorage implements Observer {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //TODO: Implement the Mediator Pattern between TradeStorage and MeetingStorage
-
-
-    //TODO: Examine Fadi's Methods (below). They may need to change due to the dramatic changes in the Trade Class
+    //Other Methods
 
 
     public List<String> checkUserShouldFreeze(String username, int borrowThreshold, int incompleteThreshold,
