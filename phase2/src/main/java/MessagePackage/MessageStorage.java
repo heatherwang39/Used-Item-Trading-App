@@ -111,29 +111,39 @@ public class MessageStorage {
     /**
      * Allow user to check the received message
      * @param username the username of the user
+     * @return all the data of the messages in the user's InBox
+     * @throws NoMessageFoundException there is no message stored
      */
-    public List<List<List<String>>> checkInBox(String username){
+    public List<List<List<String>>> checkInBox(String username) throws NoMessageFoundException{
         List<List<List<String>>> info = new ArrayList<>();
         List<Message> inBox = getSentMessageByUser(username);
-        for(Message ms: inBox){
-            List<List<String>> msData = ms.getData();
-            info.add(msData);
+        if(inBox != null){
+            for(Message ms: inBox){
+                List<List<String>> msData = ms.getData();
+                info.add(msData);
+            }
+            return info;
         }
-        return info;
+        throw new NoMessageFoundException();
     }
 
     /**
      * Allow user to check the sent message
      * @param username the username of the user
+     * @return all the data of the messages in the user's InBox
+     * @throws NoMessageFoundException there is no message stored
      */
-    public List<List<List<String>>> checkSentBox(String username){
+    public List<List<List<String>>> checkSentBox(String username)throws NoMessageFoundException{
         List<List<List<String>>> info = new ArrayList<>();
         List<Message> sentBox = getSentMessageByUser(username);
-        for(Message ms: sentBox){
-            List<List<String>> msData = ms.getData();
-            info.add(msData);
+        if(sentBox != null){
+            for(Message ms: sentBox){
+                List<List<String>> msData = ms.getData();
+                info.add(msData);
+            }
+            return info;
         }
-        return info;
+        throw new NoMessageFoundException();
     }
 
 }
