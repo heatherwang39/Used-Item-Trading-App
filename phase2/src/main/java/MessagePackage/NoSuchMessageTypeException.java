@@ -1,4 +1,4 @@
-package Message;
+package main.java.MessagePackage;
 
 /**
  * Exception to be thrown when the user input an invalid type of message.

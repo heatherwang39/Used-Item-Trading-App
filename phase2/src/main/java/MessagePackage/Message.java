@@ -1,4 +1,4 @@
-package Message;
+package main.java.MessagePackage;
 
 import java.io.Serializable;
 import java.text.Format;
@@ -14,7 +14,7 @@ import java.util.List;
  * @version %I%, %G%
  * @since Phase 1
  */
-abstract class Message implements Entity, Serializable {
+abstract class Message implements Serializable {
 
     private String title;
     private String content;
@@ -53,4 +53,22 @@ abstract class Message implements Entity, Serializable {
         lst.add(Arrays.asList("Recipients", recipients.toString()));
         return lst;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public List<String> getRecipients() {
+        return recipients;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+
 }
