@@ -175,16 +175,22 @@ abstract class Trade implements Serializable {
 
     public void addMeeting(int meetingID){
         meetings.add(meetingID);
+        warn();
     }
 
 
-    public void removeMeeting(int meetingID){
-        meetings.remove(meetingID);
+    public void removeLastMeeting(){
+        meetings.remove(meetings.size() - 1);
     }
 
 
     public int getMeeting(int meetingNumber){
         return meetings.get(meetingNumber);
+    }
+
+
+    public List<Integer> getMeetings(){
+        return new ArrayList(meetings);
     }
 
 
@@ -215,8 +221,7 @@ abstract class Trade implements Serializable {
      * @return Usernames of Traders involved in this trade
      */
     public List<String> getTraders(){
-        List<String> tradersCopy = new ArrayList(traders);
-        return traders;
+        return new ArrayList(traders);
     }
 
 
@@ -228,8 +233,7 @@ abstract class Trade implements Serializable {
      * @return A list of item IDs involved in this trade based on the original owners
      */
     public List<Integer> getItemsOriginal(){
-        List<Integer> itemsCopy = new ArrayList(items);
-        return itemsCopy;
+        return new ArrayList(items);
     }
 
 
@@ -241,8 +245,7 @@ abstract class Trade implements Serializable {
      * @return A list of item IDs involved in this trade based on the owners after the first transaction
      */
     public List<Integer> getItemsExchanged(){
-        List<Integer> itemsCopy = new ArrayList(items);
-        return tradeAlgorithm.getExchangedItems(itemsCopy);
+        return tradeAlgorithm.getExchangedItems(new ArrayList<Integer>(items));
     }
 
 

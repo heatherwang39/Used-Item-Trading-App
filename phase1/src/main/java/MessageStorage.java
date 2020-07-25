@@ -3,10 +3,8 @@ package main.java;
 import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Use case class for storing messages, sending messages to users and letting system send messages.

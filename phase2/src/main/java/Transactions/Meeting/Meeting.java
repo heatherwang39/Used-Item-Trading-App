@@ -4,6 +4,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A concrete class in the Trade system representing a meeting in the program
+ * @author Warren Zhu
+ * @version %I%, %G%
+ * @since Phase 2
+ */
 public class Meeting {
     private int meetingID;
     private String place;
