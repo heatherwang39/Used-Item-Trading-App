@@ -6,12 +6,12 @@ package main.java.Transactions.Meeting;
  * @version %I%, %G%
  * @since Phase 1
  */
-public class MeetingNumberException extends Exception {
+public class MeetingIDException extends Exception {
 
     /**
      * Class Constructor
      */
-    public MeetingNumberException() {
+    public MeetingIDException() {
         super("A Meeting was not found with the input Meeting ID.");
     }
 }
