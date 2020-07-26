@@ -19,6 +19,10 @@ public class TradeStorage implements Observer {
     private ActivityManager am = new ActivityManager();
 
 
+    /** Initializes a new TradeStorage with the given Trades.
+     *
+     * @param trades A list of Trades
+     */
     public TradeStorage(List<Trade> trades){
         this.trades = trades;
     }
@@ -146,47 +150,107 @@ public class TradeStorage implements Observer {
 
     /** Returns whether or not the Trade is permanent. Iff the Trade is permanent, return true.
      *
+     * @param tradeNumber The tradeNumber of the Trade that you want to set the Status of
      * @return whether the Trade is Permanent
+     * @throws TradeNumberException Thrown if no Trade has the given TradeNumber
      */
     public boolean isPermanent(int tradeNumber) throws TradeNumberException{
         return getTrade(tradeNumber).isPermanent();
     }
 
+    /** Returns a List of Traders (i.e., their usernames) involved in this trade
+     *
+     * @param tradeNumber The tradeNumber of the Trade that you want to get information about
+     * @return Usernames of Traders involved in this trade
+     * @throws TradeNumberException Thrown if no Trade has the given TradeNumber
+     */
     public List<String> getTraders(int tradeNumber) throws TradeNumberException{
         return getTrade(tradeNumber).getTraders();
     }
 
+    /** Returns a List with a length equal to that of the number of traders involved in the trade (given by the
+     * tradeNumber). At each index, store the ID of the item that is involved in the trade and was originally owned by
+     * the Trader at the given index in getTraders(). Iff the specified Trader has no item that he/she is involving in
+     * trade and originally owned, store null at the particular index.
+     *
+     * @param tradeNumber The tradeNumber of the Trade that you want to get information about
+     * @return A list of item IDs involved in the trade based on the original owners
+     * @throws TradeNumberException Thrown if no Trade has the given TradeNumber
+     */
     public List<Integer> getItemsOriginal(int tradeNumber) throws TradeNumberException{
         return getTrade(tradeNumber).getItemsOriginal();
     }
 
+    /** Returns a List with a length equal to that of the number of traders involved in the trade (given by the
+     * tradeNumber). At each index, store the ID of the item that is involved in the trade and will be held by the
+     * Trader at the given index in getTraders() after the first transaction. Iff the specified Trader has no item that
+     * he/she is involving in trade and originally owned, store null at the particular index.
+     *
+     * @param tradeNumber The tradeNumber of the Trade that you want to get information about
+     * @return A list of item IDs involved in the trade based on the owners after the first transaction
+     * @throws TradeNumberException Thrown if no Trade has the given TradeNumber
+     */
     public List<Integer> getItemsExchanged(int tradeNumber) throws TradeNumberException{
         return getTrade(tradeNumber).getItemsExchanged();
     }
 
+    /** Returns a List with a length equal to that of the number of traders involved in the trade (given by the
+     * tradeNumber). At each index, store the ID of the item that is involved in the trade and will be own by the
+     * Trader at the given index in getTraders() at the end of the trade. Iff the specified Trader will not receive an
+     * item that at the end of the trade, store null at that particular index.
+     *
+     * @param tradeNumber The tradeNumber of the Trade that you want to get information about
+     * @return A list of item IDs involved in this trade based on the original owners
+     * @throws TradeNumberException Thrown if no Trade has the given TradeNumber
+     */
     public List<Integer> getItemsFinal(int tradeNumber) throws TradeNumberException{
         return getTrade(tradeNumber).getItemsFinal();
     }
 
 
+    /** Return the name of the algorithm of the given Trade that determines how items are exchanged.
+     *
+     * @param tradeNumber The tradeNumber of the Trade that you want to get information about
+     * @return The (given) trade's algorithm's name.
+     * @throws TradeNumberException Thrown if no Trade has the given TradeNumber
+     */
     public String getAlgorithmName(int tradeNumber) throws TradeNumberException{
         return getTrade(tradeNumber).getAlgorithmName();
     }
 
 
+
+
     //Methods regarding Warnings below
 
 
+    /** Increases the number of warnings of the given Trade by 1. If the number of warnings reaches the maximum number
+     * of warnings, the trade is automatically cancelled
+     *
+     * @param tradeNumber The TradeNumber of the Trade that you'd like to warn
+     * @throws TradeNumberException Thrown if no Trade has the given TradeNumber
+     */
     public void warn(int tradeNumber) throws TradeNumberException{
         getTrade(tradeNumber).warn();
     }
 
 
+    /** Resets the warnings of the given Trade.
+     *
+     * @param tradeNumber The TradeNumber of the Trade that you'd like to reset the warnings of
+     * @throws TradeNumberException Thrown if no Trade has the given TradeNumber
+     */
     public void resetWarnings(int tradeNumber) throws TradeNumberException{
         getTrade(tradeNumber).resetWarnings();
     }
 
 
+    /** Sets the Maximum Number of Warnings for this Trade
+     *
+     * @param tradeNumber The TradeNumber of the Trade that you'd like to set the Maximum Warnings of
+     * @param maxWarnings What the new Maximum Number of Warnings for this Trade will be
+     * @throws TradeNumberException Thrown if no Trade has the given TradeNumber
+     */
     public void setMaxWarnings(int tradeNumber, int maxWarnings) throws TradeNumberException{
         getTrade(tradeNumber).setMaxWarnings(maxWarnings);
     }
@@ -195,6 +259,14 @@ public class TradeStorage implements Observer {
     //Meeting related Methods Below
 
 
+    /** Set the meetings for this trade.
+     *
+     * @param tradeNumber The TradeNumber of the Trade you're modifying
+     * @param meetings What the meetings for this trade will be set to.
+     * @throws TradeNumberException Thrown if no Trade has the given TradeNumber
+     * @throws TradeCancelledException Thrown if the Trade is cancelled
+     * @throws MaxNumMeetingsExceededException Thrown iff meetings.size > getTotalNumMeetings()
+     */
     public void setMeetings(int tradeNumber, List<Integer> meetings)
             throws TradeNumberException, TradeCancelledException, MaxNumMeetingsExceededException{
         Trade t = getTrade(tradeNumber);
@@ -203,33 +275,55 @@ public class TradeStorage implements Observer {
         t.setMeetings(meetings);
     }
 
+
+    /** Add a meetings to this trade.
+     *
+     * @param tradeNumber The TradeNumber of the Trade you're modifying
+     * @param meetingID The meeting that you're adding to this trade
+     * @throws TradeNumberException Thrown if no Trade has the given TradeNumber
+     * @throws TradeCancelledException Thrown if the Trade is cancelled
+     * @throws MaxNumMeetingsExceededException Thrown if this action will cause the Trade to have too many meetings
+     */
     public void addMeeting(int tradeNumber, int meetingID)
             throws TradeNumberException, TradeCancelledException, MaxNumMeetingsExceededException{
         Trade t = getTrade(tradeNumber);
         checkTradeCancelled(t);
-        if(t.getCurrNumMeetings() >= t.getTotalNumMeetings()){throw new MaxNumMeetingsExceededException();}
+        if(t.getMeetings().size() >= t.getTotalNumMeetings()){throw new MaxNumMeetingsExceededException();}
         t.addMeeting(meetingID);
     }
 
 
+    /** Remove the last meeting that has been suggested in the trade
+     *
+     * @param tradeNumber The Trade you're trying to modify
+     * @throws TradeNumberException Thrown if no Trade has the given TradeNumber
+     * @throws TradeCancelledException Thrown if the Trade is cancelled
+     */
     public void removeLastMeeting(int tradeNumber) throws TradeNumberException, TradeCancelledException{
         Trade t = getTrade(tradeNumber);
         checkTradeCancelled(t);
         t.removeLastMeeting();
     }
 
-    public int getMeeting(int tradeNumber, int meetingNumber) throws TradeNumberException{
-        return getTrade(tradeNumber).getMeeting(meetingNumber);
-    }
 
-    public int getCurrNumMeetings(int tradeNumber) throws TradeNumberException{
-        return getTrade(tradeNumber).getCurrNumMeetings();
-    }
-
+    /** Return the total number of meetings that should occur in this trade (given by the Trade Number)
+     *
+     * @param tradeNumber The tradeNumber of the Trade that you want to get information about
+     * @return The total number of meetings that should occur in this trade
+     * @throws TradeNumberException Thrown if no Trade has the given TradeNumber
+     */
     public int getTotalNumMeetings(int tradeNumber) throws TradeNumberException{
         return getTrade(tradeNumber).getTotalNumMeetings();
     }
 
+
+    /** Set the total number of meetings that should occur in this trade to numMeetings
+     *
+     * @param tradeNumber The tradeNumber of the Trade that you want to modify
+     * @param numMeetings The total number of meetings that should occur for this trade
+     * @throws TradeNumberException Thrown if no Trade has the given TradeNumber
+     * @throws TradeCancelledException
+     */
     public void setNumMeetings(int tradeNumber, int numMeetings) throws TradeNumberException, TradeCancelledException{
         Trade t = getTrade(tradeNumber);
         checkTradeCancelled(t);
@@ -241,12 +335,26 @@ public class TradeStorage implements Observer {
 
     //Methods Regarding Trade Acceptance Below
 
-
+    /** Return the usernames of the Traders that haven't accepted this trade yet
+     *
+     * @param tradeNumber The tradeNumber of the Trade that you want to get information about
+     * @return The traders that haven't accepted the trade
+     * @throws TradeNumberException Thrown if no Trade has the given TradeNumber
+     */
     public List<String> getUnacceptedTraders(int tradeNumber) throws TradeNumberException {
         return getTrade(tradeNumber).getUnacceptedTraders();
     }
 
 
+    /** Record the fact that the trader has accepted the trade (given by the TradeNumber).
+     * If all traders have accepted the trade, automatically update the trade's status
+     *
+     * @param tradeNumber The tradeNumber of the Trade that is going to be accepted
+     * @param trader The trader accepting the trade
+     * @throws TradeNumberException Thrown if no Trade has the given TradeNumber
+     * @throws TradeCancelledException Thrown if the Trade is Cancelled
+     * @throws WrongAccountException Thrown if the Trader is not involved in the Trade
+     */
     public void acceptTrade(int tradeNumber, String trader)
             throws TradeNumberException, TradeCancelledException, WrongAccountException{
         Trade t = getTrade(tradeNumber);
@@ -362,7 +470,7 @@ public class TradeStorage implements Observer {
 
                 try{
                     Trade t = getTrade(getTradeWithMeeting(i));
-                    if(t.getCurrNumMeetings() == t.getTotalNumMeetings()){
+                    if(t.getMeetings().size() == t.getTotalNumMeetings()){
                         t.setStatus(3);
                     }
                 }
