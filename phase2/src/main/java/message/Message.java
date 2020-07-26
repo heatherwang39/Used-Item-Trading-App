@@ -1,8 +1,8 @@
 package main.java.message;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,7 +18,7 @@ abstract class Message {
     private final String content;
     private final String sender;
     private final List<String> recipients;
-    private final Date date;
+    private final LocalDateTime dateTime;
 
     /**
      * Class constructor.
@@ -32,7 +32,7 @@ abstract class Message {
         this.content = content;
         this.sender = sender;
         this.recipients = recipients;
-        this.date = new Date();
+        this.dateTime = LocalDateTime.now();
     }
 
     /**
@@ -67,12 +67,13 @@ abstract class Message {
      *
      * @return date
      */
-    public Date getDate() { return date; }
+    public LocalDateTime getDateTime() { return dateTime; }
 
     /**
      * Get the Message's date of creation in string format.
+     * From: https://stackoverflow.com/questions/5683728/convert-java-util-date-to-string
      *
      * @return yyyy-MM-dd HH:mm:ss
      */
-    public String getStringDate() { return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date); }
+    public String getStringDateTime() { return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(dateTime); }
 }

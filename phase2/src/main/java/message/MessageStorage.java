@@ -1,6 +1,7 @@
 package main.java.message;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -75,4 +76,43 @@ public class MessageStorage {
     public void sendSystemMessage(String title, String content, List<String> recipients) {
         messages.add(new SystemMessage(title, content, recipients));
     }
+
+    /**
+     * Creates a HashMap containing the Message's data
+     * @return Data in the form of {Label: Information, ...}
+     */
+    public HashMap<String, String> getData(Message m) {
+        HashMap<String, String> data = new HashMap<>();
+        data.put("title", m.getTitle());
+        data.put("content", m.getContent());
+        data.put("date", m.getStringDateTime());
+        data.put("sender", m.getSender());
+        data.put("recipients", String.join(",", m.getRecipients()));
+        return data;
+    }
+
+    /**
+     * Allow Account to check all received Messages.
+     *
+     * @param username Account username
+     * @return data of Messages in inbox
+     */
+    public List<HashMap<String, String>> getInboxData(String username) {
+        List<HashMap<String, String>> inbox = new ArrayList<>();
+        for (Message m: getReceivedMessages(username)) { inbox.add(getData(m)); }
+        return inbox;
+    }
+
+    /**
+     * Allow Account to check all sent Messages.
+     *
+     * @param username Account username
+     * @return data of Messages in outbox
+     */
+    public List<HashMap<String, String>> getOutboxData(String username) {
+        List<HashMap<String, String>> inbox = new ArrayList<>();
+        for (Message m: getSentMessages(username)) { inbox.add(getData(m)); }
+        return inbox;
+    }
+
 }

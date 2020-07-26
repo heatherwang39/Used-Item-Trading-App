@@ -8,16 +8,17 @@ package main.java.account;
  * @version %I%, %G%
  * @since Phase 1
  */
-public class AdminAccount extends LoginAccount {
+class AdminAccount extends LoginAccount {
 
     /**
      * Class constructor.
      *
      * @param username account username
      * @param password account password
+     * @param emailAddress account email address
      */
-    public AdminAccount(String username, String password){
-        super(username, password);
+    public AdminAccount(String username, String password, String emailAddress){
+        super(username, password, emailAddress);
     }
 
 

@@ -10,17 +10,27 @@ package main.java.account;
 abstract class LoginAccount extends Account {
 
     private final String password;
+    private final String emailAddress;
 
     /**
      * Class constructor.
      *
      * @param username account username
      * @param password account password
+     * @param emailAddress account email address
      */
-    public LoginAccount(String username, String password) {
+    public LoginAccount(String username, String password, String emailAddress) {
         super(username);
         this.password = password;
+        this.emailAddress = emailAddress;
     }
+
+    /**
+     * Returns email address.
+     *
+     * @return email address
+     */
+    public String getEmailAddress() { return emailAddress; }
 
     /**
      * Verifies the password attempt.
@@ -31,5 +41,7 @@ abstract class LoginAccount extends Account {
     public boolean isPassword(String password){
         return password.equals(this.password);
     }
+
+
 
 }

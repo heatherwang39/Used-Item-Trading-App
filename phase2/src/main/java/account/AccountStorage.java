@@ -37,6 +37,55 @@ public class AccountStorage {
     }
 
     /**
+     * Checks if email address is valid
+     *
+     * @param emailAddress input email
+     * @return a boolean representing whether the email is valid
+     */
+    private boolean isInvalidEmail(String emailAddress) {
+
+        Pattern p = Pattern.compile("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-" +
+                "\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(" +
+                "?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9" +
+                "]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08" +
+                "\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+))");
+        return !p.matcher(emailAddress).matches();
+    }
+
+    /**
+     * Checks if email address is used in another account.
+     *
+     * @param emailAddress input email
+     * @return a boolean representing if emailAddress is in use
+     */
+    private boolean isEmailAddressInUse(String emailAddress) {
+        for (LoginAccount account: accounts.values()) {
+            if (account.getEmailAddress().equals(emailAddress)) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Wraps all checks for a new account being valid.
+     *
+     * @param username input username
+     * @param password input password
+     * @param emailAddress input email
+     * @throws InvalidEmailAddressException emailAddress doesn't match regex
+     * @throws InvalidLoginException  login doesn't match regex
+     * @throws UsernameInUseException username is in use
+     * @throws EmailAddressInUseException emailAddress is in use
+     */
+    private void isValidAccount(String username, String password, String emailAddress) throws
+            InvalidEmailAddressException, InvalidLoginException, UsernameInUseException, EmailAddressInUseException {
+        if (isInvalidLogin(username, password)){ throw new InvalidLoginException(); }
+        if (isInvalidEmail(emailAddress)) {throw new InvalidEmailAddressException(); }
+        if (isUsernameInUse(username)) {throw new UsernameInUseException(); }
+        if (isEmailAddressInUse(username)) {throw new EmailAddressInUseException(); }
+    }
+
+
+    /**
      * Checks if username is used in another account.
      *
      * @param username input username
@@ -46,17 +95,8 @@ public class AccountStorage {
 
     /**
      * Creates a GuestAccount.
-     * 
-     * @param username input username
-     * @param password input password
-     * @throws InvalidLoginException  login doesn't match regex
-     * @throws UsernameInUseException username is in use
      */
-    public Account createGuest(String username, String password) throws InvalidLoginException, UsernameInUseException {
-        if (isInvalidLogin(username, password)){ throw new InvalidLoginException(); }
-        if (isUsernameInUse(username)) {throw new UsernameInUseException(); }
-        return new GuestAccount();
-    }
+    public Account createGuest() { return new GuestAccount(); }
 
     /**
      * Creates a UserAccount if the credentials are valid.
@@ -66,11 +106,10 @@ public class AccountStorage {
      * @throws InvalidLoginException  login doesn't match regex
      * @throws UsernameInUseException username is in use
      */
-    public Account createUser(String username, String password) throws InvalidLoginException,
-            UsernameInUseException {
-        if (isInvalidLogin(username, password)){ throw new InvalidLoginException(); }
-        if (isUsernameInUse(username)) {throw new UsernameInUseException(); }
-        UserAccount user = new UserAccount(username, password);
+    public Account createUser(String username, String password, String emailAddress) throws InvalidLoginException,
+            UsernameInUseException, InvalidEmailAddressException, EmailAddressInUseException {
+        isValidAccount(username, password, emailAddress);
+        UserAccount user = new UserAccount(username, password, emailAddress);
         accounts.put(username, user);
         return user;
     }
@@ -83,10 +122,10 @@ public class AccountStorage {
      * @throws InvalidLoginException  login doesn't match regex
      * @throws UsernameInUseException username is in use
      */
-    public Account createAdmin(String username, String password) throws InvalidLoginException, UsernameInUseException {
-        if (isInvalidLogin(username, password)){ throw new InvalidLoginException(); }
-        if (isUsernameInUse(username)) {throw new UsernameInUseException(); }
-        AdminAccount admin = new AdminAccount(username, password);
+    public Account createAdmin(String username, String password, String emailAddress) throws InvalidLoginException,
+            UsernameInUseException, InvalidEmailAddressException, EmailAddressInUseException {
+        isValidAccount(username, password, emailAddress);
+        AdminAccount admin = new AdminAccount(username, password, emailAddress);
         accounts.put(username, admin);
         return admin;
     }

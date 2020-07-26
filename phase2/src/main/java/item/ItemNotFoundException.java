@@ -2,6 +2,7 @@ package main.java.item;
 
 /**
  * Exception to be thrown when an item cannot be found with the given itemId.
+ *
  * @author Heather Wang
  * @version %I%, %G%
  * @since Phase 1

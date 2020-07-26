@@ -3,7 +3,7 @@ package main.java.message;
 import java.util.List;
 
 /**
- * UserMessage represents a Message sent from a UserAccount to another UserAccount
+ * AccountMessage represents a Message sent from a UserAccount to another UserAccount
  *
  * @author Robbert Liu
  * @version %I%, %G%

@@ -1,4 +1,4 @@
-package main.java.Account;
+package main.java.account;
 
 /**
  * Exception to be thrown when attempting to create an Account with an email already in use.

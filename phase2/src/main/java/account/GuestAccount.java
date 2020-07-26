@@ -8,7 +8,7 @@ package main.java.account;
  * @version %I%, %G%
  * @since Phase 2
  */
-public class GuestAccount extends Account {
+class GuestAccount extends Account {
 
     /**
      * Class constructor.

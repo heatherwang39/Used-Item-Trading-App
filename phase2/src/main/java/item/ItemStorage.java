@@ -185,7 +185,7 @@ public class ItemStorage {
     }
 
     /**
-     * Get all an Account's wishlist by username.
+     * Get an Account's wishlist by username.
      *
      * @param username Account username
      * @return wishlist

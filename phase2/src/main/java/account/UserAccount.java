@@ -7,15 +7,18 @@ package main.java.account;
  * @version %I%, %G%
  * @since Phase 1
  */
-public class UserAccount extends LoginAccount {
+class UserAccount extends LoginAccount {
 
     /**
      * Class constructor.
      *
      * @param username account's username
      * @param password account's password
+     * @param emailAddress account email address
      */
-    public UserAccount(String username, String password) { super(username, password); }
+    public UserAccount(String username, String password, String emailAddress) {
+        super(username, password, emailAddress);
+    }
 
     @Override
     String type() { return "user"; }
