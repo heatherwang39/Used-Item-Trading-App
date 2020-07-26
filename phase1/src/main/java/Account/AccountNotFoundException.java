@@ -7,13 +7,13 @@ package main.java.Account;
  * @version %I%, %G%
  * @since Phase 1
  */
-class AccountNotFoundException extends Exception {
+public class AccountNotFoundException extends Exception {
 
     /**
-     * Class Constructor
+     * Class Constructor.
      */
     public AccountNotFoundException() {
-        super("An account was not found with the input username.");
+        super("An Account was not found with the input username.");
     }
 
 }

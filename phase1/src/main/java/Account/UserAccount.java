@@ -7,7 +7,7 @@ package main.java.Account;
  * @version %I%, %G%
  * @since Phase 1
  */
-class UserAccount extends LoginAccount {
+public class UserAccount extends LoginAccount {
 
     /**
      * Class constructor.

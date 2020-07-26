@@ -7,7 +7,7 @@ package main.java.Account;
  * @version %I%, %G%
  * @since Phase 1
  */
-class InvalidLoginException extends Exception {
+public class InvalidLoginException extends Exception {
 
     /**
      * Class Constructor.
