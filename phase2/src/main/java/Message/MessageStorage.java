@@ -85,7 +85,7 @@ public class MessageStorage {
         HashMap<String, String> data = new HashMap<>();
         data.put("title", m.getTitle());
         data.put("content", m.getContent());
-        data.put("date", m.getStringDate());
+        data.put("date", m.getStringDateTime());
         data.put("sender", m.getSender());
         data.put("recipients", String.join(",", m.getRecipients()));
         return data;

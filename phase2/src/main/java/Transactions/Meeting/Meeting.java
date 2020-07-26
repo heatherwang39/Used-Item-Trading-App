@@ -1,7 +1,9 @@
 package main.java.Transactions.Meeting;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -11,15 +13,12 @@ import java.util.List;
  * @since Phase 2
  */
 public class Meeting {
-    private int meetingID;
-    private String place;
-    private LocalDateTime time;
-    private List<String> attendees;
-    private List<Boolean> accepted;
-    private List<Boolean> confirmed;
-
-
-    //Initializer
+    private final int meetingID;
+    private final String place;
+    private final LocalDateTime dateTime;
+    private final List<String> attendees;
+    private final List<Boolean> accepted;
+    private final List<Boolean> confirmed;
 
     /**
      * Class Constructor.
@@ -27,26 +26,20 @@ public class Meeting {
      * @param meetingID The Unique ID of the meeting
      * @param attendees The Attendees of the meeting
      * @param place The place where the meeting will take place
-     * @param time The time where the meeting will take place
+     * @param dateTime The time where the meeting will take place
      */
-    public Meeting(int meetingID, List<String> attendees, String place, LocalDateTime time){
+    public Meeting(int meetingID, List<String> attendees, String place, LocalDateTime dateTime){
         this.meetingID = meetingID;
         this.place = place;
-        this.time = time;
-
+        this.dateTime = dateTime;
         this.attendees = attendees;
-        accepted = new ArrayList();
-        confirmed = new ArrayList();
-        int i = 0;
-        while(i < attendees.size()) {
-            accepted.add(false);
-            confirmed.add(false);
-        }
+        int n = attendees.size();
+        // From: https://stackoverflow.com/questions/5600668/how-can-i-initialize-an-arraylist-with-all-zeroes-in-java
+        accepted = new ArrayList<>(Collections.nCopies(n, false));
+        confirmed = new ArrayList<>(Collections.nCopies(n, false));
     }
 
-
-    //Getters
-
+    // Getters
 
     /** Return the unique ID of the meeting
      *
@@ -69,9 +62,17 @@ public class Meeting {
      *
      * @return The time when the meeting will take place
      */
-    public LocalDateTime getTime(){
-        return time;
+    public LocalDateTime getDateTime(){
+        return dateTime;
     }
+
+    /**
+     * Get the Message's date of creation in string format.
+     * From: https://stackoverflow.com/questions/5683728/convert-java-util-date-to-string
+     *
+     * @return yyyy-MM-dd HH:mm:ss
+     */
+    public String getStringDateTime() { return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(dateTime); }
 
 
     /** Return a list containing all the attendees of this meeting
@@ -79,7 +80,7 @@ public class Meeting {
      * @return A list containing all the attendees of this meeting
      */
     public List<String> getAttendees(){
-        return new ArrayList(attendees);
+        return new ArrayList<>(attendees);
     }
 
 
@@ -88,65 +89,42 @@ public class Meeting {
      * @return whether the meeting has been accepted
      */
     public boolean isAccepted(){
-        for(Boolean a: accepted){
-            if(!a){
-                return false;
-            }
-        }
+        for (boolean a: accepted) if(!a) return false;
         return true;
     }
-
 
     /** Return whether or not the meeting has been confirmed (by everyone)
      *
      * @return whether the meeting has been confirmed
      */
     public boolean isConfirmed(){
-        for(Boolean a: accepted){
-            if(!a){
-                return false;
-            }
-        }
+        for (boolean a: confirmed) if(!a) return false;
         return true;
     }
-
 
     /** Return a list containing all the attendees that haven't accepted this meeting
      *
      * @return A list containing all the attendees that haven't accepted this meeting
      */
     public List<String> getUnacceptedAttendees(){
-        List Unaccepted = new ArrayList();
-        int i = 0;
-        while(i < attendees.size()){
-            if(!accepted.get(i)){
-                Unaccepted.add(attendees.get(i));
-            }
-        }
-        return Unaccepted;
+        List<String> unaccepted = new ArrayList<>();
+        for (int i = 1; i < attendees.size(); i++)
+            if(!accepted.get(i)) unaccepted.add(attendees.get(i));
+        return unaccepted;
     }
-
 
     /** Return a list containing all the attendees that haven't confirmed this meeting
      *
      * @return A list containing all the attendees that haven't confirmed this meeting
      */
     public List<String> getUnconfirmedAttendees(){
-        List unconfirmed = new ArrayList();
-        int i = 0;
-        while(i < attendees.size()){
-            if(!accepted.get(i)){
-                unconfirmed.add(attendees.get(i));
-            }
-        }
+        List<String> unconfirmed = new ArrayList<>();
+        for (int i = 1; i < attendees.size(); i++)
+            if(!confirmed.get(i)) unconfirmed.add(attendees.get(i));
         return unconfirmed;
     }
 
-
-    //Pseudo-Setters
-
-
-
+    // Pseudo-setters
 
     /** Record the fact that the attendee has accepted the meeting. Return true if this change has been successfully
      * accepted.

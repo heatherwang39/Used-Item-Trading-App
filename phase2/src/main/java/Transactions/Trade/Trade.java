@@ -2,6 +2,7 @@ package main.java.Transactions.Trade;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -15,22 +16,18 @@ abstract class Trade implements Serializable {
     private final int tradeNumber;
     private int status;
 
-    private TradeAlgorithm tradeAlgorithm;
+    private final TradeAlgorithm tradeAlgorithm;
 
-    private List<String> traders;
-    private List<Integer> items;
+    private final List<String> traders;
+    private final List<Integer> items;
 
-    private List<Boolean> accepted;
+    private final List<Boolean> accepted;
 
     private int warnings;
     private int maxWarnings;
 
     private List<Integer> meetings;
     private int numberOfMeetings;
-
-
-
-
 
     //Basic Trade Methods begin here
 
@@ -47,13 +44,7 @@ abstract class Trade implements Serializable {
         this.tradeNumber = tradeNumber;
         this.tradeAlgorithm = tradeAlgorithm;
         this.traders = traders;
-
-        this.accepted = new ArrayList();
-        int i = 0;
-        while(i < traders.size()) {
-            accepted.add(false);
-        }
-
+        this.accepted = new ArrayList<>(Collections.nCopies(traders.size(), false));
         this.items = items;
         status = 0;
         maxWarnings = 6;
@@ -131,8 +122,6 @@ abstract class Trade implements Serializable {
     }
 
 
-
-
     //Methods regarding warnings below
 
 
@@ -161,9 +150,6 @@ abstract class Trade implements Serializable {
     public void setMaxWarnings(int maxWarnings){
         this.maxWarnings = maxWarnings;
     }
-
-
-
 
     //Meetings Methods Below
 
@@ -205,7 +191,7 @@ abstract class Trade implements Serializable {
      * @return A list consisting of all the IDs of the suggested meetings
      */
     public List<Integer> getMeetings(){
-        return new ArrayList(meetings);
+        return new ArrayList<>(meetings);
     }
 
 
@@ -228,9 +214,6 @@ abstract class Trade implements Serializable {
         }
     }
 
-
-
-
     //Methods about Traders and Items Exchanged Below
 
 
@@ -239,7 +222,7 @@ abstract class Trade implements Serializable {
      * @return Usernames of Traders involved in this trade
      */
     public List<String> getTraders(){
-        return new ArrayList(traders);
+        return new ArrayList<>(traders);
     }
 
 
@@ -251,7 +234,7 @@ abstract class Trade implements Serializable {
      * @return A list of item IDs involved in this trade based on the original owners
      */
     public List<Integer> getItemsOriginal(){
-        return new ArrayList(items);
+        return new ArrayList<>(items);
     }
 
 
@@ -263,7 +246,7 @@ abstract class Trade implements Serializable {
      * @return A list of item IDs involved in this trade based on the owners after the first transaction
      */
     public List<Integer> getItemsExchanged(){
-        return tradeAlgorithm.getExchangedItems(new ArrayList<Integer>(items));
+        return tradeAlgorithm.getExchangedItems(new ArrayList<>(items));
     }
 
 
@@ -276,9 +259,6 @@ abstract class Trade implements Serializable {
      */
     abstract List<Integer> getItemsFinal();
 
-
-
-
     //Methods regarding who has trade acceptance
 
 
@@ -287,13 +267,8 @@ abstract class Trade implements Serializable {
      * @return the traders that haven't accepted the trade
      */
     public List<String> getUnacceptedTraders(){
-        List unaccepted = new ArrayList();
-        int i = 0;
-        while(i < traders.size()){
-            if(!accepted.get(i)){
-                unaccepted.add(traders.get(i));
-            }
-        }
+        List<String> unaccepted = new ArrayList<>();
+        for (int i = 0; i < traders.size(); i++) if(!accepted.get(i)) unaccepted.add(traders.get(i));
         return unaccepted;
     }
 

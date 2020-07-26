@@ -2,7 +2,6 @@ package main.java.Transactions.Trade;
 
 import main.java.Transactions.WrongAccountException;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -14,9 +13,9 @@ import java.util.*;
  */
 
 public class TradeStorage implements Observer {
-    private List<Trade> trades;
-    private FreezeManager fm = new FreezeManager();
-    private ActivityManager am = new ActivityManager();
+    private final List<Trade> trades;
+    private final FreezeManager fm = new FreezeManager();
+    private final ActivityManager am = new ActivityManager();
 
 
     /** Initializes a new TradeStorage with the given Trades.
@@ -27,11 +26,7 @@ public class TradeStorage implements Observer {
         this.trades = trades;
     }
 
-
-
-
     //Trade Constructor below
-
 
     /** Initializes a new Trade based on the given parameters. Return the tradeNumber of the newly initialized Trade.
      *
@@ -48,12 +43,10 @@ public class TradeStorage implements Observer {
         Trade t;
 
         TradeAlgorithm ta;
-        switch(tradeAlgorithmName){
-            case CYCLE:
-                ta = new CycleTradeAlgorithm();
-                break;
-            default:
-                throw new NoSuchTradeAlgorithmException();
+        if (tradeAlgorithmName == TradeAlgorithmName.CYCLE) {
+            ta = new CycleTradeAlgorithm();
+        } else {
+            throw new NoSuchTradeAlgorithmException();
         }
 
         if(permanent){
@@ -271,7 +264,7 @@ public class TradeStorage implements Observer {
             throws TradeNumberException, TradeCancelledException, MaxNumMeetingsExceededException{
         Trade t = getTrade(tradeNumber);
         checkTradeCancelled(t);
-        if(meetings.size() > t.getTotalNumMeetings()){throw new MaxNumMeetingsExceededException();}
+        if(meetings.size() > t.getTotalNumMeetings()) throw new MaxNumMeetingsExceededException();
         t.setMeetings(meetings);
     }
 
@@ -322,16 +315,13 @@ public class TradeStorage implements Observer {
      * @param tradeNumber The tradeNumber of the Trade that you want to modify
      * @param numMeetings The total number of meetings that should occur for this trade
      * @throws TradeNumberException Thrown if no Trade has the given TradeNumber
-     * @throws TradeCancelledException
+     * @throws TradeCancelledException Thrown if Trade was cancelled
      */
     public void setNumMeetings(int tradeNumber, int numMeetings) throws TradeNumberException, TradeCancelledException{
         Trade t = getTrade(tradeNumber);
         checkTradeCancelled(t);
         t.setNumMeetings(numMeetings);
     }
-
-
-
 
     //Methods Regarding Trade Acceptance Below
 
@@ -377,7 +367,7 @@ public class TradeStorage implements Observer {
 
 
     public List<Integer> getTradesWithUser(String username){
-        List<Integer> userTrades = new ArrayList();
+        List<Integer> userTrades = new ArrayList<>();
         for (Trade t : trades) {
             if (t.getTraders().contains(username)) {
                 userTrades.add(t.getTradeNumber());
@@ -388,7 +378,7 @@ public class TradeStorage implements Observer {
 
 
     public List<Integer> getActiveTradesWithUser(String username){
-        List<Integer> activeUserTrades = new ArrayList();
+        List<Integer> activeUserTrades = new ArrayList<>();
         for (Trade t : trades) {
             if (t.getTraders().contains(username)) {
                 if(t.getStatus() == 1 | t.getStatus() == 2){
@@ -401,7 +391,7 @@ public class TradeStorage implements Observer {
 
 
     public List<Integer> getTradesWithItem(int itemID){
-        List<Integer> tradesWithItems = new ArrayList();
+        List<Integer> tradesWithItems = new ArrayList<>();
         for (Trade t : trades) {
             if (t.getTraders().contains(itemID)) {
                 tradesWithItems.add(t.getTradeNumber());
@@ -427,7 +417,7 @@ public class TradeStorage implements Observer {
 
 
     public List<Integer> getActiveTrades(){
-        List<Integer> activeTrades = new ArrayList();
+        List<Integer> activeTrades = new ArrayList<>();
         for (Trade t : trades) {
             if(t.getStatus() == 1 | t.getStatus() == 2){
                 activeTrades.add(t.getTradeNumber());
@@ -438,7 +428,7 @@ public class TradeStorage implements Observer {
 
 
     public List<Integer> getCompletedTrades(){
-        List<Integer> completedTrades = new ArrayList();
+        List<Integer> completedTrades = new ArrayList<>();
         for (Trade t : trades) {
             if(t.getStatus() == 3){
                 completedTrades.add(t.getTradeNumber());
@@ -446,10 +436,6 @@ public class TradeStorage implements Observer {
         }
         return completedTrades;
     }
-
-
-
-
 
     //Observer Pattern Below
     @Override
@@ -462,8 +448,7 @@ public class TradeStorage implements Observer {
                 try{
                     resetWarnings(getTradeWithMeeting(i));
                 }
-                catch(TradeNumberException e){}
-                catch(NoTradeWithMeetingIDException e){}
+                catch(TradeNumberException | NoTradeWithMeetingIDException e){}
             }
             else if(message.charAt(0) == 'C'){
                 int i = Integer.parseInt(message.substring(1));
@@ -474,8 +459,7 @@ public class TradeStorage implements Observer {
                         t.setStatus(3);
                     }
                 }
-                catch(TradeNumberException e){}
-                catch(NoTradeWithMeetingIDException e){}
+                catch(TradeNumberException | NoTradeWithMeetingIDException e){}
             }
         }
     }

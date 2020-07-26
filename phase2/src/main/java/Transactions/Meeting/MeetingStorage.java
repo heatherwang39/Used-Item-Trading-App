@@ -6,15 +6,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Observable;
 
-
 /**
  * Use case class for initializing, storing, recording changes and retrieving information regarding Meeting.
+ *
  * @author Warren Zhu
  * @version %I%, %G%
  * @since Phase 2
  */
 public class MeetingStorage extends Observable {
-    private List<Meeting> meetings;
+    private final List<Meeting> meetings;
 
 
     /** Class Constructor
@@ -53,7 +53,7 @@ public class MeetingStorage extends Observable {
      * @param time The time where the meeting will take place
      * @return The MeetingID of the newly initialized Meeting.
      */
-    public int NewMeeting(List<String> attendees, String place, LocalDateTime time){
+    public int newMeeting(List<String> attendees, String place, LocalDateTime time){
         Meeting m = new Meeting(getNumberOfMeetings() + 1, attendees, place, time);
         meetings.add(m);
         return m.getMeetingID();
@@ -78,7 +78,7 @@ public class MeetingStorage extends Observable {
      * @throws MeetingIDException Thrown if no Meeting corresponds to the given MeetingID
      */
     public LocalDateTime getTime(int meetingID) throws MeetingIDException{
-        return getMeeting(meetingID).getTime();
+        return getMeeting(meetingID).getDateTime();
     }
 
 
@@ -170,7 +170,7 @@ public class MeetingStorage extends Observable {
     public boolean confirmMeeting(int meetingID, String attendee)
             throws MeetingIDException, WrongAccountException, TimeException{
         Meeting m = getMeeting(meetingID);
-        if(m.getTime().compareTo(LocalDateTime.now()) > 0){throw new TimeException();}
+        if(m.getDateTime().compareTo(LocalDateTime.now()) > 0){throw new TimeException();}
         boolean b;
         try{b = m.confirmMeeting(attendee);}
         catch(IndexOutOfBoundsException e){throw new WrongAccountException();}
