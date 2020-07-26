@@ -1,6 +1,5 @@
 package main.java.Message;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
