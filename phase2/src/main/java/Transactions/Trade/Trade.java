@@ -167,7 +167,7 @@ abstract class Trade implements Serializable {
 
     //Meetings Methods Below
 
-    /**Set the meetings for this trade.
+    /** Set the meetings for this trade.
      *
      * Precondition: meetings.size <= getTotalNumMeetings()
      * Precondition: meetings contains no duplicate MeetingIDs
@@ -179,7 +179,7 @@ abstract class Trade implements Serializable {
     }
 
 
-    /**Add a meetings to this trade.
+    /** Add a meetings to this trade.
      *
      * Precondition: meetings.size <= getTotalNumMeetings()
      * Precondition: The meeting to be added isn't already in the list of meetings
@@ -199,17 +199,6 @@ abstract class Trade implements Serializable {
         meetings.remove(meetings.size() - 1);
     }
 
-    /** Returning the meetingID of the meetingNumber-th meeting, provided that it has been suggested
-     *
-     * Precondition: 0 < meetingNumber <= getCurrNumMeetings()
-     *
-     * @param meetingNumber The meeting that you want the meeting ID of
-     * @return The meetingID of the meetingNumber-th meeting
-     */
-    public int getMeeting(int meetingNumber){
-        return meetings.get(meetingNumber - 1);
-    }
-
 
     /** Return a list consisting of all the IDs of the suggested meetings
      *
@@ -220,17 +209,9 @@ abstract class Trade implements Serializable {
     }
 
 
-    /** Get the current number of meetings that have already been confirmed or have been suggested
-     *
-     * @return The current number of meetings that have already been confirmed or have been suggested
-     */
-    public int getCurrNumMeetings(){
-        return meetings.size();
-    }
-
-
     /** Get the total number of meetings that should occur in this trade
      *
+     * @return The total number of meetings that should occur in this trade
      */
     public int getTotalNumMeetings(){
         return numberOfMeetings;
