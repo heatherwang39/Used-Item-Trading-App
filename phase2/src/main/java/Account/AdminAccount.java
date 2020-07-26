@@ -15,9 +15,10 @@ class AdminAccount extends LoginAccount {
      *
      * @param username account username
      * @param password account password
+     * @param emailAddress account email address
      */
-    public AdminAccount(String username, String password){
-        super(username, password);
+    public AdminAccount(String username, String password, String emailAddress){
+        super(username, password, emailAddress);
     }
 
 
