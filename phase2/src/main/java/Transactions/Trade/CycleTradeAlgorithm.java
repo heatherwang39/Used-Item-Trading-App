@@ -30,6 +30,7 @@ public class CycleTradeAlgorithm implements TradeAlgorithm {
             else{
             exchange.add(originalItems.get(i + 1));
             }
+            i++;
         }
         return exchange;
     }
