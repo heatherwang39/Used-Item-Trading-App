@@ -1,4 +1,4 @@
-package main.java;
+package main.java.Trade;
 
 /**
  * Exception to be thrown when attempting to make changes to a trade through the wrong account

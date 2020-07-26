@@ -1,4 +1,6 @@
-package main.java;
+package main.java.Trade;
+
+import main.java.Trade.Trade;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,7 +20,7 @@ abstract class OneWayTrade extends Trade implements Serializable {
     private int item; //changed item from List<main.java.item.Item> to main.java.item.Item
 
 
-    /** Initializes an instance of main.java.TwoWayTrade based on the given parameters
+    /** Initializes an instance of main.java.Trade.TwoWayTrade based on the given parameters
      *
      * @param tradeNumber The trade number of the trade
      * @param sender The trader (their username) that sent the item

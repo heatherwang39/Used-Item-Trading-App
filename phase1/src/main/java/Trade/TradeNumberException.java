@@ -1,4 +1,4 @@
-package main.java;
+package main.java.Trade;
 
 /**
  * Exception to be thrown when no trade has the given trade number

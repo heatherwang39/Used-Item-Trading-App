@@ -1,4 +1,4 @@
-package main.java.MessagePackage;
+package main.java.Message;
 
 public enum MessageType {
     USER,

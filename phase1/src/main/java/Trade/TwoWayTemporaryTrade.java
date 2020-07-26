@@ -1,4 +1,6 @@
-package main.java;
+package main.java.Trade;
+
+import main.java.TwoWayTrade;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -6,23 +8,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents a one-way temporary trade in main.java.Transactions.Trade system. The items have been given to the recipient will later
- * be returned. As such, these trades require two meetings.
+ * Represents a two-way temporary trade in main.java.Transactions.Trade system. The items that have been exchanged between the two
+ * traders will be returned. As such, these trades require two meetings.
  * @author Warren Zhu
  * @version %I%, %G%
  * @since Phase 1
  */
-public class OneWayTemporaryTrade extends OneWayTrade implements Serializable {
+public class TwoWayTemporaryTrade extends TwoWayTrade implements Serializable {
 
-    /** Initializes an instance of OneWayTemporaryTrade based on the given parameters
+    /** Initializes an instance of TwoWayTemporaryTrade based on the given parameters
      *
      * @param tradeNumber The trade number of the trade
-     * @param sender The trader (their username) that sent the item
-     * @param receiver The trader (their username) that received the item
-     * @param item The item (its ID) that was traded from the sender to the receiver
+     * @param firstTrader The first trader (their username) involved in this trade
+     * @param firstItem The item (its ID) the first trader traded away
+     * @param secondTrader The second trader (their username) involved in this trade
+     * @param secondItem The item (its ID) the second trader traded away
      */
-    public OneWayTemporaryTrade(int tradeNumber, String sender, String receiver, int item){
-        super(tradeNumber, sender, receiver, item);
+    public TwoWayTemporaryTrade(int tradeNumber, String firstTrader, int firstItem,
+                                String secondTrader, int secondItem) {
+
+        super(tradeNumber, firstTrader, firstItem, secondTrader, secondItem);
 
         newMeeting(getTraders());
         newMeeting(getTraders());

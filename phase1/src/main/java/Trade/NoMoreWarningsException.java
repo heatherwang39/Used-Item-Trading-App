@@ -1,7 +1,7 @@
-package main.java;
+package main.java.Trade;
 
-
-/** Exception to be thrown when a trade is cancelled as a result of a certain action
+/** Exception to be thrown when a trade is cancelled as a result of a certain action.
+ *
  * @author Warren Zhu
  * @version %I%, %G%
  * @since Phase 1

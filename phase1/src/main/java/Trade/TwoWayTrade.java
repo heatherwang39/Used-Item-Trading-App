@@ -1,4 +1,6 @@
-package main.java;
+package main.java.Trade;
+
+import main.java.Trade.Trade;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,33 +1,30 @@
-package main.java;
+package main.java.Trade;
 
 import java.io.Serializable;
-import java.sql.Time;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents a one-way permanent trade in main.java.Transactions.Trade system. Once the items have been given to the recipient,
- * they will not be returned. As such, these trades require only one meeting.
+ * Represents a one-way temporary trade in main.java.Transactions.Trade system. The items have been given to the recipient will later
+ * be returned. As such, these trades require two meetings.
  * @author Warren Zhu
  * @version %I%, %G%
  * @since Phase 1
  */
-public class OneWayPermanentTrade extends OneWayTrade implements Serializable {
+public class OneWayTemporaryTrade extends OneWayTrade implements Serializable {
 
-    /** Initializes an instance of main.java.OneWayPermanentTrade based on the given parameters
+    /** Initializes an instance of OneWayTemporaryTrade based on the given parameters
      *
      * @param tradeNumber The trade number of the trade
      * @param sender The trader (their username) that sent the item
      * @param receiver The trader (their username) that received the item
      * @param item The item (its ID) that was traded from the sender to the receiver
      */
-    public OneWayPermanentTrade(int tradeNumber, String sender, String receiver, int item){
+    public OneWayTemporaryTrade(int tradeNumber, String sender, String receiver, int item){
         super(tradeNumber, sender, receiver, item);
 
         newMeeting(getTraders());
+        newMeeting(getTraders());
     }
-
 
 
     /** Returns whether or not the Trade is permanent. Iff the Trade is permanent, return true.
@@ -35,7 +32,7 @@ public class OneWayPermanentTrade extends OneWayTrade implements Serializable {
      * @return whether the Trade is Permanent
      */
     public boolean isPermanent(){
-        return true;
+        return false;
     }
 
 
@@ -47,9 +44,6 @@ public class OneWayPermanentTrade extends OneWayTrade implements Serializable {
      * @return A list of item IDs involved in this trade based on the original owners
      */
     public List<Integer> getItemsFinal(){
-        List<Integer> items = new ArrayList();
-        items.add(null);
-        items.add(getItem());
-        return items;
+        return getItemsOriginal();
     }
 }

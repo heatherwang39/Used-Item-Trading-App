@@ -1,4 +1,6 @@
-package main.java;
+package main.java.Trade;
+
+import main.java.*;
 
 import java.io.*;
 import java.time.LocalDateTime;

@@ -1,4 +1,6 @@
-package main.java;
+package main.java.Trade;
+
+import main.java.TwoWayTrade;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
