@@ -45,7 +45,10 @@ public class TradeStorage implements Observer {
         TradeAlgorithm ta;
         if (tradeAlgorithmName == TradeAlgorithmName.CYCLE) {
             ta = new CycleTradeAlgorithm();
-        } else {
+        } else if (tradeAlgorithmName == TradeAlgorithmName.RANDOM) {
+            ta = new RandomTradeAlgorithm();
+        }
+        else {
             throw new NoSuchTradeAlgorithmException();
         }
 
@@ -393,7 +396,7 @@ public class TradeStorage implements Observer {
     public List<Integer> getTradesWithItem(int itemID){
         List<Integer> tradesWithItems = new ArrayList<>();
         for (Trade t : trades) {
-            if (t.getTraders().contains(itemID)) {
+            if (t.getItemsOriginal().contains(itemID)) {
                 tradesWithItems.add(t.getTradeNumber());
             }
         }
@@ -448,7 +451,7 @@ public class TradeStorage implements Observer {
                 try{
                     resetWarnings(getTradeWithMeeting(i));
                 }
-                catch(TradeNumberException | NoTradeWithMeetingIDException e){}
+                catch(TradeNumberException | NoTradeWithMeetingIDException ignored){}
             }
             else if(message.charAt(0) == 'C'){
                 int i = Integer.parseInt(message.substring(1));
@@ -459,7 +462,7 @@ public class TradeStorage implements Observer {
                         t.setStatus(3);
                     }
                 }
-                catch(TradeNumberException | NoTradeWithMeetingIDException e){}
+                catch(TradeNumberException | NoTradeWithMeetingIDException ignored){}
             }
         }
     }
