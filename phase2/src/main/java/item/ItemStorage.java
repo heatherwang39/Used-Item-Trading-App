@@ -99,7 +99,7 @@ public class ItemStorage {
      *
      * @return all verified Items
      */
-    public List<Item> getVerifiedItems() {
+    private List<Item> getVerifiedItems() {
         List<Item> items = new ArrayList<>();
         // From here:
         // https://stackoverflow.com/questions/46898/how-do-i-efficiently-iterate-over-each-entry-in-a-java-map
@@ -117,7 +117,7 @@ public class ItemStorage {
      *
      * @return all unverified Items
      */
-    public List<Item> getUnverifiedItems() {
+    private List<Item> getUnverifiedItems() {
         List<Item> items = new ArrayList<>();
         for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
             Item item = entry.getValue();
@@ -134,7 +134,7 @@ public class ItemStorage {
      * @param username Account username
      * @return verified inventory
      */
-    public List<Item> getVerifiedInventory(String username) {
+    private List<Item> getVerifiedInventory(String username) {
         List<Item> items = new ArrayList<>();
         for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
             Item item = entry.getValue();
@@ -151,7 +151,7 @@ public class ItemStorage {
      * @param username Account username
      * @return unverified inventory
      */
-    public List<Item> getUnverifiedInventory(String username) {
+    private List<Item> getUnverifiedInventory(String username) {
         List<Item> items = new ArrayList<>();
         for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
             Item item = entry.getValue();
@@ -169,7 +169,7 @@ public class ItemStorage {
      * @param tags enabled item tags
      * @return items that match the search filter
      */
-    public List<Item> getFilteredItem(List<String> searchTerms, List<String> tags) {
+    private List<Item> getVerifiedInventory(List<String> searchTerms, List<String> tags) {
         List<Item> items = new ArrayList<>();
         for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
             Item item = entry.getValue();
@@ -190,7 +190,7 @@ public class ItemStorage {
      * @param username Account username
      * @return wishlist
      */
-    public List<Item> getWishlist(String username) {
+    private List<Item> getWishlist(String username) {
         List<Item> items = new ArrayList<>();
         for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
             Item item = entry.getValue();
@@ -200,4 +200,21 @@ public class ItemStorage {
         }
         return items;
     }
+
+    /**
+     * Suggest items to lend to a given user.
+     *
+     * @param currentUser current Account username who needs suggestion
+     * @param givenUser the given Account username who may want to borrow
+     * @return suggested items
+     */
+    private List<Item> suggestItems(String currentUser,String givenUser) {
+
+        List<Item> inventory = getVerifiedInventory(currentUser);
+        List<Item> wishlist = getWishlist(givenUser);
+        List<Item> suggestedItems = new ArrayList<>(inventory);
+        suggestedItems.retainAll(wishlist);
+        return suggestedItems;
+    }
+
 }

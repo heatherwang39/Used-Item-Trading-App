@@ -8,6 +8,7 @@ package main.java.transactions.trade;
  */
 public enum TradeAlgorithmName {
 
-    CYCLE
+    CYCLE,
+    RANDOM
 
 }
