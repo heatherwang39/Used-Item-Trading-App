@@ -1,9 +1,8 @@
 package main.java.item;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import main.java.message.Message;
+
+import java.util.*;
 
 /**
  * Use case class for storing items, creating new concrete items like book or clothing, verifying items
@@ -95,21 +94,21 @@ public class ItemStorage {
 
 
     /**
-     * Get all verified Items in the overall list of Items
+     * Get all the data of verified Items in the overall list of Items
      *
-     * @return all verified Items
+     * @return all data of verified Items
      */
-    private List<Item> getVerifiedItems() {
-        List<Item> items = new ArrayList<>();
+    public List<HashMap<String, String>> getVerifiedItemsData(){
+        List<HashMap<String, String>> itemData = new ArrayList<>();
         // From here:
         // https://stackoverflow.com/questions/46898/how-do-i-efficiently-iterate-over-each-entry-in-a-java-map
         for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
             Item item = entry.getValue();
             if (item.isVerified()) {
-                items.add(item);
+                itemData.add(getData(item));
             }
         }
-        return items;
+        return itemData;
     }
 
     /**
@@ -117,15 +116,15 @@ public class ItemStorage {
      *
      * @return all unverified Items
      */
-    private List<Item> getUnverifiedItems() {
-        List<Item> items = new ArrayList<>();
+    public List<HashMap<String, String>> getUnverifiedItemsData(){
+        List<HashMap<String, String>> itemData = new ArrayList<>();
         for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
             Item item = entry.getValue();
             if (!item.isVerified()) {
-                items.add(item);
+                itemData.add(getData(item));
             }
         }
-        return items;
+        return itemData;
     }
 
     /**
@@ -194,7 +193,7 @@ public class ItemStorage {
         List<Item> items = new ArrayList<>();
         for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
             Item item = entry.getValue();
-            if (!item.isVerified() && item.getWishlist().contains(username)) {
+            if (item.isVerified() && item.getWishlist().contains(username)) {
                 items.add(item);
             }
         }
@@ -206,15 +205,55 @@ public class ItemStorage {
      *
      * @param currentUser current Account username who needs suggestion
      * @param givenUser the given Account username who may want to borrow
-     * @return suggested items
+     * @return data of suggested items
      */
-    private List<Item> suggestItems(String currentUser,String givenUser) {
+    public List<HashMap<String, String>> suggestItems(String currentUser,String givenUser) {
 
         List<Item> inventory = getVerifiedInventory(currentUser);
         List<Item> wishlist = getWishlist(givenUser);
         List<Item> suggestedItems = new ArrayList<>(inventory);
+        List<HashMap<String, String>> suggestItemsData = new ArrayList<>();
         suggestedItems.retainAll(wishlist);
-        return suggestedItems;
+        for(Item i:suggestedItems){
+            suggestItemsData.add(getData(i));
+        }
+        return suggestItemsData;
+    }
+
+
+    public List<HashMap<String, String>> getWishlistData(String username) {
+        List<HashMap<String, String>> wishlistData = new ArrayList<>();
+        List<Item> wishlist = getWishlist(username);
+        for(Item i : wishlist){
+            wishlistData.add(getData(i));
+        }
+        return wishlistData;
+    }
+
+    public List<HashMap<String, String>> getVerifiedInventoryData(String username){
+        List<HashMap<String, String>> verifiedInventoryData = new ArrayList<>();
+        List<Item> verifiedInventory = getVerifiedInventory(username);
+        for(Item i : verifiedInventory){
+            verifiedInventoryData.add(getData(i));
+        }
+        return verifiedInventoryData;
+    }
+
+    /**
+     * Creates a HashMap containing the Item's data
+     * @param item the item
+     * @return Data in the form of {Label: Information, ...}
+     */
+    public HashMap<String, String> getData(Item item) {
+        HashMap<String, String> data = new HashMap<>();
+        data.put("id", String.valueOf(item.getID()));
+        data.put("owner", item.getOwner());
+        data.put("name", item.getName());
+        data.put("description", item.getDescription());
+        data.put("tags", String.join(",", item.getTags()));
+        data.put("who have add it to wishlist", String.join(",", item.getWishlist()));
+        data.put("isVerified", String.valueOf(item.isVerified()));
+        return data;
     }
 
 }
