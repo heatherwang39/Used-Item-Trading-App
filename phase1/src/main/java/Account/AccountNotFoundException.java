@@ -1,4 +1,4 @@
-package main.java.Account;
+package main.java.account;
 
 /**
  * AccountNotFoundException is thrown when an account cannot be found with the given username.

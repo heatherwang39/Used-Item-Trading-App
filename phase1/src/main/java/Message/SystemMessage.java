@@ -1,6 +1,6 @@
-package main.java.Message;
+package main.java.message;
 
-import main.java.Message.Message;
+import main.java.message.Message;
 
 import java.util.Date;
 import java.util.List;

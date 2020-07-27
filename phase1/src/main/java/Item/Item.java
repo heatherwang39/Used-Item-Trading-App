@@ -1,4 +1,4 @@
-package main.java.Item;
+package main.java.item;
 
 import java.io.Serializable;
 import java.util.ArrayList;

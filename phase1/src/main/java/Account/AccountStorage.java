@@ -1,4 +1,4 @@
-package main.java.Account;
+package main.java.account;
 
 import java.util.ArrayList;
 import java.util.List;

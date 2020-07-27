@@ -1,4 +1,4 @@
-package main.java.Account;
+package main.java.account;
 
 /**
  * AdminAccount is a LoginAccount that can manage other accounts inventories and frozen status, verify items, and

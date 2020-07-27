@@ -1,9 +1,9 @@
 package main.java;
 
-import main.java.Account.*;
-import main.java.Item.Item;
-import main.java.Item.ItemNotFoundException;
-import main.java.Item.ItemStorage;
+import main.java.account.*;
+import main.java.item.Item;
+import main.java.item.ItemNotFoundException;
+import main.java.item.ItemStorage;
 import main.java.Trade.Trade;
 import main.java.Trade.TradeNumberException;
 import main.java.Trade.TradeStorage;

@@ -1,4 +1,4 @@
-package main.java.Message;
+package main.java.message;
 
 import java.util.ArrayList;
 import java.util.List;

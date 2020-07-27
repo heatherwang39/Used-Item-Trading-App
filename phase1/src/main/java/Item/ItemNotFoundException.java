@@ -1,4 +1,4 @@
-package main.java.Item;
+package main.java.item;
 
 /**
  * Exception to be thrown when an item cannot be found with the given itemId.
