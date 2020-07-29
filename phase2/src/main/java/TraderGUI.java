@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TraderGUI extends JDialog{
-    private JPanel MainContainer;
+    public JPanel MainContainer;
     private JButton loginButton;
     private JButton registerButton;
     private JButton exitButton;
