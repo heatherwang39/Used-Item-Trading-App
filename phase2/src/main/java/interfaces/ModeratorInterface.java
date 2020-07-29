@@ -10,6 +10,10 @@ package main.java.interfaces;
 
 public interface ModeratorInterface {
 
+    //This interface should just be merged with the class that has the ability to make changes. I see no reason
+    //to separate the ability to view and to change administrative stuff
+
+
     /**
      * Shows which users have violated a trade threshold, allowing the user with moderator privileges to decide
      * whether to freeze their account or not

@@ -10,14 +10,27 @@ import java.util.List;
  * @since Phase 2
  */
 
-public interface AdminInterface {
+public interface AdministrativeResponsibilities {
+
+    //Maybe a factory fits well here? Idk (See below)
 
     /**
-     * Promotes a user into an admin
+     * Registers a new Guest Account
      *
-     * @param username username of user
+     * @param username the username of the new account
+     * @param password the password of the new account
+     * @param email the email of the new account
      */
-    void addAdmin(String username);
+    void registerGuest(String username, String password, String email);
+
+    /**
+     * Registers a new Administrative Account
+     *
+     * @param username the username of the new account
+     * @param password the password of the new account
+     * @param email the email of the new account
+     */
+    void registerAdmin(String username, String password, String email);
 
     /**
      * Updates the browse threshold
