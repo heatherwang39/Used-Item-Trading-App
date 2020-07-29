@@ -10,6 +10,8 @@ package main.java.interfaces;
 
 public interface Meetable {
 
+    //The return types and the parameters of this Interface will need to be changed
+
     /**
      * Initializes a trade request meant to be sent by the user
      *
