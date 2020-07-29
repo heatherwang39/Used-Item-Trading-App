@@ -3,15 +3,28 @@ package main.java;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
 
 public class LoginGUI {
     private JTabbedPane tabbedPane1;
     public JPanel MainContainer;
-    private JTextPane textPane1;
     private JButton signOutButton;
     private JButton exitButton;
+    private JTextPane traderSystemTextPane;
+    private JTextField textField2;
+    private JTextField txt;
+    private JTextField textField1;
+    private JTextField textField3;
+    private JTextField textField4;
+    private JRadioButton temporaryTradeRadioButton;
+    private JRadioButton permanentTradeRadioButton;
+    private JButton requestButton;
+    private JTextArea accountInformationTextArea;
 
     public LoginGUI() {
+        accountInformationTextArea.setEditable(false);
+        accountInformationTextArea.setText("."); // display all user information here
+
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -28,5 +41,7 @@ public class LoginGUI {
                 frame.setVisible(true);
             }
         });
+
+
     }
 }
