@@ -1,8 +1,8 @@
-package main.java.interfaces;
+package main.java.systems;
 
 import java.util.List;
 
-public interface AccountController {
+public interface AccountInterface {
 
     void logout();
 

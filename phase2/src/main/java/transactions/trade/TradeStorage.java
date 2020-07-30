@@ -393,6 +393,19 @@ public class TradeStorage implements Observer {
     }
 
 
+    public List<Integer> getInactiveTradesWithUser(String username) {
+        List<Integer> inactiveUserTrades = new ArrayList<>();
+        for (Trade t : trades) {
+            if (t.getTraders().contains(username)) {
+                if(t.getStatus() == 0){
+                    inactiveUserTrades.add(t.getTradeNumber());
+                }
+            }
+        }
+        return inactiveUserTrades;
+    }
+
+
     public List<Integer> getTradesWithItem(int itemID){
         List<Integer> tradesWithItems = new ArrayList<>();
         for (Trade t : trades) {

@@ -7,7 +7,7 @@ package main.java.account;
  * @version %I%, %G%
  * @since Phase 1
  */
-class InvalidEmailAddressException extends Exception {
+public class InvalidEmailAddressException extends Exception {
 
     /**
      * Class Constructor.

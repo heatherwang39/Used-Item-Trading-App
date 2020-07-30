@@ -1,4 +1,4 @@
-package main.java.interfaces;
+package main.java.systems;
 
 /**
  * An Interface for the actions of an account that is able to browse listings

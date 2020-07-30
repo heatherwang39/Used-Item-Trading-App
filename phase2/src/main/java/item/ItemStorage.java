@@ -1,7 +1,5 @@
 package main.java.item;
 
-import main.java.message.Message;
-
 import java.util.*;
 
 /**

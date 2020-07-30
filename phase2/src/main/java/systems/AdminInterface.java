@@ -1,4 +1,4 @@
-package main.java.interfaces;
+package main.java.systems;
 
 import java.util.List;
 
@@ -10,18 +10,7 @@ import java.util.List;
  * @since Phase 2
  */
 
-public interface AdministrativeResponsibilities {
-
-    //Maybe a factory fits well here? Idk (See below)
-
-    /**
-     * Registers a new Guest Account
-     *
-     * @param username the username of the new account
-     * @param password the password of the new account
-     * @param email the email of the new account
-     */
-    void registerGuest(String username, String password, String email);
+public interface AdminInterface {
 
     /**
      * Registers a new Administrative Account
@@ -30,7 +19,7 @@ public interface AdministrativeResponsibilities {
      * @param password the password of the new account
      * @param email the email of the new account
      */
-    void registerAdmin(String username, String password, String email);
+    String registerAdmin(String username, String password, String email);
 
     /**
      * Updates the browse threshold

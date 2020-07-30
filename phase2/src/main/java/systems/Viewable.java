@@ -1,4 +1,4 @@
-package main.java.interfaces;
+package main.java.systems;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public interface Viewable {
      * @param username username of the user
      * @return list of trades offered
      */
-    List<String> showOffers(String username);
+    List<List<String>> showOffers(String username);
 
     /**
      * Shows the user what trades they are in are currently active
@@ -42,5 +42,5 @@ public interface Viewable {
      * @param username username of the user
      * @return list of active trades
      */
-    List<String> showActiveTrades(String username);
+    List<List<String>> showActiveTrades(String username);
 }

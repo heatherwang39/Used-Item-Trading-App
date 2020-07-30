@@ -1,4 +1,4 @@
-package main.java.interfaces;
+package main.java.systems;
 
 import java.util.List;
 
@@ -17,10 +17,12 @@ public interface Updatable {
     /**
      * Adds an item with itemId to the account with username's inventory
      *
-     * @param username username of the user
-     * @param itemId id of the item
+     * @param owner username of the owner of the item
+     * @param name name of the item
+     * @param description description of the item
+     * @param tags a list of user inputted tags for the item
      */
-    void addItem(String username, int itemId);
+    void addItem(String owner, String name, String description, List<String> tags);
 
     /**
      * Adds an item with itemId to the account with username's wishlist

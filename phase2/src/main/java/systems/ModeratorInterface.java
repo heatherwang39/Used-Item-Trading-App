@@ -1,7 +1,10 @@
-package main.java.interfaces;
+package main.java.systems;
+
+import java.util.List;
+import java.util.Map;
 
 /**
- * An Interface for the actions of an account that is able to set meetings
+ * An Interface for the actions of an account that has access to moderator privileges
  *
  * @author Fadi Hareth
  * @version %I%, %G%
@@ -10,19 +13,15 @@ package main.java.interfaces;
 
 public interface ModeratorInterface {
 
-    //This interface should just be merged with the class that has the ability to make changes. I see no reason
-    //to separate the ability to view and to change administrative stuff
-
-
     /**
      * Shows which users have violated a trade threshold, allowing the user with moderator privileges to decide
      * whether to freeze their account or not
      */
-    void showFreezeUsers();
+    List<List<String>> showFreezeUsers(int borrowThreshold, int incompleteThreshold, int weeklyThreshold);
 
     /**
      * Shows items awaiting approval, allowing the user with moderator privileges to decide whether to approve the
      * items or not
      */
-    void showItemRequests();
+    Map<Integer, String> showItemRequests();
 }
