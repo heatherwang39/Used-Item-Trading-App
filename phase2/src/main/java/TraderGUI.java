@@ -22,6 +22,7 @@ public class TraderGUI extends JDialog{
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setVisible(true);
+
             }
         });
         loginButton.addActionListener(new ActionListener() {
@@ -32,6 +33,10 @@ public class TraderGUI extends JDialog{
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setVisible(true);
+                // have a pop-up here which takes in username and password
+                // if user is admin: open admingui
+                // if user is regular: open logingui
+
             }
         });
         exitButton.addActionListener(new ActionListener() {

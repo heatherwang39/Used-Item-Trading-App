@@ -14,6 +14,7 @@ import java.util.*;
 
 public class TradeStorage implements Observer {
     private final List<Trade> trades;
+    private final TradeAlgorithmFactory taf = new TradeAlgorithmFactory();
     private final FreezeManager fm = new FreezeManager();
     private final ActivityManager am = new ActivityManager();
 
@@ -42,15 +43,7 @@ public class TradeStorage implements Observer {
 
         Trade t;
 
-        TradeAlgorithm ta;
-        if (tradeAlgorithmName == TradeAlgorithmName.CYCLE) {
-            ta = new CycleTradeAlgorithm();
-        } else if (tradeAlgorithmName == TradeAlgorithmName.RANDOM) {
-            ta = new RandomTradeAlgorithm();
-        }
-        else {
-            throw new NoSuchTradeAlgorithmException();
-        }
+        TradeAlgorithm ta = taf.getTradeAlgorithm(tradeAlgorithmName);
 
         if(permanent){
             t = new PermanentTrade(getNumberOfTrades() + 1, ta, traders, items);
