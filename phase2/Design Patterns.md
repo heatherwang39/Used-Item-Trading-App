@@ -11,7 +11,7 @@ Instances of each pattern, as well as explanations for why these patterns have b
 ####TradeAlgorithm/TradeAlgorithmFactory
 #####(By Warren Zhu)
 
-*Please refer to "TradeAlgorithm" under the Strategy Subheading to better understand TradeAlgorithms*
+*Please refer to "Trade/TradeAlgorithm" under the Strategy Subheading to better understand TradeAlgorithms*
 
 As the program grows, a variety of TradeAlgorithms will very likely come into existence. As such, a TradeAlgorithmFactory has been implemented to make it easier to add new TradeAlgorithms.
 
@@ -39,7 +39,7 @@ It was with this realization that I finally understood that the Strategy is the 
 
 2) It is able to return the name of the algorithm, allowing for each Trade to identity itself as a certain type.
 
-In order to further encapsulate our design, the TradeAlgorithms were given their own Factory. *Please refer to "TradeAlgorithmFactory" under the Factory Subheading for further reading*
+In order to further encapsulate our design, the TradeAlgorithms were given their own Factory. *Please refer to "TradeAlgorithm/TradeAlgorithmFactory" under the Factory Subheading for further reading*
 
 The benefits of this design pattern are quite profound--it allows the program to be easily extended, as new types of trades will only vary in the distribution of items. We've already coded Trades so that as many traders can participate in a Trade as the client deems fit, and now with the Strategy Design Pattern, the behaviour of each Trade can easily be modified--if someone wants to design a new kind of Trade, all they need to do is to add a new Trade Algorithm.
 

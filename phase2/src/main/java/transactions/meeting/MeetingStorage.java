@@ -1,7 +1,5 @@
 package main.java.transactions.meeting;
 
-import main.java.transactions.WrongAccountException;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Observable;
@@ -144,14 +142,14 @@ public class MeetingStorage extends Observable {
      * @param attendee The attendee accepting the meeting
      * @return Whether this change has been recorded
      * @throws MeetingIDException Thrown if no Meeting corresponds to the given MeetingID
-     * @throws WrongAccountException The attendee is not an actual attendee in the meeting
+     * @throws WrongMeetingAccountException The attendee is not an actual attendee in the meeting
      */
     public boolean acceptMeeting(int meetingID, String attendee)
-            throws MeetingIDException, WrongAccountException {
+            throws MeetingIDException, WrongMeetingAccountException {
         Meeting m = getMeeting(meetingID);
         boolean b;
         try{b = m.acceptMeeting(attendee);}
-        catch(IndexOutOfBoundsException e){throw new WrongAccountException();}
+        catch(IndexOutOfBoundsException e){throw new WrongMeetingAccountException();}
         if(b && m.isAccepted()){notifyObservers("A" + meetingID);}
         return b;
     }
@@ -164,16 +162,16 @@ public class MeetingStorage extends Observable {
      * @param attendee The attendee confirming the meeting
      * @return Whether this change has been recorded
      * @throws MeetingIDException Thrown if no Meeting corresponds to the given MeetingID
-     * @throws WrongAccountException The attendee is not an actual attendee in the meeting
+     * @throws WrongMeetingAccountException The attendee is not an actual attendee in the meeting
      * @throws TimeException The meeting isn't suppose to have taken place yet
      */
     public boolean confirmMeeting(int meetingID, String attendee)
-            throws MeetingIDException, WrongAccountException, TimeException{
+            throws MeetingIDException, WrongMeetingAccountException, TimeException{
         Meeting m = getMeeting(meetingID);
         if(m.getDateTime().compareTo(LocalDateTime.now()) > 0){throw new TimeException();}
         boolean b;
         try{b = m.confirmMeeting(attendee);}
-        catch(IndexOutOfBoundsException e){throw new WrongAccountException();}
+        catch(IndexOutOfBoundsException e){throw new WrongMeetingAccountException();}
         if(b && m.isConfirmed()){notifyObservers("C" + meetingID);}
         return b;
     }

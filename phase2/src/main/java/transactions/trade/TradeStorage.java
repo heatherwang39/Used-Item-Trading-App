@@ -1,7 +1,5 @@
 package main.java.transactions.trade;
 
-import main.java.transactions.WrongAccountException;
-
 import java.util.*;
 
 
@@ -339,14 +337,14 @@ public class TradeStorage implements Observer {
      * @param trader The trader accepting the trade
      * @throws TradeNumberException Thrown if no Trade has the given TradeNumber
      * @throws TradeCancelledException Thrown if the Trade is Cancelled
-     * @throws WrongAccountException Thrown if the Trader is not involved in the Trade
+     * @throws WrongTradeAccountException Thrown if the Trader is not involved in the Trade
      */
     public void acceptTrade(int tradeNumber, String trader)
-            throws TradeNumberException, TradeCancelledException, WrongAccountException{
+            throws TradeNumberException, TradeCancelledException, WrongTradeAccountException{
         Trade t = getTrade(tradeNumber);
         checkTradeCancelled(t);
         try{t.acceptTrade(trader);}
-        catch(IndexOutOfBoundsException e){throw new WrongAccountException();}
+        catch(IndexOutOfBoundsException e){throw new WrongTradeAccountException();}
     }
 
 
@@ -417,7 +415,7 @@ public class TradeStorage implements Observer {
      */
     public int getActiveTradeWithItem(int itemID){
         for (Trade t : trades) {
-            if (t.getTraders().contains(itemID)) {
+            if (t.getItemsOriginal().contains(itemID)) {
                 if(t.getStatus() == 1 | t.getStatus() == 1){return t.getTradeNumber();}
             }
         }
