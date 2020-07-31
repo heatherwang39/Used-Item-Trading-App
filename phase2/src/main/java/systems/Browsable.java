@@ -10,9 +10,6 @@ package main.java.systems;
 
 public interface Browsable {
 
-    //I'm tempted to just merge this into Account, but to be honest, IDK if frozen accounts can even browse listings
-
-
     /**
      * Displays every available item listing
      */

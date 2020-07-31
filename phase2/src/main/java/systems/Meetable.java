@@ -1,5 +1,7 @@
 package main.java.systems;
 
+import java.util.List;
+
 /**
  * An Interface for the actions of an account that is able to set meetings
  *
@@ -10,21 +12,19 @@ package main.java.systems;
 
 public interface Meetable {
 
-    //The return types and the parameters of this Interface will need to be changed
-
     /**
      * Initializes a trade request meant to be sent by the user
      *
-     * @param username username of the user
      * @param itemId id of the item
      * @return true if the request is created, false otherwise
      */
-    boolean createRequest(String username, int itemId);
+    boolean createRequest(int itemId);
 
     /**
      * Allows a user to request a new meeting spot or accept the suggested location
      *
-     * @param username username of the user
+     * @param tradeNumber id of the trade a meeting is being set to
+     * @param meetings what the meetings for this trade will be set to.
      */
-    void setMeeting(String username);
+    String setMeeting(int tradeNumber, List<Integer> meetings);
 }

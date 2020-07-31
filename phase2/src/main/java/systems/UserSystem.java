@@ -3,6 +3,8 @@ package main.java.systems;
 import main.java.account.*;
 import main.java.item.ItemNotFoundException;
 import main.java.item.ItemStorage;
+import main.java.transactions.trade.MaxNumMeetingsExceededException;
+import main.java.transactions.trade.TradeCancelledException;
 import main.java.transactions.trade.TradeNumberException;
 import main.java.transactions.trade.TradeStorage;
 
@@ -40,32 +42,42 @@ public class UserSystem extends LoginSystem implements UserInterface, Registerab
     }
 
     @Override
-    public List<HashMap<String, String>> viewInventory(String username) {return is.getVerifiedInventoryData(username);}
+    public List<HashMap<String, String>> viewInventory() {return is.getVerifiedInventoryData(username);}
 
     @Override
-    public List<HashMap<String, String>> viewWishlist(String username) {return is.getWishlistData(username);}
+    public List<HashMap<String, String>> viewWishlist() {return is.getWishlistData(username);}
 
     @Override
-    public boolean createRequest(String username, int itemId) {
+    public boolean createRequest(int itemId) {
         return false;
     } //TODO: implement
 
     @Override
-    public void setMeeting(String username) { //TODO: implement
+    public String setMeeting(int tradeNumber, List<Integer> meetings) {
+        try {
+            ts.setMeetings(tradeNumber, meetings);
+            return "SUCCESS";
+        } catch (TradeNumberException e) {
+            return "INVALID TRADE";
+        } catch (TradeCancelledException e) {
+            return "TRADE CANCELLED";
+        } catch (MaxNumMeetingsExceededException e) {
+            return "MAX NUM MEETINGS EXCEEDED";
+        }
     }
 
     @Override
-    public void addItem(String owner, String name, String description, List<String> tags) {
-        is.newItem(owner, name, description, tags);
+    public void addItem(String name, String description, List<String> tags) {
+        is.newItem(username, name, description, tags);
     }
 
     @Override
-    public void addWishlist(String username, int itemId) {
+    public void addWishlist(int itemId) {
         //Needs a method for adding to wishlist in item storage
     }
 
     @Override
-    public List<String> showFrequentPartners(String username) {
+    public List<String> showFrequentPartners() {
         try {
             return ts.frequentTradePartners(username);
         } catch (TradeNumberException e) {
@@ -74,7 +86,7 @@ public class UserSystem extends LoginSystem implements UserInterface, Registerab
     }
 
     @Override
-    public List<List<String>> showRecentItems(String username) {
+    public List<List<String>> showRecentItems() {
         List<List<String>> recentItems = new ArrayList<>();
         try {
             List<List<Integer>> recentItemIds = ts.recentItemsTraded(username);
@@ -93,7 +105,7 @@ public class UserSystem extends LoginSystem implements UserInterface, Registerab
     }
 
     @Override
-    public List<List<String>> showOffers(String username) {
+    public List<List<String>> showOffers() {
         List<List<String>> offers = new ArrayList<>();
         List<Integer> inactiveUserTrades = ts.getInactiveTradesWithUser(username);
         for (Integer tradeId : inactiveUserTrades) {
@@ -107,7 +119,7 @@ public class UserSystem extends LoginSystem implements UserInterface, Registerab
     }
 
     @Override
-    public List<List<String>> showActiveTrades(String username) {
+    public List<List<String>> showActiveTrades() {
         List<Integer> activeTradeIds = ts.getActiveTradesWithUser(username);
         List<List<String>> activeTrades = new ArrayList<>();
         for (Integer tradeId : activeTradeIds) {

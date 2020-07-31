@@ -8,6 +8,7 @@ import java.io.IOException;
 
 /**
  * Presenter that returns the needed information for GUI client to display for an account that can browse listings
+ *
  * @author Fadi Hareth
  * @version %I%, %G%
  * @since Phase 2

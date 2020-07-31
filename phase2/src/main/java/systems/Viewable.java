@@ -15,32 +15,28 @@ public interface Viewable {
     /**
      * Allows a user with the given username to check their three most frequent trading partners
      *
-     * @param username username of the user
      * @return list of frequent trading partners
      */
-    List<String> showFrequentPartners(String username);
+    List<String> showFrequentPartners();
 
     /**
      * Allows a user with the given username to check the items in their three most recent trades
      *
-     * @param username username of the user
      * @return list containing lists of the three most recently traded items
      */
-    List<List<String>> showRecentItems(String username);
+    List<List<String>> showRecentItems();
 
     /**
      * Shows the user what offers have been made to them
      *
-     * @param username username of the user
      * @return list of trades offered
      */
-    List<List<String>> showOffers(String username);
+    List<List<String>> showOffers();
 
     /**
      * Shows the user what trades they are in are currently active
      *
-     * @param username username of the user
      * @return list of active trades
      */
-    List<List<String>> showActiveTrades(String username);
+    List<List<String>> showActiveTrades();
 }

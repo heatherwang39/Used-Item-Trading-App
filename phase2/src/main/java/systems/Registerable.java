@@ -3,7 +3,7 @@ package main.java.systems;
 /**
  * An Interface for the actions of an account that is able to register
  *
- * @author Fadi Hareth, Warren Zhu
+ * @author Fadi Hareth
  * @version %I%, %G%
  * @since Phase 2
  */

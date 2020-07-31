@@ -1,5 +1,6 @@
 package main.java.systems;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,5 +24,5 @@ public interface ModeratorInterface {
      * Shows items awaiting approval, allowing the user with moderator privileges to decide whether to approve the
      * items or not
      */
-    Map<Integer, String> showItemRequests();
+    List<HashMap<String, String>> showItemRequests();
 }

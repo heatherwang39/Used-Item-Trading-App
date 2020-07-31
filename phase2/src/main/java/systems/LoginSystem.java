@@ -8,6 +8,7 @@ import java.util.*;
 
 /**
  * Presenter that returns the needed information for GUI client to display for an account that is able to login
+ *
  * @author Fadi Hareth
  * @version %I%, %G%
  * @since Phase 2
@@ -17,7 +18,7 @@ class LoginSystem extends GuestSystem implements AccountInterface, Loginable {
 
     protected TradeStorage ts;
     protected AccountStorage as;
-    private String username;
+    protected String username;
 
     public LoginSystem(ItemStorage is, TradeStorage ts, AccountStorage as, String username) {
         super(is);
@@ -32,7 +33,10 @@ class LoginSystem extends GuestSystem implements AccountInterface, Loginable {
 
     @Override
     public List<String> viewAccountInformation(){
-        return new ArrayList<>(); //TODO: implement
+        List<String> accountInformation = new ArrayList<>();
+        accountInformation.add(username);
+        //accountInformation.add(as.getEmail(username)); \\Requires get email method
+        return accountInformation;
     }
 
     @Override
