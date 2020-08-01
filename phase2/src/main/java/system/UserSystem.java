@@ -27,14 +27,8 @@ public class UserSystem extends LoginSystem implements UserInterface, Registerab
     public String register(String username, String password, String email) {
         try {
             as.createUser(username, password, email);
-        } catch (InvalidLoginException e) {
-            return "INVALID LOGIN";
-        } catch (InvalidEmailAddressException e) {
-            return "INVALID EMAIL";
-        } catch (UsernameInUseException e) {
-            return "USERNAME IN USE";
-        } catch (EmailAddressInUseException e) {
-            return "EMAIL IN USE";
+        } catch (InvalidLoginException | InvalidEmailAddressException | UsernameInUseException | EmailAddressInUseException e) {
+            return e.getMessage();
         }
         return "SUCCESS";
     }
@@ -55,12 +49,8 @@ public class UserSystem extends LoginSystem implements UserInterface, Registerab
         try {
             ts.setMeetings(tradeNumber, meetings);
             return "SUCCESS";
-        } catch (TradeNumberException e) {
-            return "INVALID TRADE";
-        } catch (TradeCancelledException e) {
-            return "TRADE CANCELLED";
-        } catch (MaxNumMeetingsExceededException e) {
-            return "MAX NUM MEETINGS EXCEEDED";
+        } catch (TradeNumberException | TradeCancelledException | MaxNumMeetingsExceededException e) {
+            return e.getMessage();
         }
     }
 

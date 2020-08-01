@@ -493,6 +493,25 @@ public class TradeStorage implements Observer {
         return am.frequentTradePartners(username, userTrades);
     }
 
+    public List<List<String>> showFreezeUsers(List<String> usernames, int borrowThreshold, int incompleteThreshold,
+                                              int weeklyThreshold) {
+        List<List<String>> freezeList = new ArrayList<>();
+        for (String user : usernames) {
+            try {
+                List<String> userFreezeReasons = checkUserShouldFreeze(user, borrowThreshold, incompleteThreshold, weeklyThreshold);
+                if (userFreezeReasons.size() > 1) {
+                    List<String> userData = new ArrayList<>();
+                    userData.add(user);
+                    userData.addAll(userFreezeReasons);
+                    freezeList.add(userData);
+                }
+            } catch (TradeNumberException e) {
+                break;
+            }
+        }
+        return freezeList;
+    }
+
     protected boolean acceptedStatus(int tradeStatus) {
         return (tradeStatus == 1 || tradeStatus == 2 || tradeStatus == 3);
     }
