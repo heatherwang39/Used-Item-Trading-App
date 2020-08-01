@@ -317,6 +317,18 @@ public class TradeStorage implements Observer {
         t.setNumMeetings(numMeetings);
     }
 
+
+    /** Return a list consisting of all the Meeting IDs of the given Trade
+     *
+     * @param tradeNumber The tradeNumber of the Trade that you want to get information about
+     * @return A list consisting of all the Meeting IDs for said Trade
+     * @throws TradeNumberException Thrown if no Trade has the given TradeNumber
+     */
+    public List<Integer> getMeetings(int tradeNumber) throws TradeNumberException{
+        return getTrade(tradeNumber).getMeetings();
+    }
+
+
     //Methods Regarding Trade Acceptance Below
 
     /** Return the usernames of the Traders that haven't accepted this trade yet
