@@ -1,4 +1,4 @@
-package main.java.status;
+package main.java.model.status;
 
 /**
  * Exception to be thrown when attempting to delete a Status that isn't active on an Account.
