@@ -1,12 +1,12 @@
 package main.java;
 
-import main.java.account.*;
-import main.java.item.Item;
-import main.java.item.ItemNotFoundException;
-import main.java.item.ItemStorage;
-import main.java.transaction.trade.Trade;
-import main.java.transaction.trade.TradeNumberException;
-import main.java.transaction.trade.TradeStorage;
+import main.java.model.account.*;
+import main.java.model.item.Item;
+import main.java.model.item.ItemNotFoundException;
+import main.java.model.item.ItemStorage;
+import main.java.model.trade.Trade;
+import main.java.model.trade.TradeNumberException;
+import main.java.model.trade.TradeStorage;
 
 import java.io.*;
 import java.time.LocalDateTime;

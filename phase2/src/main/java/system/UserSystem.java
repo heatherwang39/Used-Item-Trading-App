@@ -1,12 +1,12 @@
 package main.java.system;
 
-import main.java.account.*;
-import main.java.item.ItemNotFoundException;
-import main.java.item.ItemStorage;
-import main.java.transaction.trade.MaxNumMeetingsExceededException;
-import main.java.transaction.trade.TradeCancelledException;
-import main.java.transaction.trade.TradeNumberException;
-import main.java.transaction.trade.TradeStorage;
+import main.java.model.account.*;
+import main.java.model.item.ItemNotFoundException;
+import main.java.model.item.ItemStorage;
+import main.java.model.trade.MaxNumMeetingsExceededException;
+import main.java.model.trade.TradeCancelledException;
+import main.java.model.trade.TradeNumberException;
+import main.java.model.trade.TradeStorage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
