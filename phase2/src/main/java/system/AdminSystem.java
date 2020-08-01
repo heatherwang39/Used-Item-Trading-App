@@ -1,11 +1,9 @@
 package main.java.system;
 
-import main.java.account.*;
-import main.java.item.ItemStorage;
-import main.java.transaction.trade.TradeNumberException;
-import main.java.transaction.trade.TradeStorage;
+import main.java.model.account.*;
+import main.java.model.item.ItemStorage;
+import main.java.model.trade.TradeStorage;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

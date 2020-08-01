@@ -1,6 +1,6 @@
 package main.java.system;
 
-import main.java.item.ItemStorage;
+import main.java.model.item.ItemStorage;
 
 /**
  * Presenter that returns the needed information for GUI client to display for an account that can browse listings

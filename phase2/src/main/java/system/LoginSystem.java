@@ -1,8 +1,8 @@
 package main.java.system;
 
-import main.java.account.*;
-import main.java.item.ItemStorage;
-import main.java.transaction.trade.*;
+import main.java.model.account.*;
+import main.java.model.item.ItemStorage;
+import main.java.model.trade.*;
 
 import java.util.*;
 
