@@ -15,10 +15,6 @@ class GuestAccount extends Account {
      */
     public GuestAccount() {
         super("guest account");
-    }
-
-    @Override
-    String type() {
-        return "guest";
+        setType("GUEST");
     }
 }

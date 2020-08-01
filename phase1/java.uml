@@ -8,13 +8,13 @@
     <node x="0.0" y="2408.0">main.java.message.MessageNotFoundException</node>
     <node x="1639.75" y="1206.0">main.java.Trade.OneWayTemporaryTrade</node>
     <node x="960.7500000000001" y="1206.0">main.java.Trade.TwoWayTemporaryTrade</node>
-    <node x="735.0" y="2507.0">main.java.transactions.meeting.TimeException</node>
+    <node x="735.0" y="2507.0">main.java.transaction.meeting.TimeException</node>
     <node x="1662.0" y="2408.0">main.java.account.InvalidLoginException</node>
     <node x="1124.0" y="2408.0">main.java.account.UsernameInUseException</node>
-    <node x="570.0" y="2408.0">main.java.transactions.trade.TradeCancelledException</node>
+    <node x="570.0" y="2408.0">main.java.transaction.trade.TradeCancelledException</node>
     <node x="2276.0" y="1369.0">main.java.FileReadWriter</node>
     <node x="893.0000000000001" y="983.0">main.java.account.AdminAccount</node>
-    <node x="498.0" y="2507.0">main.java.transactions.trade.NoMeetingException</node>
+    <node x="498.0" y="2507.0">main.java.transaction.trade.NoMeetingException</node>
     <node x="1923.0" y="2408.0">main.java.InvalidEmailException</node>
     <node x="2341.0" y="994.0">main.java.MiscItem</node>
     <node x="0.0" y="929.0">main.java.message.AccountMessage</node>
@@ -22,27 +22,27 @@
     <node x="591.0000000000001" y="930.0">main.java.account.UserAccount</node>
     <node x="2530.0" y="1369.0">main.java.InvalidOptionException</node>
     <node x="932.0" y="2507.0">main.java.TraderMain</node>
-    <node x="707.0" y="1369.0">main.java.transactions.trade.TradeStorage</node>
+    <node x="707.0" y="1369.0">main.java.transaction.trade.TradeStorage</node>
     <node x="285.0" y="2408.0">main.java.account.AccountNotFoundException</node>
     <node x="253.0" y="2507.0">main.java.account.EmailInUseException</node>
-    <node x="1432.4050925925926" y="104.0">main.java.transactions.trade.Trade</node>
+    <node x="1432.4050925925926" y="104.0">main.java.transaction.trade.Trade</node>
     <node x="2184.0" y="2408.0">main.java.item.ItemNotFoundException</node>
-    <node x="0.0" y="2507.0">main.java.transactions.trade.TradeNumberException</node>
+    <node x="0.0" y="2507.0">main.java.transaction.trade.TradeNumberException</node>
     <node x="325.0" y="961.0">main.java.message.SystemMessage</node>
     <node x="1958.75" y="1206.0">main.java.Trade.OneWayPermanentTrade</node>
     <node x="2090.0" y="962.0">main.java.item.Clothing</node>
-    <node x="2445.0" y="2408.0">main.java.transactions.WrongAccountException</node>
+    <node x="2445.0" y="2408.0">main.java.transaction.WrongAccountException</node>
     <node x="1241.25" y="0.0">main.java.account.Entity</node>
     <node x="2072.0" y="1369.0">main.java.EntityDisplay</node>
     <node x="2353.5" y="367.0">main.java.item.Item</node>
     <node x="0.0" y="1369.0">main.java.account.AccountStorage</node>
-    <node x="847.0" y="2408.0">main.java.transactions.trade.NoMoreWarningsException</node>
+    <node x="847.0" y="2408.0">main.java.transaction.trade.NoMoreWarningsException</node>
     <node x="1828.0" y="939.0">main.java.Trade.OneWayTrade</node>
     <node x="173.1550925925926" y="389.0">main.java.message.Message</node>
     <node x="1116.0" y="1369.0">main.java.item.ItemStorage</node>
     <node x="760.4050925925927" y="192.0">main.java.account.Account</node>
     <node x="1299.75" y="1206.0">main.java.Trade.TwoWayPermanentTrade</node>
-    <node x="1393.0" y="2408.0">main.java.transactions.meeting.MeetingNumberException</node>
+    <node x="1393.0" y="2408.0">main.java.transaction.meeting.MeetingNumberException</node>
     <node x="1440.0" y="1369.0">main.java.TraderClient</node>
     <node x="2558.0" y="962.0">main.java.item.Book</node>
   </nodes>
@@ -100,7 +100,7 @@
       <point x="1355.5" y="1181.0" />
       <point x="65.5" y="114.0" />
     </edge>
-    <edge source="main.java.Trade.TwoWayTrade" target="main.java.transactions.trade.Trade">
+    <edge source="main.java.Trade.TwoWayTrade" target="main.java.transaction.trade.Trade">
       <point x="0.0" y="-114.0" />
       <point x="1290.0" y="903.0" />
       <point x="1522.4050925925926" y="903.0" />
@@ -112,7 +112,7 @@
       <point x="1379.5" y="74.0" />
       <point x="59.25" y="27.0" />
     </edge>
-    <edge source="main.java.transactions.trade.Trade" target="main.java.account.Entity">
+    <edge source="main.java.transaction.trade.Trade" target="main.java.account.Entity">
       <point x="0.0" y="-387.0" />
       <point x="1612.4050925925926" y="84.0" />
       <point x="1340.0" y="84.0" />
@@ -142,7 +142,7 @@
       <point x="234.4050925925926" y="903.0" />
       <point x="-61.25" y="102.0" />
     </edge>
-    <edge source="main.java.Trade.OneWayTrade" target="main.java.transactions.trade.Trade">
+    <edge source="main.java.Trade.OneWayTrade" target="main.java.transaction.trade.Trade">
       <point x="0.0" y="-103.0" />
       <point x="1949.0" y="903.0" />
       <point x="1702.4050925925926" y="903.0" />

@@ -1,5 +1,6 @@
 package main.java.message;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.List;
  * @version %I%, %G%
  * @since Phase 1
  */
-abstract class Message {
+abstract class Message implements Serializable {
 
     private final String title;
     private final String content;

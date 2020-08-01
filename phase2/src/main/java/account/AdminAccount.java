@@ -19,11 +19,6 @@ class AdminAccount extends LoginAccount {
      */
     public AdminAccount(String username, String password, String emailAddress){
         super(username, password, emailAddress);
-    }
-
-
-    @Override
-    String type() {
-        return "admin";
+        setType("ADMIN");
     }
 }

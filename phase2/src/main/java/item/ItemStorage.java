@@ -249,8 +249,8 @@ public class ItemStorage {
         data.put("name", item.getName());
         data.put("description", item.getDescription());
         data.put("tags", String.join(",", item.getTags()));
-        data.put("who have add it to wishlist", String.join(",", item.getWishlist()));
-        data.put("isVerified", String.valueOf(item.isVerified()));
+        data.put("wishlist", String.join(",", item.getWishlist()));
+        data.put("verified", String.valueOf(item.isVerified()));
         return data;
     }
 

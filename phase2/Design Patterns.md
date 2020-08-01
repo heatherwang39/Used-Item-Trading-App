@@ -19,9 +19,12 @@ The implementation is quite simple--we placed all TradeAlgorithm constructors in
 
 This design makes it particularly easy to add new TradeAlgorithms--all we need to do is to write code for the TradeAlgorithm, and then add its constructor into the factory and the enum file!
 
+####StatusFactory
+#####(By Robbert Liu)
 
+*Please refer to "Trade/TradeAlgorithm" under the Strategy Subheading to better understand TradeAlgorithms*
 
-
+The constructor of every Status is identical, and I wanted an extensible way to lower the dependency between the Status constructor and StatusStorage, which only needs to access Stati after they are created.
 
 
 ## Strategy:

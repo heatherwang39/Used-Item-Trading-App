@@ -1,5 +1,7 @@
 package main.java.status;
 
+import java.io.Serializable;
+
 /**
  * Status represents an account Status that can be added by an admin or automatically added. Statuses can provide
  * benefits to an Account, or it can block an Account from certain functionalities.
@@ -8,11 +10,11 @@ package main.java.status;
  * @version %I%, %G%
  * @since Phase 2
  */
-public class Status {
+public class Status implements Serializable {
 
     private final int id;
     private final String username;
-    private boolean revokeRequested;
+    private String type;
 
     /**
      * Class constructor.
@@ -40,16 +42,16 @@ public class Status {
     public String getUsername() { return username; }
 
     /**
-     * Get whether the revoke request has been sent.
+     * Get status' type.
      *
-     * @return Boolean representing the condition
+     * @return type
      */
-    public boolean revokeRequested() {return revokeRequested; }
+    public String getType() { return type; }
 
     /**
-     * Set whether the revoke request has been sent.
+     * Set status' type.
      *
-     * @param b boolean
+     * @param type status type
      */
-    public void setRevokeRequested(boolean b) {revokeRequested = b;}
+    public void setType(String type) { this.type = type; }
 }

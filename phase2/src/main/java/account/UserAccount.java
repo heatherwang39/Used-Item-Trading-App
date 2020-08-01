@@ -18,8 +18,6 @@ class UserAccount extends LoginAccount {
      */
     public UserAccount(String username, String password, String emailAddress) {
         super(username, password, emailAddress);
+        setType("USER");
     }
-
-    @Override
-    String type() { return "user"; }
 }
