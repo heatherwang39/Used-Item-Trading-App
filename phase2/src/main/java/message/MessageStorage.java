@@ -17,6 +17,8 @@ public class MessageStorage {
 
     /**
      * Class constructor.
+     *
+     * @param messages list of messages
      */
     public MessageStorage(List<Message> messages) {
         this.messages = messages;

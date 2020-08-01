@@ -10,22 +10,21 @@ package main.java.status;
 public class StatusFactory {
     /**
      * Factory method that returns a new Status.
-     * @param id Status id
      * @param statusType Status stype
      * @return Status
      */
-    public Status getStatus(int id, String statusType) {
+    public Status getStatus(String statusType) {
         switch (statusType.toUpperCase()) {
             case "AWAY":
-                return new AwayStatus(id, statusType);
+                return new AwayStatus(statusType);
             case "FROZEN":
-                return new FrozenStatus(id, statusType);
+                return new FrozenStatus(statusType);
             case "GILDED":
-                return new GildedStatus(id, statusType);
+                return new GildedStatus(statusType);
             case "MUTED":
-                return new MutedStatus(id, statusType);
+                return new MutedStatus(statusType);
             case "NEW":
-                return new NewStatus(id, statusType);
+                return new NewStatus(statusType);
             default:
                 return null;
         }

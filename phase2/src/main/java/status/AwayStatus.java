@@ -12,11 +12,10 @@ public class AwayStatus extends Status {
     /**
      * Class constructor.
      *
-     * @param id       status id
      * @param username status' account's username
      */
-    public AwayStatus(int id, String username) {
-        super(id, username);
+    public AwayStatus(String username) {
+        super(username);
         setType("AWAY");
     }
 }
