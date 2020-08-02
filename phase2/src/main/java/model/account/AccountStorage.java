@@ -84,7 +84,6 @@ public class AccountStorage {
         if (isEmailAddressInUse(username)) {throw new EmailAddressInUseException(); }
     }
 
-
     /**
      * Checks if username is used in another account.
      *
@@ -94,24 +93,20 @@ public class AccountStorage {
     private boolean isUsernameInUse(String username) { return accounts.containsKey(username); }
 
     /**
-     * Creates a GuestAccount.
-     */
-    public Account createGuest() { return new GuestAccount(); }
-
-    /**
      * Creates a UserAccount if the credentials are valid.
      *
      * @param username input username
      * @param password input password
+     * @return Account username
      * @throws InvalidLoginException  login doesn't match regex
      * @throws UsernameInUseException username is in use
      */
-    public Account createUser(String username, String password, String emailAddress) throws InvalidLoginException,
+    public String createUser(String username, String password, String emailAddress) throws InvalidLoginException,
             UsernameInUseException, InvalidEmailAddressException, EmailAddressInUseException {
         isValidAccount(username, password, emailAddress);
         UserAccount user = new UserAccount(username, password, emailAddress);
         accounts.put(username, user);
-        return user;
+        return username;
     }
 
     /**
@@ -119,15 +114,16 @@ public class AccountStorage {
      *
      * @param username input username
      * @param password input password
+     * @return Account username
      * @throws InvalidLoginException  login doesn't match regex
      * @throws UsernameInUseException username is in use
      */
-    public Account createAdmin(String username, String password, String emailAddress) throws InvalidLoginException,
+    public String createAdmin(String username, String password, String emailAddress) throws InvalidLoginException,
             UsernameInUseException, InvalidEmailAddressException, EmailAddressInUseException {
         isValidAccount(username, password, emailAddress);
         AdminAccount admin = new AdminAccount(username, password, emailAddress);
         accounts.put(username, admin);
-        return admin;
+        return username;
     }
 
     /**
