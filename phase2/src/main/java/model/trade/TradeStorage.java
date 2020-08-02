@@ -534,11 +534,8 @@ public class TradeStorage implements MeetingObserver, TradeObservee {
      * @param newOwner A parallel list representing the usernames of the new owners of the aforementioned items
      */
     public void notifyTradeComplete(List<Integer> itemID, List<String> newOwner){
-        int numOfObservers = observers.size();
-        int i = 0;
-        while(i < numOfObservers){
-            observers.get(i).updateTradeComplete(itemID, newOwner);
-            i++;
+        for (TradeObserver tradeObserver: observers) {
+            tradeObserver.updateTradeComplete(itemID, newOwner);
         }
     }
 

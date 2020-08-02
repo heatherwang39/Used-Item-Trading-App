@@ -3,6 +3,7 @@ import java.io.*;
 
 /**
  * A gateway to read object from file and save object to file.
+ *
  * @author Heather Wang
  * @version %I%, %G%
  * @since Phase 1
@@ -10,14 +11,11 @@ import java.io.*;
 
 public class FileReadWriter {
 
-    private String filepath;
-
     /**
      * Creates a FileReadWriter with the path of file
      * @param filePath the path of file
      */
     public FileReadWriter(String filePath) {
-        this.filepath = filePath;
     }
 
     /**

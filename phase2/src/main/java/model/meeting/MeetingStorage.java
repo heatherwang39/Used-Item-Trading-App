@@ -210,11 +210,8 @@ public class MeetingStorage implements MeetingObservee{
      * @param meetingID The meeting that was accepted
      */
     public void notifyAccepted(int meetingID){
-        int numOfObservers = observers.size();
-        int i = 0;
-        while(i < numOfObservers){
-            observers.get(i).updateAccepted(meetingID);
-            i++;
+        for (MeetingObserver meetingObserver: observers) {
+            meetingObserver.updateAccepted(meetingID);
         }
     }
 
@@ -224,11 +221,8 @@ public class MeetingStorage implements MeetingObservee{
      * @param meetingID The meeting that was confirmed
      */
     public void notifyConfirmed(int meetingID){
-        int numOfObservers = observers.size();
-        int i = 0;
-        while(i < numOfObservers){
-            observers.get(i).updateConfirmed(meetingID);
-            i++;
+        for (MeetingObserver meetingObserver: observers) {
+            meetingObserver.updateConfirmed(meetingID);
         }
     }
 }
