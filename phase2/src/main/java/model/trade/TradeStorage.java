@@ -137,7 +137,12 @@ public class TradeStorage implements MeetingObserver, TradeObservee {
      * @throws TradeNumberException Thrown if no Trade has the given TradeNumber
      */
     public boolean setStatus(int tradeNumber, int status) throws TradeNumberException{
-        return getTrade(tradeNumber).setStatus(status);
+        Trade t = getTrade(tradeNumber);
+        boolean b = t.setStatus(status);
+        if(b && getStatus(tradeNumber) == 3){
+            notifyTradeComplete(t.getItemsFinal(), t.getTraders());
+        }
+        return b;
     }
 
 

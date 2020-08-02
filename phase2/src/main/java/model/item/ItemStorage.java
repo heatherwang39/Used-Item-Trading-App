@@ -268,13 +268,12 @@ public class ItemStorage implements TradeObserver {
      *
      * @param itemIDs A parallel list representing the IDs of items involved in the trade
      * @param newOwner A parallel list representing the usernames of the new owners of the aforementioned items
-     * @throws ItemNotFoundException Thrown if for one of the item IDs, there are no items corresponding to it
      */
-    public void updateTradeComplete(List<Integer> itemIDs, List<String> newOwner) throws ItemNotFoundException{
+    public void updateTradeComplete(List<Integer> itemIDs, List<String> newOwner){
         int listsizes = itemIDs.size();
         int i = 0;
         while(i < listsizes){
-            getItem(itemIDs.get(i)).setOwner(newOwner.get(i));
+            try{getItem(itemIDs.get(i)).setOwner(newOwner.get(i));}catch(ItemNotFoundException ignored){}
             i++;
         }
     }

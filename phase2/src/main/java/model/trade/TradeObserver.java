@@ -18,7 +18,6 @@ public interface TradeObserver {
      *
      * @param itemIDs A parallel list representing the IDs of items involved in the trade
      * @param newOwner A parallel list representing the usernames of the new owners of the aforementioned items
-     * @throws ItemNotFoundException Thrown if for one of the item IDs, there are no items corresponding to it
      */
-    void updateTradeComplete(List<Integer> itemIDs, List<String> newOwner) throws ItemNotFoundException;
+    void updateTradeComplete(List<Integer> itemIDs, List<String> newOwner);
 }
