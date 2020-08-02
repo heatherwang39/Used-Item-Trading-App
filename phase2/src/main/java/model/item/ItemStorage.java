@@ -16,7 +16,7 @@ import java.util.*;
 
 public class ItemStorage implements TradeObserver {
 
-    private final Map<Integer, Item> items;
+    private Map<Integer, Item> items;
 
     /**
      * Class constructor
@@ -25,14 +25,8 @@ public class ItemStorage implements TradeObserver {
      */
     public ItemStorage(Map<Integer, Item> items) { this.items = items; }
 
-    /**
-     * Gets an item from ID.
-     *
-     * @param itemID item ID
-     * @return item
-     * @throws ItemNotFoundException if no item exists with that ID.
-     */
-    public Item getItem(int itemID) throws ItemNotFoundException {
+
+    private Item getItem(int itemID) throws ItemNotFoundException {
         Item item = items.get(itemID);
         if (item == null) {
             throw new ItemNotFoundException();
@@ -40,24 +34,14 @@ public class ItemStorage implements TradeObserver {
         return item;
     }
 
-    /**
-     * Gets the total number of items added
-     *
-     * @return the size of items
-     */
-    public int generateNextID() {
+
+    private int generateNextID() {
         return items.size();
     }
 
 
-    /**
-     * Initializes a new Item based on the given parameters. Adds the Item to items.
-     *
-     * @param name        The Item's name
-     * @param description The Item's description
-     * @return Item
-     */
-    public Item newItem(String owner, String name, String description, List<String> tags) {
+
+    private Item newItem(String owner, String name, String description, List<String> tags) {
         int id = generateNextID();
         Item item = new Item(id, owner, name, description, tags);
         items.put(generateNextID(), item);
@@ -238,6 +222,16 @@ public class ItemStorage implements TradeObserver {
             verifiedInventoryData.add(getData(i));
         }
         return verifiedInventoryData;
+    }
+
+    public List<HashMap<String, String>> getVerifiedInventoryData(List<String> searchTerms, List<String> tags) {
+        List<HashMap<String, String>> verifiedInventoryData = new ArrayList<>();
+        List<Item> verifiedInventory = getVerifiedInventory(searchTerms,tags);
+        for(Item i : verifiedInventory){
+            verifiedInventoryData.add(getData(i));
+        }
+        return verifiedInventoryData;
+
     }
 
     /**
