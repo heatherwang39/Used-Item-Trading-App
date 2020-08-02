@@ -1,5 +1,9 @@
 package main.java.model.trade;
 
+import com.sun.org.apache.xerces.internal.impl.dv.xs.BaseDVFactory;
+import main.java.model.meeting.MeetingObservee;
+import main.java.model.meeting.MeetingObserver;
+
 import java.util.*;
 
 
@@ -10,11 +14,13 @@ import java.util.*;
  * @since Phase 1
  */
 
-public class TradeStorage implements Observer {
+public class TradeStorage implements MeetingObserver, TradeObservee {
     private final List<Trade> trades;
     private final TradeAlgorithmFactory taf = new TradeAlgorithmFactory();
     private final FreezeManager fm = new FreezeManager();
     private final ActivityManager am = new ActivityManager();
+
+    private final List<TradeObserver> observers = new ArrayList<>();
 
 
     /** Initializes a new TradeStorage with the given Trades.
@@ -456,30 +462,78 @@ public class TradeStorage implements Observer {
         return completedTrades;
     }
 
-    //Observer Pattern Below
-    @Override
-    public void update(Observable o, Object arg) {
-        if(arg instanceof String){
-            String message = (String) arg;
-            if(message.charAt(0) == 'A'){
-                int i = Integer.parseInt(message.substring(1));
 
-                try{
-                    resetWarnings(getTradeWithMeeting(i));
-                }
-                catch(TradeNumberException | NoTradeWithMeetingIDException ignored){}
-            }
-            else if(message.charAt(0) == 'C'){
-                int i = Integer.parseInt(message.substring(1));
 
-                try{
-                    Trade t = getTrade(getTradeWithMeeting(i));
-                    if(t.getMeetings().size() == t.getTotalNumMeetings()){
-                        t.setStatus(3);
-                    }
-                }
-                catch(TradeNumberException | NoTradeWithMeetingIDException ignored){}
+
+    //Meeting and Trade Observer Pattern below
+
+
+    /** Record the fact that the given meeting has been accepted
+     *
+     * @param meetingID The ID of the accepted meeting
+     */
+    public void updateAccepted(int meetingID){
+        try{
+            resetWarnings(getTradeWithMeeting(meetingID));
+            Trade t = getTrade(getTradeWithMeeting(meetingID));
+            if(t.getMeetings().get(0) == meetingID){
+                t.setStatus(2);
             }
+        }
+        catch(TradeNumberException | NoTradeWithMeetingIDException ignored){}
+    }
+
+
+    /** Record the fact that the given meeting has been confirmed
+     *
+     * @param meetingID The ID of the confirmed meeting
+     */
+    public void updateConfirmed(int meetingID){
+            try{
+                Trade t = getTrade(getTradeWithMeeting(meetingID));
+                if(t.getMeetings().size() == t.getTotalNumMeetings()){
+                    t.setStatus(3);
+                }
+            }
+            catch(TradeNumberException | NoTradeWithMeetingIDException ignored){}
+    }
+
+
+
+
+    //Item and Trade Observer Pattern below
+
+
+    /** Add an observer to this subject/observed object
+     *
+     * @param itemObserver The newly-added observer for this object
+     */
+    public void attachItemObserver(TradeObserver itemObserver){
+        observers.add(itemObserver);
+    }
+
+
+    /** Remove an observer from this subject/observed object
+     *
+     * @param itemObserver The recently-removed observer from this object
+     */
+    public void detachItemObserver(TradeObserver itemObserver){
+        observers.remove(itemObserver);
+    }
+
+
+    /** Notify the observers that a Trade with the items distributed between owners as stored in the two parallel lists
+     * (inputs/parameters) has been completed.
+     *
+     * @param itemID A parallel list representing the IDs of items involved in the trade
+     * @param newOwner A parallel list representing the usernames of the new owners of the aforementioned items
+     */
+    public void notifyTradeComplete(List<Integer> itemID, List<String> newOwner){
+        int numOfObservers = observers.size();
+        int i = 0;
+        while(i < numOfObservers){
+            observers.get(i).updateTradeComplete(itemID, newOwner);
+            i++;
         }
     }
 

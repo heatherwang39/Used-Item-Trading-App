@@ -1,17 +1,20 @@
 package main.java.model.item;
 
+import main.java.model.trade.TradeObservee;
+import main.java.model.trade.TradeObserver;
+
 import java.util.*;
 
 /**
  * Use case class for storing items, creating new concrete items like book or clothing, verifying items
  * and get all the verified items in the program.
- * @author Heather Wang, Robbert Liu
+ * @author Heather Wang, Robbert Liu, Warren Zhu
  * @version %I%, %G%
  * @since Phase 1
  */
 
 
-public class ItemStorage {
+public class ItemStorage implements TradeObserver {
 
     private final Map<Integer, Item> items;
 
@@ -254,4 +257,25 @@ public class ItemStorage {
         return data;
     }
 
+
+
+
+    //Item and Trade Observer Pattern below
+
+
+    /** Record the fact that a Trade with the items distributed between owners as stored in the two parallel lists
+     * (inputs/parameters) has been completed.
+     *
+     * @param itemIDs A parallel list representing the IDs of items involved in the trade
+     * @param newOwner A parallel list representing the usernames of the new owners of the aforementioned items
+     * @throws ItemNotFoundException Thrown if for one of the item IDs, there are no items corresponding to it
+     */
+    public void updateTradeComplete(List<Integer> itemIDs, List<String> newOwner) throws ItemNotFoundException{
+        int listsizes = itemIDs.size();
+        int i = 0;
+        while(i < listsizes){
+            getItem(itemIDs.get(i)).setOwner(newOwner.get(i));
+            i++;
+        }
+    }
 }

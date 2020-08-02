@@ -8,14 +8,14 @@ import java.util.List;
  *  Item is a class representing an item added by a UserAccount to their inventory. Items can be traded, removed from
  *  its owner's inventory, and wishlisted.
  *
- * @author Heather Wang
+ * @author Heather Wang, Warren Zhu
  * @version %I%, %G%
  * @since Phase 1
  */
 class Item implements Serializable {
 
     private final int id;
-    private final String owner;
+    private String owner;
     private final String name;
     private final String description;
     private final List<String> tags;
@@ -46,12 +46,23 @@ class Item implements Serializable {
         return id;
     }/**
 
+     /**
      * Get the item's owner's username.
      *
      * @return name
      */
     public String getOwner() {
         return owner;
+    }
+
+
+    /**
+     * Set the item's owner to be the given owner
+     *
+     * @param owner The item's new owner
+     */
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     /**

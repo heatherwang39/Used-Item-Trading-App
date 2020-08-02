@@ -1,6 +1,9 @@
 package main.java.model.meeting;
 
+import main.java.model.trade.TradeObserver;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
@@ -11,8 +14,10 @@ import java.util.Observable;
  * @version %I%, %G%
  * @since Phase 2
  */
-public class MeetingStorage extends Observable {
+public class MeetingStorage implements MeetingObservee{
     private final List<Meeting> meetings;
+
+    private final List<MeetingObserver> observers = new ArrayList<>();
 
 
     /** Class Constructor
@@ -150,7 +155,7 @@ public class MeetingStorage extends Observable {
         boolean b;
         try{b = m.acceptMeeting(attendee);}
         catch(IndexOutOfBoundsException e){throw new WrongMeetingAccountException();}
-        if(b && m.isAccepted()){notifyObservers("A" + meetingID);}
+        if(b && m.isAccepted()){notifyAccepted(meetingID);}
         return b;
     }
 
@@ -172,7 +177,58 @@ public class MeetingStorage extends Observable {
         boolean b;
         try{b = m.confirmMeeting(attendee);}
         catch(IndexOutOfBoundsException e){throw new WrongMeetingAccountException();}
-        if(b && m.isConfirmed()){notifyObservers("C" + meetingID);}
+        if(b && m.isConfirmed()){notifyConfirmed(meetingID);}
         return b;
+    }
+
+
+
+
+    //Meeting and Trade Observer Pattern below
+
+
+    /** Add an observer to this subject/observed object
+     *
+     * @param meetingObserver The newly-added observer for this object
+     */
+    public void attachMeetingObserver(MeetingObserver meetingObserver){
+        observers.add(meetingObserver);
+    }
+
+
+    /** Remove an observer from this subject/observed object
+     *
+     * @param meetingObserver The recently-removed observer from this object
+     */
+    public void detachMeetingObserver(MeetingObserver meetingObserver){
+        observers.remove(meetingObserver);
+    }
+
+
+    /** Notify its observer that a meeting has been accepted
+     *
+     * @param meetingID The meeting that was accepted
+     */
+    public void notifyAccepted(int meetingID){
+        int numOfObservers = observers.size();
+        int i = 0;
+        while(i < numOfObservers){
+            observers.get(i).updateAccepted(meetingID);
+            i++;
+        }
+    }
+
+
+    /** Notify its observers that a meeting has been confirmed
+     *
+     * @param meetingID The meeting that was confirmed
+     */
+    public void notifyConfirmed(int meetingID){
+        int numOfObservers = observers.size();
+        int i = 0;
+        while(i < numOfObservers){
+            observers.get(i).updateConfirmed(meetingID);
+            i++;
+        }
     }
 }
