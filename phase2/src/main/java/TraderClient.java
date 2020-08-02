@@ -1,22 +1,17 @@
 package main.java;
 
-import main.java.model.account.Account;
-import main.java.model.account.AccountNotFoundException;
 
 import java.io.*;
 
-/** A presenter / User Interface for running the program and interacting with the program menu.
- *
- * @author Sarah Aliakbari
+/* A presenter / User Interface for running the program and interacting with the program menu.
+
+  @author Sarah Aliakbari
  * @version %I%, %G%
  * @since Phase 1
- */
-
 public class TraderClient {
 
     private TraderSystem ts;
     private BufferedReader keyboard;
-    private Account currUser;
     private String userInput;
 
     public void run() {
@@ -54,7 +49,7 @@ public class TraderClient {
      *       2 represents option to Register a new account
      * sets currUser to the logged in User Account
      * @throws IOException file could no tbe written to after adding an account
-     */
+
     public void login() throws IOException {
         System.out.println("1. Sign In\n2. Register");
         String i = getInput();
@@ -79,7 +74,7 @@ public class TraderClient {
     }
 
     /** Prints out the layer two UI.
-     */
+
     public void layerTwoMenu() {
         System.out.println("1. View Account Information\n2. Add Items\n3. Browse Listings\n4. Create Request\n" +
                 "5. Add to Wishlist\n6. My Activity\n7. Offers\n8. Active Trades\n9. Sign out");
@@ -92,7 +87,7 @@ public class TraderClient {
      *
      * currUser user: The instance of the user which is currently logged in.
      * @throws IOException if the user enters an invalid option
-     */
+
     public void layerTwo() throws IOException {
         String option = getInput();
         try {
@@ -148,7 +143,7 @@ public class TraderClient {
      *
      * currUser admin: The instance of the admin user which is currently logged in.
      * @throws IOException if the user inputs an invalid option
-     */
+
         private void adminOptions() throws IOException {
             try {
             System.out.println("1. View Requests\n2. Freeze Accounts\n3. Update Trade Threshold\n4. Add new Admins");
@@ -196,7 +191,7 @@ public class TraderClient {
     /**
      * Prints out information about account
      * @throws IOException if the files are corrupt or does not contain correct data.
-     */
+
     public void accountInformation() throws IOException {
         Account account = currUser;
         System.out.println("Username: " + account.getUsername());
@@ -234,3 +229,4 @@ public class TraderClient {
     }
 
 }
+ */

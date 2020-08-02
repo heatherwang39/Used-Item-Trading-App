@@ -14,37 +14,26 @@ public class TraderGUI extends JDialog{
         setContentPane(MainContainer);
         setModal(true);
 
-        registerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFrame frame = new JFrame("Register");
-                frame.setContentPane(new RegisterGUI().MainContainer);
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.pack();
-                frame.setVisible(true);
+        registerButton.addActionListener(e -> {
+            JFrame frame = new JFrame("Register");
+            frame.setContentPane(new RegisterGUI().MainContainer);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.pack();
+            frame.setVisible(true);
 
-            }
         });
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFrame frame = new JFrame("Menu");
-                frame.setContentPane(new LoginGUI().MainContainer);
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.pack();
-                frame.setVisible(true);
-                // have a pop-up here which takes in username and password
-                // if user is admin: open admingui
-                // if user is regular: open logingui
+        loginButton.addActionListener(e -> {
+            JFrame frame = new JFrame("Menu");
+            frame.setContentPane(new LoginGUI().MainContainer);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.pack();
+            frame.setVisible(true);
+            // have a pop-up here which takes in username and password
+            // if user is admin: open admingui
+            // if user is regular: open logingui
 
-            }
         });
-        exitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
+        exitButton.addActionListener(e -> dispose());
     }
 
     public static void main(String[] args) {

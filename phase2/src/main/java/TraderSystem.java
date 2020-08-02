@@ -1,5 +1,5 @@
 package main.java;
-
+/*
 import main.java.model.account.*;
 import main.java.model.item.Item;
 import main.java.model.item.ItemNotFoundException;
@@ -29,11 +29,11 @@ public class TraderSystem {
 
 
     /**
-     * Creates a new TraderSystem.
-     *
-     * @throws IOException if the files are corrupt or does not contain correct data.
+      Creates a new TraderSystem.
+
+      @throws IOException if the files are corrupt or does not contain correct data.
      * @throws ClassNotFoundException if there's a casting error for reading and writing files.
-     */
+
     public TraderSystem(BufferedReader keyboard) throws IOException, ClassNotFoundException {
 
         input = keyboard;
@@ -50,7 +50,7 @@ public class TraderSystem {
      * A method used to receive input from the user.
      *
      * @return the user's input
-     */
+
     public String getInput() {
         try {
             lastInput = input.readLine();
@@ -69,7 +69,7 @@ public class TraderSystem {
      * username: input username
      * password: input password
      * @return a boolean representing whether the combination is valid
-     */
+
     public Account signIn() {
         try {
             System.out.println("Username: ");
@@ -91,7 +91,7 @@ public class TraderSystem {
      *
      * @return the registered user's account instance
      * @throws IOException if the files are corrupt or does not contain correct data.
-     */
+
     public Account register() throws IOException {
         Account acc = null;
          // make this method have less duplicate lines for errors later
@@ -149,7 +149,7 @@ public class TraderSystem {
      * @param account an instance of Account
      * @throws IOException if the files are corrupt or does not contain correct data.
      * @throws AccountNotFoundException if there's a casting error for reading and writing files.
-     */
+
     public void viewInventory(Account account) throws IOException, AccountNotFoundException {
         EntityDisplay ed = new EntityDisplay("Your Inventory");
         List<Integer> contraband = new ArrayList<>();
@@ -174,7 +174,7 @@ public class TraderSystem {
      * @param account an instance of Account
      * @throws IOException if the files are corrupt or does not contain correct data.
      * @throws AccountNotFoundException if there's a casting error for reading and writing files.
-     */
+
     public void viewWishlist(Account account) throws IOException, AccountNotFoundException {
         EntityDisplay ed = new EntityDisplay("Your Wishlist");
         List<Integer> contraband = new ArrayList<>();
@@ -197,7 +197,7 @@ public class TraderSystem {
      * Adds an item to account
      *
      * @param account an instance of Account
-     */
+
     public void addItem(Account account) {
         System.out.println("Enter the name of the item:");
         String name = getInput();
@@ -241,7 +241,7 @@ public class TraderSystem {
 
     /**
      * Displays every available item listing
-     */
+
     public void browseListings() {
         EntityDisplay ed = new EntityDisplay("Available Items");
         for (Item item: im.getVerifiedItems()){
@@ -252,7 +252,7 @@ public class TraderSystem {
 
     /**
      * Adds a new admin account
-     */
+
     public void addAdmin() {
         System.out.println("Enter the username of the user you would like to promote to admin: ");
         String username = getInput();
@@ -284,7 +284,7 @@ public class TraderSystem {
      * (1) Their three most recently traded items
      * (2) Their three most frequent trading partners
      * @param account account of the user who requested their activity
-     */
+
     public void showActivity(Account account) {
         String username = account.getUsername();
         System.out.println("Here are the most recent items traded:");
@@ -308,7 +308,7 @@ public class TraderSystem {
      * Shows the user what offers have been made to them.
      *
      * @param user the user who is checking their received offers
-     */
+
     public void showOffers(Account user) {
         try {
             List<Integer> tradesReceived = am.getTradesReceived(user);
@@ -342,7 +342,7 @@ public class TraderSystem {
      * Shows the user what trades they currently have active
      *
      * @param user the user who is checking their active trades
-     */
+
     public void showActiveTrades(Account user) {
         try {
             List<Integer> allTrades = new ArrayList<>(am.getTradesReceived(user));
@@ -379,7 +379,7 @@ public class TraderSystem {
     /**
      * Shows all requests sent by users to have items added to their inventories to an admin. Admins can choose to
      * accept or deny this request.
-     */
+
     public void showItemRequests() {
         System.out.println("Here are the current item requests. Press 1 to accept and 2 to deny: ");
         List<Item> unverifiedItemList = im.getUnverifiedItems();
@@ -405,7 +405,7 @@ public class TraderSystem {
 
     /**
      * Shows an admin which users have borrowed more than they have lent, letting the admin to choose to freeze their account.
-     */
+
     public void showFreezeUsers() throws IOException {
         List<String> usernames = am.getUsernames();
         LocalDateTime now = LocalDateTime.now();
@@ -443,26 +443,26 @@ public class TraderSystem {
     /**
      * Updates the trade threshold.
      * @param newThreshold the new threshold to replace current one.
-     */
+
     public void updateTradeThreshold(int newThreshold){ tradeThreshold = newThreshold; }
 
     /**
      * Updates the weekly threshold.
      * @param newThreshold the new threshold to replace current one.
-     */
+
     public void updateWeeklyThreshold(int newThreshold){ weeklyThreshold = newThreshold; }
 
     /**
      * Updates the incomplete threshold.
      * @param newThreshold the new threshold to replace current one.
-     */
+
     public void updateIncompleteThreshold(int newThreshold){ incompleteThreshold = newThreshold; }
 
     /**
      * Allows a user to add an item to their wishlist by inputting it's id
      *
      * @param user the user instance which is currently logged in
-     */
+
     public void addWishlist(Account user){
         System.out.println("Type the id of the item you would like to add to your wishlist.");
         int itemId;
@@ -484,7 +484,7 @@ public class TraderSystem {
      * Initializes a trade request meant to be sent by the user.
      *
      * @param user the user instance which is currently logged in
-     */
+
     public void createRequest(Account user) {
         System.out.println("What kind of request you want to make? 1. One way trade 2. Two way trade");
         System.out.println("-----------------");
@@ -655,3 +655,4 @@ public class TraderSystem {
 
 
 }
+*/
