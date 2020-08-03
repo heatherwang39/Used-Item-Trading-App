@@ -48,7 +48,7 @@ public class StorageFactory {
         }
     }
 
-    private void createStorage(String type) throws IOException, ClassNotFoundException, InvalidStorageTypeException {
+    private void createStorage(String type) throws IOException, InvalidStorageTypeException, ClassNotFoundException {
         String filePath = path + filenameMap.get(type);
         File file = new File(filePath);
         FileReadWriter fileReadWriter = new FileReadWriter(filePath);
@@ -88,12 +88,27 @@ public class StorageFactory {
         }
     }
 
+    /**
+     * Get a Storage by type.
+     *
+     * @param type Storage type
+     * @return Storage
+     * @throws InvalidStorageTypeException if improper Storage type is inputted
+     */
     public Storage getStorage(String type) throws InvalidStorageTypeException {
         if (!STORAGES.contains(type)) { throw new InvalidStorageTypeException(); }
         return storageMap.get(type);
     }
 
-    public void saveStorage(String type) throws IOException {
+    /**
+     * Save Storage data to file by type.
+     *
+     * @param type Storage type
+     * @throws IOException if an error occurs during writing to file
+     * @throws InvalidStorageTypeException if improper Storage type is inputted
+     */
+    public void saveStorage(String type) throws IOException, InvalidStorageTypeException {
+        if (!STORAGES.contains(type)) { throw new InvalidStorageTypeException(); }
         new FileReadWriter(path + filenameMap.get(type)).saveToFile(dataMap.get(type));
     }
 }
