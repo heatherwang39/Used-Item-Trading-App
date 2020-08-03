@@ -12,7 +12,7 @@ import java.util.List;
  * @version %I%, %G%
  * @since Phase 1
  */
-abstract class Trade implements Serializable {
+public abstract class Trade implements Serializable {
     private final int tradeNumber;
     private int status;
 

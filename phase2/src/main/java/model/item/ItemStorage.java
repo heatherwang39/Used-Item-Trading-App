@@ -1,6 +1,6 @@
 package main.java.model.item;
 
-import main.java.model.trade.TradeObservee;
+import main.java.model.Storage;
 import main.java.model.trade.TradeObserver;
 
 import java.util.*;
@@ -14,9 +14,9 @@ import java.util.*;
  */
 
 
-public class ItemStorage implements TradeObserver {
+public class ItemStorage implements Storage, TradeObserver {
 
-    private Map<Integer, Item> items;
+    private final Map<Integer, Item> items;
 
     /**
      * Class constructor

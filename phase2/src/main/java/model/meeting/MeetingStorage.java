@@ -1,5 +1,6 @@
 package main.java.model.meeting;
 
+import main.java.model.Storage;
 import main.java.model.trade.TradeObserver;
 
 import java.time.LocalDateTime;
@@ -14,7 +15,7 @@ import java.util.Observable;
  * @version %I%, %G%
  * @since Phase 2
  */
-public class MeetingStorage implements MeetingObservee{
+public class MeetingStorage  implements Storage, MeetingObservee{
     private final List<Meeting> meetings;
 
     private final List<MeetingObserver> observers = new ArrayList<>();

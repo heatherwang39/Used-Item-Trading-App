@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @version %I%, %G%
  * @since Phase 1
  */
-abstract class Account implements Serializable {
+public abstract class Account implements Serializable {
 
     private final String username;
     private String type;

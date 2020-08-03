@@ -1,5 +1,7 @@
 package main.java.model.status;
 
+import main.java.model.Storage;
+
 import java.util.*;
 
 /**
@@ -9,7 +11,7 @@ import java.util.*;
  * @version %I%, %G%
  * @since Phase 2
  */
-public class StatusStorage {
+public class StatusStorage implements Storage {
 
     Map<String, List<Status>> statuses;
     StatusFactory statusFactory;
@@ -102,9 +104,9 @@ public class StatusStorage {
      * @param username Account username
      * @param type Status type
      */
-    public void createStatus(String username, String type) throws ImproperStatusTypeException {
+    public void createStatus(String username, String type) throws InvalidStatusTypeException {
         Status s = statusFactory.getStatus(type);
-        if (s == null) throw new ImproperStatusTypeException();
+        if (s == null) throw new InvalidStatusTypeException();
         if (statuses.containsKey(username)) {
             statuses.get(username).add(s);
         } else {

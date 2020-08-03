@@ -13,7 +13,7 @@ import java.util.List;
  * @version %I%, %G%
  * @since Phase 1
  */
-abstract class Message implements Serializable {
+public abstract class Message implements Serializable {
 
     private final String title;
     private final String content;

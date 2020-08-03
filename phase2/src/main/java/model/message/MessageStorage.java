@@ -1,5 +1,7 @@
 package main.java.model.message;
 
+import main.java.model.Storage;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +13,7 @@ import java.util.List;
  * @since Phase 1
  */
 
-public class MessageStorage {
+public class MessageStorage implements Storage {
 
     private final List<Message> messages;
 

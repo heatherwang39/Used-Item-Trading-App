@@ -7,7 +7,7 @@ package main.java.model.account;
  * @version %I%, %G%
  * @since Phase 2
  */
-abstract class LoginAccount extends Account {
+public abstract class LoginAccount extends Account {
 
     private final String password;
     private final String emailAddress;

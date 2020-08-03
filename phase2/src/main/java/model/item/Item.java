@@ -12,7 +12,7 @@ import java.util.List;
  * @version %I%, %G%
  * @since Phase 1
  */
-class Item implements Serializable {
+public class Item implements Serializable {
 
     private final int id;
     private String owner;

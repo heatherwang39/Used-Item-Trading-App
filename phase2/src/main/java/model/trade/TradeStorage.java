@@ -1,7 +1,6 @@
 package main.java.model.trade;
 
-import com.sun.org.apache.xerces.internal.impl.dv.xs.BaseDVFactory;
-import main.java.model.meeting.MeetingObservee;
+import main.java.model.Storage;
 import main.java.model.meeting.MeetingObserver;
 
 import java.util.*;
@@ -14,7 +13,7 @@ import java.util.*;
  * @since Phase 1
  */
 
-public class TradeStorage implements MeetingObserver, TradeObservee {
+public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
     private final List<Trade> trades;
     private final TradeAlgorithmFactory taf = new TradeAlgorithmFactory();
     private final FreezeManager fm = new FreezeManager();

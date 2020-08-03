@@ -1,5 +1,7 @@
 package main.java.model.account;
 
+import main.java.model.Storage;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +14,7 @@ import java.util.regex.Pattern;
  * @version %I%, %G%
  * @since Phase 1
  */
-public class AccountStorage {
+public class AccountStorage implements Storage {
 
     Map<String, LoginAccount> accounts;
 

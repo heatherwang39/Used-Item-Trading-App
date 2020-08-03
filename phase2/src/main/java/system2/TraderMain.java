@@ -1,15 +1,17 @@
 package main.java.system2;
-/*
+
+import java.io.IOException;
+
 public class TraderMain {
 
-    /**
-      Creates an TraderClient instance and calls its run method which boots up the program.
+    static final String RESOURCE_PATH = "phase2/src/main/resources/";
+    static final String FILENAME_CONFIG = "filenames.config";
 
     public static void main(String[] args) {
-
-        TraderClient tc = new TraderClient();
-        tc.run();
-
-    }
+        try {
+            StorageFactory storageFactory = new StorageFactory(RESOURCE_PATH, FILENAME_CONFIG);
+        } catch (IOException | InvalidStorageTypeException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    } 
 }
-*/
