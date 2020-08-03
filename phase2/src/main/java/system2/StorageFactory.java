@@ -37,55 +37,56 @@ public class StorageFactory {
      * @param filenameConfig filenames corresponding to each Storage
      * @throws IOException occurs during config read/load
      */
-    public StorageFactory(String resourcePath, String filenameConfig) throws IOException, InvalidStorageTypeException,
-            ClassNotFoundException {
+    public StorageFactory(String resourcePath, String filenameConfig) throws IOException {
         path = resourcePath;
         Properties storages = new Properties();
         storages.load(new FileInputStream(path + filenameConfig));
-        for (String storage: STORAGES) {
-            filenameMap.put(storage, storages.getProperty("filenames." + storage));
-            createStorage(storage);
-        }
+        filenameMap = (Map) storages;
     }
 
-    private void createStorage(String type) throws IOException, InvalidStorageTypeException, ClassNotFoundException {
+    private Storage createStorage(String type) throws IOException, InvalidStorageTypeException, ClassNotFoundException {
         String filePath = path + filenameMap.get(type);
         File file = new File(filePath);
         FileReadWriter fileReadWriter = new FileReadWriter(filePath);
-        if (file.exists()) {
-            try {
-                switch (type) {
-                    case "ACCOUNT":
-                        Map<String, LoginAccount> accounts = (Map<String, LoginAccount>) fileReadWriter.readFromFile();
-                        dataMap.put(type, accounts);
-                        storageMap.put(type, new AccountStorage(accounts));
-                    case "ITEM":
-                        Map<Integer, Item> items = (Map<Integer, Item>) fileReadWriter.readFromFile();
-                        dataMap.put(type, items);
-                        storageMap.put(type, new ItemStorage(items));
-                    case "MESSAGE":
-                        List<Message> messages = (List<Message>) fileReadWriter.readFromFile();
-                        dataMap.put(type, messages);
-                        storageMap.put(type, new MessageStorage(messages));
-                    case "MEETING":
-                        List<Meeting> meetings = (List<Meeting>) fileReadWriter.readFromFile();
-                        dataMap.put(type, meetings);
-                        storageMap.put(type, new MeetingStorage(meetings));
-                    case "STATUS":
-                        Map<String, List<Status>> statuses = (Map<String, List<Status>>) fileReadWriter.readFromFile();
-                        dataMap.put(type, statuses);
-                        storageMap.put(type, new StatusStorage(statuses));
-                    case "TRADE":
-                        List<Trade> trades = (List<Trade>) fileReadWriter.readFromFile();
-                        dataMap.put(type, trades);
-                        storageMap.put(type, new TradeStorage(trades));
-                    default:
-                        throw new InvalidStorageTypeException();
-                }
-            } catch(EOFException ignored) {}
-        } else {
-            assert file.createNewFile();
-        }
+        assert file.exists() || file.createNewFile();
+        Storage storage = null;
+        try {
+            switch (type) {
+                case "ACCOUNT":
+                    Map<String, LoginAccount> accounts = (Map<String, LoginAccount>) fileReadWriter.readFromFile();
+                    dataMap.put(type, accounts);
+                    storage = new AccountStorage(accounts);
+                    storageMap.put(type, storage);
+                case "ITEM":
+                    Map<Integer, Item> items = (Map<Integer, Item>) fileReadWriter.readFromFile();
+                    dataMap.put(type, items);
+                    storage = new ItemStorage(items);
+                    storageMap.put(type, storage);
+                case "MESSAGE":
+                    List<Message> messages = (List<Message>) fileReadWriter.readFromFile();
+                    dataMap.put(type, messages);
+                    storage = new MessageStorage(messages);
+                    storageMap.put(type, storage);
+                case "MEETING":
+                    List<Meeting> meetings = (List<Meeting>) fileReadWriter.readFromFile();
+                    dataMap.put(type, meetings);
+                    storage = new MeetingStorage(meetings);
+                    storageMap.put(type, storage);
+                case "STATUS":
+                    Map<String, List<Status>> statuses = (Map<String, List<Status>>) fileReadWriter.readFromFile();
+                    dataMap.put(type, statuses);
+                    storage = new StatusStorage(statuses);
+                    storageMap.put(type, storage);
+                case "TRADE":
+                    List<Trade> trades = (List<Trade>) fileReadWriter.readFromFile();
+                    dataMap.put(type, trades);
+                    storage = new TradeStorage(trades);
+                    storageMap.put(type, storage);
+                default:
+                    throw new InvalidStorageTypeException();
+            }
+        } catch (EOFException ignored) {}
+        return storage;
     }
 
     /**
@@ -95,9 +96,13 @@ public class StorageFactory {
      * @return Storage
      * @throws InvalidStorageTypeException if improper Storage type is inputted
      */
-    public Storage getStorage(String type) throws InvalidStorageTypeException {
+    public Storage getStorage(String type) throws InvalidStorageTypeException, IOException, ClassNotFoundException {
         if (!STORAGES.contains(type)) { throw new InvalidStorageTypeException(); }
-        return storageMap.get(type);
+        Storage storage = storageMap.get(type);
+        if (storage == null) {
+            storage = createStorage(type);
+        }
+        return storage;
     }
 
     /**

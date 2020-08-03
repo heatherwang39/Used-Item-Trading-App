@@ -32,12 +32,4 @@ public class TraderGUI extends JDialog{
 
         exitButton.addActionListener(e -> dispose());
     }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("TraderGUI");
-        frame.setContentPane(new TraderGUI().MainContainer);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-    }
 }

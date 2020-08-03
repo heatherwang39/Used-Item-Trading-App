@@ -1,5 +1,8 @@
 package main.java.system2;
 
+import main.java.gui.TraderGUI;
+
+import javax.swing.*;
 import java.io.IOException;
 
 public class TraderMain {
@@ -10,8 +13,16 @@ public class TraderMain {
     public static void main(String[] args) {
         try {
             StorageFactory storageFactory = new StorageFactory(RESOURCE_PATH, FILENAME_CONFIG);
-        } catch (IOException | InvalidStorageTypeException | ClassNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
+        // Initialize Controllers here
+
+        JFrame frame = new JFrame("Trader Client");
+        frame.setContentPane(new TraderGUI().MainContainer);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+
     } 
 }
