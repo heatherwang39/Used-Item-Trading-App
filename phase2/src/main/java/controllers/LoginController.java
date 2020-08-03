@@ -1,6 +1,10 @@
 package main.java.controllers;
 
 import main.java.model.account.*;
+import main.java.system2.InvalidStorageTypeException;
+import main.java.system2.StorageFactory;
+
+import java.io.IOException;
 
 /**
  * A Controller for the Login Screen
@@ -11,8 +15,18 @@ import main.java.model.account.*;
  */
 
 public class LoginController {
+    private StorageFactory sf;
     private AccountStorage as;
-    //private StorageFactory sf;
+
+    /** Class constructor
+     *
+     * @param storageFactory The storage factory that this controller uses
+     */
+    public LoginController(StorageFactory storageFactory){
+        sf = storageFactory;
+        try{as = (AccountStorage) sf.getStorage("ACCOUNT");}
+        catch(IOException | InvalidStorageTypeException | ClassNotFoundException ignored){}
+    }
 
     /** Check if you can login with the given data. If you can, return True
      *
