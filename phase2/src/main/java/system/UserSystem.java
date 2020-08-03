@@ -19,7 +19,6 @@ import java.util.List;
  * @since Phase 2
  */
 
-/**
 public class UserSystem extends LoginSystem implements UserInterface, Registerable, Meetable, Updatable, Viewable {
 
     public UserSystem(ItemStorage is, TradeStorage ts, AccountStorage as, String username){super(is, ts, as, username);}
@@ -80,11 +79,9 @@ public class UserSystem extends LoginSystem implements UserInterface, Registerab
         try {
             List<List<Integer>> recentItemIds = ts.recentItemsTraded(username);
             for (List<Integer> itemIds : recentItemIds) {
-                List<String> items = new ArrayList<>();
-                items.add(is.getData(is.getItem(itemIds.get(0))).get("name"));
-                if (itemIds.size() == 2 && !(itemIds.get(1) == null)) {
-                    items.add(is.getData(is.getItem(itemIds.get(1))).get("name"));
-                }
+                List<String> items = is.showNames(itemIds);
+                items.add(items.get(0));
+                if (itemIds.size() == 2 && !(itemIds.get(1) == null)) items.add(items.get(1));
                 recentItems.add(items);
             }
             return recentItems;
@@ -125,10 +122,7 @@ public class UserSystem extends LoginSystem implements UserInterface, Registerab
         List<String> trade = new ArrayList<>();
         List<Integer> itemsOriginal = ts.getItemsOriginal(tradeId);
         trade.add(ts.getTraders(tradeId).get(0)); //Adds the name of the user making the offer
-        trade.add(is.getData(is.getItem(itemsOriginal.get(0))).get("name")); //adds the name of the item wanted
-        if (itemsOriginal.size() == 2)
-            trade.add(is.getData(is.getItem(itemsOriginal.get(1))).get("name")); //adds name of item offered, if any
+        trade.addAll(is.showNames(itemsOriginal)); //adds the name of the items in the trade
         return trade;
     }
 }
- */

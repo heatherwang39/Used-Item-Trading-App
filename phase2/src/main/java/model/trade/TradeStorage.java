@@ -543,23 +543,45 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
 
     //Other Methods
 
-
-    public List<String> checkUserShouldFreeze(String username, int borrowThreshold, int incompleteThreshold,
-                                              int weeklyThreshold) throws TradeNumberException {
-        List <Trade> userTrades = getUserTrades(username);
-        return fm.checkUserShouldFreeze(username, userTrades, borrowThreshold, incompleteThreshold, weeklyThreshold);
-    }
-
+    /**
+     * Returns a list of at most the three most recent trades a user with given username has participated in
+     *
+     * @param username username of user
+     * @return List containing lists with the ids of the items that were a part of the most recent trades
+     * @throws TradeNumberException an invalid trade number is found
+     */
     public List<List<Integer>> recentItemsTraded(String username) throws TradeNumberException {
         List <Trade> userTrades = getUserTrades(username);
         return am.recentItemsTraded(userTrades);
     }
 
+    /**
+     * Returns a list of at most the three most frequent trading partners for the user with given username
+     * @param username username of the user
+     * @return list of the usernames of the most frequent trading partners
+     * @throws TradeNumberException an invalid trade number is found
+     */
     public List<String> frequentTradePartners(String username) throws TradeNumberException {
         List <Trade> userTrades = getUserTrades(username);
         return am.frequentTradePartners(username, userTrades);
     }
 
+    /**
+     * Checks which users in usernames should be frozen based on if they violate any of the trade thresholds
+     * There are three thresholds that are checked:
+     * (1) Borrow Threshold: if a user has borrowed more than they have lent out
+     * (2) Incomplete Threshold: if a user has too many incomplete trades
+     * (3) Weekly Threshold: if a user has traded too much in one week
+     * If a user violates any of these thresholds, a string representing the violation is added into a list, and a list
+     * of reasons is returned.
+     * If the list is empty, the user should not be frozen.
+     *
+     * @param usernames usernames of all users
+     * @param borrowThreshold threshold for borrowing more than lending
+     * @param incompleteThreshold threshold for too many incomplete trades
+     * @param weeklyThreshold threshold for too many trades in one week
+     * @return a list of lists that contain the username and reasons why that user should be frozen. Empty if there are no users to freeze
+     */
     public List<List<String>> showFreezeUsers(List<String> usernames, int borrowThreshold, int incompleteThreshold,
                                               int weeklyThreshold) {
         List<List<String>> freezeList = new ArrayList<>();
@@ -577,6 +599,12 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
             }
         }
         return freezeList;
+    }
+
+    private List<String> checkUserShouldFreeze(String username, int borrowThreshold, int incompleteThreshold,
+                                               int weeklyThreshold) throws TradeNumberException {
+        List <Trade> userTrades = getUserTrades(username);
+        return fm.checkUserShouldFreeze(username, userTrades, borrowThreshold, incompleteThreshold, weeklyThreshold);
     }
 
     protected boolean acceptedStatus(int tradeStatus) {

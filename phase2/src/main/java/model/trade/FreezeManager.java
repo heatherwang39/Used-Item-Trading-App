@@ -26,10 +26,10 @@ class FreezeManager {
                 int tradeId = userTrades.indexOf(trade);
                 List<String> traders = ts.getTraders(tradeId);
                 List<Integer> items = ts.getItemsOriginal(tradeId);
-                //LocalDateTime meetingTime = ts.getMeetingTime(tradeId); //TODO: update with mediator methods
+                LocalDateTime meetingTime = trade.getCompletionTime();
                 int tradeStatus = ts.getStatus(tradeId);
                 if (ts.acceptedStatus(tradeStatus)) borrowScore += checkBorrowThreshold(username, traders, items);
-                //if (checkWeeklyThreshold(meetingTime)) weeklyScore++;
+                if (checkWeeklyThreshold(meetingTime)) weeklyScore++;
                 if (checkIncompleteThreshold(tradeStatus)) incompleteScore++;
             } catch (TradeNumberException e){
                 break;

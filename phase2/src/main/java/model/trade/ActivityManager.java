@@ -13,13 +13,12 @@ import java.util.*;
 
 class ActivityManager {
 
-    public List<List<Integer>> recentItemsTraded(List<Trade> userTrades) {
-        TradeStorage ts = new TradeStorage(userTrades);
+    protected List<List<Integer>> recentItemsTraded(List<Trade> userTrades) {
         List<List<Integer>> threeRecentItems = new ArrayList<>();
         TreeMap<LocalDateTime, Trade> orderedTrades = new TreeMap<>();
         for (Trade trade : userTrades) {
-            //LocalDateTime time = ts.getMeetingTime(); //TODO: update with mediator methods
-            //if (time != null) orderedTrades.put(time, trade);
+            LocalDateTime time = trade.getCompletionTime();
+            if (time != null) orderedTrades.put(time, trade);
         }
         //Citation: https://stackoverflow.com/questions/6928758/get-the-last-3-values-of-a-treemap
         NavigableSet<LocalDateTime> reverseUserTrades = orderedTrades.descendingKeySet();
@@ -33,7 +32,7 @@ class ActivityManager {
         return threeRecentItems;
     }
 
-    public List<String> frequentTradePartners(String username, List<Trade> userTrades) {
+    protected List<String> frequentTradePartners(String username, List<Trade> userTrades) {
         TradeStorage ts = new TradeStorage(userTrades);
         List<String> threeMostFrequentPartners = new ArrayList<>();
         Map<String, Integer> tradingPartners = getTradePartners(username, userTrades, ts);
