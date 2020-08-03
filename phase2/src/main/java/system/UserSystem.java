@@ -19,6 +19,7 @@ import java.util.List;
  * @since Phase 2
  */
 
+/**
 public class UserSystem extends LoginSystem implements UserInterface, Registerable, Meetable, Updatable, Viewable {
 
     public UserSystem(ItemStorage is, TradeStorage ts, AccountStorage as, String username){super(is, ts, as, username);}
@@ -130,3 +131,4 @@ public class UserSystem extends LoginSystem implements UserInterface, Registerab
         return trade;
     }
 }
+ */
