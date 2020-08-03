@@ -1,6 +1,7 @@
 package main.java.model.trade;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,6 +29,8 @@ public abstract class Trade implements Serializable {
 
     private List<Integer> meetings;
     private int numberOfMeetings;
+
+    private LocalDateTime completionTime;
 
     //Basic Trade Methods begin here
 
@@ -92,6 +95,9 @@ public abstract class Trade implements Serializable {
             return false;
         }
         this.status = status;
+        if(status == 3){
+            setCompletionTime(LocalDateTime.now());
+        }
         return true;
     }
 
@@ -283,9 +289,6 @@ public abstract class Trade implements Serializable {
         if(!accepted.get(i)){
             accepted.set(i, true);
         }
-
-        //Currently does not update the items owner
-
         if(checkAccepted()){
             if(numberOfMeetings == 0){setStatus(3);}
             else {setStatus(1);}
@@ -299,5 +302,24 @@ public abstract class Trade implements Serializable {
             }
         }
         return true;
+    }
+
+
+    //Confirmation Time Methods
+
+    /** Set the Completion time of this Trade to be the following
+     *
+     * @param completionTime The Completion time for this Trade
+     */
+    public void setCompletionTime(LocalDateTime completionTime){
+        this.completionTime = completionTime;
+    }
+
+    /** Get the Completion time of this Trade
+     *
+     * @return the Completion time of this Trade
+     */
+    public LocalDateTime getCompletionTime(){
+        return completionTime;
     }
 }
