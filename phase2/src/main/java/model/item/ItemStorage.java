@@ -41,11 +41,10 @@ public class ItemStorage implements Storage, TradeObserver {
 
 
 
-    private Item newItem(String owner, String name, String description, List<String> tags) {
+    public void newItem(String owner, String name, String description, List<String> tags) {
         int id = generateNextID();
         Item item = new Item(id, owner, name, description, tags);
         items.put(generateNextID(), item);
-        return item;
     }
 
     /**
@@ -239,7 +238,7 @@ public class ItemStorage implements Storage, TradeObserver {
      * @param item the item
      * @return Data in the form of {Label: Information, ...}
      */
-    public HashMap<String, String> getData(Item item) {
+    private HashMap<String, String> getData(Item item) {
         HashMap<String, String> data = new HashMap<>();
         data.put("id", String.valueOf(item.getID()));
         data.put("owner", item.getOwner());
@@ -251,7 +250,14 @@ public class ItemStorage implements Storage, TradeObserver {
         return data;
     }
 
-
+    public List<String> showNames(List<Integer> ids) throws ItemNotFoundException {
+        List<String> names = new ArrayList<>();
+        for(int id:ids){
+            String name = getItem(id).getName();
+            names.add(name);
+        }
+        return names;
+    }
 
 
     //Item and Trade Observer Pattern below
