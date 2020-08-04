@@ -1,8 +1,7 @@
-package main.java.controllers;
+package main.java.controller;
 
 import main.java.model.item.ItemStorage;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

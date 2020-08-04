@@ -1,6 +1,4 @@
-package main.java.controllers;
-
-import java.util.List;
+package main.java.controller;
 
 /**
  * A Controller for Accounts

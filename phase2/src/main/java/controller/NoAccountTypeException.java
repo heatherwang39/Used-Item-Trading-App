@@ -1,4 +1,4 @@
-package main.java.controllers;
+package main.java.controller;
 
 /**
  * An exception thrown when the controller for the given Account Type hasn't been implemented yet

@@ -1,4 +1,4 @@
-package main.java.controllers;
+package main.java.controller;
 
 public class AdminController implements AccountController {
 

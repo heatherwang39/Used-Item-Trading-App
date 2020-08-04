@@ -1,4 +1,4 @@
-package main.java.controllers;
+package main.java.controller;
 
 import main.java.model.account.AccountStorage;
 import main.java.model.item.ItemStorage;

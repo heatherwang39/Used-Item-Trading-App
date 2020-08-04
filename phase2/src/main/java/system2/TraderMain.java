@@ -20,9 +20,8 @@ public class TraderMain {
 
         JFrame frame = new JFrame("Trader Client");
         frame.setContentPane(new TraderGUI().MainContainer);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-
     } 
 }
