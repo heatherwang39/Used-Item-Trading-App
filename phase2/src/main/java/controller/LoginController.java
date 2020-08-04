@@ -34,9 +34,10 @@ public class LoginController {
      * @param password The password of the account
      * @return Whether you can login
      */
-    Boolean login(String username, String password){
-        return as.tryLogin(username, password);
+    public Account login(String username, String password) throws AccountNotFoundException{
+        return as.getAccount(username);
     }
+
 
     /** Attempt to register an account. If no exceptions are thrown, registration was successful.
      *
@@ -48,7 +49,7 @@ public class LoginController {
      * @throws InvalidEmailAddressException Email is Invalid
      * @throws EmailAddressInUseException Email is in use
      */
-    void register(String username, String password, String emailAddress) throws InvalidLoginException,
+    public void register(String username, String password, String emailAddress) throws InvalidLoginException,
             UsernameInUseException, InvalidEmailAddressException, EmailAddressInUseException{
         as.createUser(username, password, emailAddress);
     }
