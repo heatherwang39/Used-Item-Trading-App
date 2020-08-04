@@ -11,10 +11,8 @@ public class NewStatus extends Status {
     /**
      * Class constructor.
      *
-     * @param username status' account's username
      */
-    public NewStatus(String username) {
-        super(username);
+    public NewStatus() {
         setType("NEW");
     }
 }

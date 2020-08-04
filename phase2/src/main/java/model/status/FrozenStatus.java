@@ -12,10 +12,8 @@ public class FrozenStatus extends Status {
     /**
      * Class constructor.
 
-     * @param username status' account's username
      */
-    public FrozenStatus(String username) {
-        super(username);
+    public FrozenStatus() {
         setType("FROZEN");
     }
 }

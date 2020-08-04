@@ -12,24 +12,13 @@ import java.io.Serializable;
  */
 public class Status implements Serializable {
 
-    private final String username;
     private String type;
 
     /**
      * Class constructor.
      *
-     * @param username status' account's username
      */
-    public Status(String username) {
-        this.username = username;
-    }
-
-    /**
-     * Get status' account's username.
-     *
-     * @return username
-     */
-    public String getUsername() { return username; }
+    public Status() {}
 
     /**
      * Get status' type.

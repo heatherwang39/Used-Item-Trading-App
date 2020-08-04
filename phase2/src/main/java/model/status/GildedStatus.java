@@ -11,10 +11,8 @@ public class GildedStatus extends Status {
     /**
      * Class constructor.
      *
-     * @param username status' account's username
      */
-    public GildedStatus(String username) {
-        super(username);
+    public GildedStatus() {
         setType("GILDED");
     }
 }

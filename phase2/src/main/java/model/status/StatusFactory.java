@@ -16,15 +16,15 @@ public class StatusFactory {
     public Status getStatus(String statusType) {
         switch (statusType.toUpperCase()) {
             case "AWAY":
-                return new AwayStatus(statusType);
+                return new AwayStatus();
             case "FROZEN":
-                return new FrozenStatus(statusType);
+                return new FrozenStatus();
             case "GILDED":
-                return new GildedStatus(statusType);
+                return new GildedStatus();
             case "MUTED":
-                return new MutedStatus(statusType);
+                return new MutedStatus();
             case "NEW":
-                return new NewStatus(statusType);
+                return new NewStatus();
             default:
                 return null;
         }

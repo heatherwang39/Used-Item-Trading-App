@@ -11,11 +11,9 @@ package main.java.model.status;
 public class AwayStatus extends Status {
     /**
      * Class constructor.
-     *
-     * @param username status' account's username
      */
-    public AwayStatus(String username) {
-        super(username);
+    public AwayStatus() {
+        super();
         setType("AWAY");
     }
 }

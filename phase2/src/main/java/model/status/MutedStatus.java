@@ -11,10 +11,8 @@ public class MutedStatus extends Status {
     /**
      * Class constructor.
      *
-     * @param username status' account's username
      */
-    public MutedStatus(String username) {
-        super(username);
+    public MutedStatus() {
         setType("MUTED");
     }
 }
