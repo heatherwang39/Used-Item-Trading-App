@@ -22,8 +22,6 @@ This design makes it particularly easy to add new TradeAlgorithms--all we need t
 ####StatusFactory
 #####(By Robbert Liu)
 
-*Please refer to "Trade/TradeAlgorithm" under the Strategy Subheading to better understand TradeAlgorithms*
-
 The constructor of every Status is identical, and I wanted an extensible way to lower the dependency between the Status constructor and StatusStorage, which only needs to access Stati after they are created.
 
 
@@ -64,3 +62,10 @@ Only trades depend on meetings, yet meetings do not depend on any class (not eve
 2) If the final Meeting for a Trade has been confirmed, the TradeStorage class will update the corresponding Trade to record the fact the Trade is now finished.
 
 This design pattern allows for TradeStorage and MeetingStorage to be abstract (i.e., coupling is reduced between the two classes).
+
+
+
+
+####TradeStorage/ItemStorage
+#####(By Warren Zhu)
+

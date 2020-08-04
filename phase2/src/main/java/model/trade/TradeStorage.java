@@ -510,19 +510,19 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
 
     /** Add an observer to this subject/observed object
      *
-     * @param itemObserver The newly-added observer for this object
+     * @param tradeObserver The newly-added observer for this object
      */
-    public void attachItemObserver(TradeObserver itemObserver){
-        observers.add(itemObserver);
+    public void attachTradeObserver(TradeObserver tradeObserver){
+        observers.add(tradeObserver);
     }
 
 
     /** Remove an observer from this subject/observed object
      *
-     * @param itemObserver The recently-removed observer from this object
+     * @param tradeObserver The recently-removed observer from this object
      */
-    public void detachItemObserver(TradeObserver itemObserver){
-        observers.remove(itemObserver);
+    public void detachTradeObserver(TradeObserver tradeObserver){
+        observers.remove(tradeObserver);
     }
 
 

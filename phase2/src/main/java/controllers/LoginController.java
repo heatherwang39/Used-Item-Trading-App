@@ -34,7 +34,7 @@ public class LoginController {
      * @param password The password of the account
      * @return Whether you can login
      */
-    boolean login(String username, String password){
+    Boolean login(String username, String password){
         return as.tryLogin(username, password);
     }
 

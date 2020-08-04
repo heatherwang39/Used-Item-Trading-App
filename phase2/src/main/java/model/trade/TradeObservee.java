@@ -14,16 +14,16 @@ public interface TradeObservee {
 
     /** Add an observer to this subject/observed object
      *
-     * @param itemObserver The newly-added observer for this object
+     * @param tradeObserver The newly-added observer for this object
      */
-    void attachItemObserver(TradeObserver itemObserver);
+    void attachTradeObserver(TradeObserver tradeObserver);
 
 
     /** Remove an observer from this subject/observed object
      *
-     * @param itemObserver The recently-removed observer from this object
+     * @param tradeObserver The recently-removed observer from this object
      */
-    void detachItemObserver(TradeObserver itemObserver);
+    void detachTradeObserver(TradeObserver tradeObserver);
 
 
     /** Notify the observers that a Trade with the items distributed between owners as stored in the two parallel lists

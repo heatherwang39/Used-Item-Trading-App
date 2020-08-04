@@ -161,4 +161,15 @@ public class AccountStorage implements Storage {
     public boolean tryLogin(String username, String password){
         return accounts.containsKey(username) && accounts.get(username).isPassword(password);
     }
+
+
+    /** Return the type of account
+     *
+     * @param username The username of the account
+     * @return The type of account the given account is
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     */
+    public String getType(String username) throws AccountNotFoundException{
+        return getAccount(username).getType();
+    }
 }

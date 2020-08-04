@@ -7,7 +7,7 @@ package main.java.model.account;
  * @version %I%, %G%
  * @since Phase 1
  */
-class AccountNotFoundException extends Exception {
+public class AccountNotFoundException extends Exception {
 
     /**
      * Class Constructor

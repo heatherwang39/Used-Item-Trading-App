@@ -11,6 +11,7 @@ package main.java.model.trade;
 public class TradeAlgorithmFactory {
 
     /**
+     * Constructs the a new instance of the given trade algorithm.
      *
      * @param tradeAlgorithmName The name of the Trade Algorithm
      * @return The trade algorithm with the given name.
