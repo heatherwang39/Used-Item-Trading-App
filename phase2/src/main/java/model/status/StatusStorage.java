@@ -21,8 +21,8 @@ public class StatusStorage implements Storage {
      *
      * @param statuses Map containing lists of Statuses referenced by usernames
      */
-    public StatusStorage(Map<String, List<Status>> statuses) {
-        this.statuses = statuses;
+    public StatusStorage(Object statuses) {
+        this.statuses = (Map<String, List<Status>>) statuses;
         statusFactory = new StatusFactory();
     }
 

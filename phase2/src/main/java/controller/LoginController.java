@@ -1,8 +1,11 @@
 package main.java.controller;
 
+import main.java.model.Storage;
 import main.java.model.account.*;
 import main.java.system2.InvalidStorageTypeException;
+import main.java.system2.StorageEnum;
 import main.java.system2.StorageFactory;
+import main.java.system2.StorageGateway;
 
 import java.io.IOException;
 
@@ -15,17 +18,18 @@ import java.io.IOException;
  */
 
 public class LoginController {
+    private StorageGateway sg;
     private StorageFactory sf;
     private AccountStorage as;
 
     /** Class constructor
      *
-     * @param storageFactory The storage factory that this controller uses
+     * @param storageGateway Gateway class for reading and writing Storage Data
      */
-    public LoginController(StorageFactory storageFactory){
-        sf = storageFactory;
-        try{as = (AccountStorage) sf.getStorage("ACCOUNT");}
-        catch(IOException | InvalidStorageTypeException | ClassNotFoundException ignored){}
+    public LoginController(StorageGateway storageGateway){
+        sf = new StorageFactory();
+        try{as = (AccountStorage) sf.getStorage(storageGateway, StorageEnum.ACCOUNT);}
+        catch(IOException | ClassNotFoundException ignored){}
     }
 
     /** Check if you can login with the given data. If you can, return True

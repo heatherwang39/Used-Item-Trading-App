@@ -22,8 +22,8 @@ public class MessageStorage implements Storage {
      *
      * @param messages list of messages
      */
-    public MessageStorage(List<Message> messages) {
-        this.messages = messages;
+    public MessageStorage(Object messages) {
+        this.messages = (List<Message>) messages;
     }
 
     /**

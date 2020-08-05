@@ -8,7 +8,9 @@ import main.java.model.status.StatusStorage;
 import main.java.model.trade.*;
 import main.java.model.account.AccountNotFoundException;
 import main.java.system2.InvalidStorageTypeException;
+import main.java.system2.StorageEnum;
 import main.java.system2.StorageFactory;
+import main.java.system2.StorageGateway;
 
 import java.io.IOException;
 
@@ -31,20 +33,20 @@ public class AccountControllerFactory {
     private TradeStorage tradeStorage;
 
 
-    public AccountControllerFactory(StorageFactory storageFactory){
+    public AccountControllerFactory(StorageGateway storageGateway, StorageFactory storageFactory){
         this.storageFactory = storageFactory;
         try{
-            accountStorage = (AccountStorage) storageFactory.getStorage("ACCOUNT");
-            itemStorage = (ItemStorage) storageFactory.getStorage("ITEM");
-            messageStorage = (MessageStorage) storageFactory.getStorage("MESSAGE");
-            meetingStorage = (MeetingStorage) storageFactory.getStorage("MEETING");
-            statusStorage = (StatusStorage) storageFactory.getStorage("STATUS");
-            tradeStorage = (TradeStorage) storageFactory.getStorage("TRADE");
+            accountStorage = (AccountStorage) storageFactory.getStorage(storageGateway, StorageEnum.ACCOUNT);
+            itemStorage = (ItemStorage) storageFactory.getStorage(storageGateway, StorageEnum.ITEM);
+            messageStorage = (MessageStorage) storageFactory.getStorage(storageGateway, StorageEnum.MESSAGE);
+            meetingStorage = (MeetingStorage) storageFactory.getStorage(storageGateway, StorageEnum.MEETING);
+            statusStorage = (StatusStorage) storageFactory.getStorage(storageGateway, StorageEnum.STATUS);
+            tradeStorage = (TradeStorage) storageFactory.getStorage(storageGateway, StorageEnum.TRADE);
 
             meetingStorage.attachMeetingObserver(tradeStorage);
             tradeStorage.attachTradeObserver(itemStorage);
         }
-        catch(IOException | InvalidStorageTypeException | ClassNotFoundException ignored){}
+        catch(IOException | ClassNotFoundException ignored){}
     }
 
 

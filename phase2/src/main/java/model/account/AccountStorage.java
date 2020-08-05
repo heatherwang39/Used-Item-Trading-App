@@ -23,7 +23,7 @@ public class AccountStorage implements Storage {
      *
      * @param accounts Map containing LoginAccounts referenced by usernames
      */
-    public AccountStorage(Map<String, LoginAccount> accounts) { this.accounts = accounts; }
+    public AccountStorage(Object accounts) { this.accounts = (Map<String, LoginAccount>) accounts; }
 
     /**
      * Checks if username and password violate proper string format (are valid alphanumeric + dash/underscore strings).

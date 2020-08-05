@@ -12,7 +12,7 @@ public class TraderMain {
 
     public static void main(String[] args) {
         try {
-            StorageFactory storageFactory = new StorageFactory(RESOURCE_PATH, FILENAME_CONFIG);
+            StorageGateway storageGateway = new StorageGateway(RESOURCE_PATH, FILENAME_CONFIG);
         } catch (IOException e) {
             e.printStackTrace();
         }

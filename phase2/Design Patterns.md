@@ -24,6 +24,10 @@ This design makes it particularly easy to add new TradeAlgorithms--all we need t
 
 The constructor of every Status is identical, and I wanted an extensible way to lower the dependency between the Status constructor and StatusStorage, which only needs to access Stati after they are created.
 
+####StorageFactory
+#####(By Robbert Liu)
+
+StorageFactory is a Factory class that creates Storages. It's little more than a facade for the data retrieval that happens inside StorageGateway, but it fits the pattern nonetheless.
 
 ## Strategy:
 
@@ -45,9 +49,6 @@ In order to further encapsulate our design, the TradeAlgorithms were given their
 The benefits of this design pattern are quite profound--it allows the program to be easily extended, as new types of trades will only vary in the distribution of items. We've already coded Trades so that as many traders can participate in a Trade as the client deems fit, and now with the Strategy Design Pattern, the behaviour of each Trade can easily be modified--if someone wants to design a new kind of Trade, all they need to do is to add a new Trade Algorithm.
 
 
-
-
-
 ## Observer:
 
 ####TradeStorage/MeetingStorage
@@ -63,8 +64,10 @@ Only trades depend on meetings, yet meetings do not depend on any class (not eve
 
 This design pattern allows for TradeStorage and MeetingStorage to be abstract (i.e., coupling is reduced between the two classes).
 
+####StorageGateway
+#####(By Robbert Liu)
 
-
+Originally the use case classes called the gateway method directly that would save its serialized data, and ever use case class had its own gateway method. Now, there's one gateway class, and the Observee, a Controller class, calls StorageGateway.saveStorageData whenever something needs to be saved.
 
 ####TradeStorage/ItemStorage
 #####(By Warren Zhu)

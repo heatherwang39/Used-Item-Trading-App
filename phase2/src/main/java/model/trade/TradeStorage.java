@@ -26,8 +26,8 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
      *
      * @param trades A list of Trades
      */
-    public TradeStorage(List<Trade> trades){
-        this.trades = trades;
+    public TradeStorage(Object trades){
+        this.trades = (List<Trade>) trades;
     }
 
     //Trade Constructor below
