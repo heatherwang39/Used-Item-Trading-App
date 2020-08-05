@@ -46,7 +46,9 @@ public class StorageGateway {
         String filePath = path + filenameMap.get(type.toString());
         File file = new File(filePath);
         FileReadWriter fileReadWriter = new FileReadWriter(filePath);
-        assert file.exists() || file.createNewFile();
+        if (!file.exists()){
+            assert file.createNewFile();
+        }
         if (dataMap.get(type.toString()) == null) {
             try {
                 dataMap.put(type.toString(), fileReadWriter.readFromFile());

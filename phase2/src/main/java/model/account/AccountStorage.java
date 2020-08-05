@@ -99,16 +99,14 @@ public class AccountStorage implements Storage {
      *
      * @param username input username
      * @param password input password
-     * @return Account username
      * @throws InvalidLoginException  login doesn't match regex
      * @throws UsernameInUseException username is in use
      */
-    public String createUser(String username, String password, String emailAddress) throws InvalidLoginException,
+    public void createUser(String username, String password, String emailAddress) throws InvalidLoginException,
             UsernameInUseException, InvalidEmailAddressException, EmailAddressInUseException {
         isValidAccount(username, password, emailAddress);
         UserAccount user = new UserAccount(username, password, emailAddress);
         accounts.put(username, user);
-        return username;
     }
 
     /**
@@ -116,16 +114,14 @@ public class AccountStorage implements Storage {
      *
      * @param username input username
      * @param password input password
-     * @return Account username
      * @throws InvalidLoginException  login doesn't match regex
      * @throws UsernameInUseException username is in use
      */
-    public String createAdmin(String username, String password, String emailAddress) throws InvalidLoginException,
+    public void createAdmin(String username, String password, String emailAddress) throws InvalidLoginException,
             UsernameInUseException, InvalidEmailAddressException, EmailAddressInUseException {
         isValidAccount(username, password, emailAddress);
         AdminAccount admin = new AdminAccount(username, password, emailAddress);
         accounts.put(username, admin);
-        return username;
     }
 
     /**

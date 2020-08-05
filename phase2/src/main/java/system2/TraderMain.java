@@ -1,6 +1,6 @@
 package main.java.system2;
 
-import main.java.gui.MenuGUI;
+import main.java.gui.TraderGUI;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -13,15 +13,13 @@ public class TraderMain {
     public static void main(String[] args) {
         try {
             StorageGateway storageGateway = new StorageGateway(RESOURCE_PATH, FILENAME_CONFIG);
+            JFrame frame = new JFrame("Trader Client");
+            frame.setContentPane(new TraderGUI(storageGateway).MainContainer);
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.pack();
+            frame.setVisible(true);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // Initialize Controllers here
-
-        JFrame frame = new JFrame("Trader Client");
-        frame.setContentPane(new MenuGUI().MainContainer);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
     } 
 }

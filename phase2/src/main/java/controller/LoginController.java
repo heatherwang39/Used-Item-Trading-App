@@ -1,8 +1,6 @@
 package main.java.controller;
 
-import main.java.model.Storage;
 import main.java.model.account.*;
-import main.java.system2.InvalidStorageTypeException;
 import main.java.system2.StorageEnum;
 import main.java.system2.StorageFactory;
 import main.java.system2.StorageGateway;
@@ -10,26 +8,24 @@ import main.java.system2.StorageGateway;
 import java.io.IOException;
 
 /**
- * A Controller for the Login Screen
+ * A Controller for the Main, Register, and Login Tab
  *
  * @author Warren Zhu
  * @version %I%, %G%
  * @since Phase 2
  */
-
 public class LoginController {
-    private StorageGateway sg;
-    private StorageFactory sf;
-    private AccountStorage as;
+    private final StorageGateway storageGateway;
+    private final AccountStorage accountStorage;
 
     /** Class constructor
      *
      * @param storageGateway Gateway class for reading and writing Storage Data
      */
-    public LoginController(StorageGateway storageGateway){
-        sf = new StorageFactory();
-        try{as = (AccountStorage) sf.getStorage(storageGateway, StorageEnum.ACCOUNT);}
-        catch(IOException | ClassNotFoundException ignored){}
+    public LoginController(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
+        this.storageGateway = storageGateway;
+        StorageFactory storageFactory = new StorageFactory();
+        accountStorage = (AccountStorage) storageFactory.getStorage(storageGateway, StorageEnum.ACCOUNT);
     }
 
     /** Check if you can login with the given data. If you can, return True
@@ -38,10 +34,12 @@ public class LoginController {
      * @param password The password of the account
      * @return Whether you can login
      */
-    public boolean login(String username, String password) throws AccountNotFoundException{
-        return as.tryLogin(username, password);
+    public String login(String username, String password) throws AccountNotFoundException {
+        if (accountStorage.tryLogin(username, password)) {
+            return accountStorage.getType(username);
+        }
+        return null;
     }
-
 
     /** Attempt to register an account. If no exceptions are thrown, registration was successful.
      *
@@ -54,7 +52,8 @@ public class LoginController {
      * @throws EmailAddressInUseException Email is in use
      */
     public void register(String username, String password, String emailAddress) throws InvalidLoginException,
-            UsernameInUseException, InvalidEmailAddressException, EmailAddressInUseException{
-        as.createUser(username, password, emailAddress);
+            UsernameInUseException, InvalidEmailAddressException, EmailAddressInUseException, IOException {
+        accountStorage.createUser(username, password, emailAddress);
+        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
     }
 }
