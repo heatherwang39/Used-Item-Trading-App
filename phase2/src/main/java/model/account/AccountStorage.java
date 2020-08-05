@@ -92,7 +92,7 @@ public class AccountStorage implements Storage {
      * @param username input username
      * @return a boolean representing if username is in use
      */
-    private boolean isUsernameInUse(String username) { return accounts.containsKey(username); }
+    public boolean isUsernameInUse(String username) { return accounts.containsKey(username); }
 
     /**
      * Creates a UserAccount if the credentials are valid.

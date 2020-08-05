@@ -1,6 +1,6 @@
 package main.java.system2;
 
-import main.java.gui.TraderGUI;
+import main.java.gui.MenuGUI;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -19,7 +19,7 @@ public class TraderMain {
         // Initialize Controllers here
 
         JFrame frame = new JFrame("Trader Client");
-        frame.setContentPane(new TraderGUI().MainContainer);
+        frame.setContentPane(new MenuGUI().MainContainer);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
