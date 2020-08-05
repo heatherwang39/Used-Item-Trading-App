@@ -4,6 +4,7 @@ import main.java.controller.LoginController;
 import main.java.model.Storage;
 import main.java.model.account.*;
 import main.java.system2.StorageGateway;
+import main.java.model.status.InvalidStatusTypeException;
 
 import javax.swing.*;
 // From: https://stackoverflow.com/questions/9119481/how-to-present-a-simple-alert-message-in-java
@@ -135,7 +136,7 @@ public class TraderGUI {
             try {
                 loginController.register(user, pass, email);
             } catch (InvalidLoginException | UsernameInUseException | InvalidEmailAddressException |
-                    EmailAddressInUseException invalidLoginException) {
+                    EmailAddressInUseException | InvalidStatusTypeException invalidLoginException) {
                 showMessageDialog(null, invalidLoginException.getMessage());
             } catch (IOException ioException) {
                 showMessageDialog(null, ioException.getMessage() + "\n" +
