@@ -2,6 +2,7 @@ package main.java.gui;
 
 import main.java.controller.LoginController;
 import main.java.model.account.*;
+import main.java.model.status.InvalidStatusTypeException;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -129,7 +130,7 @@ public class TraderGUI {
             try {
                 lc.register(user, pass, email);
             } catch (InvalidLoginException | UsernameInUseException | InvalidEmailAddressException |
-                    EmailAddressInUseException invalidLoginException) {
+                    EmailAddressInUseException | InvalidStatusTypeException invalidLoginException) {
                 showMessageDialog(null, invalidLoginException.getMessage());
             }
         });
