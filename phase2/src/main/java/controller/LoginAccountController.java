@@ -2,6 +2,9 @@ package main.java.controller;
 
 import main.java.model.account.AccountStorage;
 import main.java.model.item.ItemStorage;
+import main.java.model.message.EmptyContentException;
+import main.java.model.message.EmptyRecipientListException;
+import main.java.model.message.EmptyTitleException;
 import main.java.model.message.MessageStorage;
 
 import java.util.HashMap;
@@ -55,9 +58,12 @@ public abstract class LoginAccountController extends GuestController implements 
      * @param content The content of the message
      * @param recipients The recipient of the message
      * @throws RecipientNotFoundException Thrown if a given recipient does not exist
+     * @throws EmptyTitleException the title is empty
+     * @throws EmptyContentException the content is empty
+     * @throws EmptyRecipientListException the recipient list is empty
      */
     public void sendUserMessage(String title, String content, List<String> recipients)
-            throws RecipientNotFoundException{
+            throws RecipientNotFoundException, EmptyTitleException, EmptyRecipientListException, EmptyContentException {
         for(String user : recipients){
             if(!accountStorage.isUsernameInUse(user)){
                 throw new RecipientNotFoundException();
