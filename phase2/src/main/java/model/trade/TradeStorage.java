@@ -445,6 +445,7 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
     }
 
 
+
     public List<Integer> getActiveTrades(){
         List<Integer> activeTrades = new ArrayList<>();
         for (Trade t : trades) {
