@@ -649,4 +649,31 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
     protected boolean acceptedStatus(int tradeStatus) {
         return (tradeStatus == 1 || tradeStatus == 2 || tradeStatus == 3);
     }
+
+
+    private boolean checkIsGilded(String username) throws TradeNumberException {
+        List<Trade> userTrades = getUserTrades(username);
+        int completedTrades = 0;
+        for (Trade trade : userTrades) {
+            int tradeId = userTrades.indexOf(trade);
+            int tradeStatus = getStatus(tradeId);
+            if (tradeStatus == 3) completedTrades++;
+        }
+        return (completedTrades >= 20);
+    }
+
+    /**
+     * Returns a list of gilded users who have completed more than 20 trades
+     * @param usernames usernames of users
+     * @return list of the usernames of the gilded users
+     * @throws TradeNumberException an invalid trade number is found
+     */
+    public List<String> getGildedUsers(List<String> usernames) throws TradeNumberException {
+        List<String> gildedUsersList = new ArrayList<>();
+        for(String username:usernames){
+            if(checkIsGilded(username)){gildedUsersList.add(username);}
+        }
+        return gildedUsersList;
+    }
+
 }
