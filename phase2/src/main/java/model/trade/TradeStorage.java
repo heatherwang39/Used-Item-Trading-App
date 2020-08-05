@@ -532,13 +532,13 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
      * @param meetingID The ID of the confirmed meeting
      */
     public void updateConfirmed(int meetingID){
-            try{
-                Trade t = getTrade(getTradeWithMeeting(meetingID));
-                if(t.getMeetings().size() == t.getTotalNumMeetings()){
-                    t.setStatus(3);
-                }
+        try{
+            Trade t = getTrade(getTradeWithMeeting(meetingID));
+            if(t.getMeetings().size() == t.getTotalNumMeetings()){
+                t.setStatus(3);
             }
-            catch(TradeNumberException | NoTradeWithMeetingIDException ignored){}
+        }
+        catch(TradeNumberException | NoTradeWithMeetingIDException ignored){}
     }
 
 
