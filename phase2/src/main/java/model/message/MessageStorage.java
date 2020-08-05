@@ -1,10 +1,6 @@
 package main.java.model.message;
 
 import main.java.model.Storage;
-import main.java.model.account.EmailAddressInUseException;
-import main.java.model.account.InvalidEmailAddressException;
-import main.java.model.account.InvalidLoginException;
-import main.java.model.account.UsernameInUseException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,8 +22,8 @@ public class MessageStorage implements Storage {
      *
      * @param messages list of messages
      */
-    public MessageStorage(List<Message> messages) {
-        this.messages = messages;
+    public MessageStorage(Object messages) {
+        this.messages = (List<Message>) messages;
     }
 
     /**

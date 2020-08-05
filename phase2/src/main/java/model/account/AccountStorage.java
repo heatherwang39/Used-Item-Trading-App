@@ -16,14 +16,14 @@ import java.util.regex.Pattern;
  */
 public class AccountStorage implements Storage {
 
-    Map<String, LoginAccount> accounts;
+    private final Map<String, LoginAccount> accounts;
 
     /**
      * Class constructor.
      *
      * @param accounts Map containing LoginAccounts referenced by usernames
      */
-    public AccountStorage(Map<String, LoginAccount> accounts) { this.accounts = accounts; }
+    public AccountStorage(Object accounts) { this.accounts = (Map<String, LoginAccount>) accounts; }
 
     /**
      * Checks if username and password violate proper string format (are valid alphanumeric + dash/underscore strings).

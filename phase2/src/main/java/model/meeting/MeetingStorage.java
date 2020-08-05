@@ -1,10 +1,6 @@
 package main.java.model.meeting;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import main.java.model.Storage;
-import main.java.model.trade.Trade;
-import main.java.model.trade.TradeNumberException;
-import main.java.model.trade.TradeObserver;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -26,9 +22,7 @@ public class MeetingStorage  implements Storage, MeetingObservee{
      *
      * @param meetings The list of meetings stored by this particular instance of MeetingStorage
      */
-    public MeetingStorage(List<Meeting> meetings){
-        this.meetings = meetings;
-    }
+    public MeetingStorage(Object meetings){ this.meetings = (List<Meeting>) meetings; }
 
 
     /**

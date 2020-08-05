@@ -23,7 +23,7 @@ public class ItemStorage implements Storage, TradeObserver {
      *
      * @param items Map containing Items referenced by their IDs.
      */
-    public ItemStorage(Map<Integer, Item> items) { this.items = items; }
+    public ItemStorage(Object items) { this.items = (Map<Integer, Item>) items; }
 
 
     private Item getItem(int itemID) throws ItemNotFoundException {
@@ -40,7 +40,14 @@ public class ItemStorage implements Storage, TradeObserver {
     }
 
 
-
+    /**
+     * Creates a new item and adds it to the system
+     *
+     * @param owner username of who added the item
+     * @param name name of the item
+     * @param description description of the item
+     * @param tags any user-added search tags of the item
+     */
     public void newItem(String owner, String name, String description, List<String> tags) {
         int id = generateNextID();
         Item item = new Item(id, owner, name, description, tags);
@@ -56,6 +63,36 @@ public class ItemStorage implements Storage, TradeObserver {
     public void removeItem(int itemId) throws ItemNotFoundException {
         if (items.containsKey(itemId)) {
             items.remove(itemId);
+        } else {
+            throw new ItemNotFoundException();
+        }
+    }
+
+    /**
+     * Adds username to wishlist of Item with given itemId
+     *
+     * @param username Account username
+     * @param itemId The id of the Item object that needs to add a user to its wishlist
+     * @throws ItemNotFoundException item not in system
+     */
+    public void addWishList(String username, int itemId) throws ItemNotFoundException {
+        if (items.containsKey(itemId)) {
+            items.get(itemId).addWishlist(username);
+        } else {
+            throw new ItemNotFoundException();
+        }
+    }
+
+    /**
+     * Removes username from wishlist of Item with given itemId
+     *
+     * @param username Account username
+     * @param itemId The id of the Item object that needs to remove a user from its wishlist
+     * @throws ItemNotFoundException item not in system
+     */
+    public void removeWishList(String username, int itemId) throws ItemNotFoundException, NotInWishlistException {
+        if (items.containsKey(itemId)) {
+            items.get(itemId).removeWishlist(username);
         } else {
             throw new ItemNotFoundException();
         }
@@ -204,7 +241,12 @@ public class ItemStorage implements Storage, TradeObserver {
         return suggestItemsData;
     }
 
-
+    /**
+     * Returns a list with each element being the Item data of an Item that is in the given user's wishlist
+     *
+     * @param username Account username
+     * @return data of items in user's wishlist
+     */
     public List<HashMap<String, String>> getWishlistData(String username) {
         List<HashMap<String, String>> wishlistData = new ArrayList<>();
         List<Item> wishlist = getWishlist(username);
@@ -214,6 +256,12 @@ public class ItemStorage implements Storage, TradeObserver {
         return wishlistData;
     }
 
+    /**
+     * Returns a list with each element being the Item data of a verified Item that is in the given user's inventory
+     *
+     * @param username Account username
+     * @return data of verified items in user's inventory
+     */
     public List<HashMap<String, String>> getVerifiedInventoryData(String username){
         List<HashMap<String, String>> verifiedInventoryData = new ArrayList<>();
         List<Item> verifiedInventory = getVerifiedInventory(username);
@@ -223,6 +271,13 @@ public class ItemStorage implements Storage, TradeObserver {
         return verifiedInventoryData;
     }
 
+    /**
+     * Returns a list with each element being the Item data of a verified Item that matches the search filter
+     *
+     * @param searchTerms keywords searched by the user
+     * @param tags enabled item tags
+     * @return data of verified items that match the search filter
+     */
     public List<HashMap<String, String>> getVerifiedInventoryData(List<String> searchTerms, List<String> tags) {
         List<HashMap<String, String>> verifiedInventoryData = new ArrayList<>();
         List<Item> verifiedInventory = getVerifiedInventory(searchTerms,tags);
