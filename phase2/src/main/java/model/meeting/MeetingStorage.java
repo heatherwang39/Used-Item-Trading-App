@@ -1,12 +1,9 @@
 package main.java.model.meeting;
 
 import main.java.model.Storage;
-import main.java.model.trade.TradeObserver;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
+import java.util.*;
 
 /**
  * Use case class for initializing, storing, recording changes and retrieving information regarding Meeting.
@@ -178,6 +175,31 @@ public class MeetingStorage  implements Storage, MeetingObservee{
         catch(IndexOutOfBoundsException e){throw new WrongMeetingAccountException();}
         if(b && m.isConfirmed()){notifyConfirmed(meetingID);}
         return b;
+    }
+
+    /**
+     * Gets all relevant data for a meeting with given meetingID in a HashMap format. The respective keys and values:
+     * (1) id: id of Meeting (number, single element)
+     * (2) place: location of meeting (name, single element)
+     * (3) datetime: date and time of meeting in form of “dow mon dd hh:mm:ss zzz yyy” (name, single element)
+     * (4) attendees: usernames of users participating in meeting (names, two or more elements
+     * (5) unaccepted: usernames of users who have not accepted meeting yet (names, zero or more elements)
+     * (6) unconfirmed: usernames of users who have not confirmed meeting yet (names, zero or more elements)
+     *
+     * @param meetingID the meetingID of the Meeting getting data of
+     * @return HashMap with all relevant data for a Meeting
+     * @throws MeetingIDException Thrown if no Meeting has the given meetingID
+     */
+    public HashMap<String, List<String>> getMeetingData(int meetingID) throws MeetingIDException {
+        HashMap<String, List<String>> meetingData = new HashMap<>();
+        Meeting meeting = getMeeting(meetingID);
+        meetingData.put("id", Collections.singletonList(String.valueOf(meeting.getMeetingID())));
+        meetingData.put("place", Collections.singletonList(meeting.getPlace()));
+        meetingData.put("datetime", Collections.singletonList(meeting.getDateTime().toString()));
+        meetingData.put("attendees", meeting.getAttendees());
+        meetingData.put("unaccepted", meeting.getUnacceptedAttendees());
+        meetingData.put("unconfirmed", meeting.getUnconfirmedAttendees());
+        return meetingData;
     }
 
 

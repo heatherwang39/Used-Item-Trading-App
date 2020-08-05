@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  */
 public class AccountStorage implements Storage {
 
-    Map<String, LoginAccount> accounts;
+    private final Map<String, LoginAccount> accounts;
 
     /**
      * Class constructor.
@@ -92,7 +92,7 @@ public class AccountStorage implements Storage {
      * @param username input username
      * @return a boolean representing if username is in use
      */
-    private boolean isUsernameInUse(String username) { return accounts.containsKey(username); }
+    public boolean isUsernameInUse(String username) { return accounts.containsKey(username); }
 
     /**
      * Creates a UserAccount if the credentials are valid.
@@ -134,7 +134,7 @@ public class AccountStorage implements Storage {
      * @return account with username
      * @throws AccountNotFoundException account not found under username
      */
-    public Account getAccount(String username) throws AccountNotFoundException{
+    private Account getAccount(String username) throws AccountNotFoundException{
         if (accounts.containsKey(username)){
             return accounts.get(username);
         } else {

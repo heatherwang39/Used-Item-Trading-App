@@ -13,8 +13,8 @@ import java.util.*;
  */
 public class StatusStorage implements Storage {
 
-    Map<String, List<Status>> statuses;
-    StatusFactory statusFactory;
+    private final Map<String, List<Status>> statuses;
+    private StatusFactory statusFactory;
 
     /**
      * Class constructor.
@@ -42,7 +42,7 @@ public class StatusStorage implements Storage {
      * @param statuses Status list
      * @return string list
      */
-    public List<String> getStatusStrings(List<Status> statuses){
+    private List<String> getStatusStrings(List<Status> statuses){
         List<String> strings = new ArrayList<>();
         for (Status s: statuses) {
             strings.add(s.getType());

@@ -44,7 +44,7 @@ public class Item implements Serializable {
      */
     public int getID() {
         return id;
-    }/**
+    }
 
      /**
      * Get the item's owner's username.

@@ -372,6 +372,44 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
 
     //Search Methods Below
 
+    /**
+     * Gets all relevant data for a trade with given tradeNumber in a HashMap format. The respective keys and values:
+     * (1) id: id of Trade (number, single element)
+     * (2) status: status of Trade (number, single element)
+     * (3) type: the type of Trade based on algorithm used (name, single element)
+     * (4) traders: the users participating in the trade (names, two or more elements)
+     * (5) items original: the item ids based on who originally owned them (numbers, one or more elements)
+     * (6) items exchanged: the item ids based on after they are exchanged (numbers, one or more elements)
+     * (7) items final: the item ids based on after the trade is finished (numbers, one or more elements)
+     * (8) meetings: the meeting ids part of the trade (numbers, zero or more elements)
+     *
+     * @param tradeNumber the tradeNumber of the Trade getting data of
+     * @return HashMap with all relevant data for a Trade
+     * @throws TradeNumberException Thrown if no Trade has the given tradeNumber
+     */
+    public HashMap<String, List<String>> getTradeData(int tradeNumber) throws TradeNumberException {
+        HashMap<String, List<String>> tradeData = new HashMap<>();
+        Trade trade = getTrade(tradeNumber);
+
+        tradeData.put("id", Collections.singletonList(String.valueOf(trade.getTradeNumber())));
+        tradeData.put("status", Collections.singletonList(String.valueOf(trade.getStatus())));
+        tradeData.put("type", Collections.singletonList(trade.getAlgorithmName()));
+        tradeData.put("traders", trade.getTraders());
+        tradeData.put("items original", getStringList(trade.getItemsOriginal()));
+        tradeData.put("items exchanged", getStringList(trade.getItemsExchanged()));
+        tradeData.put("items final", getStringList(trade.getItemsFinal()));
+        tradeData.put("meetings", getStringList(trade.getMeetings()));
+        return tradeData;
+    }
+
+    private List<String> getStringList(List<Integer> integerList) {
+        List<String> stringList = new ArrayList<>(integerList.size());
+        for (Integer integer : integerList) {
+            stringList.add(String.valueOf(integer));
+        }
+        return stringList;
+    }
+
     public int getTradeWithMeeting(int meetingID) throws NoTradeWithMeetingIDException{
         for (Trade t : trades) {
             if (t.getMeetings().contains(meetingID)) {
@@ -443,6 +481,7 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
         }
         return 0;
     }
+
 
 
     public List<Integer> getActiveTrades(){

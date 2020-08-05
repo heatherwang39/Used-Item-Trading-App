@@ -38,8 +38,8 @@ public class LoginController {
      * @param password The password of the account
      * @return Whether you can login
      */
-    public Account login(String username, String password) throws AccountNotFoundException{
-        return as.getAccount(username);
+    public boolean login(String username, String password) throws AccountNotFoundException{
+        return as.tryLogin(username, password);
     }
 
 

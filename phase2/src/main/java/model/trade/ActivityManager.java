@@ -13,6 +13,12 @@ import java.util.*;
 
 class ActivityManager {
 
+    /**
+     * Returns a list of at most the three most recent trades in userTrades
+     *
+     * @param userTrades list of trades a user has participated in
+     * @return List containing lists with the ids of the items that were a part of the most recent trades
+     */
     protected List<List<Integer>> recentItemsTraded(List<Trade> userTrades) {
         List<List<Integer>> threeRecentItems = new ArrayList<>();
         TreeMap<LocalDateTime, Trade> orderedTrades = new TreeMap<>();
@@ -32,6 +38,12 @@ class ActivityManager {
         return threeRecentItems;
     }
 
+    /**
+     * Returns a list of at most the three most frequent trading partners for the user with given username
+     * @param username username of the user
+     * @param userTrades list of trades the user has participated in
+     * @return list of the usernames of the most frequent trading partners
+     */
     protected List<String> frequentTradePartners(String username, List<Trade> userTrades) {
         TradeStorage ts = new TradeStorage(userTrades);
         List<String> threeMostFrequentPartners = new ArrayList<>();
