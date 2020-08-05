@@ -3,6 +3,7 @@ package main.java.model.account;
 import main.java.model.Storage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -23,19 +24,36 @@ public class AccountStorage implements Storage {
      *
      * @param accounts Map containing LoginAccounts referenced by usernames
      */
-    public AccountStorage(Object accounts) { this.accounts = (Map<String, LoginAccount>) accounts; }
+    public AccountStorage(Object accounts) {
+        if (accounts == null) {
+            this.accounts = new HashMap<>();
+        } else {
+            this.accounts = (Map<String, LoginAccount>) accounts;
+        }
+    }
 
     /**
-     * Checks if username and password violate proper string format (are valid alphanumeric + dash/underscore strings).
+     * Checks if username violate requirements.
      *
      * @param username input username
-     * @param password input password
      * @return a boolean representing whether the combination is valid
      */
-    protected boolean isInvalidLogin(String username, String password) {
-        // Regex from: https://stackoverflow.com/questions/34916716
-        Pattern p = Pattern.compile("^[a-zA-Z0-9-_.!@#$%^&*()]*$");
-        return !p.matcher(username).matches() || !p.matcher(password).matches();
+    protected boolean isInvalidUsername(String username) {
+        // Regex from: https://stackoverflow.com/questions/1221985/
+        Pattern p = Pattern.compile("^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$");
+        return !p.matcher(username).matches();
+    }
+
+    /**
+     * Checks if username violate requirements.
+     *
+     * @param username input username
+     * @return a boolean representing whether the combination is valid
+     */
+    protected boolean isInvalidPassword(String username) {
+        // Regex from: https://stackoverflow.com/questions/19605150
+        Pattern p = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$");
+        return !p.matcher(username).matches();
     }
 
     /**
@@ -74,13 +92,15 @@ public class AccountStorage implements Storage {
      * @param password input password
      * @param emailAddress input email
      * @throws InvalidEmailAddressException emailAddress doesn't match regex
-     * @throws InvalidLoginException  login doesn't match regex
+     * @throws InvalidUsernameException  username doesn't match regex
+     * @throws InvalidPasswordException  password doesn't match regex
      * @throws UsernameInUseException username is in use
      * @throws EmailAddressInUseException emailAddress is in use
      */
     private void isValidAccount(String username, String password, String emailAddress) throws
-            InvalidEmailAddressException, InvalidLoginException, UsernameInUseException, EmailAddressInUseException {
-        if (isInvalidLogin(username, password)){ throw new InvalidLoginException(); }
+            InvalidEmailAddressException, UsernameInUseException, EmailAddressInUseException, InvalidUsernameException, InvalidPasswordException {
+        if (isInvalidUsername(username)){ throw new InvalidUsernameException(); }
+        if (isInvalidPassword(password)){ throw new InvalidPasswordException(); }
         if (isInvalidEmail(emailAddress)) {throw new InvalidEmailAddressException(); }
         if (isUsernameInUse(username)) {throw new UsernameInUseException(); }
         if (isEmailAddressInUse(username)) {throw new EmailAddressInUseException(); }
@@ -99,11 +119,12 @@ public class AccountStorage implements Storage {
      *
      * @param username input username
      * @param password input password
-     * @throws InvalidLoginException  login doesn't match regex
+     * @throws InvalidUsernameException  username doesn't match regex
+     * @throws InvalidPasswordException  password doesn't match regex
      * @throws UsernameInUseException username is in use
      */
-    public void createUser(String username, String password, String emailAddress) throws InvalidLoginException,
-            UsernameInUseException, InvalidEmailAddressException, EmailAddressInUseException {
+    public void createUser(String username, String password, String emailAddress) throws
+            UsernameInUseException, InvalidEmailAddressException, EmailAddressInUseException, InvalidPasswordException, InvalidUsernameException {
         isValidAccount(username, password, emailAddress);
         UserAccount user = new UserAccount(username, password, emailAddress);
         accounts.put(username, user);
@@ -114,11 +135,12 @@ public class AccountStorage implements Storage {
      *
      * @param username input username
      * @param password input password
-     * @throws InvalidLoginException  login doesn't match regex
+     * @throws InvalidUsernameException  username doesn't match regex
+     * @throws InvalidPasswordException  password doesn't match regex
      * @throws UsernameInUseException username is in use
      */
-    public void createAdmin(String username, String password, String emailAddress) throws InvalidLoginException,
-            UsernameInUseException, InvalidEmailAddressException, EmailAddressInUseException {
+    public void createAdmin(String username, String password, String emailAddress) throws
+            UsernameInUseException, InvalidEmailAddressException, EmailAddressInUseException, InvalidPasswordException, InvalidUsernameException {
         isValidAccount(username, password, emailAddress);
         AdminAccount admin = new AdminAccount(username, password, emailAddress);
         accounts.put(username, admin);

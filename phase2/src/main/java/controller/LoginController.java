@@ -18,21 +18,19 @@ import java.io.IOException;
  */
 public class LoginController {
 
-    private StorageGateway storageGateway;
-    private AccountStorage accountStorage;
-    private StatusStorage statusStorage;
+    private final StorageGateway storageGateway;
+    private final AccountStorage accountStorage;
+    private final StatusStorage statusStorage;
 
     /** Class constructor
      *
      * @param storageGateway Gateway class for reading and writing Storage Data
      */
-    public LoginController(StorageGateway storageGateway){
+    public LoginController(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
+        this.storageGateway = storageGateway;
         StorageFactory storageFactory = new StorageFactory();
-        try{
-            accountStorage = (AccountStorage) storageFactory.getStorage(storageGateway, StorageEnum.ACCOUNT);
-            statusStorage = (StatusStorage) storageFactory.getStorage(storageGateway, StorageEnum.STATUS);
-        }
-        catch(IOException | ClassNotFoundException ignored){}
+        accountStorage = (AccountStorage) storageFactory.getStorage(storageGateway, StorageEnum.ACCOUNT);
+        statusStorage = (StatusStorage) storageFactory.getStorage(storageGateway, StorageEnum.STATUS);
     }
 
     /** Check if you can login with the given data. If you can, return True
@@ -42,10 +40,12 @@ public class LoginController {
      * @return Whether you can login
      */
     public String login(String username, String password) throws AccountNotFoundException {
+        System.out.println(accountStorage.getUsernames());
         if (accountStorage.tryLogin(username, password)) {
             return accountStorage.getType(username);
         }
-        return null;
+        return "NULL";
+
     }
 
     /** Attempt to register an account. If no exceptions are thrown, registration was successful.
@@ -53,16 +53,18 @@ public class LoginController {
      * @param username The username of the account you're trying to register
      * @param password The password of the account you're trying to register
      * @param emailAddress The email associated to the account you're trying to register
-     * @throws InvalidLoginException login doesn't match regex
+     * @throws InvalidUsernameException  username doesn't match regex
+     * @throws InvalidPasswordException  password doesn't match regex
      * @throws UsernameInUseException username is in use
      * @throws InvalidEmailAddressException Email is Invalid
      * @throws EmailAddressInUseException Email is in use
      * @throws InvalidStatusTypeException Status is Invalid
      */
-    public void register(String username, String password, String emailAddress) throws InvalidLoginException,
-            UsernameInUseException, InvalidEmailAddressException, EmailAddressInUseException, IOException, InvalidStatusTypeException {
+    public void register(String username, String password, String emailAddress) throws
+            UsernameInUseException, InvalidEmailAddressException, EmailAddressInUseException, IOException, InvalidStatusTypeException, InvalidUsernameException, InvalidPasswordException {
         accountStorage.createUser(username, password, emailAddress);
         statusStorage.createStatus(username,"NEW");
         storageGateway.saveStorageData(StorageEnum.ACCOUNT);
+        storageGateway.saveStorageData(StorageEnum.STATUS);
     }
 }

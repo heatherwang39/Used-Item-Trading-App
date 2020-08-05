@@ -104,25 +104,30 @@ public class TraderGUI {
             String pass = txtLoginPassword.getText();
             txtLoginUsername.setText(" ");
             txtLoginPassword.setText(" ");
-            MainTabbedPane.removeAll();
-            MainTabbedPane.insertTab("Home", null, Home, null, 0);
             try {
                 switch (loginController.login(user, pass)) {
                     case "USER":
+                        MainTabbedPane.removeAll();
+                        MainTabbedPane.insertTab("Home", null, Home, null, 0);
                         MainTabbedPane.insertTab("Account", null, Account, null, 1);
                         MainTabbedPane.insertTab("Activity", null, Activity, null, 2);
                         MainTabbedPane.insertTab("Browse", null, Browse, null, 3);
                         MainTabbedPane.insertTab("Offers", null, Offers, null, 4);
                         MainTabbedPane.insertTab("Request", null, Request, null, 5);
                         MainTabbedPane.insertTab("Add Items", null, AddItems, null, 6);
+                        break;
                     case "ADMIN":
+                        MainTabbedPane.removeAll();
+                        MainTabbedPane.insertTab("Home", null, Home, null, 0);
                         MainTabbedPane.insertTab("Requests", null, Requests, null, 1);
                         MainTabbedPane.insertTab("Freeze", null, Freeze, null, 2);
                         MainTabbedPane.insertTab("Trade Threshold", null, TradeThreshold, null, 3);
                         MainTabbedPane.insertTab("Add Admin", null, AddAdmin, null, 4);
+                        break;
                     default:
                         showMessageDialog(null, "Your account did not match any credentials in " +
                                 "our system.");
+                        break;
                 }
             } catch (AccountNotFoundException accountNotFoundException) {
                 showMessageDialog(null, accountNotFoundException.getMessage());
@@ -135,12 +140,14 @@ public class TraderGUI {
             String pass = txtRegisterPassword.getText();
             try {
                 loginController.register(user, pass, email);
-            } catch (InvalidLoginException | UsernameInUseException | InvalidEmailAddressException |
-                    EmailAddressInUseException | InvalidStatusTypeException invalidLoginException) {
+                showMessageDialog(null, "Welcome to the system, " + user + "!");
+            } catch (UsernameInUseException | InvalidEmailAddressException | EmailAddressInUseException |
+                    InvalidStatusTypeException | InvalidUsernameException | InvalidPasswordException invalidLoginException) {
                 showMessageDialog(null, invalidLoginException.getMessage());
             } catch (IOException ioException) {
                 showMessageDialog(null, ioException.getMessage() + "\n" +
                         Arrays.toString(ioException.getStackTrace()));
+            } finally {
             }
         });
     }

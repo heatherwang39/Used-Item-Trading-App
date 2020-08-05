@@ -23,8 +23,13 @@ public class ItemStorage implements Storage, TradeObserver {
      *
      * @param items Map containing Items referenced by their IDs.
      */
-    public ItemStorage(Object items) { this.items = (Map<Integer, Item>) items; }
-
+    public ItemStorage(Object items) {
+        if (items == null) {
+            this.items = new HashMap<>();
+        } else {
+            this.items = (Map<Integer, Item>) items;
+        }
+    }
 
     private Item getItem(int itemID) throws ItemNotFoundException {
         Item item = items.get(itemID);

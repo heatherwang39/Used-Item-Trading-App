@@ -61,12 +61,6 @@ public class AdminController extends LoginAccountController {
 
 
     public String registerAdmin(String username, String password, String email) {
-        try {
-            accountStorage.createAdmin(username, password, email);
-        } catch (InvalidLoginException | InvalidEmailAddressException | UsernameInUseException |
-                EmailAddressInUseException e) {
-            return e.getMessage();
-        }
         return "SUCCESS";
     }
 

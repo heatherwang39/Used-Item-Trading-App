@@ -22,7 +22,11 @@ public class StatusStorage implements Storage {
      * @param statuses Map containing lists of Statuses referenced by usernames
      */
     public StatusStorage(Object statuses) {
-        this.statuses = (Map<String, List<Status>>) statuses;
+        if (statuses == null) {
+            this.statuses = new HashMap<>();
+        } else {
+            this.statuses = (Map<String, List<Status>>) statuses;
+        }
         statusFactory = new StatusFactory();
     }
 

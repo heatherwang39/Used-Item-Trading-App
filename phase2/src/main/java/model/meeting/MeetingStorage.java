@@ -22,7 +22,13 @@ public class MeetingStorage  implements Storage, MeetingObservee{
      *
      * @param meetings The list of meetings stored by this particular instance of MeetingStorage
      */
-    public MeetingStorage(Object meetings){ this.meetings = (List<Meeting>) meetings; }
+    public MeetingStorage(Object meetings){
+        if (meetings == null) {
+            this.meetings = new ArrayList<>();
+        } else {
+            this.meetings = (List<Meeting>) meetings;
+        }
+    }
 
 
     /**

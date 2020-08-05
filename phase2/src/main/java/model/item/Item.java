@@ -18,8 +18,8 @@ public class Item implements Serializable {
     private String owner;
     private final String name;
     private final String description;
-    private List<String> tags;
-    private List<String> wishlist;
+    private final List<String> tags;
+    private final List<String> wishlist;
     private boolean isVerified;
 
     /**

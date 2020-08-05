@@ -23,7 +23,11 @@ public class MessageStorage implements Storage {
      * @param messages list of messages
      */
     public MessageStorage(Object messages) {
-        this.messages = (List<Message>) messages;
+        if (messages == null) {
+            this.messages = new ArrayList<>();
+        } else{
+            this.messages = (List<Message>) messages;
+        }
     }
 
     /**

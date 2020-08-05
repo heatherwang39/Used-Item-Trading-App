@@ -25,11 +25,6 @@ public class UserSystem extends LoginSystem implements UserInterface, Registerab
 
     @Override
     public String register(String username, String password, String email) {
-        try {
-            as.createUser(username, password, email);
-        } catch (InvalidLoginException | InvalidEmailAddressException | UsernameInUseException | EmailAddressInUseException e) {
-            return e.getMessage();
-        }
         return "SUCCESS";
     }
 

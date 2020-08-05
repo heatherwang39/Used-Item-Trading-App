@@ -21,11 +21,6 @@ class AdminSystem extends LoginSystem implements AdminInterface, ModeratorInterf
 
     @Override
     public String registerAdmin(String username, String password, String email) {
-        try {
-            as.createAdmin(username, password, email);
-        } catch (InvalidLoginException | InvalidEmailAddressException | UsernameInUseException | EmailAddressInUseException e) {
-            return e.getMessage();
-        }
         return "SUCCESS";
     }
 
