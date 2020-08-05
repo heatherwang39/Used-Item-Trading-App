@@ -1,10 +1,6 @@
 package main.java.model.message;
 
 import main.java.model.Storage;
-import main.java.model.account.EmailAddressInUseException;
-import main.java.model.account.InvalidEmailAddressException;
-import main.java.model.account.InvalidLoginException;
-import main.java.model.account.UsernameInUseException;
 
 import java.util.ArrayList;
 import java.util.HashMap;

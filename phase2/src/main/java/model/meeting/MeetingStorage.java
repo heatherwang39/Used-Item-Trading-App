@@ -1,10 +1,6 @@
 package main.java.model.meeting;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import main.java.model.Storage;
-import main.java.model.trade.Trade;
-import main.java.model.trade.TradeNumberException;
-import main.java.model.trade.TradeObserver;
 
 import java.time.LocalDateTime;
 import java.util.*;

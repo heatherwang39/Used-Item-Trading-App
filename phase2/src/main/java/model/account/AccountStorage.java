@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  */
 public class AccountStorage implements Storage {
 
-    Map<String, LoginAccount> accounts;
+    private final Map<String, LoginAccount> accounts;
 
     /**
      * Class constructor.
