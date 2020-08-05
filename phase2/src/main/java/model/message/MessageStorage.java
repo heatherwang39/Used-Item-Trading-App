@@ -1,6 +1,10 @@
 package main.java.model.message;
 
 import main.java.model.Storage;
+import main.java.model.account.EmailAddressInUseException;
+import main.java.model.account.InvalidEmailAddressException;
+import main.java.model.account.InvalidLoginException;
+import main.java.model.account.UsernameInUseException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,8 +69,14 @@ public class MessageStorage implements Storage {
      * @param content the content of the message
      * @param sender the username of the user who send the message
      * @param recipients a list of usernames of the users that receive the message
+     * @throws EmptyTitleException the title is empty
+     * @throws EmptyContentException the content is empty
+     * @throws EmptyRecipientListException the recipient list is empty
      */
-    public void sendUserMessage(String title, String content, String sender, List<String> recipients) {
+    public void sendUserMessage(String title, String content, String sender, List<String> recipients) throws EmptyTitleException, EmptyContentException, EmptyRecipientListException {
+        if (title == null) {throw new EmptyTitleException(); }
+        if (content == null) {throw new EmptyContentException(); }
+        if (recipients == null){ throw new EmptyRecipientListException(); }
         messages.add(new AccountMessage(title, content, sender, recipients));
     }
 
@@ -76,8 +86,14 @@ public class MessageStorage implements Storage {
      * @param title the title of the message
      * @param content the content of the message
      * @param recipients a list of usernames of the users that receive the message
+     * @throws EmptyTitleException the title is empty
+     * @throws EmptyContentException the content is empty
+     * @throws EmptyRecipientListException the recipient list is empty
      */
-    public void sendSystemMessage(String title, String content, List<String> recipients) {
+    public void sendSystemMessage(String title, String content, List<String> recipients) throws EmptyTitleException, EmptyContentException, EmptyRecipientListException {
+        if (title == null) {throw new EmptyTitleException(); }
+        if (content == null) {throw new EmptyContentException(); }
+        if (recipients == null){ throw new EmptyRecipientListException(); }
         messages.add(new SystemMessage(title, content, recipients));
     }
 

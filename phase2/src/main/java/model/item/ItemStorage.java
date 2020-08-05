@@ -250,6 +250,11 @@ public class ItemStorage implements Storage, TradeObserver {
         return data;
     }
 
+    /**
+     * show names of the given items
+     * @param ids the ids of the given items
+     * @return List of names of the given items
+     */
     public List<String> showNames(List<Integer> ids) throws ItemNotFoundException {
         List<String> names = new ArrayList<>();
         for(int id:ids){
@@ -259,6 +264,14 @@ public class ItemStorage implements Storage, TradeObserver {
         return names;
     }
 
+    /**
+     * Change owner of given item
+     * @param itemId the id of the given item
+     * @param username the username of new owner
+     */
+    public void changeOwner(int itemId, String username) throws ItemNotFoundException {
+        getItem(itemId).setOwner(username);
+    }
 
     //Item and Trade Observer Pattern below
 

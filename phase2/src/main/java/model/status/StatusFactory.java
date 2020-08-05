@@ -10,7 +10,7 @@ package main.java.model.status;
 public class StatusFactory {
     /**
      * Factory method that returns a new Status.
-     * @param statusType Status stype
+     * @param statusType Status type
      * @return Status
      */
     public Status getStatus(String statusType) {
