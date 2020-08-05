@@ -14,6 +14,22 @@ import java.util.List;
 
 class FreezeManager {
 
+    /**
+     * Checks if a user with given username should be frozen based on if they violate any of the trade thresholds
+     * There are three thresholds that are checked:
+     * (1) Borrow Threshold: if a user has borrowed more than they have lent out
+     * (2) Incomplete Threshold: if a user has too many incomplete trades
+     * (3) Weekly Threshold: if a user has traded too much in one week
+     * If a user violates any of these thresholds, a string representing the violation is added into a list, and a list
+     * of reasons is returned.
+     * If the list is empty, the user should not be frozen.
+     *
+     * @param username username of the user
+     * @param borrowThreshold threshold for borrowing more than lending
+     * @param incompleteThreshold threshold for too many incomplete trades
+     * @param weeklyThreshold threshold for too many trades in one week
+     * @return a list of reasons why that user should be frozen. Empty if there are no reasons
+     */
     protected List<String> checkUserShouldFreeze(String username, List<Trade> userTrades, int borrowThreshold,
                                         int incompleteThreshold, int weeklyThreshold) {
         TradeStorage ts = new TradeStorage(userTrades);
