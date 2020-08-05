@@ -1,6 +1,8 @@
 package main.java.controller;
 
 import main.java.model.account.*;
+import main.java.model.status.InvalidStatusTypeException;
+import main.java.model.status.StatusStorage;
 import main.java.system2.InvalidStorageTypeException;
 import main.java.system2.StorageFactory;
 
@@ -17,6 +19,7 @@ import java.io.IOException;
 public class LoginController {
     private StorageFactory sf;
     private AccountStorage as;
+    private StatusStorage ss;
 
     /** Class constructor
      *
@@ -24,7 +27,10 @@ public class LoginController {
      */
     public LoginController(StorageFactory storageFactory){
         sf = storageFactory;
-        try{as = (AccountStorage) sf.getStorage("ACCOUNT");}
+        try{
+            as = (AccountStorage) sf.getStorage("ACCOUNT");
+            ss = (StatusStorage) sf.getStorage("STATUS");
+        }
         catch(IOException | InvalidStorageTypeException | ClassNotFoundException ignored){}
     }
 
@@ -48,9 +54,11 @@ public class LoginController {
      * @throws UsernameInUseException username is in use
      * @throws InvalidEmailAddressException Email is Invalid
      * @throws EmailAddressInUseException Email is in use
+     * @throws InvalidStatusTypeException Status is Invalid
      */
     public void register(String username, String password, String emailAddress) throws InvalidLoginException,
-            UsernameInUseException, InvalidEmailAddressException, EmailAddressInUseException{
+            UsernameInUseException, InvalidEmailAddressException, EmailAddressInUseException, InvalidStatusTypeException {
         as.createUser(username, password, emailAddress);
+        ss.createStatus(username,"NEW");
     }
 }
