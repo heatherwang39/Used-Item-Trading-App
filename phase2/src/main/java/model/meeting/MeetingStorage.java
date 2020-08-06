@@ -209,6 +209,76 @@ public class MeetingStorage  implements Storage, MeetingObservee{
     }
 
 
+    /** Return the IDs of all the meetings that the given participant is involved with and hasn't been accepted yet
+     *
+     * @param participant The participant that is involved with said meetings
+     * @return A list of MeetingIDs of meetings with the given property
+     */
+    public List<Integer> getSuggestedMeetings(String participant){
+        List<Integer> meeting = new ArrayList<>();
+        for(Meeting m: meetings){
+            if(!m.isCancelled()){
+                if(!m.isAccepted()){
+                    meeting.add(m.getMeetingID());
+                }
+            }
+        }
+        return meeting;
+    }
+
+    /** Return the IDs of all the meetings that the given participant is involved with and has been accepted but not
+     * confirmed yet
+     *
+     * @param participant
+     * @return A list of MeetingIDs of meetings with the given property
+     */
+    public List<Integer> getOngoingMeetings(String participant){
+        List<Integer> meeting = new ArrayList<>();
+        for(Meeting m: meetings){
+            if(!m.isCancelled()){
+                if(m.isAccepted() && !m.isConfirmed()){
+                    meeting.add(m.getMeetingID());
+                }
+            }
+        }
+        return meeting;
+    }
+
+
+    /** Return the IDs of all the meetings that the given participant is involved with and has been confirmed
+     *
+     * @param participant
+     * @return A list of MeetingIDs of meetings with the given property
+     */
+    public List<Integer> getCompletedMeetings(String participant){
+        List<Integer> meeting = new ArrayList<>();
+        for(Meeting m: meetings){
+            if(!m.isCancelled()){
+                if(m.isConfirmed()){
+                    meeting.add(m.getMeetingID());
+                }
+            }
+        }
+        return meeting;
+    }
+
+
+    /** Cancel the meeting associated with the given ID.
+     *
+     * @param meetingID The meetingID of the meeting you're interested in
+     * @throws MeetingIDException Thrown when no meeting corresponds to the given meeting ID
+     * @throws MeetingAlreadyConfirmedException Thrown when the meeting has already been completed
+     */
+    public void cancelMeeting(int meetingID) throws MeetingIDException, MeetingAlreadyConfirmedException{
+        Meeting m = getMeeting(meetingID);
+        if(m.isConfirmed()){
+            throw new MeetingAlreadyConfirmedException();
+        }
+        m.cancel();
+    }
+
+
+
 
 
     //Meeting and Trade Observer Pattern below
