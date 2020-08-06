@@ -102,8 +102,8 @@ public class TraderGUI {
         btnLogin.addActionListener(e -> {
             String user = txtLoginUsername.getText();
             String pass = txtLoginPassword.getText();
-            txtLoginUsername.setText(" ");
-            txtLoginPassword.setText(" ");
+            txtLoginUsername.setText("");
+            txtLoginPassword.setText("");
             try {
                 switch (loginController.login(user, pass)) {
                     case "USER":
@@ -147,8 +147,11 @@ public class TraderGUI {
             } catch (IOException ioException) {
                 showMessageDialog(null, ioException.getMessage() + "\n" +
                         Arrays.toString(ioException.getStackTrace()));
-            } finally {
             }
+            txtLoginUsername.setText("");
+            txtLoginPassword.setText("");
+            MainTabbedPane.removeAll();
+            MainTabbedPane.insertTab("Main", null, Main, null, 0);
         });
     }
 }

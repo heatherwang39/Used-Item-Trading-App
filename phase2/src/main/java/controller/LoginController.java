@@ -40,7 +40,6 @@ public class LoginController {
      * @return Whether you can login
      */
     public String login(String username, String password) throws AccountNotFoundException {
-        System.out.println(accountStorage.getUsernames());
         if (accountStorage.tryLogin(username, password)) {
             return accountStorage.getType(username);
         }
