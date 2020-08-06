@@ -72,3 +72,4 @@ Originally the use case classes called the gateway method directly that would sa
 ####TradeStorage/ItemStorage
 #####(By Warren Zhu)
 
+Once a Trade has been completed, TradeStorage will automatically notify its observers (in this case, ItemStorage) that a given Trade has been completed. In this particularly instance, ItemStorage will update the Items' owners according. Note that this Observer pattern works in tandem with the Observer pattern for TradeStorage and MeetingStorage--if the final meeting of a Trade has been completed, the Trade will then be marked as complete, which tells ItemStorage to update the owners accordingly.
