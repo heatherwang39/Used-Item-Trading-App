@@ -1,7 +1,12 @@
 package main.java.controller;
 
+import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
+import main.java.system2.StorageEnum;
+import main.java.system2.StorageFactory;
+import main.java.system2.StorageGateway;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,14 +19,17 @@ import java.util.List;
  */
 
 public class GuestController implements AccountController{
-    private ItemStorage itemStorage;
+    protected final ItemStorage itemStorage;
+    protected final StorageGateway storageGateway;
 
     /** Class Constructor
      *
-     * @param itemStorage All the items stored by this given controller
+     * @param storageGateway Gateway class for reading and writing Storage Data
      */
-    GuestController(ItemStorage itemStorage){
-        this.itemStorage = itemStorage;
+    GuestController(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
+        this.storageGateway = storageGateway;
+        StorageFactory storageFactory = new StorageFactory();
+        itemStorage = (ItemStorage) storageFactory.getStorage(storageGateway, StorageEnum.ITEM);
     }
 
 
@@ -37,7 +45,7 @@ public class GuestController implements AccountController{
      *
      * @return all data of verified Items
      */
-    public List<HashMap<String, String>> getVerifiedItemsData(){
+    public List<HashMap<String, String>> getVerifiedItemsData() throws ItemNotFoundException {
         return itemStorage.getVerifiedItemsData();
     }
 
@@ -46,7 +54,7 @@ public class GuestController implements AccountController{
      * @param username
      * @return
      */
-    public List<HashMap<String, String>> getVerifiedInventoryData(String username){
+    public List<HashMap<String, String>> getVerifiedInventoryData(String username) throws ItemNotFoundException {
         return itemStorage.getVerifiedInventoryData(username);
     }
 
@@ -56,7 +64,7 @@ public class GuestController implements AccountController{
      * @param tags
      * @return
      */
-    public List<HashMap<String, String>> getVerifiedInventoryData(List<String> searchTerms, List<String> tags){
+    public List<HashMap<String, String>> getVerifiedInventoryData(List<String> searchTerms, List<String> tags) throws ItemNotFoundException {
         return itemStorage.getVerifiedInventoryData(searchTerms, tags);
     }
 
@@ -65,7 +73,7 @@ public class GuestController implements AccountController{
      * @param username
      * @return
      */
-    public List<HashMap<String, String>> getWishlistData(String username){
+    public List<HashMap<String, String>> getWishlistData(String username) throws ItemNotFoundException {
         return itemStorage.getWishlistData(username);
     }
 }

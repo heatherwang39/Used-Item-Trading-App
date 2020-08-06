@@ -11,6 +11,7 @@ import main.java.model.status.StatusStorage;
 import main.java.model.trade.TradeNumberException;
 import main.java.model.trade.TradeStorage;
 import main.java.system2.StorageEnum;
+import main.java.system2.StorageFactory;
 import main.java.system2.StorageGateway;
 
 import java.io.IOException;
@@ -26,27 +27,28 @@ import java.util.List;
  * @since Phase 2
  */
 public class AdminController extends LoginAccountController {
-    private AccountStorage accountStorage;
-    private ItemStorage itemStorage;
-    private MeetingStorage meetingStorage;
-    private StatusStorage statusStorage;
-    private TradeStorage tradeStorage;
-    private final StorageGateway storageGateway;
+    //private AccountStorage accountStorage; ?already inherit from super class
+    //private ItemStorage itemStorage;       ?already inherit from super class
+    private final MeetingStorage meetingStorage;
+    //private StatusStorage statusStorage;   ?already inherit from super class
+    private final TradeStorage tradeStorage;
+    //private StorageGateway storageGateway; ?already inherit from super class
 
 
 
-    public AdminController(String username, AccountStorage accountStorage, ItemStorage itemStorage,
-                           MessageStorage messageStorage, MeetingStorage meetingStorage, StatusStorage statusStorage,
-                           TradeStorage tradeStorage, StorageGateway storageGateway){
+    public AdminController(String username, StorageGateway storageGateway) throws IOException, ClassNotFoundException {
 
-        super(username, messageStorage, itemStorage, accountStorage);
+        super(username,storageGateway);
 
-        this.accountStorage = accountStorage;
-        this.itemStorage = itemStorage;
-        this.meetingStorage = meetingStorage;
-        this.statusStorage = statusStorage;
-        this.tradeStorage = tradeStorage;
-        this.storageGateway = storageGateway;
+        StorageFactory storageFactory = new StorageFactory();
+        this.meetingStorage = (MeetingStorage)storageFactory.getStorage(storageGateway, StorageEnum.MEETING);
+        this.tradeStorage = (TradeStorage)storageFactory.getStorage(storageGateway, StorageEnum.TRADE);
+
+        //this.accountStorage = accountStorage;  ?already inherit from super class
+        //this.itemStorage = itemStorage;        ?already inherit from super class
+        //this.statusStorage = statusStorage;   ?already inherit from super class
+        //this.storageGateway = storageGateway; ?already inherit from super class
+
     }
 
 

@@ -3,12 +3,17 @@ package main.java.controller;
 
 import main.java.model.account.AccountStorage;
 import main.java.model.item.Item;
+import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
 import main.java.model.meeting.MeetingStorage;
 import main.java.model.message.MessageStorage;
 import main.java.model.status.StatusStorage;
 import main.java.model.trade.TradeStorage;
+import main.java.system2.StorageEnum;
+import main.java.system2.StorageFactory;
+import main.java.system2.StorageGateway;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,25 +25,20 @@ import java.util.List;
  * @since Phase 2
  */
 public class UserController extends LoginAccountController {
-    private AccountStorage accountStorage;
-    private ItemStorage itemStorage;
-    private MeetingStorage meetingStorage;
-    private StatusStorage statusStorage;
-    private TradeStorage tradeStorage;
+    //private AccountStorage accountStorage;  ?already inherit from super class
+    //private ItemStorage itemStorage;        ?already inherit from super class
+    private final MeetingStorage meetingStorage;
+    //private StatusStorage statusStorage;    ?already inherit from super class
+    private final TradeStorage tradeStorage;
 
 
 
-    public UserController(String username, AccountStorage accountStorage, ItemStorage itemStorage,
-                           MessageStorage messageStorage,MeetingStorage meetingStorage, StatusStorage statusStorage,
-                           TradeStorage tradeStorage){
+    public UserController(String username, StorageGateway storageGateway) throws IOException, ClassNotFoundException {
 
-        super(username, messageStorage, itemStorage, accountStorage);
-
-        this.accountStorage = accountStorage;
-        this.itemStorage = itemStorage;
-        this.meetingStorage = meetingStorage;
-        this.statusStorage = statusStorage;
-        this.tradeStorage = tradeStorage;
+        super(username, storageGateway);
+        StorageFactory storageFactory = new StorageFactory();
+        this.meetingStorage = (MeetingStorage)storageFactory.getStorage(storageGateway, StorageEnum.MEETING);
+        this.tradeStorage = (TradeStorage)storageFactory.getStorage(storageGateway, StorageEnum.TRADE);
     }
 
 
@@ -61,17 +61,17 @@ public class UserController extends LoginAccountController {
 
     //User's Items Method
 
-    public List<HashMap<String, String>> getVerifiedInventoryData(){
+    public List<HashMap<String, String>> getVerifiedInventoryData() throws ItemNotFoundException {
         return itemStorage.getVerifiedInventoryData(username);
     }
 
 
-    public List<HashMap<String, String>> getWishlistData(){
+    public List<HashMap<String, String>> getWishlistData() throws ItemNotFoundException {
         return itemStorage.getWishlistData(username);
     }
 
 
-    public List<HashMap<String, String>> suggestItems(String givenUser){
+    public List<HashMap<String, String>> suggestItems(String givenUser) throws ItemNotFoundException {
         return itemStorage.suggestItems(username, givenUser);
     }
 
