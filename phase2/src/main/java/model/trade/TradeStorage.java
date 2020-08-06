@@ -402,6 +402,21 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
         return tradeData;
     }
 
+    /**
+     * Gets all relevant data for all trades in given list of tradeNumbers in HashMap format
+     *
+     * @param trades list of tradeNumbers of the Trades getting data of
+     * @return List of HashMaps, with each element being the data of a Trade
+     * @throws TradeNumberException Thrown if no Trade has one of the given tradeNumbers
+     */
+    public List<HashMap<String, List<String>>> getTradesData(List<Integer> trades) throws TradeNumberException {
+        List<HashMap<String, List<String>>> tradesData = new ArrayList<>();
+        for (Integer tradeNumber: trades) {
+            tradesData.add(getTradeData(tradeNumber));
+        }
+        return tradesData;
+    }
+
     private List<String> getStringList(List<Integer> integerList) {
         List<String> stringList = new ArrayList<>(integerList.size());
         for (Integer integer : integerList) {
@@ -454,6 +469,24 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
             }
         }
         return inactiveUserTrades;
+    }
+
+    public List<Integer> getInactiveUserRequests(String username) throws TradeNumberException {
+        List<Integer> inactiveUserRequests = new ArrayList<>();
+        List<Integer> inactiveUserTrades = getInactiveTradesWithUser(username);
+        for (Integer tradeNumber: inactiveUserTrades) {
+            if (getTrade(tradeNumber).getTraders().get(0).equals(username)) inactiveUserRequests.add(tradeNumber);
+        }
+        return inactiveUserRequests;
+    }
+
+    public List<Integer> getInactiveUserOffers(String username) throws TradeNumberException {
+        List<Integer> inactiveUserOffers = new ArrayList<>();
+        List<Integer> inactiveUserTrades = getInactiveTradesWithUser(username);
+        for (Integer tradeNumber: inactiveUserTrades) {
+            if (!getTrade(tradeNumber).getTraders().get(0).equals(username)) inactiveUserOffers.add(tradeNumber);
+        }
+        return inactiveUserOffers;
     }
 
 

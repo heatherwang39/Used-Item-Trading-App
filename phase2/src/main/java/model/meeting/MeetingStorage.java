@@ -188,7 +188,7 @@ public class MeetingStorage  implements Storage, MeetingObservee{
      * (1) id: id of Meeting (number, single element)
      * (2) place: location of meeting (name, single element)
      * (3) datetime: date and time of meeting in form of “dow mon dd hh:mm:ss zzz yyy” (name, single element)
-     * (4) attendees: usernames of users participating in meeting (names, two or more elements
+     * (4) attendees: usernames of users participating in meeting (names, two or more elements)
      * (5) unaccepted: usernames of users who have not accepted meeting yet (names, zero or more elements)
      * (6) unconfirmed: usernames of users who have not confirmed meeting yet (names, zero or more elements)
      *

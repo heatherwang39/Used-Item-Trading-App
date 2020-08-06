@@ -124,14 +124,14 @@ public class ItemStorage implements Storage, TradeObserver {
      *
      * @return all data of verified Items
      */
-    public List<HashMap<String, String>> getVerifiedItemsData(){
+    public List<HashMap<String, String>> getVerifiedItemsData() throws ItemNotFoundException {
         List<HashMap<String, String>> itemData = new ArrayList<>();
         // From here:
         // https://stackoverflow.com/questions/46898/how-do-i-efficiently-iterate-over-each-entry-in-a-java-map
         for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
             Item item = entry.getValue();
             if (item.isVerified()) {
-                itemData.add(getData(item));
+                itemData.add(getData(item.getID()));
             }
         }
         return itemData;
@@ -142,12 +142,12 @@ public class ItemStorage implements Storage, TradeObserver {
      *
      * @return all unverified Items
      */
-    public List<HashMap<String, String>> getUnverifiedItemsData(){
+    public List<HashMap<String, String>> getUnverifiedItemsData() throws ItemNotFoundException {
         List<HashMap<String, String>> itemData = new ArrayList<>();
         for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
             Item item = entry.getValue();
             if (!item.isVerified()) {
-                itemData.add(getData(item));
+                itemData.add(getData(item.getID()));
             }
         }
         return itemData;
@@ -233,7 +233,7 @@ public class ItemStorage implements Storage, TradeObserver {
      * @param givenUser the given Account username who may want to borrow
      * @return data of suggested items
      */
-    public List<HashMap<String, String>> suggestItems(String currentUser,String givenUser) {
+    public List<HashMap<String, String>> suggestItems(String currentUser,String givenUser) throws ItemNotFoundException {
 
         List<Item> inventory = getVerifiedInventory(currentUser);
         List<Item> wishlist = getWishlist(givenUser);
@@ -241,7 +241,7 @@ public class ItemStorage implements Storage, TradeObserver {
         List<HashMap<String, String>> suggestItemsData = new ArrayList<>();
         suggestedItems.retainAll(wishlist);
         for(Item i:suggestedItems){
-            suggestItemsData.add(getData(i));
+            suggestItemsData.add(getData(i.getID()));
         }
         return suggestItemsData;
     }
@@ -252,11 +252,11 @@ public class ItemStorage implements Storage, TradeObserver {
      * @param username Account username
      * @return data of items in user's wishlist
      */
-    public List<HashMap<String, String>> getWishlistData(String username) {
+    public List<HashMap<String, String>> getWishlistData(String username) throws ItemNotFoundException {
         List<HashMap<String, String>> wishlistData = new ArrayList<>();
         List<Item> wishlist = getWishlist(username);
         for(Item i : wishlist){
-            wishlistData.add(getData(i));
+            wishlistData.add(getData(i.getID()));
         }
         return wishlistData;
     }
@@ -267,11 +267,11 @@ public class ItemStorage implements Storage, TradeObserver {
      * @param username Account username
      * @return data of verified items in user's inventory
      */
-    public List<HashMap<String, String>> getVerifiedInventoryData(String username){
+    public List<HashMap<String, String>> getVerifiedInventoryData(String username) throws ItemNotFoundException {
         List<HashMap<String, String>> verifiedInventoryData = new ArrayList<>();
         List<Item> verifiedInventory = getVerifiedInventory(username);
         for(Item i : verifiedInventory){
-            verifiedInventoryData.add(getData(i));
+            verifiedInventoryData.add(getData(i.getID()));
         }
         return verifiedInventoryData;
     }
@@ -283,11 +283,11 @@ public class ItemStorage implements Storage, TradeObserver {
      * @param tags enabled item tags
      * @return data of verified items that match the search filter
      */
-    public List<HashMap<String, String>> getVerifiedInventoryData(List<String> searchTerms, List<String> tags) {
+    public List<HashMap<String, String>> getVerifiedInventoryData(List<String> searchTerms, List<String> tags) throws ItemNotFoundException {
         List<HashMap<String, String>> verifiedInventoryData = new ArrayList<>();
         List<Item> verifiedInventory = getVerifiedInventory(searchTerms,tags);
         for(Item i : verifiedInventory){
-            verifiedInventoryData.add(getData(i));
+            verifiedInventoryData.add(getData(i.getID()));
         }
         return verifiedInventoryData;
 
@@ -295,11 +295,12 @@ public class ItemStorage implements Storage, TradeObserver {
 
     /**
      * Creates a HashMap containing the Item's data
-     * @param item the item
+     * @param itemID The id of the Item
      * @return Data in the form of {Label: Information, ...}
      */
-    private HashMap<String, String> getData(Item item) {
+    public HashMap<String, String> getData(Integer itemID) throws ItemNotFoundException {
         HashMap<String, String> data = new HashMap<>();
+        Item item = getItem(itemID);
         data.put("id", String.valueOf(item.getID()));
         data.put("owner", item.getOwner());
         data.put("name", item.getName());
