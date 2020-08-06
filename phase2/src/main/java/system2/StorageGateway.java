@@ -1,5 +1,17 @@
 package main.java.system2;
 
+import main.java.model.account.AccountStorage;
+import main.java.model.account.LoginAccount;
+import main.java.model.item.Item;
+import main.java.model.item.ItemStorage;
+import main.java.model.meeting.Meeting;
+import main.java.model.meeting.MeetingStorage;
+import main.java.model.message.MessageStorage;
+import main.java.model.status.Status;
+import main.java.model.status.StatusStorage;
+import main.java.model.trade.Trade;
+import main.java.model.trade.TradeStorage;
+
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -65,7 +77,30 @@ public class StorageGateway {
      * @throws IOException                 if an error occurs during writing to file
      */
     public void saveStorageData(StorageEnum type) throws IOException {
-        new FileReadWriter(path + filenameMap.get(type.toString())).saveToFile(dataMap.get(type.toString()));
+        FileReadWriter fileReadWriter = new FileReadWriter(path + filenameMap.get(type.toString()));
+        Object data = dataMap.get(type.toString());
+        switch (type) {
+            case ACCOUNT:
+                fileReadWriter.saveToFile((Map<String, LoginAccount>)data);
+                break;
+            case ITEM:
+                fileReadWriter.saveToFile((Map<Integer, Item>)data);
+                break;
+            case MESSAGE:
+                fileReadWriter.saveToFile((List<String>)data);
+                break;
+            case MEETING:
+                fileReadWriter.saveToFile((List<Meeting>)data);
+                break;
+            case STATUS:
+                fileReadWriter.saveToFile((Map<String, Status>)data);
+                break;
+            case TRADE:
+                fileReadWriter.saveToFile((List<Trade>)data);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + type);
+        }
     }
 }
 
