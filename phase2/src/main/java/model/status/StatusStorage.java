@@ -82,6 +82,20 @@ public class StatusStorage implements Storage, TradeObserver {
     }
 
     /**
+     * Gets all accounts with type status
+     *
+     * @param type Status type
+     * @return list of usernames
+     */
+    public List<String> getAccountsWithStatus(String type) {
+        List<String> accountsWithStatus = new ArrayList<>();
+        for (Map.Entry<String, List<Status>> entry : statuses.entrySet()) {
+            if (containsStatus(entry.getKey(), type)) accountsWithStatus.add(entry.getKey());
+        }
+        return accountsWithStatus;
+    }
+
+    /**
      * Remove Status under Account username
      *
      * @param username Account username
