@@ -425,6 +425,13 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
         return stringList;
     }
 
+
+    /** Return the Trade that is involved with the given meeting
+     *
+     * @param meetingID The meetingID of the meeting you're interested in
+     * @return The Trade ID that is involved with the given meeting.
+     * @throws NoTradeWithMeetingIDException Thrown when no Trade is involved with the given Meeting ID.
+     */
     public int getTradeWithMeeting(int meetingID) throws NoTradeWithMeetingIDException{
         for (Trade t : trades) {
             if (t.getMeetings().contains(meetingID)) {
@@ -435,6 +442,11 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
     }
 
 
+    /** Return all Trades (including cancelled ones) involving the given user
+     *
+     * @param username The username of user you're interested in
+     * @return A list containing the TradeIDs of all Trades that involve the given user
+     */
     public List<Integer> getTradesWithUser(String username){
         List<Integer> userTrades = new ArrayList<>();
         for (Trade t : trades) {
@@ -446,6 +458,11 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
     }
 
 
+    /** Return all active Trades that involved the given user.
+     *
+     * @param username The username of user you're interested in
+     * @return A list containing the TradeIDs of all active Trades that involve the given user
+     */
     public List<Integer> getActiveTradesWithUser(String username){
         List<Integer> activeUserTrades = new ArrayList<>();
         for (Trade t : trades) {
@@ -459,6 +476,11 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
     }
 
 
+    /** Return all pending Trades with the given user involved
+     *
+     * @param username The username of user you want to check
+     * @return A list containing all the TradeIDs of pending Trades that have the given user involved
+     */
     public List<Integer> getInactiveTradesWithUser(String username) {
         List<Integer> inactiveUserTrades = new ArrayList<>();
         for (Trade t : trades) {
@@ -490,6 +512,11 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
     }
 
 
+    /** Return all Trades with the given Item (This includes cancelled trades)
+     *
+     * @param itemID The itemID of the given item.
+     * @return A list containing all the TradeNumbers of the Trades with the given Item
+     */
     public List<Integer> getTradesWithItem(int itemID){
         List<Integer> tradesWithItems = new ArrayList<>();
         for (Trade t : trades) {
@@ -516,7 +543,10 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
     }
 
 
-
+    /** Return the TradeNumbers of all the Trades that have been accepted but haven't been completed
+     *
+     * @return A list of all the TradeNumbers of the Trades that have been accepted but haven't been completed
+     */
     public List<Integer> getActiveTrades(){
         List<Integer> activeTrades = new ArrayList<>();
         for (Trade t : trades) {
@@ -528,6 +558,10 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
     }
 
 
+    /** Return the TradeNumbers of all the Trades that have been completed
+     *
+     * @return A list of all the TradeNumbers of the Trades that have been completed
+     */
     public List<Integer> getCompletedTrades(){
         List<Integer> completedTrades = new ArrayList<>();
         for (Trade t : trades) {
