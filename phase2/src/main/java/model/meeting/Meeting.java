@@ -20,6 +20,8 @@ public class Meeting {
     private final List<Boolean> accepted;
     private final List<Boolean> confirmed;
 
+    private Boolean cancelled;
+
     /**
      * Class Constructor.
      *
@@ -37,6 +39,8 @@ public class Meeting {
         // From: https://stackoverflow.com/questions/5600668/how-can-i-initialize-an-arraylist-with-all-zeroes-in-java
         accepted = new ArrayList<>(Collections.nCopies(n, false));
         confirmed = new ArrayList<>(Collections.nCopies(n, false));
+
+        cancelled = false;
     }
 
     // Getters
@@ -161,5 +165,22 @@ public class Meeting {
             return true;
         }
         return false;
+    }
+
+
+    /** Return whether or not the Meeting is cancelled
+     *
+     * @return Whether the Meeting is cancelled
+     */
+    public boolean isCancelled(){
+        return cancelled;
+    }
+
+
+    /** Cancel the Meeting
+     *
+     */
+    public void cancel(){
+        cancelled = true;
     }
 }

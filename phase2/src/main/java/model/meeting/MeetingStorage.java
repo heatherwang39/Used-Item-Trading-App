@@ -188,7 +188,7 @@ public class MeetingStorage  implements Storage, MeetingObservee{
      * (1) id: id of Meeting (number, single element)
      * (2) place: location of meeting (name, single element)
      * (3) datetime: date and time of meeting in form of “dow mon dd hh:mm:ss zzz yyy” (name, single element)
-     * (4) attendees: usernames of users participating in meeting (names, two or more elements
+     * (4) attendees: usernames of users participating in meeting (names, two or more elements)
      * (5) unaccepted: usernames of users who have not accepted meeting yet (names, zero or more elements)
      * (6) unconfirmed: usernames of users who have not confirmed meeting yet (names, zero or more elements)
      *
@@ -207,6 +207,76 @@ public class MeetingStorage  implements Storage, MeetingObservee{
         meetingData.put("unconfirmed", meeting.getUnconfirmedAttendees());
         return meetingData;
     }
+
+
+    /** Return the IDs of all the meetings that the given participant is involved with and hasn't been accepted yet
+     *
+     * @param participant The participant that is involved with said meetings
+     * @return A list of MeetingIDs of meetings with the given property
+     */
+    public List<Integer> getSuggestedMeetings(String participant){
+        List<Integer> meeting = new ArrayList<>();
+        for(Meeting m: meetings){
+            if(!m.isCancelled()){
+                if(!m.isAccepted()){
+                    meeting.add(m.getMeetingID());
+                }
+            }
+        }
+        return meeting;
+    }
+
+    /** Return the IDs of all the meetings that the given participant is involved with and has been accepted but not
+     * confirmed yet
+     *
+     * @param participant
+     * @return A list of MeetingIDs of meetings with the given property
+     */
+    public List<Integer> getOngoingMeetings(String participant){
+        List<Integer> meeting = new ArrayList<>();
+        for(Meeting m: meetings){
+            if(!m.isCancelled()){
+                if(m.isAccepted() && !m.isConfirmed()){
+                    meeting.add(m.getMeetingID());
+                }
+            }
+        }
+        return meeting;
+    }
+
+
+    /** Return the IDs of all the meetings that the given participant is involved with and has been confirmed
+     *
+     * @param participant
+     * @return A list of MeetingIDs of meetings with the given property
+     */
+    public List<Integer> getCompletedMeetings(String participant){
+        List<Integer> meeting = new ArrayList<>();
+        for(Meeting m: meetings){
+            if(!m.isCancelled()){
+                if(m.isConfirmed()){
+                    meeting.add(m.getMeetingID());
+                }
+            }
+        }
+        return meeting;
+    }
+
+
+    /** Cancel the meeting associated with the given ID.
+     *
+     * @param meetingID The meetingID of the meeting you're interested in
+     * @throws MeetingIDException Thrown when no meeting corresponds to the given meeting ID
+     * @throws MeetingAlreadyConfirmedException Thrown when the meeting has already been completed
+     */
+    public void cancelMeeting(int meetingID) throws MeetingIDException, MeetingAlreadyConfirmedException{
+        Meeting m = getMeeting(meetingID);
+        if(m.isConfirmed()){
+            throw new MeetingAlreadyConfirmedException();
+        }
+        m.cancel();
+    }
+
 
 
 
