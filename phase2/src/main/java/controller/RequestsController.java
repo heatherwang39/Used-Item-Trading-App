@@ -1,5 +1,6 @@
 package main.java.controller;
 
+import main.java.model.status.StatusNotFoundException;
 import main.java.model.trade.TradeNumberException;
 import main.java.model.trade.TradeStorage;
 import main.java.system2.StorageEnum;
@@ -18,9 +19,9 @@ import java.util.HashMap;
  * @since Phase 2
  */
 public class RequestsController {
-    private StorageGateway storageGateway;
-    private TradeStorage tradeStorage;
-    private String username;
+    private final StorageGateway storageGateway;
+    private final TradeStorage tradeStorage;
+    private final String username;
 
     /**
      * Initializes a new RequestsController for the given username
@@ -54,7 +55,7 @@ public class RequestsController {
      * @throws TradeNumberException invalid tradeNumber, not in system
      * @throws IOException
      */
-    public void cancelRequest(int tradeNumber) throws TradeNumberException, IOException {
+    public void cancelRequest(int tradeNumber) throws TradeNumberException, IOException, StatusNotFoundException {
         tradeStorage.setStatus(tradeNumber, -1);
         storageGateway.saveStorageData(StorageEnum.valueOf("TRADE"));
     }

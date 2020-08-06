@@ -135,9 +135,12 @@ public class AccountStorage implements Storage {
      *
      * @param username input username
      * @param password input password
+     * @param emailAddress input email
      * @throws InvalidUsernameException  username doesn't match regex
      * @throws InvalidPasswordException  password doesn't match regex
+     * @throws InvalidEmailAddressException email doesn't match regex
      * @throws UsernameInUseException username is in use
+     * @throws EmailAddressInUseException email address is in use
      */
     public void createAdmin(String username, String password, String emailAddress) throws
             UsernameInUseException, InvalidEmailAddressException, EmailAddressInUseException, InvalidPasswordException, InvalidUsernameException {

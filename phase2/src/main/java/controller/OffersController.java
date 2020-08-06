@@ -1,5 +1,6 @@
 package main.java.controller;
 
+import main.java.model.status.StatusNotFoundException;
 import main.java.model.trade.TradeNumberException;
 import main.java.model.trade.TradeStorage;
 import main.java.system2.StorageEnum;
@@ -18,9 +19,9 @@ import java.util.List;
  * @since Phase 2
  */
 public class OffersController {
-    private StorageGateway storageGateway;
-    private TradeStorage tradeStorage;
-    private String username;
+    private final StorageGateway storageGateway;
+    private final TradeStorage tradeStorage;
+    private final String username;
 
     /**
      * Initializes a new OffersController for the given username
@@ -54,7 +55,7 @@ public class OffersController {
      * @throws TradeNumberException invalid tradeNumber, not in system
      * @throws IOException
      */
-    public void acceptOffer(int tradeNumber) throws TradeNumberException, IOException {
+    public void acceptOffer(int tradeNumber) throws TradeNumberException, IOException, StatusNotFoundException {
         tradeStorage.setStatus(tradeNumber, 1);
         storageGateway.saveStorageData(StorageEnum.valueOf("TRADE"));
     }
@@ -66,7 +67,7 @@ public class OffersController {
      * @throws TradeNumberException invalid tradeNumber, not in system
      * @throws IOException
      */
-    public void rejectOffer(int tradeNumber) throws TradeNumberException, IOException {
+    public void rejectOffer(int tradeNumber) throws TradeNumberException, IOException, StatusNotFoundException {
         tradeStorage.setStatus(tradeNumber, -1);
         storageGateway.saveStorageData(StorageEnum.valueOf("TRADE"));
     }

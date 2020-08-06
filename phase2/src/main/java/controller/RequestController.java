@@ -20,11 +20,19 @@ import java.io.IOException;
  * @since Phase 2
  */
 public class RequestController {
-    private StorageGateway storageGateway;
-    private TradeStorage tradeStorage;
-    private ItemStorage itemStorage;
-    private String username;
+    private final StorageGateway storageGateway;
+    private final TradeStorage tradeStorage;
+    private final ItemStorage itemStorage;
+    private final String username;
 
+    /**
+     * Initializes a new RequestController for the given username
+     *
+     * @param storageGateway gateway for loading and saving information
+     * @param username username of the user accessing the requests tab
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public RequestController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
         this.storageGateway = storageGateway;
         this.username = username;
@@ -33,6 +41,17 @@ public class RequestController {
         itemStorage = (ItemStorage) sf.getStorage(storageGateway, StorageEnum.valueOf("ITEM"));
     }
 
+    /**
+     * Creates a new Trade request using the given inputs by the user
+     *
+     * @param permanent Whether the trade is permanent or not
+     * @param tradeAlgorithmName The name of the Trade Algorithm that is associated with this trade
+     * @param itemRequest The item being requested
+     * @param itemOffer The item being offered
+     * @throws ItemNotFoundException
+     * @throws NoSuchTradeAlgorithmException Thrown if no tradeAlgorithm has the given name
+     * @throws IOException
+     */
     public void createRequest(boolean permanent, TradeAlgorithmName tradeAlgorithmName, int itemRequest, int itemOffer)
             throws ItemNotFoundException, NoSuchTradeAlgorithmException, IOException {
         List<String> traders = new ArrayList<>();

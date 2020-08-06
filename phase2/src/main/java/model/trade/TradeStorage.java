@@ -664,6 +664,7 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
 
     /**
      * Returns a list of at most the three most frequent trading partners for the user with given username
+     *
      * @param username username of the user
      * @return list of the usernames of the most frequent trading partners
      * @throws TradeNumberException an invalid trade number is found

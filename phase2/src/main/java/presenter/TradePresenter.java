@@ -9,9 +9,24 @@ import main.java.system2.StorageGateway;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Presenter for formatting Trade data into an easy to output GUI format
+ * Useful for Requests, Offers, Activity tabs
+ *
+ * @author Fadi Hareth
+ * @version %I%, %G%
+ * @since Phase 2
+ */
 public class TradePresenter {
-    private ItemStorage itemStorage;
+    private final ItemStorage itemStorage;
 
+    /**
+     * Initializes a new TradePresenter
+     *
+     * @param storageGateway gateway for loading and saving information
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public TradePresenter(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
         StorageFactory sf = new StorageFactory();
         itemStorage = (ItemStorage) sf.getStorage(storageGateway, StorageEnum.valueOf("ITEM"));
@@ -45,6 +60,31 @@ public class TradePresenter {
             formatTrade.add(tradeInfo.toString());
         }
         return formatTrade;
+    }
+
+    /**
+     * Formats a list of lists of item IDs that were part of a trade for GUI Lists to display information about the Items
+     * Format of items: "Name1 owned by Owner1 traded for Name2 owned by Owner2 ..."
+     * Example: "Shirt owned by Warren traded for Book owned by Fadi"
+     *
+     * @param itemIDSets List of trades represented by lists of the IDs of items that were part of the Trade
+     * @return List of formatted Strings of each item trade data
+     * @throws ItemNotFoundException Thrown if there is an item not in the system
+     */
+    public List<String> formatItemsInTradeForListView(List<List<Integer>> itemIDSets) throws ItemNotFoundException {
+        List<String> formatItem = new ArrayList<>();
+        for (List<Integer> itemIDSet : itemIDSets) {
+            StringBuilder itemInfo = new StringBuilder();
+            for (Integer itemID : itemIDSet) {
+                HashMap<String, String> itemData = itemStorage.getData(itemID);
+                if (!(itemInfo.length() == 0))itemInfo.append( " traded for ");
+                itemInfo.append(itemData.get("name"));
+                itemInfo.append(" owned by ");
+                itemInfo.append(itemData.get("owner"));
+            }
+            formatItem.add(itemInfo.toString());
+        }
+        return formatItem;
     }
 
     private List<Integer> getIntegerList(List<String> stringList) {
