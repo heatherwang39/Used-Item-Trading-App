@@ -1,6 +1,7 @@
 package main.java.model.status;
 
 import main.java.model.Storage;
+import main.java.model.trade.TradeObserver;
 
 import java.util.*;
 
@@ -11,7 +12,7 @@ import java.util.*;
  * @version %I%, %G%
  * @since Phase 2
  */
-public class StatusStorage implements Storage {
+public class StatusStorage implements Storage, TradeObserver {
 
     private final Map<String, List<Status>> statuses;
     private StatusFactory statusFactory;
@@ -107,6 +108,7 @@ public class StatusStorage implements Storage {
      *
      * @param username Account username
      * @param type Status type
+     * @throws InvalidStatusTypeException when Status type is invalid
      */
     public void createStatus(String username, String type) throws InvalidStatusTypeException {
         Status s = statusFactory.getStatus(type);
@@ -118,4 +120,21 @@ public class StatusStorage implements Storage {
         }
     }
 
+
+    //Observer pattern
+    /**
+     * Remove the new status of user automatically when a trade is completed
+     *
+     * @param itemIDs ids of traded items
+     * @param newOwner usernames of trades
+     * @throws StatusNotFoundException when no Status can be found
+     */
+    @Override
+    public void updateTradeComplete(List<Integer> itemIDs, List<String> newOwner) throws StatusNotFoundException {
+        for(String username:newOwner){
+            if(containsStatus(username,"NEW")){
+                removeStatus(username,"NEW");
+            }
+        }
+    }
 }

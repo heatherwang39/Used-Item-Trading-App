@@ -2,6 +2,7 @@ package main.java.model.trade;
 
 import main.java.model.Storage;
 import main.java.model.meeting.MeetingObserver;
+import main.java.model.status.StatusNotFoundException;
 
 import java.util.*;
 
@@ -135,7 +136,7 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
      * @return A boolean representing whether or not the change was made
      * @throws TradeNumberException Thrown if no Trade has the given TradeNumber
      */
-    public boolean setStatus(int tradeNumber, int status) throws TradeNumberException{
+    public boolean setStatus(int tradeNumber, int status) throws TradeNumberException, StatusNotFoundException {
         Trade t = getTrade(tradeNumber);
         boolean b = t.setStatus(status);
         if(b && getStatus(tradeNumber) == 3){
@@ -638,7 +639,7 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
      * @param itemID A parallel list representing the IDs of items involved in the trade
      * @param newOwner A parallel list representing the usernames of the new owners of the aforementioned items
      */
-    public void notifyTradeComplete(List<Integer> itemID, List<String> newOwner){
+    public void notifyTradeComplete(List<Integer> itemID, List<String> newOwner) throws StatusNotFoundException {
         for (TradeObserver tradeObserver: observers) {
             tradeObserver.updateTradeComplete(itemID, newOwner);
         }

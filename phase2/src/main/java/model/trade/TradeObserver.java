@@ -1,6 +1,7 @@
 package main.java.model.trade;
 
 import main.java.model.item.ItemNotFoundException;
+import main.java.model.status.StatusNotFoundException;
 
 import java.util.List;
 
@@ -19,5 +20,5 @@ public interface TradeObserver {
      * @param itemIDs A parallel list representing the IDs of items involved in the trade
      * @param newOwner A parallel list representing the usernames of the new owners of the aforementioned items
      */
-    void updateTradeComplete(List<Integer> itemIDs, List<String> newOwner);
+    void updateTradeComplete(List<Integer> itemIDs, List<String> newOwner) throws StatusNotFoundException;
 }
