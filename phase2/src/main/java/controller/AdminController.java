@@ -8,8 +8,12 @@ import main.java.model.message.MessageStorage;
 import main.java.model.status.InvalidStatusTypeException;
 import main.java.model.status.StatusNotFoundException;
 import main.java.model.status.StatusStorage;
+import main.java.model.trade.TradeNumberException;
 import main.java.model.trade.TradeStorage;
+import main.java.system2.StorageEnum;
+import main.java.system2.StorageGateway;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,12 +31,13 @@ public class AdminController extends LoginAccountController {
     private MeetingStorage meetingStorage;
     private StatusStorage statusStorage;
     private TradeStorage tradeStorage;
+    private final StorageGateway storageGateway;
 
 
 
     public AdminController(String username, AccountStorage accountStorage, ItemStorage itemStorage,
-                           MessageStorage messageStorage,MeetingStorage meetingStorage, StatusStorage statusStorage,
-                           TradeStorage tradeStorage){
+                           MessageStorage messageStorage, MeetingStorage meetingStorage, StatusStorage statusStorage,
+                           TradeStorage tradeStorage, StorageGateway storageGateway){
 
         super(username, messageStorage, itemStorage, accountStorage);
 
@@ -41,6 +46,7 @@ public class AdminController extends LoginAccountController {
         this.meetingStorage = meetingStorage;
         this.statusStorage = statusStorage;
         this.tradeStorage = tradeStorage;
+        this.storageGateway = storageGateway;
     }
 
 
@@ -58,20 +64,34 @@ public class AdminController extends LoginAccountController {
     //Fadi's Methods
 
 
-
-
     public String registerAdmin(String username, String password, String email) {
         return "SUCCESS";
     }
 
-
-    public List<List<String>> showFreezeUsers(int borrowThreshold, int incompleteThreshold, int weeklyThreshold) {
+    //Update status
+    public List<List<String>> showFreezeUsers(int borrowThreshold, int incompleteThreshold, int weeklyThreshold) throws InvalidStatusTypeException, IOException {
         List<String> usernames = accountStorage.getUsernames();
+        for(String username:usernames){
+            if(!statusStorage.containsStatus(username,"FROZEN")){
+            statusStorage.createStatus(username,"FROZEN");
+            }
+        }
+        storageGateway.saveStorageData(StorageEnum.STATUS);
         return tradeStorage.showFreezeUsers(usernames, borrowThreshold, incompleteThreshold, weeklyThreshold);
     }
 
+    public List<String> getGildedUsers() throws TradeNumberException, InvalidStatusTypeException, IOException {
+        List<String> usernames = accountStorage.getUsernames();
+        for(String username:usernames){
+            if(!statusStorage.containsStatus(username,"GILDED")){
+                statusStorage.createStatus(username,"GILDED");
+            }
+        }
+        storageGateway.saveStorageData(StorageEnum.STATUS);
+        return tradeStorage.getGildedUsers(usernames);
+    }
 
-    public List<HashMap<String, String>> showItemRequests() {
+    public List<HashMap<String, String>> showItemRequests() throws ItemNotFoundException {
         List<HashMap<String, String>> unverifiedItems = itemStorage.getUnverifiedItemsData();
         for (HashMap<String, String> itemData : unverifiedItems) {
             itemData.remove("who have add it to wishlist");
