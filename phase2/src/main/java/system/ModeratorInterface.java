@@ -1,5 +1,7 @@
 package main.java.system;
 
+import main.java.model.item.ItemNotFoundException;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,5 +25,5 @@ public interface ModeratorInterface {
      * Shows items awaiting approval, allowing the user with moderator privileges to decide whether to approve the
      * items or not
      */
-    List<HashMap<String, String>> showItemRequests();
+    List<HashMap<String, String>> showItemRequests() throws ItemNotFoundException;
 }

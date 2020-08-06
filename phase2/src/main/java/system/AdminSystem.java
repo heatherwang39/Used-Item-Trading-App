@@ -1,6 +1,7 @@
 package main.java.system;
 
 import main.java.model.account.*;
+import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
 import main.java.model.trade.TradeStorage;
 
@@ -31,7 +32,7 @@ class AdminSystem extends LoginSystem implements AdminInterface, ModeratorInterf
     }
 
     @Override
-    public List<HashMap<String, String>> showItemRequests() {
+    public List<HashMap<String, String>> showItemRequests() throws ItemNotFoundException {
         List<HashMap<String, String>> unverifiedItems = is.getUnverifiedItemsData();
         for (HashMap<String, String> itemData : unverifiedItems) {
             itemData.remove("who have add it to wishlist");
