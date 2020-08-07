@@ -122,8 +122,8 @@ public class TraderGUI {
     private void initializeLogin(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
 
         loginController = new LoginController(storageGateway);
-        itemStorage = new ItemStorage(null);
-        accountStorage = new AccountStorage(null);
+        itemStorage = new ItemStorage();
+        accountStorage = new AccountStorage();
         tradePresenter = new TradePresenter(storageGateway);
 
 
