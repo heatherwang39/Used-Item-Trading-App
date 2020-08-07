@@ -1,6 +1,7 @@
 package main.java.model.status;
 
 import main.java.model.Storage;
+import main.java.model.trade.Trade;
 import main.java.model.trade.TradeObserver;
 
 import java.util.*;
@@ -14,21 +15,24 @@ import java.util.*;
  */
 public class StatusStorage implements Storage, TradeObserver {
 
-    private final Map<String, List<Status>> statuses;
-    private StatusFactory statusFactory;
+    private Map<String, List<Status>> statuses;
+    private final StatusFactory statusFactory;
 
     /**
      * Class constructor.
-     *
-     * @param statuses Map containing lists of Statuses referenced by usernames
      */
-    public StatusStorage(Object statuses) {
-        if (statuses == null) {
-            this.statuses = new HashMap<>();
-        } else {
-            this.statuses = (Map<String, List<Status>>) statuses;
-        }
+    public StatusStorage() {
         statusFactory = new StatusFactory();
+    }
+
+    @Override
+    public Object getNewStorageData() {
+        return new HashMap<String, Status>();
+    }
+
+    @Override
+    public void setStorageData(Object statuses) {
+        this.statuses = (Map<String, List<Status>>) statuses;
     }
 
     /**
@@ -128,7 +132,8 @@ public class StatusStorage implements Storage, TradeObserver {
         Status s = statusFactory.getStatus(type);
         if (s == null) throw new InvalidStatusTypeException();
         if (statuses.containsKey(username)) {
-            statuses.get(username).add(s);
+            if(!containsStatus(username,type))
+                {statuses.get(username).add(s);}
         } else {
             statuses.put(username, new ArrayList<>(Collections.singletonList(s)));
         }

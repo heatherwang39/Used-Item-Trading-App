@@ -1,6 +1,7 @@
 package main.java.model.account;
 
 import main.java.model.Storage;
+import sun.rmi.runtime.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,19 +18,18 @@ import java.util.regex.Pattern;
  */
 public class AccountStorage implements Storage {
 
-    private final Map<String, LoginAccount> accounts;
+    private Map<String, LoginAccount> accounts;
 
-    /**
-     * Class constructor.
-     *
-     * @param accounts Map containing LoginAccounts referenced by usernames
-     */
-    public AccountStorage(Object accounts) {
-        if (accounts == null) {
-            this.accounts = new HashMap<>();
-        } else {
-            this.accounts = (Map<String, LoginAccount>) accounts;
-        }
+    @Override
+    public Object getNewStorageData() {
+        Map<String, LoginAccount> map = new HashMap<>();
+        map.put("admin", new AdminAccount("admin", "admin", "(none)"));
+        return map;
+    }
+
+    @Override
+    public void setStorageData(Object accounts) {
+        this.accounts = (Map<String, LoginAccount>) accounts;
     }
 
     /**

@@ -1,4 +1,4 @@
-package main.java.controller;
+package main.java.controller.deprectaed;
 
 /**
  * A Controller for Accounts

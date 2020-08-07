@@ -11,7 +11,7 @@ import java.util.*;
 
 /**
  * Presenter for formatting Trade data into an easy to output GUI format
- * Useful for Requests, Offers, Activity tabs
+ * Useful for Offers, Activity tabs
  *
  * @author Fadi Hareth
  * @version %I%, %G%

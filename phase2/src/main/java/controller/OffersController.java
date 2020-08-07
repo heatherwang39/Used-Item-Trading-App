@@ -27,7 +27,7 @@ public class OffersController {
      * Initializes a new OffersController for the given username
      *
      * @param storageGateway gateway for loading and saving information
-     * @param username username of the user accessing the offer tab
+     * @param username username of the user accessing the Offers tab
      * @throws IOException
      * @throws ClassNotFoundException
      */

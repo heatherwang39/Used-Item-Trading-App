@@ -1,17 +1,5 @@
 package main.java.system2;
 
-import main.java.model.account.AccountStorage;
-import main.java.model.account.LoginAccount;
-import main.java.model.item.Item;
-import main.java.model.item.ItemStorage;
-import main.java.model.meeting.Meeting;
-import main.java.model.meeting.MeetingStorage;
-import main.java.model.message.MessageStorage;
-import main.java.model.status.Status;
-import main.java.model.status.StatusStorage;
-import main.java.model.trade.Trade;
-import main.java.model.trade.TradeStorage;
-
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -54,20 +42,25 @@ public class StorageGateway {
      * @throws IOException error during reading data
      * @throws ClassNotFoundException Serialized clas not found
      */
-    public Object getStorageData(StorageEnum type) throws IOException, ClassNotFoundException {
+    public Object getStorageData(StorageEnum type, Object newData) throws IOException, ClassNotFoundException {
         String filePath = path + filenameMap.get(type.toString());
         File file = new File(filePath);
         FileReadWriter fileReadWriter = new FileReadWriter(filePath);
-        if (!file.exists()){
+        if (!file.exists()) {
             file.createNewFile();
+            dataMap.put(type.toString(), newData);
+            return newData;
         }
-        if (dataMap.get(type.toString()) == null) {
-            try {
-                dataMap.put(type.toString(), fileReadWriter.readFromFile());
-            } catch (EOFException ignored) {
-            }
+        Object data = null;
+        try {
+            data = fileReadWriter.readFromFile();
+        } catch (EOFException ignored) {}
+        if (data == null) {
+            dataMap.put(type.toString(), newData);
+            return newData;
         }
-        return dataMap.get(type.toString());
+        dataMap.put(type.toString(), data);
+        return data;
     }
 
     /**
@@ -79,28 +72,7 @@ public class StorageGateway {
     public void saveStorageData(StorageEnum type) throws IOException {
         FileReadWriter fileReadWriter = new FileReadWriter(path + filenameMap.get(type.toString()));
         Object data = dataMap.get(type.toString());
-        switch (type) {
-            case ACCOUNT:
-                fileReadWriter.saveToFile((Map<String, LoginAccount>)data);
-                break;
-            case ITEM:
-                fileReadWriter.saveToFile((Map<Integer, Item>)data);
-                break;
-            case MESSAGE:
-                fileReadWriter.saveToFile((List<String>)data);
-                break;
-            case MEETING:
-                fileReadWriter.saveToFile((List<Meeting>)data);
-                break;
-            case STATUS:
-                fileReadWriter.saveToFile((Map<String, Status>)data);
-                break;
-            case TRADE:
-                fileReadWriter.saveToFile((List<Trade>)data);
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + type);
-        }
+        fileReadWriter.saveToFile(data);
     }
 }
 

@@ -1,6 +1,7 @@
 package main.java.model.item;
 
 import main.java.model.Storage;
+import main.java.model.meeting.Meeting;
 import main.java.model.trade.TradeObserver;
 
 import java.util.*;
@@ -16,19 +17,17 @@ import java.util.*;
 
 public class ItemStorage implements Storage, TradeObserver {
 
-    private final Map<Integer, Item> items;
+    private Map<Integer, Item> items;
 
-    /**
-     * Class constructor
-     *
-     * @param items Map containing Items referenced by their IDs.
-     */
-    public ItemStorage(Object items) {
-        if (items == null) {
-            this.items = new HashMap<>();
-        } else {
-            this.items = (Map<Integer, Item>) items;
-        }
+
+    @Override
+    public Object getNewStorageData() {
+        return new HashMap<Integer, Item>();
+    }
+
+    @Override
+    public void setStorageData(Object items) {
+        this.items = (Map<Integer, Item>) items;
     }
 
     private Item getItem(int itemID) throws ItemNotFoundException {

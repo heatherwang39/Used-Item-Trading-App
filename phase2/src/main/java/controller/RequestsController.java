@@ -1,8 +1,7 @@
 package main.java.controller;
 
-import main.java.model.status.StatusNotFoundException;
-import main.java.model.trade.TradeNumberException;
-import main.java.model.trade.TradeStorage;
+import main.java.model.item.ItemNotFoundException;
+import main.java.model.item.ItemStorage;
 import main.java.system2.StorageEnum;
 import main.java.system2.StorageFactory;
 import main.java.system2.StorageGateway;
@@ -20,14 +19,14 @@ import java.util.HashMap;
  */
 public class RequestsController {
     private final StorageGateway storageGateway;
-    private final TradeStorage tradeStorage;
+    private final ItemStorage itemStorage;
     private final String username;
 
     /**
      * Initializes a new RequestsController for the given username
      *
      * @param storageGateway gateway for loading and saving information
-     * @param username username of the user accessing the requests tab
+     * @param username username of the user accessing the Requests tab
      * @throws IOException
      * @throws ClassNotFoundException
      */
@@ -35,28 +34,40 @@ public class RequestsController {
         this.storageGateway = storageGateway;
         this.username = username;
         StorageFactory sf = new StorageFactory();
-        tradeStorage = (TradeStorage) sf.getStorage(storageGateway, StorageEnum.valueOf("TRADE"));
+        itemStorage = (ItemStorage) sf.getStorage(storageGateway, StorageEnum.valueOf("ITEM"));
     }
 
     /**
      * Gets a list containing HashMaps of data of all Trades that the user has requested
      *
      * @return List of Trade datas
-     * @throws TradeNumberException An invalid trade was found
+     * @throws ItemNotFoundException An item not in the system was inputted
      */
-    public List<HashMap<String, List<String>>> getRequests() throws TradeNumberException {
-        return tradeStorage.getTradesData(tradeStorage.getInactiveUserRequests(username));
+    public List<HashMap<String, String>> getRequests() throws ItemNotFoundException {
+        return itemStorage.getUnverifiedItemsData();
     }
 
     /**
-     * Cancels the Trade request with given tradeNumber
+     * Verifies the item with given itemID
      *
-     * @param tradeNumber id of Trade being cancelled
-     * @throws TradeNumberException invalid tradeNumber, not in system
+     * @param itemID ID of the item
+     * @throws ItemNotFoundException invalid itemID
      * @throws IOException
      */
-    public void cancelRequest(int tradeNumber) throws TradeNumberException, IOException, StatusNotFoundException {
-        tradeStorage.setStatus(tradeNumber, -1);
-        storageGateway.saveStorageData(StorageEnum.valueOf("TRADE"));
+    public void verifyItem(int itemID) throws ItemNotFoundException, IOException {
+        itemStorage.verifyItem(itemID);
+        storageGateway.saveStorageData(StorageEnum.valueOf("ITEM"));
+    }
+
+    /**
+     * Rejects the item with given itemID
+     *
+     * @param itemID ID of the item
+     * @throws ItemNotFoundException invalid itemID
+     * @throws IOException
+     */
+    public void rejectItem(int itemID) throws ItemNotFoundException, IOException {
+        itemStorage.removeItem(itemID);
+        storageGateway.saveStorageData(StorageEnum.valueOf("ITEM"));
     }
 }
