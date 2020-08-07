@@ -32,25 +32,18 @@ class FreezeManager {
      */
     protected List<String> checkUserShouldFreeze(String username, List<Trade> userTrades, int borrowThreshold,
                                         int incompleteThreshold, int weeklyThreshold) {
-        TradeStorage ts = new TradeStorage();
-        ts.setStorageData(userTrades);
         List<String> reasonsToFreeze = new ArrayList<>();
         int borrowScore = 0;
         int incompleteScore = 0;
         int weeklyScore = 0;
         for (Trade trade : userTrades) {
-            try {
-                int tradeId = userTrades.indexOf(trade);
-                List<String> traders = ts.getTraders(tradeId);
-                List<Integer> items = ts.getItemsOriginal(tradeId);
-                LocalDateTime meetingTime = trade.getCompletionTime();
-                int tradeStatus = ts.getStatus(tradeId);
-                if (ts.acceptedStatus(tradeStatus)) borrowScore += checkBorrowThreshold(username, traders, items);
-                if (checkWeeklyThreshold(meetingTime)) weeklyScore++;
-                if (checkIncompleteThreshold(tradeStatus)) incompleteScore++;
-            } catch (TradeNumberException e){
-                break;
-            }
+            List<String> traders = trade.getTraders();
+            List<Integer> items = trade.getItemsOriginal();
+            LocalDateTime meetingTime = trade.getCompletionTime();
+            int status = trade.getStatus();
+            if (status == 1 || status == 2 || status == 3) borrowScore += checkBorrowThreshold(username, traders, items);
+            if (checkWeeklyThreshold(meetingTime)) weeklyScore++;
+            if (checkIncompleteThreshold(status)) incompleteScore++;
         }
         if (borrowScore > borrowThreshold) reasonsToFreeze.add("BORROW");
         if (incompleteScore > incompleteThreshold) reasonsToFreeze.add("INCOMPLETE");
