@@ -155,7 +155,7 @@ public class AccountStorage implements Storage {
      * @return account with username
      * @throws AccountNotFoundException account not found under username
      */
-    private LoginAccount getAccount(String username) throws AccountNotFoundException{
+    public LoginAccount getAccount(String username) throws AccountNotFoundException{
         if (accounts.containsKey(username)){
             return accounts.get(username);
         } else {

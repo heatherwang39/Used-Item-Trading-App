@@ -33,19 +33,17 @@ public class LoginController {
         statusStorage = (StatusStorage) storageFactory.getStorage(storageGateway, StorageEnum.STATUS);
     }
 
-    /** Check if you can login with the given data. If you can, return the LoginAccount associated with the username
-     * and password. Otherwise, return null.
+     /** Check if you can login with the given data. If you can, return True
      *
      * @param username The username of the account
      * @param password The password of the account
-     * @return the associated LoginAccount
+     * @return Whether you can login
      */
-    public LoginAccount login(String username, String password) throws AccountNotFoundException {
+    public String login(String username, String password) throws AccountNotFoundException {
         if (accountStorage.tryLogin(username, password)) {
-            return accountStorage.getAccount(username);
+            return accountStorage.getType(username);
         }
-        return null;
-
+        return "NULL";
     }
 
     /** Attempt to register an account. If no exceptions are thrown, registration was successful.

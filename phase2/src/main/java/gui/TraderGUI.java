@@ -129,6 +129,7 @@ public class TraderGUI {
         itemStorage = new ItemStorage();
         accountStorage = new AccountStorage();
         tradePresenter = new TradePresenter(storageGateway);
+        freezeController = new FreezeController(storageGateway);
 
 
 
@@ -188,10 +189,10 @@ public class TraderGUI {
 
 //                txtLoginUsername.setText("");
 //                txtLoginPassword.setText("");
-                ActivityController activityController = new ActivityController(storageGateway, user);
-                AddAdminController addAdminController = new AddAdminController(storageGateway, user);
-                RequestController requestController = new RequestController(storageGateway, user);
-                FreezeController freezeController = new FreezeController(storageGateway, user);
+                activityController = new ActivityController(storageGateway, user);
+                addAdminController = new AddAdminController(storageGateway, user);
+                requestController = new RequestController(storageGateway, user);
+
 
 
                 if (loginController.login(user, pass).equals("USER")) {
@@ -265,10 +266,10 @@ public class TraderGUI {
 
                     // Done but not tested
                     MainTabbedPane.insertTab("Freeze", null, Freeze, null, 2);
-                    List<List<String>> freezeUserList = freezeController.showUsersToFreeze(3, 3 ,3); // THESE ARE TEMPORARY VALUES!!
-                    for (List<String> strings : freezeUserList) {
-                        txtAreaFreezeUsers.append(strings.get(0) + strings.get(1) + "\n");
-                    }
+//                    List<List<String>> freezeUserList = freezeController.showUsersToFreeze(3, 3 ,3); // THESE ARE TEMPORARY VALUES!!
+//                    for (List<String> strings : freezeUserList) {
+//                        txtAreaFreezeUsers.append(strings.get(0) + strings.get(1) + "\n");
+//                    }
 
                     // waiting to see how thresholds are stored first.
                     MainTabbedPane.insertTab("Trade Threshold", null, Threshold, null, 3);
@@ -342,17 +343,17 @@ public class TraderGUI {
 
         int currUserNum = 0;
         btnFreezeEnter.addActionListener(e -> {
-            List<List<String>> freezeUserList = freezeController.showUsersToFreeze(3, 3 ,3); // THESE ARE TEMPORARY VALUES!!
-            txtFreezeUser.setText(freezeUserList.get(currUserNum).get(0)); // this prints out the user's name
-            if (rbtnFreezeUser.isSelected()){
-                try {
-                    freezeController.freezeUser(freezeUserList.get(currUserNum).get(0));
-                } catch (InvalidStatusTypeException invalidStatusTypeException) {
-                    invalidStatusTypeException.printStackTrace();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-            }
+//            List<List<String>> freezeUserList = freezeController.showUsersToFreeze(3, 3 ,3); // THESE ARE TEMPORARY VALUES!!
+//            txtFreezeUser.setText(freezeUserList.get(currUserNum).get(0)); // this prints out the user's name
+//            if (rbtnFreezeUser.isSelected()){
+//                try {
+//                    freezeController.freezeUser(freezeUserList.get(currUserNum).get(0));
+//                } catch (InvalidStatusTypeException invalidStatusTypeException) {
+//                    invalidStatusTypeException.printStackTrace();
+//                } catch (IOException ioException) {
+//                    ioException.printStackTrace();
+//                }
+//            }
             /*else if (rbtnIgnoreUser.isSelected()) {
                 try {
                 freezeController.unfreezeUser(freezeUserList.get(currUserNum).get(0));
