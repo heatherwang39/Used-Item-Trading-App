@@ -132,7 +132,8 @@ public class StatusStorage implements Storage, TradeObserver {
         Status s = statusFactory.getStatus(type);
         if (s == null) throw new InvalidStatusTypeException();
         if (statuses.containsKey(username)) {
-            statuses.get(username).add(s);
+            if(!containsStatus(username,type))
+                {statuses.get(username).add(s);}
         } else {
             statuses.put(username, new ArrayList<>(Collections.singletonList(s)));
         }
