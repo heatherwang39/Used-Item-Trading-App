@@ -35,9 +35,9 @@ public class FreezeController {
     public FreezeController(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
         this.storageGateway = storageGateway;
         StorageFactory sf = new StorageFactory();
-        tradeStorage = (TradeStorage) sf.getStorage(storageGateway, StorageEnum.valueOf("TRADE"));
-        statusStorage = (StatusStorage) sf.getStorage(storageGateway, StorageEnum.valueOf("STATUS"));
-        accountStorage = (AccountStorage) sf.getStorage(storageGateway, StorageEnum.valueOf("ACCOUNT"));
+        tradeStorage = (TradeStorage) sf.getStorage(storageGateway, StorageEnum.TRADE);
+        statusStorage = (StatusStorage) sf.getStorage(storageGateway, StorageEnum.STATUS);
+        accountStorage = (AccountStorage) sf.getStorage(storageGateway, StorageEnum.ACCOUNT);
     }
 
     /**

@@ -34,9 +34,9 @@ public class GildedController {
     public GildedController(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
         StorageFactory storageFactory = new StorageFactory();
         this.storageGateway = storageGateway;
-        this.statusStorage = (StatusStorage)storageFactory.getStorage(storageGateway, StorageEnum.STATUS);
-        this.accountStorage = (AccountStorage)storageFactory.getStorage(storageGateway,StorageEnum.ACCOUNT);
-        this.tradeStorage = (TradeStorage)storageFactory.getStorage(storageGateway, StorageEnum.TRADE);
+        statusStorage = (StatusStorage)storageFactory.getStorage(storageGateway, StorageEnum.STATUS);
+        accountStorage = (AccountStorage)storageFactory.getStorage(storageGateway,StorageEnum.ACCOUNT);
+        tradeStorage = (TradeStorage)storageFactory.getStorage(storageGateway, StorageEnum.TRADE);
     }
 
     /** Get all gilded Users who have completed more than 20 trades and set their status to be gilded in the same time
@@ -59,7 +59,6 @@ public class GildedController {
      *
      * @param username the username of the user
      * @throws InvalidStatusTypeException when the type of status is invalid
-     * @throws StatusNotFoundException cannot find the Gilded status in the account
      */
     public void setGildedStatus(String username) throws InvalidStatusTypeException, IOException {
         statusStorage.createStatus(username,"GILDED");
