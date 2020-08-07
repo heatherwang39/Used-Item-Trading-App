@@ -119,6 +119,8 @@ public class TraderGUI {
                         MainTabbedPane.insertTab("Offers", null, Offers, null, 4);
                         MainTabbedPane.insertTab("Request", null, Request, null, 5);
                         MainTabbedPane.insertTab("Add Items", null, AddItems, null, 6);
+                        MainTabbedPane.insertTab("Wishlist", null, Wishlist, null, 7);
+                        MainTabbedPane.insertTab("Messages", null, Messages, null, 8);
                         break;
                     case "ADMIN":
                         MainTabbedPane.removeAll();
@@ -127,6 +129,8 @@ public class TraderGUI {
                         MainTabbedPane.insertTab("Freeze", null, Freeze, null, 2);
                         MainTabbedPane.insertTab("Trade Threshold", null, TradeThreshold, null, 3);
                         MainTabbedPane.insertTab("Add Admin", null, AddAdmin, null, 4);
+                        MainTabbedPane.insertTab("User List", null, UserList, null, 5);
+
                         break;
                     default:
                         showMessageDialog(null, "Your account did not match any credentials in " +

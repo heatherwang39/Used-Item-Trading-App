@@ -22,7 +22,9 @@ public class AccountStorage implements Storage {
 
     @Override
     public Object getNewStorageData() {
-        return new HashMap<String, LoginAccount>();
+        Map<String, LoginAccount> map = new HashMap<>();
+        map.put("admin", new AdminAccount("admin", "admin", "(none)"));
+        return map;
     }
 
     @Override
