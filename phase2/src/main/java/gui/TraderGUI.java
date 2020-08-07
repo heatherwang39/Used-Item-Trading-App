@@ -95,6 +95,10 @@ public class TraderGUI {
     private JRadioButton rbtnAcceptOffer;
     private JRadioButton rbtnDenyOffer;
     private JButton btnOfferEnter;
+    private JTextField textField2;
+    private JTextField textField3;
+    private JTextField textField4;
+    private JTextArea txtAreaLoggingOutput;
     private JTextArea accountInformationTextArea;
 
     private LoginController loginController;
@@ -167,10 +171,13 @@ public class TraderGUI {
         });
 
         guestButton.addActionListener(e -> {
-            if (MainTabbedPane.getTabCount() == 2) {
-                MainTabbedPane.removeTabAt(1);
-            }
-            MainTabbedPane.insertTab("Browse", null, Browse, null, 1);
+//            if (MainTabbedPane.getTabCount() == 2) {
+//                MainTabbedPane.removeTabAt(1);
+//            }
+//            MainTabbedPane.insertTab("Browse", null, Browse, null, 1);
+            MainTabbedPane.insertTab("Home", null, Home, null, 0);
+            MainTabbedPane.insertTab("Account", null, Account, null, 1);
+            MainTabbedPane.insertTab("Request", null, Request, null, 5);
         });
 
         signOutButton.addActionListener(e -> {
@@ -329,7 +336,8 @@ public class TraderGUI {
             } else{
                 showMessageDialog(null, "Please select a type of trade for this request!");
             }
-            //requestController.createRequest();
+
+            //requestController.createRequest(perm, tradeAlgorithimName, );
         });
 
         btnOfferEnter.addActionListener(e -> {
