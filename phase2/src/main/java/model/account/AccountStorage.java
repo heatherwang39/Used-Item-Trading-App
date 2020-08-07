@@ -1,7 +1,7 @@
 package main.java.model.account;
 
 import main.java.model.Storage;
-import sun.rmi.runtime.Log;
+//import sun.rmi.runtime.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -155,7 +155,7 @@ public class AccountStorage implements Storage {
      * @return account with username
      * @throws AccountNotFoundException account not found under username
      */
-    public LoginAccount getAccount(String username) throws AccountNotFoundException{
+    private LoginAccount getAccount(String username) throws AccountNotFoundException{
         if (accounts.containsKey(username)){
             return accounts.get(username);
         } else {
@@ -167,7 +167,7 @@ public class AccountStorage implements Storage {
      * Get all accounts
      * @return copy of accounts List
      */
-    public List<Account> getAccounts() { return new ArrayList<>(accounts.values()); }
+    private List<Account> getAccounts() { return new ArrayList<>(accounts.values()); }
 
     /**
      * Get all account usernames
@@ -198,4 +198,19 @@ public class AccountStorage implements Storage {
         accounts.remove(user.getUsername());
     }
 
+    /** Return all the usernames of admins
+     *
+     *
+     * @return The list of usernames of admins
+     */
+    public List<String> getAdmins(){
+        List<String> allAdmins = new ArrayList<>();
+        List<Account> allAccounts = getAccounts();
+        for(Account account:allAccounts){
+            if(account.getType().equals("ADMIN")){
+                allAdmins.add(account.getUsername());
+            }
+        }
+        return allAdmins;
+    }
 }
