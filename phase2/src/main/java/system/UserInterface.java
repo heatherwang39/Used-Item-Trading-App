@@ -1,5 +1,7 @@
 package main.java.system;
 
+import main.java.model.item.ItemNotFoundException;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,7 +18,7 @@ public interface UserInterface {
      * Returns a list with the data of an item for
      * @return
      */
-    List<HashMap<String, String>> viewInventory();
+    List<HashMap<String, String>> viewInventory() throws ItemNotFoundException;
 
-    List<HashMap<String, String>> viewWishlist();
+    List<HashMap<String, String>> viewWishlist() throws ItemNotFoundException;
 }

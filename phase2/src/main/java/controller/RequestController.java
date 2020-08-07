@@ -29,7 +29,7 @@ public class RequestController {
      * Initializes a new RequestController for the given username
      *
      * @param storageGateway gateway for loading and saving information
-     * @param username username of the user accessing the requests tab
+     * @param username username of the user accessing the Request tab
      * @throws IOException
      * @throws ClassNotFoundException
      */

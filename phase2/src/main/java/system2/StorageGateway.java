@@ -67,7 +67,7 @@ public class StorageGateway {
      * Save Storage data to file by type.
      *
      * @param type Storage type
-     * @throws IOException                 if an error occurs during writing to file
+     * @throws IOException if an error occurs during writing to file
      */
     public void saveStorageData(StorageEnum type) throws IOException {
         FileReadWriter fileReadWriter = new FileReadWriter(path + filenameMap.get(type.toString()));

@@ -24,7 +24,7 @@ public class AddItemsController {
      * Initializes a new AddItemsController for the given username
      *
      * @param storageGateway gateway for loading and saving information
-     * @param username username of the user accessing the requests tab
+     * @param username username of the user accessing the AddItems tab
      * @throws IOException
      * @throws ClassNotFoundException
      */
@@ -43,8 +43,13 @@ public class AddItemsController {
      * @param tags any user-added search tags of the item
      * @throws IOException
      */
-    public void addItem(String name, String description, List<String> tags) throws IOException {
+    public void addInventoryItem(String name, String description, List<String> tags) throws IOException {
         itemStorage.newItem(username, name, description, tags);
+        storageGateway.saveStorageData(StorageEnum.valueOf("ITEM"));
+    }
+
+    public void addWishlistItem(String name) throws IOException{
+
         storageGateway.saveStorageData(StorageEnum.valueOf("ITEM"));
     }
 }

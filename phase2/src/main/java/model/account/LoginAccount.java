@@ -33,6 +33,12 @@ public abstract class LoginAccount extends Account {
     public String getEmailAddress() { return emailAddress; }
 
     /**
+     * Returns password.
+     *
+     * @return password
+     */
+    public String getPassword() { return password; }
+    /**
      * Verifies the password attempt.
      *
      * @param password input password
