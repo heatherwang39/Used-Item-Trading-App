@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Controller that returns the needed information for GUI client to display for Freeze tab
  *
- * @author Fadi Hareth
+ * @author Fadi Hareth, Heather Wang
  * @version %I%, %G%
  * @since Phase 2
  */
@@ -25,19 +25,15 @@ public class FreezeController {
     private final TradeStorage tradeStorage;
     private final StatusStorage statusStorage;
     private final AccountStorage accountStorage;
-    private final String username;
+
 
     /**
-     * Initializes a new FreezeController for the given username
+     * Class constructor for FreezeController
      *
      * @param storageGateway gateway for loading and saving information
-     * @param username username of the user accessing the requests tab
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
-    public FreezeController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
+    public FreezeController(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
         this.storageGateway = storageGateway;
-        this.username = username;
         StorageFactory sf = new StorageFactory();
         tradeStorage = (TradeStorage) sf.getStorage(storageGateway, StorageEnum.valueOf("TRADE"));
         statusStorage = (StatusStorage) sf.getStorage(storageGateway, StorageEnum.valueOf("STATUS"));
@@ -45,35 +41,28 @@ public class FreezeController {
     }
 
     /**
-     * Returns all users who have violated a trade threshold but have not been frozen yet
-     *
+     * Show all the users that need to be frozen based on threshold and set their status to be frozen
      * @param borrowThreshold threshold for borrowing more than lending
      * @param incompleteThreshold threshold for too many incomplete trades
      * @param weeklyThreshold threshold for too many trades in one week
-     * @return a list of lists that contain the username and reasons why that user should be frozen. Empty if there are no users to freeze
+     * @throws InvalidStatusTypeException Invalid status, not in system
+     * @return the frozen users and the frozen reasons
      */
-    public List<List<String>> showUsersToFreeze(int borrowThreshold, int incompleteThreshold, int weeklyThreshold) {
-        List<String> unfrozenUsers = new ArrayList<>();
-        List<String> frozenUsers = showFrozenUsers();
-        for (String username : accountStorage.getUsernames()) {
-            if (!(frozenUsers.contains(username))) unfrozenUsers.add(username);
+    public List<List<String>> showAllFrozenUsers(int borrowThreshold, int incompleteThreshold, int weeklyThreshold) throws InvalidStatusTypeException, IOException {
+        List<String> allUsers = accountStorage.getUsernames();
+        List<List<String>> frozenUsersAndReasons = tradeStorage.showFreezeUsers(allUsers, borrowThreshold, incompleteThreshold, weeklyThreshold);
+        for(int i=0; i<frozenUsersAndReasons.size();i++){
+            statusStorage.createStatus(frozenUsersAndReasons.get(i).get(0),"FROZEN");
         }
-        return tradeStorage.showFreezeUsers(unfrozenUsers, borrowThreshold, incompleteThreshold, weeklyThreshold);
+        storageGateway.saveStorageData(StorageEnum.STATUS);
+        return frozenUsersAndReasons;
     }
 
     /**
-     * Shows users who are currently frozen
-     *
-     * @return list of usernames
-     */
-    public List<String> showFrozenUsers() {return statusStorage.getAccountsWithStatus("FROZEN"); }
-
-    /**
-     * Sets the user's status to frozen
+     * Sets a certain user's status to frozen
      *
      * @param username username of the user
      * @throws InvalidStatusTypeException Invalid status, not in system
-     * @throws IOException
      */
     public void freezeUser(String username) throws InvalidStatusTypeException, IOException {
         statusStorage.createStatus(username, "FREEZE");
@@ -81,15 +70,16 @@ public class FreezeController {
     }
 
     /**
-     * Removes the freeze status from a user
+     * Removes the freeze status from a certain user
      *
      * @param username username of the user
      * @throws StatusNotFoundException Invalid status, not in system
-     * @throws IOException
      */
     public void unfreezeUser(String username) throws StatusNotFoundException, IOException {
         statusStorage.removeStatus(username, "FREEZE");
         storageGateway.saveStorageData(StorageEnum.valueOf("STATUS"));
     }
+
+
 
 }
