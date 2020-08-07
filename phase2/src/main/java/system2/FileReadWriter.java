@@ -28,12 +28,11 @@ public class FileReadWriter {
      * @throws IOException cannot save to file
      */
     public void saveToFile(Object obj) throws IOException {
-        //https://www.tutorialspoint.com/java/java_serialization.htm
-        FileOutputStream fileOut = new FileOutputStream(filePath);
-        ObjectOutputStream out = new ObjectOutputStream(fileOut);
-        out.writeObject(obj);
-        out.close();
-        fileOut.close();
+        OutputStream file = new FileOutputStream(filePath);
+        OutputStream buffer = new BufferedOutputStream(file);
+        ObjectOutput output = new ObjectOutputStream(buffer);
+        output.writeObject(obj);
+        output.close();
     }
 
     /**
@@ -44,11 +43,13 @@ public class FileReadWriter {
      * @throws IOException cannot read from file
      */
     public Object readFromFile() throws ClassNotFoundException, IOException {
-        FileInputStream fileIn = new FileInputStream(filePath);
-        ObjectInputStream in = new ObjectInputStream(fileIn);
-        Object object = in.readObject();
-        in.close();
-        fileIn.close();
-        return object;
+        InputStream file = new FileInputStream(filePath);
+        InputStream buffer = new BufferedInputStream(file);
+        ObjectInput input = new ObjectInputStream(buffer);
+        Object obj;
+        obj = input.readObject();
+        input.close();
+        return obj;
     }
+
 }

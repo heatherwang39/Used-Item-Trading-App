@@ -1,10 +1,12 @@
 package main.java.model.message;
 
 import main.java.model.Storage;
+import main.java.model.status.Status;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Use case class for storing Messages and creating Messages.
@@ -15,19 +17,16 @@ import java.util.List;
 
 public class MessageStorage implements Storage {
 
-    private final List<Message> messages;
+    private List<Message> messages;
 
-    /**
-     * Class constructor.
-     *
-     * @param messages list of messages
-     */
-    public MessageStorage(Object messages) {
-        if (messages == null) {
-            this.messages = new ArrayList<>();
-        } else{
-            this.messages = (List<Message>) messages;
-        }
+    @Override
+    public Object getNewStorageData() {
+        return new ArrayList<Message>();
+    }
+
+    @Override
+    public void setStorageData(Object messages) {
+        this.messages = (List<Message>) messages;
     }
 
     /**

@@ -24,22 +24,30 @@ public class StorageFactory {
      * @throws ClassNotFoundException if serialized Class not found
      */
     public Storage getStorage(StorageGateway sg, StorageEnum type) throws IOException, ClassNotFoundException {
-        Object data = sg.getStorageData(type);
+        Storage storage;
         switch (type) {
             case ACCOUNT:
-                return new AccountStorage(data);
+                storage = new AccountStorage();
+                break;
             case ITEM:
-                return new ItemStorage(data);
+                storage = new ItemStorage();
+                break;
             case MESSAGE:
-                return new MessageStorage(data);
+                storage = new MessageStorage();
+                break;
             case MEETING:
-                return new MeetingStorage(data);
+                storage = new MeetingStorage();
+                break;
             case STATUS:
-                return new StatusStorage(data);
+                storage = new StatusStorage();
+                break;
             case TRADE:
-                return new TradeStorage(data);
+                storage = new TradeStorage();
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + type);
         }
+        storage.setStorageData(sg.getStorageData(type, storage.getNewStorageData()));
+        return storage;
     }
 }

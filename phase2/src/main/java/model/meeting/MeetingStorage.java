@@ -1,6 +1,7 @@
 package main.java.model.meeting;
 
 import main.java.model.Storage;
+import main.java.model.message.Message;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -13,23 +14,18 @@ import java.util.*;
  * @since Phase 2
  */
 public class MeetingStorage  implements Storage, MeetingObservee{
-    private final List<Meeting> meetings;
-
+    private List<Meeting> meetings;
     private final List<MeetingObserver> observers = new ArrayList<>();
 
-
-    /** Class Constructor
-     *
-     * @param meetings The list of meetings stored by this particular instance of MeetingStorage
-     */
-    public MeetingStorage(Object meetings){
-        if (meetings == null) {
-            this.meetings = new ArrayList<>();
-        } else {
-            this.meetings = (List<Meeting>) meetings;
-        }
+    @Override
+    public Object getNewStorageData() {
+        return new ArrayList<Meeting>();
     }
 
+    @Override
+    public void setStorageData(Object meetings) {
+        this.meetings = (List<Meeting>) meetings;
+    }
 
     /**
      * Gets the total number of meetings suggested
@@ -229,7 +225,7 @@ public class MeetingStorage  implements Storage, MeetingObservee{
     /** Return the IDs of all the meetings that the given participant is involved with and has been accepted but not
      * confirmed yet
      *
-     * @param participant
+     * @param participant participant in meeting
      * @return A list of MeetingIDs of meetings with the given property
      */
     public List<Integer> getOngoingMeetings(String participant){
@@ -247,7 +243,7 @@ public class MeetingStorage  implements Storage, MeetingObservee{
 
     /** Return the IDs of all the meetings that the given participant is involved with and has been confirmed
      *
-     * @param participant
+     * @param participant participant in meeting
      * @return A list of MeetingIDs of meetings with the given property
      */
     public List<Integer> getCompletedMeetings(String participant){

@@ -1,6 +1,7 @@
 package main.java.model.trade;
 
 import main.java.model.Storage;
+import main.java.model.account.LoginAccount;
 import main.java.model.meeting.MeetingObserver;
 import main.java.model.status.StatusNotFoundException;
 
@@ -15,19 +16,20 @@ import java.util.*;
  */
 
 public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
-    private final List<Trade> trades;
+    private List<Trade> trades;
     private final TradeAlgorithmFactory taf = new TradeAlgorithmFactory();
     private final FreezeManager fm = new FreezeManager();
     private final ActivityManager am = new ActivityManager();
 
     private final List<TradeObserver> observers = new ArrayList<>();
 
+    @Override
+    public Object getNewStorageData() {
+        return new ArrayList<Trade>();
+    }
 
-    /** Initializes a new TradeStorage with the given Trades.
-     *
-     * @param trades A list of Trades
-     */
-    public TradeStorage(Object trades){
+    @Override
+    public void setStorageData(Object trades) {
         this.trades = (List<Trade>) trades;
     }
 

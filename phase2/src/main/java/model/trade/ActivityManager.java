@@ -45,7 +45,8 @@ class ActivityManager {
      * @return list of the usernames of the most frequent trading partners
      */
     protected List<String> frequentTradePartners(String username, List<Trade> userTrades) {
-        TradeStorage ts = new TradeStorage(userTrades);
+        TradeStorage ts = new TradeStorage();
+        ts.setStorageData(userTrades);
         List<String> threeMostFrequentPartners = new ArrayList<>();
         Map<String, Integer> tradingPartners = getTradePartners(username, userTrades, ts);
         Map.Entry<String, Integer> maxEntry = null;

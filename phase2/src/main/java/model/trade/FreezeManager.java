@@ -32,7 +32,8 @@ class FreezeManager {
      */
     protected List<String> checkUserShouldFreeze(String username, List<Trade> userTrades, int borrowThreshold,
                                         int incompleteThreshold, int weeklyThreshold) {
-        TradeStorage ts = new TradeStorage(userTrades);
+        TradeStorage ts = new TradeStorage();
+        ts.setStorageData(userTrades);
         List<String> reasonsToFreeze = new ArrayList<>();
         int borrowScore = 0;
         int incompleteScore = 0;
