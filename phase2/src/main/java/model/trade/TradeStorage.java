@@ -496,15 +496,6 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
         return inactiveUserTrades;
     }
 
-    public List<Integer> getInactiveUserRequests(String username) throws TradeNumberException {
-        List<Integer> inactiveUserRequests = new ArrayList<>();
-        List<Integer> inactiveUserTrades = getInactiveTradesWithUser(username);
-        for (Integer tradeNumber: inactiveUserTrades) {
-            if (getTrade(tradeNumber).getTraders().get(0).equals(username)) inactiveUserRequests.add(tradeNumber);
-        }
-        return inactiveUserRequests;
-    }
-
     public List<Integer> getInactiveUserOffers(String username) throws TradeNumberException {
         List<Integer> inactiveUserOffers = new ArrayList<>();
         List<Integer> inactiveUserTrades = getInactiveTradesWithUser(username);
@@ -716,11 +707,6 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
         List <Trade> userTrades = getUserTrades(username);
         return fm.checkUserShouldFreeze(username, userTrades, borrowThreshold, incompleteThreshold, weeklyThreshold);
     }
-
-    protected boolean acceptedStatus(int tradeStatus) {
-        return (tradeStatus == 1 || tradeStatus == 2 || tradeStatus == 3);
-    }
-
 
     private boolean checkIsGilded(String username) throws TradeNumberException {
         List<Trade> userTrades = getUserTrades(username);

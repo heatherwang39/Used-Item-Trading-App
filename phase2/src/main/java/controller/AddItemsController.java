@@ -24,7 +24,7 @@ public class AddItemsController {
      * Initializes a new AddItemsController for the given username
      *
      * @param storageGateway gateway for loading and saving information
-     * @param username username of the user accessing the requests tab
+     * @param username username of the user accessing the AddItems tab
      * @throws IOException
      * @throws ClassNotFoundException
      */

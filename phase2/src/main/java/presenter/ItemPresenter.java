@@ -21,8 +21,8 @@ public class ItemPresenter {
 
     /**
      * Formats a list of hashmaps representing data of items for GUI Lists to display
-     * Format of item data: "itemName, Owner: ownerName, Description: description, Tags: tag1, tag2, ..."
-     * Example: "Book, Owner: Fadi, Description: for reading, Tags: hardcover, fiction, comedy"
+     * Format of item data: "itemID. itemName, Owner: ownerName, Description: description, Tags: tag1, tag2, ..."
+     * Example: "15. Book, Owner: Fadi, Description: for reading, Tags: hardcover, fiction, comedy"
      *
      * @param items List of hashmaps that contain item data
      * @return List of formatted Strings of each item data
@@ -30,7 +30,7 @@ public class ItemPresenter {
     public List<String> formatItemsToListView(List<HashMap<String, String>> items) {
         List<String> formatItem = new ArrayList<>();
         for (HashMap<String, String> itemData : items) {
-            String itemInfo = itemData.get("name") + ", Owner: " +
+            String itemInfo = itemData.get("id") + ". " + itemData.get("name") + ", Owner: " +
                     itemData.get("owner") +
                     ", Description: " +
                     itemData.get("description") +
