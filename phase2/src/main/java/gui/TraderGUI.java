@@ -4,7 +4,6 @@ import main.java.controller.*;
 import main.java.model.account.*;
 import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
-import main.java.model.status.StatusNotFoundException;
 import main.java.model.trade.TradeNumberException;
 import main.java.system2.StorageGateway;
 import main.java.model.status.InvalidStatusTypeException;
@@ -12,12 +11,11 @@ import main.java.presenter.*;
 
 import javax.swing.*;
 // From: https://stackoverflow.com/questions/9119481/how-to-present-a-simple-alert-message-in-java
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
@@ -112,6 +110,8 @@ public class TraderGUI {
     private OffersController offersController;
     private RequestsController requestsController;
 
+    private String user = "";
+    private String pass = "";
 
     public TraderGUI(StorageGateway storageGateway) {
         MainTabbedPane.removeAll();
@@ -131,10 +131,8 @@ public class TraderGUI {
         tradePresenter = new TradePresenter(storageGateway);
 
 
-        final String[] username = new String[1];
-        final String[] password = new String[1];
-        String user = username[0];
-        String pass = password[0];
+
+
 
         MainTabbedPane.insertTab("Main", null, Main, null, 0);
 
@@ -171,13 +169,11 @@ public class TraderGUI {
         });
 
         guestButton.addActionListener(e -> {
-//            if (MainTabbedPane.getTabCount() == 2) {
-//                MainTabbedPane.removeTabAt(1);
-//            }
-//            MainTabbedPane.insertTab("Browse", null, Browse, null, 1);
-            MainTabbedPane.insertTab("Home", null, Home, null, 0);
-            MainTabbedPane.insertTab("Account", null, Account, null, 1);
-            MainTabbedPane.insertTab("Request", null, Request, null, 5);
+            if (MainTabbedPane.getTabCount() == 2) {
+                MainTabbedPane.removeTabAt(1);
+            }
+            MainTabbedPane.insertTab("Browse", null, Browse, null, 1);
+
         });
 
         signOutButton.addActionListener(e -> {
@@ -186,20 +182,19 @@ public class TraderGUI {
         });
 
         btnLogin.addActionListener(e -> {
-            username[0] = txtLoginUsername.getText();
-            password[0] = txtLoginPassword.getText();
-            txtLoginUsername.setText("");
-            txtLoginPassword.setText("");
-
             try {
-                LoginAccount acc = loginController.login(user, pass);
+                user = txtLoginUsername.getText();
+                pass = txtLoginPassword.getText();
+
+//                txtLoginUsername.setText("");
+//                txtLoginPassword.setText("");
                 ActivityController activityController = new ActivityController(storageGateway, user);
                 AddAdminController addAdminController = new AddAdminController(storageGateway, user);
                 RequestController requestController = new RequestController(storageGateway, user);
                 FreezeController freezeController = new FreezeController(storageGateway, user);
 
 
-                if (acc.getType().equals("USER")) {
+                if (loginController.login(user, pass).equals("USER")) {
                     MainTabbedPane.removeAll();
 
                     // done
@@ -208,8 +203,8 @@ public class TraderGUI {
 
                     // done but not tested
                     MainTabbedPane.insertTab("Account", null, Account, null, 1);
-                    txtUsernameOutput.setText(acc.getUsername());
-                    txtEmailOutput.setText(acc.getEmailAddress());
+                    txtUsernameOutput.setText(user);
+                    txtEmailOutput.setText(accountStorage.getAccount(user).getEmailAddress());
                     for (int i = 0; i < itemStorage.getVerifiedInventory(user).size(); i++){
                         txtAreaInventoryOutput.append(itemStorage.getVerifiedInventory(user).get(i).getName() + "\n");
                     }
@@ -222,10 +217,10 @@ public class TraderGUI {
                     MainTabbedPane.insertTab("Activity", null, Activity, null, 2);
                     List<List<Integer>> tradeList = activityController.recentItemsTraded();
                     List<String> partnerList = activityController.frequentTradingPartners();
-                    String tradeString = "";
+                    StringBuilder tradeString = new StringBuilder();
                     for (List<Integer> integers : tradeList) {
                         for (Integer integer : integers) {
-                            tradeString += ", " + integer;
+                            tradeString.append(", ").append(integer);
                             txtAreaActivityTradeOutput.append(tradeString + "\n");
                         }
                     }
@@ -236,9 +231,9 @@ public class TraderGUI {
                     // Done but not tested
                     MainTabbedPane.insertTab("Browse", null, Browse, null, 3);
                     List<HashMap<String, String>> listingList = itemStorage.getVerifiedItemsData();
-                    for (int i = 0; i < listingList.size(); i++){
-                        for (String str : listingList.get(i).keySet()){
-                            txtAreaBrowseListingsOutput.append(str + listingList.get(i).get(str) + "\n");
+                    for (HashMap<String, String> stringStringHashMap : listingList) {
+                        for (String str : stringStringHashMap.keySet()) {
+                            txtAreaBrowseListingsOutput.append(str + stringStringHashMap.get(str) + "\n");
                         }
                     }
 
@@ -260,7 +255,7 @@ public class TraderGUI {
                     // Not done
                     MainTabbedPane.insertTab("Messages", null, Messages, null, 7);
 
-                } else if (acc.getType().equals("ADMIN")) {
+                } else if (loginController.login(user, pass).equals("ADMIN")) {
                     MainTabbedPane.removeAll();
                     // Done
                     MainTabbedPane.insertTab("Home", null, Home, null, 0);
