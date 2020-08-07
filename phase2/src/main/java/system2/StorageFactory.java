@@ -48,6 +48,7 @@ public class StorageFactory {
                 throw new IllegalStateException("Unexpected value: " + type);
         }
         storage.setStorageData(sg.getStorageData(type, storage.getNewStorageData()));
+        sg.saveStorageData(type);
         return storage;
     }
 }

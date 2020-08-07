@@ -41,8 +41,6 @@ public class LoginController {
      * @return the associated LoginAccount
      */
     public LoginAccount login(String username, String password) throws AccountNotFoundException {
-        System.out.println(accountStorage.getUsernames());
-
         if (accountStorage.tryLogin(username, password)) {
             return accountStorage.getAccount(username);
         }
