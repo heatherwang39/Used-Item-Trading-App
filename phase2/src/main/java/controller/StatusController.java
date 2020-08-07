@@ -53,10 +53,9 @@ public class StatusController {
 
     /** Remove the away status
      *
-     * @throws InvalidStatusTypeException when the type of status is invalid
      * @throws StatusNotFoundException cannot find the away status in current account
      */
-    public void removeAwayStatus() throws InvalidStatusTypeException, StatusNotFoundException, IOException {
+    public void removeAwayStatus() throws StatusNotFoundException, IOException {
         statusStorage.removeStatus(username,"AWAY");
         storageGateway.saveStorageData(StorageEnum.STATUS);
     }
