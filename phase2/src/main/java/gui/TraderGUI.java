@@ -54,6 +54,10 @@ public class TraderGUI {
     private JPanel Requests;
     private JPanel Freeze;
     private JPanel TradeThreshold;
+    private JPanel Wishlist;
+    private JPanel Messages;
+    private JPanel CreateMessage;
+    private JPanel UserList;
     private JTextArea accountInformationTextArea;
 
     private LoginController loginController;

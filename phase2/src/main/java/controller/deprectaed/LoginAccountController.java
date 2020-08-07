@@ -1,7 +1,10 @@
-package main.java.controller;
+package main.java.controller.deprectaed;
 
+import main.java.controller.MutedAccountException;
+import main.java.controller.RecipientNotFoundException;
+import main.java.controller.deprectaed.AccountController;
+import main.java.controller.deprectaed.GuestController;
 import main.java.model.account.AccountStorage;
-import main.java.model.item.ItemStorage;
 import main.java.model.message.EmptyContentException;
 import main.java.model.message.EmptyRecipientListException;
 import main.java.model.message.EmptyTitleException;

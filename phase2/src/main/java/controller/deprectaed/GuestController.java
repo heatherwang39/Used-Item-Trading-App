@@ -1,5 +1,6 @@
-package main.java.controller;
+package main.java.controller.deprectaed;
 
+import main.java.controller.deprectaed.AccountController;
 import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
 import main.java.system2.StorageEnum;
@@ -18,7 +19,7 @@ import java.util.List;
  * @since Phase 2
  */
 
-public class GuestController implements AccountController{
+public class GuestController implements AccountController {
     protected final ItemStorage itemStorage;
     protected final StorageGateway storageGateway;
 
