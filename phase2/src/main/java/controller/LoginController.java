@@ -40,13 +40,13 @@ public class LoginController {
      * @param password The password of the account
      * @return the associated LoginAccount
      */
-    public String login(String username, String password) throws AccountNotFoundException {
+    public LoginAccount login(String username, String password) throws AccountNotFoundException {
         if (accountStorage.tryLogin(username, password)) {
-            return accountStorage.getType(username);
+            return accountStorage.getAccount(username);
         }
-        return "NULL";
-    }
+        return null;
 
+    }
 
     /** Attempt to register an account. If no exceptions are thrown, registration was successful.
      *
