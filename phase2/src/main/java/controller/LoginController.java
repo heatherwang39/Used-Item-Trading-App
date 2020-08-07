@@ -39,12 +39,13 @@ public class LoginController {
      * @param password The password of the account
      * @return Whether you can login
      */
-    public String login(String username, String password) throws AccountNotFoundException {
+    public LoginAccount login(String username, String password) throws AccountNotFoundException {
         System.out.println(accountStorage.getUsernames());
+
         if (accountStorage.tryLogin(username, password)) {
-            return accountStorage.getType(username);
+            return accountStorage.getAccount(username);
         }
-        return "NULL";
+        return null;
 
     }
 

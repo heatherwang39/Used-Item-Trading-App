@@ -29,10 +29,10 @@ public class UserSystem extends LoginSystem implements UserInterface, Registerab
     }
 
     @Override
-    public List<HashMap<String, String>> viewInventory() {return null;} //is.getVerifiedInventoryData(username);}
+    public List<HashMap<String, String>> viewInventory() throws ItemNotFoundException {return is.getVerifiedInventoryData(username);}
 
     @Override
-    public List<HashMap<String, String>> viewWishlist() {return null;} //is.getWishlistData(username);}
+    public List<HashMap<String, String>> viewWishlist() throws ItemNotFoundException {return is.getWishlistData(username);}
 
     @Override
     public boolean createRequest(int itemId) {

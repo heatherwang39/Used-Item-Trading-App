@@ -8,7 +8,7 @@ package main.java.model.account;
  * @version %I%, %G%
  * @since Phase 1
  */
-class AdminAccount extends LoginAccount {
+public class AdminAccount extends LoginAccount {
 
     /**
      * Class constructor.

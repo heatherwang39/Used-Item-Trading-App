@@ -34,7 +34,7 @@ public abstract class LoginAccountController extends GuestController implements 
      * @param username Username of the Account
      * @param storageGateway Gateway class for reading and writing Storage Data
      */
-    public LoginAccountController(String username, StorageGateway storageGateway ) throws IOException, ClassNotFoundException {
+    public LoginAccountController(String username, StorageGateway storageGateway) throws IOException, ClassNotFoundException {
         super(storageGateway);
         this.username = username;
         StorageFactory storageFactory = new StorageFactory();
