@@ -57,15 +57,4 @@ public class AddAdminController {
         storageGateway.saveStorageData(StorageEnum.valueOf("ACCOUNT"));
     }
 
-    // consider merging these 2 methods
-
-    public void promoteUser(String username){
-        try {
-            addAdmin(username, accountStorage.getPassword(username), accountStorage.getEmail(username));
-        } catch (AccountNotFoundException | IOException | InvalidEmailAddressException | InvalidPasswordException |
-                EmailAddressInUseException | InvalidUsernameException | UsernameInUseException exception) {
-            showMessageDialog(null, exception.getStackTrace());
-        }
-    }
-
 }

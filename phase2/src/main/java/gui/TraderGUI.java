@@ -7,7 +7,6 @@ import main.java.model.item.ItemStorage;
 import main.java.model.message.EmptyContentException;
 import main.java.model.message.EmptyRecipientListException;
 import main.java.model.message.EmptyTitleException;
-import main.java.model.status.StatusNotFoundException;
 import main.java.model.trade.TradeNumberException;
 import main.java.system2.StorageGateway;
 import main.java.model.status.InvalidStatusTypeException;
@@ -73,8 +72,8 @@ public class TraderGUI {
     private JPanel Requests;
     private JPanel Freeze;
     private JPanel Threshold;
-    private JTextField txtAdminPromoteInput;
-    private JButton btnPromote;
+    private JTextField txtAdminPasswordInput;
+    private JButton btnAddAdmin;
     private JScrollPane scrlInventoryOutput;
     private JScrollPane scrlWishlistOutput;
     private JTextArea txtAreaInventoryOutput;
@@ -116,6 +115,8 @@ public class TraderGUI {
     private JTextArea txtMessagesSentOutput;
     private JTextField txtMessageUserTitleInput;
     private JTextField txtMessageAdminTitleInput;
+    private JTextField txtAdminEmailInput;
+    private JTextField txtAdminUsernameInput;
     private JTextArea accountInformationTextArea;
 
     private LoginController loginController;
@@ -393,9 +394,15 @@ public class TraderGUI {
             }
         });
 
-        btnPromote.addActionListener(e -> {
-            String usernameAdmin = txtAdminPromoteInput.getText();
-            addAdminController.promoteUser(usernameAdmin);
+        btnAddAdmin.addActionListener(e -> {
+            String usernameAdmin = txtAdminUsernameInput.getText();
+            String passwordAdmin = txtAdminPasswordInput.getText();
+            String emailAdmin = txtAdminEmailInput.getText();
+            try {
+                addAdminController.addAdmin(usernameAdmin, passwordAdmin, emailAdmin);
+            } catch (IOException | InvalidUsernameException | InvalidPasswordException | InvalidEmailAddressException | EmailAddressInUseException | UsernameInUseException ioException) {
+                ioException.printStackTrace();
+            }
         });
 
         btnMessageUser.addActionListener(e -> {
