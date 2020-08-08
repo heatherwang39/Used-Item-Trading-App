@@ -19,22 +19,25 @@ public class MessageStorage implements Storage {
 
     private List<Message> messages;
 
+    /**
+     * Generates a new structure matching the Storage's internal data
+     * @return Empty storage data
+     */
     @Override
     public Object getNewStorageData() {
         return new ArrayList<Message>();
     }
 
+    /**
+     * This sets the Storage's data
+     * @param messages messages data
+     */
     @Override
     public void setStorageData(Object messages) {
         this.messages = (List<Message>) messages;
     }
 
-    /**
-     * Receive a list of all Messages received by an Account.
-     *
-     * @param username Account username
-     * @return Received Messages
-     */
+
     private List<Message> getReceivedMessages(String username) {
         List<Message> messages = new ArrayList<>();
         for (Message m: this.messages) {
@@ -45,12 +48,6 @@ public class MessageStorage implements Storage {
         return messages;
     }
 
-    /**
-     * Receive a list of all Messages sent by an Account.
-     *
-     * @param username Account username
-     * @return Sent Messages
-     */
     private List<Message> getSentMessages(String username) {
         List<Message> messages = new ArrayList<>();
         for (Message m: this.messages) {

@@ -11,7 +11,7 @@ import java.util.*;
  * and get all the verified items in the program.
  * @author Heather Wang, Robbert Liu, Warren Zhu
  * @version %I%, %G%
- * @since Phase 1
+ * @since Phase 2
  */
 
 
@@ -19,12 +19,19 @@ public class ItemStorage implements Storage, TradeObserver {
 
     private Map<Integer, Item> items;
 
-
+    /**
+     * Generates a new structure matching the Storage's internal data
+     * @return Empty storage data
+     */
     @Override
     public Object getNewStorageData() {
         return new HashMap<Integer, Item>();
     }
 
+    /**
+     * This sets the Storage's data
+     * @param items items data
+     */
     @Override
     public void setStorageData(Object items) {
         this.items = (Map<Integer, Item>) items;
@@ -37,7 +44,6 @@ public class ItemStorage implements Storage, TradeObserver {
         }
         return item;
     }
-
 
     private int generateNextID() {
         return items.size();
@@ -117,6 +123,31 @@ public class ItemStorage implements Storage, TradeObserver {
         }
     }
 
+    private List<Item> getUnverifiedInventory(String username) {
+        List<Item> items = new ArrayList<>();
+        for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
+            Item item = entry.getValue();
+            if (!item.isVerified() && item.getOwner().equals(username)) {
+                items.add(item);
+            }
+        }
+        return items;
+    }
+
+    private List<Item> getVerifiedInventory(List<String> searchTerms, List<String> tags) {
+        List<Item> items = new ArrayList<>();
+        for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
+            Item item = entry.getValue();
+            for (String term: searchTerms) {
+                if ((item.getName().contains(term) || item.getDescription().contains(term))
+                        && !Collections.disjoint(tags, item.getTags())) {
+                    items.add(item);
+                    break;
+                }
+            }
+        }
+        return items;
+    }
 
     /**
      * Get all the data of verified Items in the overall list of Items
@@ -164,45 +195,6 @@ public class ItemStorage implements Storage, TradeObserver {
             Item item = entry.getValue();
             if (item.isVerified() && item.getOwner().equals(username)) {
                 items.add(item);
-            }
-        }
-        return items;
-    }
-
-    /**
-     * Get all an Account's unverified items by username.
-     *
-     * @param username Account username
-     * @return unverified inventory
-     */
-    private List<Item> getUnverifiedInventory(String username) {
-        List<Item> items = new ArrayList<>();
-        for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
-            Item item = entry.getValue();
-            if (!item.isVerified() && item.getOwner().equals(username)) {
-                items.add(item);
-            }
-        }
-        return items;
-    }
-
-    /**
-     * Get all items that match a search filter
-     *
-     * @param searchTerms keywords searched by the user
-     * @param tags enabled item tags
-     * @return items that match the search filter
-     */
-    private List<Item> getVerifiedInventory(List<String> searchTerms, List<String> tags) {
-        List<Item> items = new ArrayList<>();
-        for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
-            Item item = entry.getValue();
-            for (String term: searchTerms) {
-                if ((item.getName().contains(term) || item.getDescription().contains(term))
-                        && !Collections.disjoint(tags, item.getTags())) {
-                    items.add(item);
-                    break;
-                }
             }
         }
         return items;

@@ -9,7 +9,7 @@ import java.util.*;
 /**
  * StatusStorage is a use case class that manages Account statuses, creation and deletion.
  *
- * @author Robbert Liu
+ * @author Robbert Liu, Heather Wang
  * @version %I%, %G%
  * @since Phase 2
  */
@@ -25,32 +25,30 @@ public class StatusStorage implements Storage, TradeObserver {
         statusFactory = new StatusFactory();
     }
 
+    /**
+     * Generates a new structure matching the Storage's internal data
+     * @return Empty storage data
+     */
     @Override
     public Object getNewStorageData() {
         return new HashMap<String, Status>();
     }
 
+    /**
+     * This sets the Storage's data
+     * @param statuses statuses data
+     */
     @Override
     public void setStorageData(Object statuses) {
         this.statuses = (Map<String, List<Status>>) statuses;
     }
 
-    /**
-     * Get all active Account statuses under a username
-     *
-     * @param username Account username
-     * @return Account statuses
-     */
+
     private List<Status> getAccountStatuses(String username) {
         return (statuses.containsKey(username)) ? new ArrayList<>(statuses.get(username)) : new ArrayList<>();
     }
 
-    /**
-     * Maps a list of Statuses to a list of strings
-     *
-     * @param statuses Status list
-     * @return string list
-     */
+
     private List<String> getStatusStrings(List<Status> statuses){
         List<String> strings = new ArrayList<>();
         for (Status s: statuses) {
@@ -139,8 +137,6 @@ public class StatusStorage implements Storage, TradeObserver {
         }
     }
 
-
-    //Observer pattern
     /**
      * Remove the new status of user automatically when a trade is completed
      *
