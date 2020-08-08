@@ -155,7 +155,7 @@ public class AccountStorage implements Storage {
      * @return account with username
      * @throws AccountNotFoundException account not found under username
      */
-    public LoginAccount getAccount(String username) throws AccountNotFoundException{
+    private LoginAccount getAccount(String username) throws AccountNotFoundException{
         if (accounts.containsKey(username)){
             return accounts.get(username);
         } else {
@@ -212,5 +212,68 @@ public class AccountStorage implements Storage {
             }
         }
         return allAdmins;
+    }
+
+
+    //Threshold Methods Below
+
+    public void setBorrowThreshold(String username, int threshold) throws NegativeThresholdException, WrongAccountTypeException,
+            AccountNotFoundException{
+        if(threshold < 0){
+            throw new NegativeThresholdException();
+        }
+        Account a = getAccount(username);
+        if(a.getType() == "USER"){
+            ((UserAccount) a).setBorrowThreshold(threshold);
+        }
+        throw new WrongAccountTypeException();
+    }
+
+    public void setIncompleteThreshold(String username, int threshold) throws NegativeThresholdException, WrongAccountTypeException,
+            AccountNotFoundException{
+        if(threshold < 0){
+            throw new NegativeThresholdException();
+        }
+        Account a = getAccount(username);
+        if(a.getType() == "USER"){
+            ((UserAccount) a).setIncompleteThreshold(threshold);
+        }
+        throw new WrongAccountTypeException();
+    }
+
+    public void setWeeklyThreshold(String username, int threshold) throws NegativeThresholdException, WrongAccountTypeException,
+            AccountNotFoundException{
+        if(threshold < 0){
+            throw new NegativeThresholdException();
+        }
+        Account a = getAccount(username);
+        if(a.getType() == "USER"){
+            ((UserAccount) a).setWeeklyThreshold(threshold);
+        }
+        throw new WrongAccountTypeException();
+    }
+
+    public int getBorrowThreshold(String username) throws WrongAccountTypeException, AccountNotFoundException{
+        Account a = getAccount(username);
+        if(a.getType() == "USER"){
+            ((UserAccount) a).getBorrowThreshold();
+        }
+        throw new WrongAccountTypeException();
+    }
+
+    public int getIncompleteThreshold(String username) throws WrongAccountTypeException, AccountNotFoundException{
+        Account a = getAccount(username);
+        if(a.getType() == "USER"){
+            ((UserAccount) a).getIncompleteThreshold();
+        }
+        throw new WrongAccountTypeException();
+    }
+
+    public int getWeeklyThreshold(String username) throws WrongAccountTypeException, AccountNotFoundException{
+        Account a = getAccount(username);
+        if(a.getType() == "USER"){
+            ((UserAccount) a).getWeeklyThreshold();
+        }
+        throw new WrongAccountTypeException();
     }
 }

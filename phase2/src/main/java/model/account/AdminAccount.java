@@ -19,6 +19,15 @@ public class AdminAccount extends LoginAccount {
      */
     public AdminAccount(String username, String password, String emailAddress){
         super(username, password, emailAddress);
-        setType("ADMIN");
+    }
+
+
+    /**
+     * Gets the account type to determine available menu options.
+     *
+     * @return account type
+     */
+    public String getType(){
+        return "ADMIN";
     }
 }
