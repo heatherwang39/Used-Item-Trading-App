@@ -24,8 +24,6 @@ public class TradePresenter {
      * Initializes a new TradePresenter
      *
      * @param storageGateway gateway for loading and saving information
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
     public TradePresenter(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
         StorageFactory sf = new StorageFactory();

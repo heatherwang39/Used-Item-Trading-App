@@ -36,30 +36,55 @@ public class UserAccount extends LoginAccount {
 
     //Threshold Methods Below
 
-
+    /** Return the BorrowThreshold for this given Account
+     *
+     * @return the BorrowThreshold
+     */
     public int getBorrowThreshold(){
         return borrowThreshold;
     }
 
+    /** Return the IncompleteThreshold for this given Account
+     *
+     * @return the IncompleteThreshold
+     */
     public int getIncompleteThreshold(){
         return incompleteThreshold;
     }
 
+    /** Return the WeeklyThreshold for this given Account
+     *
+     * @return the WeeklyThreshold
+     */
     public int getWeeklyThreshold(){
         return weeklyThreshold;
     }
 
+    /** Set the BorrowThreshold to be the given threshold.
+     *
+     * Precondition: The threshold is a non-negative integer.
+     *
+     * @param borrowThreshold What you want to change the threshold to.
+     */
     public void setBorrowThreshold(int borrowThreshold){
         this.borrowThreshold = borrowThreshold;
     }
 
+    /** Set the IncompleteThreshold to be the given threshold.
+     *
+     * Precondition: The threshold is a non-negative integer.
+     *
+     * @param incompleteThreshold What you want to change the threshold to.
+     */
     public void setIncompleteThreshold(int incompleteThreshold){
         this.incompleteThreshold = incompleteThreshold;
     }
 
-    /**
+    /** Set the WeeklyThreshold to be the given threshold.
      *
-     * @param weeklyThreshold
+     * Precondition: The threshold is a non-negative integer.
+     *
+     * @param weeklyThreshold What you want to change the threshold to.
      */
     public void setWeeklyThreshold(int weeklyThreshold){
         this.weeklyThreshold = weeklyThreshold;
