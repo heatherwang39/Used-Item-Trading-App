@@ -256,7 +256,7 @@ public class AccountStorage implements Storage {
     public int getBorrowThreshold(String username) throws WrongAccountTypeException, AccountNotFoundException{
         Account a = getAccount(username);
         if(a.getType() == "USER"){
-            ((UserAccount) a).getBorrowThreshold();
+            return ((UserAccount) a).getBorrowThreshold();
         }
         throw new WrongAccountTypeException();
     }
@@ -264,7 +264,7 @@ public class AccountStorage implements Storage {
     public int getIncompleteThreshold(String username) throws WrongAccountTypeException, AccountNotFoundException{
         Account a = getAccount(username);
         if(a.getType() == "USER"){
-            ((UserAccount) a).getIncompleteThreshold();
+            return ((UserAccount) a).getIncompleteThreshold();
         }
         throw new WrongAccountTypeException();
     }
@@ -272,7 +272,7 @@ public class AccountStorage implements Storage {
     public int getWeeklyThreshold(String username) throws WrongAccountTypeException, AccountNotFoundException{
         Account a = getAccount(username);
         if(a.getType() == "USER"){
-            ((UserAccount) a).getWeeklyThreshold();
+            return ((UserAccount) a).getWeeklyThreshold();
         }
         throw new WrongAccountTypeException();
     }
