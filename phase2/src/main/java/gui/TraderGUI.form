@@ -842,7 +842,7 @@
           <grid id="9165" binding="Freeze" layout-manager="GridLayoutManager" row-count="4" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <tabbedpane title="Freeze"/>
+              <tabbedpane title="Un-Freeze"/>
             </constraints>
             <properties/>
             <border type="none"/>
@@ -852,15 +852,15 @@
                   <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
-                <border type="none" title="System-recommended Users to Un-Freeze"/>
+                <border type="none" title="All Frozen Users"/>
                 <children>
-                  <component id="3ab50" class="javax.swing.JTextArea" binding="txtAreaFreezeUsers">
+                  <component id="3ab50" class="javax.swing.JTextArea" binding="txtAreaFrozenUsers">
                     <constraints/>
                     <properties/>
                   </component>
                 </children>
               </scrollpane>
-              <component id="f45d7" class="javax.swing.JTextField" binding="txtFreezeUser">
+              <component id="f45d7" class="javax.swing.JTextField" binding="txtFrozenUser">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -886,7 +886,7 @@
                   <text value="Enter"/>
                 </properties>
               </component>
-              <component id="6864b" class="javax.swing.JRadioButton" binding="rbtnFreezeUser">
+              <component id="6864b" class="javax.swing.JRadioButton" binding="rbtnUnfreezeUser">
                 <constraints>
                   <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>

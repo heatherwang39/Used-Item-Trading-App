@@ -9,6 +9,8 @@ import main.java.system2.StorageGateway;
 import java.io.IOException;
 import java.util.List;
 
+import static javax.swing.JOptionPane.showMessageDialog;
+
 /**
  * Controller that returns the needed information for GUI client to display for Add Admin tab
  *
@@ -54,4 +56,16 @@ public class AddAdminController {
         accountStorage.createAdmin(username, password, emailAddress);
         storageGateway.saveStorageData(StorageEnum.valueOf("ACCOUNT"));
     }
+
+    // consider merging these 2 methods
+
+    public void promoteUser(String username){
+        try {
+            addAdmin(username, accountStorage.getPassword(username), accountStorage.getEmail(username));
+        } catch (AccountNotFoundException | IOException | InvalidEmailAddressException | InvalidPasswordException |
+                EmailAddressInUseException | InvalidUsernameException | UsernameInUseException exception) {
+            showMessageDialog(null, exception.getStackTrace());
+        }
+    }
+
 }

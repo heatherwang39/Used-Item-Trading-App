@@ -15,13 +15,10 @@ import main.java.presenter.*;
 
 import javax.swing.*;
 // From: https://stackoverflow.com/questions/9119481/how-to-present-a-simple-alert-message-in-java
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
@@ -90,9 +87,9 @@ public class TraderGUI {
     private JTextArea txtAreaDescriptionInput;
     private JTextField txtTagsInput;
     private JTextArea txtAreaBrowseListingsOutput;
-    private JTextArea txtAreaFreezeUsers;
-    private JTextField txtFreezeUser;
-    private JRadioButton rbtnFreezeUser;
+    private JTextArea txtAreaFrozenUsers;
+    private JTextField txtFrozenUser;
+    private JRadioButton rbtnUnfreezeUser;
     private JRadioButton rbtnIgnoreUser;
     private JButton btnFreezeEnter;
     private JTextField txtOffersOutput;
@@ -137,6 +134,7 @@ public class TraderGUI {
     private MessageController messageController;
 
     private String user;
+    private int currUserIndex;
 
     public TraderGUI(StorageGateway storageGateway) {
         MainTabbedPane.removeAll();
@@ -145,6 +143,8 @@ public class TraderGUI {
         } catch (IOException | ClassNotFoundException e) {
             showMessageDialog(null, e.getStackTrace());
         }
+        currUserIndex = 0; // testing smth
+
     }
 
 
@@ -171,7 +171,7 @@ public class TraderGUI {
         tradeTypeButtonGroup.add(rbtnTempTrade);
 
         ButtonGroup freezeButtonGroup = new ButtonGroup();
-        freezeButtonGroup.add(rbtnFreezeUser);
+        freezeButtonGroup.add(rbtnUnfreezeUser);
         freezeButtonGroup.add(rbtnIgnoreUser);
 
         ButtonGroup offersButtonGroup = new ButtonGroup();
@@ -285,10 +285,10 @@ public class TraderGUI {
 
                     // Done but not tested
                     MainTabbedPane.insertTab("Freeze", null, Freeze, null, 2);
-//                    List<List<String>> freezeUserList = freezeController.showUsersToFreeze(3, 3 ,3); // THESE ARE TEMPORARY VALUES!!
-//                    for (List<String> strings : freezeUserList) {
-//                        txtAreaFreezeUsers.append(strings.get(0) + strings.get(1) + "\n");
-//                    }
+                    List<List<String>> freezeUserList = freezeController.showAllFrozenUsers(3, 3 ,3); // THESE ARE TEMPORARY VALUES!!
+                    for (List<String> strings : freezeUserList) {
+                        txtAreaFrozenUsers.append(strings.get(0) + strings.get(1) + "\n");
+                    }
 
                     // not done but really easy when we decide how to store thresholds
                     MainTabbedPane.insertTab("Trade Threshold", null, Threshold, null, 3);
@@ -298,6 +298,7 @@ public class TraderGUI {
 
                     // Partially done
                     MainTabbedPane.insertTab("Messages", null, Messages, null, 5);
+
                 } else {
                     showMessageDialog(null, "Your account did not match any credentials in " +
                             "our system.");
@@ -306,6 +307,8 @@ public class TraderGUI {
                 showMessageDialog(null, accountNotFoundException.getMessage());
             } catch (IOException | ClassNotFoundException | TradeNumberException | ItemNotFoundException exception) {
                 showMessageDialog(null, exception.getStackTrace());
+            } catch (InvalidStatusTypeException invalidStatusTypeException) {
+                invalidStatusTypeException.printStackTrace();
             }
         });
 
@@ -369,32 +372,8 @@ public class TraderGUI {
         });
 
 
-        // The way freeze works has changed, so Im going to redo this
         btnFreezeEnter.addActionListener(e -> {
-
-//            List<List<String>> freezeUserList = freezeController.showUsersToFreeze(3, 3 ,3); // THESE ARE TEMPORARY VALUES!!
-//            txtFreezeUser.setText(freezeUserList.get(currUserNum).get(0)); // this prints out the user's name
-//            if (rbtnFreezeUser.isSelected()){
-//                try {
-//                    freezeController.freezeUser(freezeUserList.get(currUserNum).get(0));
-//                } catch (InvalidStatusTypeException invalidStatusTypeException) {
-//                    invalidStatusTypeException.printStackTrace();
-//                } catch (IOException ioException) {
-//                    ioException.printStackTrace();
-//                }
-//            }
-            /*else if (rbtnIgnoreUser.isSelected()) {
-                try {
-                freezeController.unfreezeUser(freezeUserList.get(currUserNum).get(0));
-
-
-                } catch (StatusNotFoundException statusNotFoundException) {
-                    statusNotFoundException.printStackTrace();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                 }
-                }
-                */
+            freezeController.freezeDecision(txtFrozenUser, txtAreaFrozenUsers, rbtnUnfreezeUser, rbtnIgnoreUser, currUserIndex);
         });
 
         btnRequestsEnter.addActionListener(e -> {
@@ -416,13 +395,7 @@ public class TraderGUI {
 
         btnPromote.addActionListener(e -> {
             String usernameAdmin = txtAdminPromoteInput.getText();
-            try {
-                LoginAccount userAdmin = accountStorage.getAccount(usernameAdmin);
-                addAdminController.addAdmin(usernameAdmin, userAdmin.getPassword(), userAdmin.getEmailAddress());
-            } catch (AccountNotFoundException | IOException | InvalidEmailAddressException | InvalidPasswordException |
-                    EmailAddressInUseException | InvalidUsernameException | UsernameInUseException exception) {
-                showMessageDialog(null, exception.getStackTrace());
-            }
+            addAdminController.promoteUser(usernameAdmin);
         });
 
         btnMessageUser.addActionListener(e -> {

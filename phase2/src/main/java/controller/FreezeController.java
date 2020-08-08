@@ -4,14 +4,18 @@ import main.java.model.account.AccountStorage;
 import main.java.model.status.InvalidStatusTypeException;
 import main.java.model.status.StatusNotFoundException;
 import main.java.model.status.StatusStorage;
+import main.java.model.trade.TradeNumberException;
 import main.java.model.trade.TradeStorage;
 import main.java.system2.StorageEnum;
 import main.java.system2.StorageFactory;
 import main.java.system2.StorageGateway;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static javax.swing.JOptionPane.showMessageDialog;
 
 /**
  * Controller that returns the needed information for GUI client to display for Freeze tab
@@ -42,17 +46,18 @@ public class FreezeController {
 
     /**
      * Show all the users that need to be frozen based on threshold and set their status to be frozen
-     * @param borrowThreshold threshold for borrowing more than lending
+     *
+     * @param borrowThreshold     threshold for borrowing more than lending
      * @param incompleteThreshold threshold for too many incomplete trades
-     * @param weeklyThreshold threshold for too many trades in one week
-     * @throws InvalidStatusTypeException Invalid status, not in system
+     * @param weeklyThreshold     threshold for too many trades in one week
      * @return the frozen users and the frozen reasons
+     * @throws InvalidStatusTypeException Invalid status, not in system
      */
-    public List<List<String>> showAllFrozenUsers(int borrowThreshold, int incompleteThreshold, int weeklyThreshold) throws InvalidStatusTypeException, IOException {
+    public List<List<String>> showAllFrozenUsers(int borrowThreshold, int incompleteThreshold, int weeklyThreshold) throws InvalidStatusTypeException, IOException, TradeNumberException {
         List<String> allUsers = accountStorage.getUsernames();
         List<List<String>> frozenUsersAndReasons = tradeStorage.showFreezeUsers(allUsers, borrowThreshold, incompleteThreshold, weeklyThreshold);
-        for(int i=0; i<frozenUsersAndReasons.size();i++){
-            statusStorage.createStatus(frozenUsersAndReasons.get(i).get(0),"FROZEN");
+        for (int i = 0; i < frozenUsersAndReasons.size(); i++) {
+            statusStorage.createStatus(frozenUsersAndReasons.get(i).get(0), "FROZEN");
         }
         storageGateway.saveStorageData(StorageEnum.STATUS);
         return frozenUsersAndReasons;
@@ -79,6 +84,36 @@ public class FreezeController {
         statusStorage.removeStatus(username, "FREEZE");
         storageGateway.saveStorageData(StorageEnum.valueOf("STATUS"));
     }
+
+    public int freezeDecision(JTextField txt, JTextArea txtArea, JRadioButton rbtnUnfreezeUser, JRadioButton rbtnIgnoreUser, int currUserIndex) {
+        List<List<String>> frozenUserList = null;
+
+        try {
+            frozenUserList = showAllFrozenUsers(3, 3, 3);
+        } catch (InvalidStatusTypeException | IOException | TradeNumberException exception) {
+            showMessageDialog(null, exception.getStackTrace());
+        }
+
+        if(frozenUserList != null){
+            txt.setText(frozenUserList.get(currUserIndex).get(0) + frozenUserList.get(currUserIndex).get(1));
+            if (rbtnUnfreezeUser.isSelected()) {
+                try {
+                    unfreezeUser(frozenUserList.get(0).get(0));
+
+                } catch (IOException | StatusNotFoundException exception) {
+                    showMessageDialog(null, exception.getStackTrace());
+                }
+            } else if (rbtnIgnoreUser.isSelected()) {
+                currUserIndex++;
+
+            } else {
+                showMessageDialog(null, "Please make a verdict!");
+            }
+        }
+
+        return currUserIndex;
+    }
+
 
 
 

@@ -214,6 +214,16 @@ public class AccountStorage implements Storage {
         return allAdmins;
     }
 
+    public String getPassword(String username) throws AccountNotFoundException {
+        LoginAccount acc = getAccount(username);
+        return acc.getPassword();
+    }
+
+    public String getEmail(String username) throws AccountNotFoundException {
+        LoginAccount acc = getAccount(username);
+        return acc.getEmailAddress();
+    }
+
 
     //Threshold Methods Below
 
