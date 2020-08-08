@@ -12,7 +12,6 @@ import java.io.Serializable;
 public abstract class Account implements Serializable {
 
     private final String username;
-    private String type;
 
     /**
      * Class constructor
@@ -21,7 +20,6 @@ public abstract class Account implements Serializable {
      */
     public Account(String username){
         this.username = username;
-        type = "ACCOUNT";
     }
 
     /**
@@ -39,16 +37,5 @@ public abstract class Account implements Serializable {
      *
      * @return account type
      */
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * Sets the Account type.
-     *
-     * @param type Account type
-     */
-    protected void setType(String type) {
-        this.type = type;
-    }
+    abstract String getType();
 }

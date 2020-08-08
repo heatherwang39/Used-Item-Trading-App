@@ -47,7 +47,4 @@ public abstract class LoginAccount extends Account {
     public boolean isPassword(String password){
         return password.equals(this.password);
     }
-
-
-
 }
