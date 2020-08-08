@@ -21,19 +21,19 @@ public class MessageController {
     private final StorageGateway storageGateway;
     private final MessageStorage messageStorage;
     private final AccountStorage accountStorage;
-    private String username;
+    private final String username;
 
     /**
      * Class constructor for MessageController
      *
      * @param storageGateway gateway for loading and saving information
      */
-    public MessageController(String username,StorageGateway storageGateway) throws IOException, ClassNotFoundException {
+    public MessageController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
         this.storageGateway = storageGateway;
         StorageFactory storageFactory = new StorageFactory();
         messageStorage = (MessageStorage) storageFactory.getStorage(storageGateway, StorageEnum.MESSAGE);
         accountStorage = (AccountStorage) storageFactory.getStorage(storageGateway, StorageEnum.ACCOUNT);
-        this.username =username;
+        this.username = username;
     }
 
     /**
@@ -46,8 +46,9 @@ public class MessageController {
      * @throws EmptyContentException the content is empty
      * @throws EmptyRecipientListException the recipient list is empty
      */
-    public void sendUserMessage(String title, String content, List<String> recipients) throws EmptyTitleException, EmptyContentException, EmptyRecipientListException, IOException {
-        messageStorage.sendUserMessage(title,content,username,recipients);
+    public void sendUserMessage(String title, String content, List<String> recipients) throws EmptyTitleException,
+            EmptyContentException, EmptyRecipientListException, IOException {
+        messageStorage.sendUserMessage(title, content, username, recipients);
         storageGateway.saveStorageData(StorageEnum.MESSAGE);
     }
 
@@ -60,9 +61,10 @@ public class MessageController {
      * @throws EmptyContentException the content is empty
      * @throws EmptyRecipientListException the recipient list is empty
      */
-    public void sendRequestToSystem(String title, String content) throws EmptyTitleException, EmptyContentException, EmptyRecipientListException, IOException {
+    public void sendRequestToSystem(String title, String content) throws EmptyTitleException, EmptyContentException,
+            EmptyRecipientListException, IOException {
         List<String> recipients = accountStorage.getAdmins();
-        messageStorage.sendSystemMessage(title,content,recipients);
+        messageStorage.sendSystemMessage(title, content, recipients);
         storageGateway.saveStorageData(StorageEnum.MESSAGE);
     }
 
@@ -71,7 +73,7 @@ public class MessageController {
      *
      * @return data of Messages in inbox
      */
-    public List<HashMap<String, String>> checkInbox() {
+    public List<HashMap<String, String>> getInbox() {
         return messageStorage.getInboxData(username);
     }
 
@@ -80,7 +82,7 @@ public class MessageController {
      *
      * @return data of Messages in inbox
      */
-    public List<HashMap<String, String>> checkOutbox() {
+    public List<HashMap<String, String>> getOutbox() {
         return messageStorage.getOutboxData(username);
     }
 

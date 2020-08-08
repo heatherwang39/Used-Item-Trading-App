@@ -6,6 +6,7 @@ import main.java.system2.StorageEnum;
 import main.java.system2.StorageFactory;
 import main.java.system2.StorageGateway;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -19,18 +20,15 @@ import java.util.List;
  */
 public class BrowseController {
     private final ItemStorage itemStorage;
-    private final String username;
 
     /**
      * Initializes a new BrowseController for the given username
      *
      * @param storageGateway gateway for loading and saving information
-     * @param username username of the user accessing the Browse tab
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public BrowseController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
-        this.username = username;
+    public BrowseController(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
         StorageFactory sf = new StorageFactory();
         itemStorage = (ItemStorage) sf.getStorage(storageGateway, StorageEnum.valueOf("ITEM"));
     }
@@ -45,4 +43,12 @@ public class BrowseController {
         return itemStorage.getVerifiedItemsData();
     }
 
+    public void displayListings(JTextArea txtArea) throws ItemNotFoundException {
+        List<HashMap<String, String>> listingList = itemStorage.getVerifiedItemsData();
+        for (HashMap<String, String> stringStringHashMap : listingList) {
+            for (String str : stringStringHashMap.keySet()) {
+                txtArea.append(str + stringStringHashMap.get(str) + "\n");
+            }
+        }
+    }
 }

@@ -4,6 +4,9 @@ import main.java.controller.*;
 import main.java.model.account.*;
 import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
+import main.java.model.message.EmptyContentException;
+import main.java.model.message.EmptyRecipientListException;
+import main.java.model.message.EmptyTitleException;
 import main.java.model.status.StatusNotFoundException;
 import main.java.model.trade.TradeNumberException;
 import main.java.system2.StorageGateway;
@@ -96,7 +99,7 @@ public class TraderGUI {
     private JRadioButton rbtnAcceptOffer;
     private JRadioButton rbtnDenyOffer;
     private JButton btnOfferEnter;
-    private JTextField textField2;
+    private JTextField txtRequestedItemsInput;
     private JTextField textField3;
     private JTextField textField4;
     private JTextArea txtAreaLoggingOutput;
@@ -106,6 +109,16 @@ public class TraderGUI {
     private JButton btnRequestsEnter;
     private JTextField txtRequestsOutput;
     private JTextArea txtAreaOffersOutput;
+    private JTabbedPane MessagesTabbedPane;
+    private JTextField txtMessageRecipientInput;
+    private JButton btnMessageUser;
+    private JButton btnMessageAdmin;
+    private JTextArea txtAreaMessageUserInput;
+    private JTextArea txtAreaMessageAdminInput;
+    private JTextArea txtAreaMessagesIncomingOutput;
+    private JTextArea txtMessagesSentOutput;
+    private JTextField txtMessageUserTitleInput;
+    private JTextField txtMessageAdminTitleInput;
     private JTextArea accountInformationTextArea;
 
     private LoginController loginController;
@@ -120,6 +133,8 @@ public class TraderGUI {
     private RequestsController requestsController;
     private AccountTabController accountTabController;
     private AddItemsController addItemsController;
+    private BrowseController browseController;
+    private MessageController messageController;
 
     private String user;
 
@@ -130,7 +145,6 @@ public class TraderGUI {
         } catch (IOException | ClassNotFoundException e) {
             showMessageDialog(null, e.getStackTrace());
         }
-
     }
 
 
@@ -141,9 +155,7 @@ public class TraderGUI {
         accountStorage = new AccountStorage();
         tradePresenter = new TradePresenter(storageGateway);
         freezeController = new FreezeController(storageGateway);
-
-
-
+        browseController = new BrowseController(storageGateway);
 
 
         MainTabbedPane.insertTab("Main", null, Main, null, 0);
@@ -166,28 +178,26 @@ public class TraderGUI {
         offersButtonGroup.add(rbtnAcceptOffer);
         offersButtonGroup.add(rbtnDenyOffer);
 
+        ButtonGroup requestsButtonGroup = new ButtonGroup();
+        requestsButtonGroup.add(rbtnAcceptRequest);
+        requestsButtonGroup.add(rbtnDenyRequest);
+
 
 
         btnRegisterMain.addActionListener(e -> {
-            if (MainTabbedPane.getTabCount() == 2) {
-                MainTabbedPane.removeTabAt(1);
-            }
+            tabCleaner();
             MainTabbedPane.insertTab("Register", null, Register, null, 1);
             MainTabbedPane.setSelectedIndex(1);
         });
 
         btnLoginMain.addActionListener(e -> {
-            if (MainTabbedPane.getTabCount() == 2) {
-                MainTabbedPane.removeTabAt(1);
-            }
+            tabCleaner();
             MainTabbedPane.insertTab("Login", null, Login, null, 1);
             MainTabbedPane.setSelectedIndex(1);
         });
 
         guestButton.addActionListener(e -> {
-            if (MainTabbedPane.getTabCount() == 2) {
-                MainTabbedPane.removeTabAt(1);
-            }
+            tabCleaner();
             MainTabbedPane.insertTab("Browse", null, Browse, null, 1);
 
         });
@@ -207,6 +217,7 @@ public class TraderGUI {
                 requestController = new RequestController(storageGateway, user);
                 accountTabController = new AccountTabController(storageGateway, user);
                 addItemsController = new AddItemsController(storageGateway, user);
+                messageController = new MessageController(storageGateway, user);
 
                 if (loginController.login(user, pass).equals("USER")) {
                     MainTabbedPane.removeAll();
@@ -217,73 +228,59 @@ public class TraderGUI {
                     // done but not tested
                     MainTabbedPane.insertTab("Account", null, Account, null, 1);
                     txtUsernameOutput.setText(user);
-                    txtEmailOutput.setText(accountTabController.getEmailAddress());
-                    for (int i = 0; i < itemStorage.getVerifiedInventory(user).size(); i++){
-                        txtAreaInventoryOutput.append(itemStorage.getVerifiedInventory(user).get(i).getName() + "\n");
-                    }
-                    for (int i = 0; i < itemStorage.getWishlist(user).size(); i++){
-                        txtAreaWishlistOutput.append(itemStorage.getWishlist(user).get(i).getName() + "\n");
-                    }
-
+                    txtEmailOutput.setText(accountTabController.getEmailAddress()); // this is where the program soft-crashes
+                    loginController.displayUserInventory(user, txtAreaInventoryOutput);
+                    loginController.displayUserWishlist(user, txtAreaWishlistOutput);
 
                     // logic done but needs aesthetic change (use method in TradePresenter)
                     MainTabbedPane.insertTab("Activity", null, Activity, null, 2);
-                    List<List<Integer>> tradeList = activityController.recentItemsTraded();
-                    List<String> partnerList = activityController.frequentTradingPartners();
-                    StringBuilder tradeString = new StringBuilder();
-                    for (List<Integer> integers : tradeList) {
-                        for (Integer integer : integers) {
-                            tradeString.append(", ").append(integer);
-                            txtAreaActivityTradeOutput.append(tradeString + "\n");
-                        }
-                    }
-                    for (String s : partnerList) {
-                        txtAreaActivityPartnerOutput.append(s + "\n");
-                    }
+                    activityController.displayTradeActivity(user, txtAreaActivityTradeOutput);
+                    activityController.displayPartnerActivity(user, txtAreaActivityPartnerOutput);
 
                     // Done but not tested
                     MainTabbedPane.insertTab("Browse", null, Browse, null, 3);
-                    List<HashMap<String, String>> listingList = itemStorage.getVerifiedItemsData();
-                    for (HashMap<String, String> stringStringHashMap : listingList) {
-                        for (String str : stringStringHashMap.keySet()) {
-                            txtAreaBrowseListingsOutput.append(str + stringStringHashMap.get(str) + "\n");
-                        }
-                    }
+                    browseController.displayListings(txtAreaBrowseListingsOutput);
 
-                    // Not done
+                    // Done but not tested
                     MainTabbedPane.insertTab("Offers", null, Offers, null, 4);
-                    List<HashMap<String, List<String>>> unformattedOfferList = offersController.getOffers();
-
-                    List<String> offerList = tradePresenter.formatTradeForListView(unformattedOfferList);
-                    for (String s : offerList) {
-                        txtAreaOffersOutput.append(s);
-                    }
-
+                    offersController.displayOffers(user, txtAreaOffersOutput);
 
                     // Partially done
                     MainTabbedPane.insertTab("Request", null, Request, null, 5);
 
-                    // done but not tested
+                    // Done but not tested
                     MainTabbedPane.insertTab("Add Items", null, AddItems, null, 6);
 
-                    // Not done
+                    // Partially done; need message presenter
                     MainTabbedPane.insertTab("Messages", null, Messages, null, 7);
+                    List<HashMap<String, String>> incomingMessagesList = messageController.getInbox();
+                    List<HashMap<String, String>> outgoingMessagesList = messageController.getOutbox();
+
+                    for (HashMap<String, String> stringHashMap : incomingMessagesList) {
+
+                    }
+
+                    for (HashMap<String, String> stringHashMap : outgoingMessagesList) {
+
+                    }
+
 
                 } else if (loginController.login(user, pass).equals("ADMIN")) {
                     MainTabbedPane.removeAll();
                     // Done
                     MainTabbedPane.insertTab("Home", null, Home, null, 0);
 
-                    // Not done
+                    // partially done
                     MainTabbedPane.insertTab("Requests", null, Requests, null, 1);
                     List<HashMap<String, String>> requestsList = null;
                     try {
                         requestsList = requestsController.getRequests();
                     } catch (ItemNotFoundException itemNotFoundException) {
-                        itemNotFoundException.printStackTrace();
+                        showMessageDialog(null, itemNotFoundException.getStackTrace());
                     }
+                    // need presenter to display info
                     for (int i = 0; i < requestsList.size(); i++){
-
+                        // text area appends each line of the formatted list
                     }
 
                     // Done but not tested
@@ -293,25 +290,22 @@ public class TraderGUI {
 //                        txtAreaFreezeUsers.append(strings.get(0) + strings.get(1) + "\n");
 //                    }
 
-                    // waiting to see how thresholds are stored first.
+                    // not done but really easy when we decide how to store thresholds
                     MainTabbedPane.insertTab("Trade Threshold", null, Threshold, null, 3);
 
                     // done but not tested
                     MainTabbedPane.insertTab("Add Admin", null, AddAdmin, null, 4);
+
+                    // Partially done
+                    MainTabbedPane.insertTab("Messages", null, Messages, null, 5);
                 } else {
                     showMessageDialog(null, "Your account did not match any credentials in " +
                             "our system.");
                 }
             } catch (AccountNotFoundException accountNotFoundException) {
                 showMessageDialog(null, accountNotFoundException.getMessage());
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            } catch (ClassNotFoundException classNotFoundException) {
-                classNotFoundException.printStackTrace();
-            } catch (TradeNumberException tradeNumberException) {
-                tradeNumberException.printStackTrace();
-            } catch (ItemNotFoundException itemNotFoundException) {
-                itemNotFoundException.printStackTrace();
+            } catch (IOException | ClassNotFoundException | TradeNumberException | ItemNotFoundException exception) {
+                showMessageDialog(null, exception.getStackTrace());
             }
         });
 
@@ -335,7 +329,7 @@ public class TraderGUI {
         btnInventoryRequest.addActionListener(e -> {
             String name =  txtInventoryInput.getText();
             String description = txtAreaDescriptionInput.getText();
-            List<String> tagList = Arrays.asList(txtTagsInput.getText().split("\\s*,\\s*")); // TODO: test this specifically
+            List<String> tagList = Arrays.asList(txtTagsInput.getText().split("\\s*,\\s*")); // TEST THIS
             try {
                 addItemsController.addInventoryItem(name, description, tagList);
             } catch (IOException ioException) {
@@ -361,43 +355,23 @@ public class TraderGUI {
             } else{
                 showMessageDialog(null, "Please select a type of trade for this request!");
             }
+            List<String> requestedItemsList = Arrays.asList(txtRequestedItemsInput.getText().split("\\s*,\\s*")); // TEST THIS
+            List<String> offeredItemsList = Arrays.asList(txtRequestItemInput.getText().split("\\s*,\\s*"));
 
+            if (offeredItemsList.isEmpty()){ //then the user wants to borrow the items from the user
+
+            }
             //requestController.createRequest(perm, tradeAlgorithimName, );
         });
 
         btnOfferEnter.addActionListener(e -> {
-            List<HashMap<String, List<String>>> unformattedOfferList = null;
-            List<String> offerList = null;
-            try {
-                unformattedOfferList = offersController.getOffers();
-                offerList = tradePresenter.formatTradeForListView(unformattedOfferList);
-            } catch (ItemNotFoundException itemNotFoundException) {
-                itemNotFoundException.printStackTrace();
-            } catch (TradeNumberException tradeNumberException) {
-                tradeNumberException.printStackTrace();
-            }
-            assert offerList != null;
-            txtOffersOutput.setText(offerList.get(0));
-            try {
-            if (rbtnAcceptOffer.isSelected()){
-                offersController.acceptOffer(Integer.parseInt(unformattedOfferList.get(0).get("id").get(0)));
-
-            } else if (rbtnDenyOffer.isSelected()){
-                offersController.rejectOffer(Integer.parseInt(unformattedOfferList.get(0).get("id").get(0)));
-            }
-                // these stackTraces are placeholders
-            } catch (TradeNumberException tradeNumberException) {
-                tradeNumberException.printStackTrace();
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            } catch (StatusNotFoundException statusNotFoundException) {
-                statusNotFoundException.printStackTrace();
-            }
+            offersController.offerResponse(user, txtOffersOutput, rbtnAcceptOffer, rbtnDenyOffer);
         });
 
 
-        int currUserNum = 0;
+        // The way freeze works has changed, so Im going to redo this
         btnFreezeEnter.addActionListener(e -> {
+
 //            List<List<String>> freezeUserList = freezeController.showUsersToFreeze(3, 3 ,3); // THESE ARE TEMPORARY VALUES!!
 //            txtFreezeUser.setText(freezeUserList.get(currUserNum).get(0)); // this prints out the user's name
 //            if (rbtnFreezeUser.isSelected()){
@@ -412,9 +386,7 @@ public class TraderGUI {
             /*else if (rbtnIgnoreUser.isSelected()) {
                 try {
                 freezeController.unfreezeUser(freezeUserList.get(currUserNum).get(0));
-                // I am confused about what should happen here if the admin decides to let the user free from
-                // the system's recommendation to freeze them. Do we just keep that user there (the list) forever
-                // until the admin decides to freeze em? In any case, unfreezing them isnt the correct move
+
 
                 } catch (StatusNotFoundException statusNotFoundException) {
                     statusNotFoundException.printStackTrace();
@@ -426,32 +398,61 @@ public class TraderGUI {
         });
 
         btnRequestsEnter.addActionListener(e -> {
-
+            List<HashMap<String, String>> requestsList = null;
+            try {
+                requestsList = requestsController.getRequests();
+            } catch (ItemNotFoundException itemNotFoundException) {
+                showMessageDialog(null, itemNotFoundException.getStackTrace());
+            }
+            // txtRequestsOutput.setText(formatted list .get(0));
+            if (rbtnAcceptRequest.isSelected()){
+                // do stuff
+            } else if (rbtnDenyRequest.isSelected()){
+                // do stuff
+            } else{
+                showMessageDialog(null, "Please accept or deny this request!");
+            }
         });
 
         btnPromote.addActionListener(e -> {
-
             String usernameAdmin = txtAdminPromoteInput.getText();
             try {
                 LoginAccount userAdmin = accountStorage.getAccount(usernameAdmin);
                 addAdminController.addAdmin(usernameAdmin, userAdmin.getPassword(), userAdmin.getEmailAddress());
-            } catch (AccountNotFoundException accountNotFoundException) {
-                accountNotFoundException.printStackTrace();
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            } catch (InvalidEmailAddressException invalidEmailAddressException) {
-                invalidEmailAddressException.printStackTrace();
-            } catch (InvalidPasswordException invalidPasswordException) {
-                invalidPasswordException.printStackTrace();
-            } catch (EmailAddressInUseException emailAddressInUseException) {
-                emailAddressInUseException.printStackTrace();
-            } catch (InvalidUsernameException invalidUsernameException) {
-                invalidUsernameException.printStackTrace();
-            } catch (UsernameInUseException usernameInUseException) {
-                usernameInUseException.printStackTrace();
+            } catch (AccountNotFoundException | IOException | InvalidEmailAddressException | InvalidPasswordException |
+                    EmailAddressInUseException | InvalidUsernameException | UsernameInUseException exception) {
+                showMessageDialog(null, exception.getStackTrace());
             }
         });
 
+        btnMessageUser.addActionListener(e -> {
+            String messageTitle = txtMessageUserTitleInput.getText();
+            String messageContent = txtAreaMessageUserInput.getText();
+            List<String> recipientList = Arrays.asList(txtMessageRecipientInput.getText().split("\\s*,\\s*"));
+            try {
+                messageController.sendUserMessage(messageTitle, messageContent, recipientList);
+            } catch (EmptyTitleException | EmptyContentException | EmptyRecipientListException | IOException exception) {
+                showMessageDialog(null, exception.getStackTrace());
+            }
+        });
+
+        btnMessageAdmin.addActionListener(e -> {
+            String messageTitle = txtMessageAdminTitleInput.getText();
+            String messageContent = txtAreaMessageAdminInput.getText();
+            try {
+                messageController.sendRequestToSystem(messageTitle, messageContent);
+            } catch (EmptyTitleException | EmptyContentException | EmptyRecipientListException | IOException exception) {
+                showMessageDialog(null, exception.getStackTrace());
+            }
+        });
+
+    }
+
+
+    private void tabCleaner(){
+        if (MainTabbedPane.getTabCount() == 2) {
+            MainTabbedPane.removeTabAt(1);
+        }
     }
 
 
