@@ -117,28 +117,10 @@ public class TraderGUI {
     private JTextField txtAdminEmailInput;
     private JTextField txtAdminUsernameInput;
     private JPanel Logging;
-    private JPanel Wishlist;
     private JPanel UserList;
     private JTextArea accountInformationTextArea;
 
-    private LoginController loginController;
-    private ItemStorage itemStorage;
-    private AccountStorage accountStorage;
-    private TradePresenter tradePresenter;
-    private RequestController requestController;
-    private ActivityController activityController;
-    private AddAdminController addAdminController;
-    private FreezeController freezeController;
-    private OffersController offersController;
-    private RequestsController requestsController;
-    private AccountTabController accountTabController;
-    private AddItemsController addItemsController;
-    private BrowseController browseController;
-    private MessageController messageController;
 
-
-
-    private String user;
     private int currUserIndex = 0;
 
     public TraderGUI(StorageGateway storageGateway) {
@@ -154,7 +136,7 @@ public class TraderGUI {
 
     private void initializeLogin(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
 
-        loginController = new LoginController(storageGateway);
+        LoginController loginController = new LoginController(storageGateway);
 
         MainTabbedPane.insertTab("Main", null, Main, null, 0);
 
@@ -215,7 +197,7 @@ public class TraderGUI {
                     case "USER":
                         MainTabbedPane.removeAll();
                         MainTabbedPane.insertTab("Home", null, Home, null, 0);
-                        initializeAccount();
+                        initializeAccount(user, storageGateway);
                         break;
                     case "ADMIN":
                         MainTabbedPane.removeAll();
@@ -346,14 +328,32 @@ public class TraderGUI {
 
     }
 
-    private void initializeAccount() {
+    private void initializeAccount(String username, StorageGateway storageGateway) throws IOException, ClassNotFoundException {
+        StatusController statusController = new StatusController(username, storageGateway);
         MainTabbedPane.insertTab("Account", null, Account, null, 1);
+    }
+
+    private void initializeActivity() {
         MainTabbedPane.insertTab("Activity", null, Activity, null, 2);
+    }
+
+    private void initializeBrowse() {
         MainTabbedPane.insertTab("Browse", null, Browse, null, 3);
+    }
+
+    private void initializeOffers() {
         MainTabbedPane.insertTab("Offers", null, Offers, null, 4);
+    }
+
+    private void initializeRequest() {
         MainTabbedPane.insertTab("Request", null, Request, null, 5);
+    }
+
+    private void initializeAddItems() {
         MainTabbedPane.insertTab("Add Items", null, AddItems, null, 6);
-        MainTabbedPane.insertTab("Wishlist", null, Wishlist, null, 7);
+    }
+
+    private void initializeMessages() {
         MainTabbedPane.insertTab("Messages", null, Messages, null, 8);
     }
 
