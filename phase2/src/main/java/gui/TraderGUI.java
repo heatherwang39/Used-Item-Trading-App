@@ -1,12 +1,14 @@
 package main.java.gui;
 
 import main.java.controller.*;
+import main.java.controller.deprectaed.AdminController;
 import main.java.model.account.*;
 import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
 import main.java.model.message.EmptyContentException;
 import main.java.model.message.EmptyRecipientListException;
 import main.java.model.message.EmptyTitleException;
+import main.java.model.trade.Trade;
 import main.java.model.trade.TradeNumberException;
 import main.java.system2.StorageGateway;
 import main.java.model.status.InvalidStatusTypeException;
@@ -120,13 +122,15 @@ public class TraderGUI {
     private JPanel UserList;
     private JTextArea accountInformationTextArea;
 
-
+    private String user;
+    private final StorageGateway storageGateway;
     private int currUserIndex = 0;
 
     public TraderGUI(StorageGateway storageGateway) {
+        this.storageGateway = storageGateway;
         MainTabbedPane.removeAll();
         try {
-            initializeLogin(storageGateway);
+            initializeLogin();
         } catch (IOException | ClassNotFoundException e) {
             showMessageDialog(null, e.getStackTrace());
         }
@@ -134,7 +138,7 @@ public class TraderGUI {
 
     }
 
-    private void initializeLogin(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
+    private void initializeLogin() throws IOException, ClassNotFoundException {
 
         LoginController loginController = new LoginController(storageGateway);
 
@@ -178,7 +182,7 @@ public class TraderGUI {
 
         guestButton.addActionListener(e -> {
             tabCleaner();
-            MainTabbedPane.insertTab("Browse", null, Browse, null, 1);
+            initializeBrowse();
 
         });
 
@@ -197,18 +201,17 @@ public class TraderGUI {
                     case "USER":
                         MainTabbedPane.removeAll();
                         MainTabbedPane.insertTab("Home", null, Home, null, 0);
-                        initializeAccount(user, storageGateway);
+                        initializeAccount();
                         break;
                     case "ADMIN":
                         MainTabbedPane.removeAll();
                         MainTabbedPane.insertTab("Home", null, Home, null, 0);
-                        MainTabbedPane.insertTab("Requests", null, Requests, null, 1);
-                        MainTabbedPane.insertTab("Un-Freeze", null, Freeze, null, 2);
-                        MainTabbedPane.insertTab("Threshold", null, Freeze, null, 2);
-                        MainTabbedPane.insertTab("Trade Threshold", null, Threshold, null, 3);
-                        MainTabbedPane.insertTab("Add Admin", null, AddAdmin, null, 4);
-                        MainTabbedPane.insertTab("User List", null, UserList, null, 5);
-                        MainTabbedPane.insertTab("Logging", null, Logging, null, 6);
+                        initializeRequests();
+                        initializeThreshold();
+                        initializeUserList();
+                        initializeAddAdmin();
+                        initializeLogging();
+                        initializeFreeze();
                         break;
                     default:
                         showMessageDialog(null, "Your account did not match any credentials in " +
@@ -217,6 +220,8 @@ public class TraderGUI {
                 }
             } catch (AccountNotFoundException accountNotFoundException) {
                 showMessageDialog(null, accountNotFoundException.getMessage());
+            } catch (IOException | ClassNotFoundException exception) {
+                exception.printStackTrace();
             }
         });
 
@@ -239,18 +244,7 @@ public class TraderGUI {
             MainTabbedPane.insertTab("Main", null, Main, null, 0);
         });
 
-
-        btnInventoryRequest.addActionListener(e -> {
-            String name =  txtInventoryInput.getText();
-            String description = txtAreaDescriptionInput.getText();
-            List<String> tagList = Arrays.asList(txtTagsInput.getText().split("\\s*,\\s*")); // TEST THIS
-            try {
-                addItemsController.addInventoryItem(name, description, tagList);
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-        });
-
+        /**
         btnWishlistAddition.addActionListener(e -> {
             String itemID = txtWishlistInput.getText();
             try {
@@ -259,6 +253,43 @@ public class TraderGUI {
                 itemNotFoundException.printStackTrace();
             }
         });
+         **/
+    }
+
+    private void initializeBrowse() {
+        MainTabbedPane.insertTab("Browse", null, Browse, null, 1);
+    }
+
+    private void initializeAccount() throws IOException, ClassNotFoundException {
+        StatusController statusController = new StatusController(user, storageGateway);
+        MainTabbedPane.insertTab("Account", null, Account, null, 1);
+        initializeActivity();
+        initializeBrowse();
+        initializeOffers();
+        initializeRequest();
+        initializeAddItems();
+        initializeMessages();
+    }
+
+    private void initializeActivity() {
+        MainTabbedPane.insertTab("Activity", null, Activity, null, 2);
+    }
+
+    private void initializeOffers() throws IOException, ClassNotFoundException {
+        MainTabbedPane.insertTab("Offers", null, Offers, null, 3);
+
+        TradePresenter tradePresenter = new TradePresenter(storageGateway);
+        OffersController offersController = new OffersController(storageGateway, user, tradePresenter);
+
+        btnOfferEnter.addActionListener(e -> {
+            offersController.offerResponse(user, txtOffersOutput, rbtnAcceptOffer, rbtnDenyOffer);
+        });
+    }
+
+    private void initializeRequest() throws IOException, ClassNotFoundException {
+        MainTabbedPane.insertTab("Request", null, Request, null, 4);
+
+        RequestController requestController = new RequestController(storageGateway, user);
 
         btnRequest.addActionListener(e -> {
             boolean perm = false;
@@ -277,27 +308,39 @@ public class TraderGUI {
             }
             //requestController.createRequest(perm, tradeAlgorithimName, );
         });
+    }
 
-        btnOfferEnter.addActionListener(e -> {
-            offersController.offerResponse(user, txtOffersOutput, rbtnAcceptOffer, rbtnDenyOffer);
-        });
+    private void initializeAddItems() throws IOException, ClassNotFoundException {
+        MainTabbedPane.insertTab("Add Items", null, AddItems, null, 5);
 
-        btnFreezeEnter.addActionListener(e -> {
-            freezeController.freezeDecision(txtFrozenUser, txtAreaFrozenUsers, rbtnUnfreezeUser, rbtnIgnoreUser, currUserIndex);
-        });
+        AddItemsController addItemsController = new AddItemsController(storageGateway, user);
 
-        btnRequestsEnter.addActionListener(e -> {
-            requestsController.requestsResponse(txtRequestsOutput, rbtnAcceptRequest, rbtnDenyRequest);
-        });
-
-        btnAddAdmin.addActionListener(e -> {
-            String usernameAdmin = txtAdminUsernameInput.getText();
-            String passwordAdmin = txtAdminPasswordInput.getText();
-            String emailAdmin = txtAdminEmailInput.getText();
+        btnInventoryRequest.addActionListener(e -> {
+            String name =  txtInventoryInput.getText();
+            String description = txtAreaDescriptionInput.getText();
+            List<String> tagList = Arrays.asList(txtTagsInput.getText().split("\\s*,\\s*")); // TEST THIS
             try {
-                addAdminController.addAdmin(usernameAdmin, passwordAdmin, emailAdmin);
-            } catch (IOException | InvalidUsernameException | InvalidPasswordException | InvalidEmailAddressException | EmailAddressInUseException | UsernameInUseException exception) {
+                addItemsController.addInventoryItem(name, description, tagList);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
+    }
+
+    private void initializeMessages() throws IOException, ClassNotFoundException {
+        MainTabbedPane.insertTab("Messages", null, Messages, null, 6);
+
+        MessageController messageController = new MessageController(storageGateway, user);
+
+        btnMessageAdmin.addActionListener(e -> {
+            String messageTitle = txtMessageAdminTitleInput.getText();
+            String messageContent = txtAreaMessageAdminInput.getText();
+            try {
+                messageController.sendRequestToSystem(messageTitle, messageContent);
+            } catch (EmptyTitleException | EmptyContentException | EmptyRecipientListException exception) {
                 showMessageDialog(null, exception.getStackTrace());
+            } catch (IOException exception) {
+                exception.printStackTrace();
             }
         });
 
@@ -313,48 +356,59 @@ public class TraderGUI {
                 exception.printStackTrace();
             }
         });
+    }
 
-        btnMessageAdmin.addActionListener(e -> {
-            String messageTitle = txtMessageAdminTitleInput.getText();
-            String messageContent = txtAreaMessageAdminInput.getText();
+    // Admin Tabs
+
+    private void initializeRequests() throws IOException, ClassNotFoundException {
+        MainTabbedPane.insertTab("Requests", null, Requests, null, 1);
+
+        ItemPresenter itemPresenter = new ItemPresenter();
+        RequestsController requestsController = new RequestsController(storageGateway, itemPresenter, user);
+
+        btnRequestsEnter.addActionListener(e -> {
+            requestsController.requestsResponse(txtRequestsOutput, rbtnAcceptRequest, rbtnDenyRequest);
+        });
+    }
+
+    private void initializeThreshold() {
+        MainTabbedPane.insertTab("Trade Threshold", null, Threshold, null, 2);
+    }
+
+    private void initializeUserList() {
+        MainTabbedPane.insertTab("User List", null, UserList, null, 3);
+    }
+
+    private void initializeAddAdmin() throws IOException, ClassNotFoundException {
+        MainTabbedPane.insertTab("Add Admin", null, AddAdmin, null, 4);
+
+        AddAdminController addAdminController = new AddAdminController(storageGateway, user);
+
+        btnAddAdmin.addActionListener(e -> {
+            String usernameAdmin = txtAdminUsernameInput.getText();
+            String passwordAdmin = txtAdminPasswordInput.getText();
+            String emailAdmin = txtAdminEmailInput.getText();
             try {
-                messageController.sendRequestToSystem(messageTitle, messageContent);
-            } catch (EmptyTitleException | EmptyContentException | EmptyRecipientListException exception) {
+                addAdminController.addAdmin(usernameAdmin, passwordAdmin, emailAdmin);
+            } catch (IOException | InvalidUsernameException | InvalidPasswordException | InvalidEmailAddressException | EmailAddressInUseException | UsernameInUseException exception) {
                 showMessageDialog(null, exception.getStackTrace());
-            } catch (IOException exception) {
-                exception.printStackTrace();
             }
         });
-
     }
 
-    private void initializeAccount(String username, StorageGateway storageGateway) throws IOException, ClassNotFoundException {
-        StatusController statusController = new StatusController(username, storageGateway);
-        MainTabbedPane.insertTab("Account", null, Account, null, 1);
+    private void initializeLogging() {
+        MainTabbedPane.insertTab("Logging", null, Logging, null, 5);
     }
 
-    private void initializeActivity() {
-        MainTabbedPane.insertTab("Activity", null, Activity, null, 2);
-    }
 
-    private void initializeBrowse() {
-        MainTabbedPane.insertTab("Browse", null, Browse, null, 3);
-    }
+    private void initializeFreeze() throws IOException, ClassNotFoundException {
+        MainTabbedPane.insertTab("Un-Freeze", null, Freeze, null, 6);
 
-    private void initializeOffers() {
-        MainTabbedPane.insertTab("Offers", null, Offers, null, 4);
-    }
+        FreezeController freezeController = new FreezeController(storageGateway);
 
-    private void initializeRequest() {
-        MainTabbedPane.insertTab("Request", null, Request, null, 5);
-    }
-
-    private void initializeAddItems() {
-        MainTabbedPane.insertTab("Add Items", null, AddItems, null, 6);
-    }
-
-    private void initializeMessages() {
-        MainTabbedPane.insertTab("Messages", null, Messages, null, 8);
+        btnFreezeEnter.addActionListener(e -> {
+            freezeController.freezeDecision(txtFrozenUser, txtAreaFrozenUsers, rbtnUnfreezeUser, rbtnIgnoreUser, currUserIndex);
+        });
     }
 
 
@@ -363,6 +417,4 @@ public class TraderGUI {
             MainTabbedPane.removeTabAt(1);
         }
     }
-
-
 }
