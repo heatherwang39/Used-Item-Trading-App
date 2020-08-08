@@ -25,10 +25,14 @@ class AdminSystem extends LoginSystem implements AdminInterface, ModeratorInterf
         return "SUCCESS";
     }
 
+
     @Override
     public List<List<String>> showFreezeUsers(int borrowThreshold, int incompleteThreshold, int weeklyThreshold) {
+        /**
         List<String> usernames = as.getUsernames();
         return ts.showFreezeUsers(usernames, borrowThreshold, incompleteThreshold, weeklyThreshold);
+         */
+        return null;
     }
 
     @Override

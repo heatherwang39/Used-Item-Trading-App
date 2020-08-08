@@ -23,7 +23,6 @@ public class LoginController {
     private final StorageGateway storageGateway;
     private final AccountStorage accountStorage;
     private final StatusStorage statusStorage;
-    private ItemStorage itemStorage;
 
     /** Class constructor
      *
@@ -34,7 +33,6 @@ public class LoginController {
         StorageFactory storageFactory = new StorageFactory();
         accountStorage = (AccountStorage) storageFactory.getStorage(storageGateway, StorageEnum.ACCOUNT);
         statusStorage = (StatusStorage) storageFactory.getStorage(storageGateway, StorageEnum.STATUS);
-        itemStorage = (ItemStorage) storageFactory.getStorage(storageGateway, StorageEnum.ITEM);
     }
 
      /** Check if you can login with the given data. If you can, return True
@@ -68,17 +66,5 @@ public class LoginController {
         statusStorage.createStatus(username,"NEW");
         storageGateway.saveStorageData(StorageEnum.ACCOUNT);
         storageGateway.saveStorageData(StorageEnum.STATUS);
-    }
-
-    public void displayUserInventory(String username, JTextArea txtArea){
-        for (int i = 0; i < itemStorage.getVerifiedInventory(username).size(); i++){
-            txtArea.append(itemStorage.getVerifiedInventory(username).get(i).getName() + "\n");
-        }
-    }
-
-    public void displayUserWishlist(String username, JTextArea txtArea){
-        for (int i = 0; i < itemStorage.getWishlist(username).size(); i++){
-            txtArea.append(itemStorage.getWishlist(username).get(i).getName() + "\n");
-        }
     }
 }

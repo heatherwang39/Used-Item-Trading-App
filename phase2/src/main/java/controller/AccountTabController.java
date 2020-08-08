@@ -32,10 +32,4 @@ public class AccountTabController {
         StorageFactory storageFactory = new StorageFactory();
         accountStorage = (AccountStorage) storageFactory.getStorage(storageGateway, StorageEnum.ACCOUNT);
     }
-
-    public String getEmailAddress() throws AccountNotFoundException {
-        return accountStorage.getAccount(username).getEmailAddress();
-    }
-
-
 }

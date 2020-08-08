@@ -76,7 +76,8 @@ public class AdminController extends LoginAccountController {
             }
         }
         storageGateway.saveStorageData(StorageEnum.STATUS);
-        return tradeStorage.showFreezeUsers(usernames, borrowThreshold, incompleteThreshold, weeklyThreshold);
+        // tradeStorage.showFreezeUsers(usernames, borrowThreshold, incompleteThreshold, weeklyThreshold);
+        return null;
     }
 
     public List<String> getGildedUsers() throws TradeNumberException, InvalidStatusTypeException, IOException {

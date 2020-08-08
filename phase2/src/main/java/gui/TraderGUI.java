@@ -116,6 +116,9 @@ public class TraderGUI {
     private JTextField txtMessageAdminTitleInput;
     private JTextField txtAdminEmailInput;
     private JTextField txtAdminUsernameInput;
+    private JPanel Logging;
+    private JPanel Wishlist;
+    private JPanel UserList;
     private JTextArea accountInformationTextArea;
 
     private LoginController loginController;
@@ -149,16 +152,9 @@ public class TraderGUI {
 
     }
 
-
     private void initializeLogin(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
 
         loginController = new LoginController(storageGateway);
-        itemStorage = new ItemStorage();
-        accountStorage = new AccountStorage();
-        tradePresenter = new TradePresenter(storageGateway);
-        freezeController = new FreezeController(storageGateway);
-        browseController = new BrowseController(storageGateway);
-
 
         MainTabbedPane.insertTab("Main", null, Main, null, 0);
 
@@ -210,98 +206,35 @@ public class TraderGUI {
         });
 
         btnLogin.addActionListener(e -> {
-            user = txtLoginUsername.getText();
+            String user = txtLoginUsername.getText();
             String pass = txtLoginPassword.getText();
-
+            txtLoginUsername.setText("");
+            txtLoginPassword.setText("");
             try {
-                activityController = new ActivityController(storageGateway, user);
-                addAdminController = new AddAdminController(storageGateway, user);
-                requestController = new RequestController(storageGateway, user);
-                accountTabController = new AccountTabController(storageGateway, user);
-                addItemsController = new AddItemsController(storageGateway, user);
-                messageController = new MessageController(storageGateway, user);
-
-                if (loginController.login(user, pass).equals("USER")) {
-                    MainTabbedPane.removeAll();
-
-                    // done
-                    MainTabbedPane.insertTab("Home", null, Home, null, 0);
-
-                    // done but not tested
-                    MainTabbedPane.insertTab("Account", null, Account, null, 1);
-                    txtUsernameOutput.setText(user);
-                    txtEmailOutput.setText(accountTabController.getEmailAddress()); // this is where the program soft-crashes
-                    loginController.displayUserInventory(user, txtAreaInventoryOutput);
-                    loginController.displayUserWishlist(user, txtAreaWishlistOutput);
-
-                    // logic done but needs aesthetic change (use method in TradePresenter)
-                    MainTabbedPane.insertTab("Activity", null, Activity, null, 2);
-                    activityController.displayTradeActivity(user, txtAreaActivityTradeOutput);
-                    activityController.displayPartnerActivity(user, txtAreaActivityPartnerOutput);
-
-                    // Done but not tested
-                    MainTabbedPane.insertTab("Browse", null, Browse, null, 3);
-                    browseController.displayListings(txtAreaBrowseListingsOutput);
-
-                    // Done but not tested
-                    MainTabbedPane.insertTab("Offers", null, Offers, null, 4);
-                    offersController.displayOffers(user, txtAreaOffersOutput);
-
-                    // Partially done
-                    MainTabbedPane.insertTab("Request", null, Request, null, 5);
-
-                    // Done but not tested
-                    MainTabbedPane.insertTab("Add Items", null, AddItems, null, 6);
-
-                    // Partially done; need message presenter
-                    MainTabbedPane.insertTab("Messages", null, Messages, null, 7);
-                    List<HashMap<String, String>> incomingMessagesList = messageController.getInbox();
-                    List<HashMap<String, String>> outgoingMessagesList = messageController.getOutbox();
-
-                    for (HashMap<String, String> stringHashMap : incomingMessagesList) {
-
-                    }
-
-                    for (HashMap<String, String> stringHashMap : outgoingMessagesList) {
-
-                    }
-
-
-                } else if (loginController.login(user, pass).equals("ADMIN")) {
-                    MainTabbedPane.removeAll();
-                    // Done
-                    MainTabbedPane.insertTab("Home", null, Home, null, 0);
-
-                    // partially done
-                    MainTabbedPane.insertTab("Requests", null, Requests, null, 1);
-                    requestsController.displayRequests(txtAreaRequestsOutput);
-
-                    // Done but not tested
-                    MainTabbedPane.insertTab("Freeze", null, Freeze, null, 2);
-                    List<List<String>> freezeUserList = freezeController.showAllFrozenUsers(3, 3 ,3); // THESE ARE TEMPORARY VALUES!!
-                    for (List<String> strings : freezeUserList) {
-                        txtAreaFrozenUsers.append(strings.get(0) + strings.get(1) + "\n");
-                    }
-
-                    // not done but really easy when we decide how to store thresholds
-                    MainTabbedPane.insertTab("Trade Threshold", null, Threshold, null, 3);
-
-                    // done but not tested
-                    MainTabbedPane.insertTab("Add Admin", null, AddAdmin, null, 4);
-
-                    // Partially done
-                    MainTabbedPane.insertTab("Messages", null, Messages, null, 5);
-
-                } else {
-                    showMessageDialog(null, "Your account did not match any credentials in " +
-                            "our system.");
+                switch (loginController.login(user, pass)) {
+                    case "USER":
+                        MainTabbedPane.removeAll();
+                        MainTabbedPane.insertTab("Home", null, Home, null, 0);
+                        initializeAccount();
+                        break;
+                    case "ADMIN":
+                        MainTabbedPane.removeAll();
+                        MainTabbedPane.insertTab("Home", null, Home, null, 0);
+                        MainTabbedPane.insertTab("Requests", null, Requests, null, 1);
+                        MainTabbedPane.insertTab("Un-Freeze", null, Freeze, null, 2);
+                        MainTabbedPane.insertTab("Threshold", null, Freeze, null, 2);
+                        MainTabbedPane.insertTab("Trade Threshold", null, Threshold, null, 3);
+                        MainTabbedPane.insertTab("Add Admin", null, AddAdmin, null, 4);
+                        MainTabbedPane.insertTab("User List", null, UserList, null, 5);
+                        MainTabbedPane.insertTab("Logging", null, Logging, null, 6);
+                        break;
+                    default:
+                        showMessageDialog(null, "Your account did not match any credentials in " +
+                                "our system.");
+                        break;
                 }
             } catch (AccountNotFoundException accountNotFoundException) {
                 showMessageDialog(null, accountNotFoundException.getMessage());
-            } catch (IOException | ClassNotFoundException | TradeNumberException | ItemNotFoundException exception) {
-                showMessageDialog(null, exception.getStackTrace());
-            } catch (InvalidStatusTypeException invalidStatusTypeException) {
-                invalidStatusTypeException.printStackTrace();
             }
         });
 
@@ -316,11 +249,14 @@ public class TraderGUI {
                     InvalidStatusTypeException | InvalidUsernameException | InvalidPasswordException invalidLoginException) {
                 showMessageDialog(null, invalidLoginException.getMessage());
             } catch (IOException ioException) {
-                showMessageDialog(null, ioException.getMessage() + "\n" +
-                        Arrays.toString(ioException.getStackTrace()));
-            } finally {
+                ioException.printStackTrace();
             }
+            txtLoginUsername.setText("");
+            txtLoginPassword.setText("");
+            MainTabbedPane.removeAll();
+            MainTabbedPane.insertTab("Main", null, Main, null, 0);
         });
+
 
         btnInventoryRequest.addActionListener(e -> {
             String name =  txtInventoryInput.getText();
@@ -389,8 +325,10 @@ public class TraderGUI {
             List<String> recipientList = Arrays.asList(txtMessageRecipientInput.getText().split("\\s*,\\s*"));
             try {
                 messageController.sendUserMessage(messageTitle, messageContent, recipientList);
-            } catch (EmptyTitleException | EmptyContentException | EmptyRecipientListException | IOException exception) {
+            } catch (EmptyTitleException | EmptyContentException | EmptyRecipientListException exception) {
                 showMessageDialog(null, exception.getStackTrace());
+            } catch (IOException exception) {
+                exception.printStackTrace();
             }
         });
 
@@ -399,10 +337,24 @@ public class TraderGUI {
             String messageContent = txtAreaMessageAdminInput.getText();
             try {
                 messageController.sendRequestToSystem(messageTitle, messageContent);
-            } catch (EmptyTitleException | EmptyContentException | EmptyRecipientListException | IOException exception) {
+            } catch (EmptyTitleException | EmptyContentException | EmptyRecipientListException exception) {
                 showMessageDialog(null, exception.getStackTrace());
+            } catch (IOException exception) {
+                exception.printStackTrace();
             }
         });
+
+    }
+
+    private void initializeAccount() {
+        MainTabbedPane.insertTab("Account", null, Account, null, 1);
+        MainTabbedPane.insertTab("Activity", null, Activity, null, 2);
+        MainTabbedPane.insertTab("Browse", null, Browse, null, 3);
+        MainTabbedPane.insertTab("Offers", null, Offers, null, 4);
+        MainTabbedPane.insertTab("Request", null, Request, null, 5);
+        MainTabbedPane.insertTab("Add Items", null, AddItems, null, 6);
+        MainTabbedPane.insertTab("Wishlist", null, Wishlist, null, 7);
+        MainTabbedPane.insertTab("Messages", null, Messages, null, 8);
     }
 
 
