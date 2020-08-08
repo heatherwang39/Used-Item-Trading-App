@@ -214,7 +214,7 @@ public class ItemStorage implements Storage, TradeObserver {
      * @param username Account username
      * @return wishlist
      */
-    private List<Item> getWishlist(String username) {
+    public List<Item> getWishlist(String username) {
         List<Item> items = new ArrayList<>();
         for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
             Item item = entry.getValue();

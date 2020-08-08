@@ -109,9 +109,9 @@ public class TraderGUI {
     private FreezeController freezeController;
     private OffersController offersController;
     private RequestsController requestsController;
+    private AccountTabController accountTabController;
 
-    private String user = "";
-    private String pass = "";
+    private String user;
 
     public TraderGUI(StorageGateway storageGateway) {
         MainTabbedPane.removeAll();
@@ -183,17 +183,14 @@ public class TraderGUI {
         });
 
         btnLogin.addActionListener(e -> {
-            try {
-                user = txtLoginUsername.getText();
-                pass = txtLoginPassword.getText();
+            user = txtLoginUsername.getText();
+            String pass = txtLoginPassword.getText();
 
-//                txtLoginUsername.setText("");
-//                txtLoginPassword.setText("");
+            try {
                 activityController = new ActivityController(storageGateway, user);
                 addAdminController = new AddAdminController(storageGateway, user);
                 requestController = new RequestController(storageGateway, user);
-
-
+                accountTabController = new AccountTabController(storageGateway, user);
 
                 if (loginController.login(user, pass).equals("USER")) {
                     MainTabbedPane.removeAll();
@@ -201,11 +198,10 @@ public class TraderGUI {
                     // done
                     MainTabbedPane.insertTab("Home", null, Home, null, 0);
 
-
                     // done but not tested
                     MainTabbedPane.insertTab("Account", null, Account, null, 1);
                     txtUsernameOutput.setText(user);
-                    txtEmailOutput.setText(accountStorage.getAccount(user).getEmailAddress());
+                    txtEmailOutput.setText(accountTabController.getEmailAddress());
                     for (int i = 0; i < itemStorage.getVerifiedInventory(user).size(); i++){
                         txtAreaInventoryOutput.append(itemStorage.getVerifiedInventory(user).get(i).getName() + "\n");
                     }
@@ -316,11 +312,11 @@ public class TraderGUI {
 
         btnWishlistAddition.addActionListener(e -> {
             String itemID = txtWishlistInput.getText();
-            try {
-                itemStorage.addWishList(user, Integer.parseInt(itemID));
-            } catch (ItemNotFoundException itemNotFoundException) {
-                itemNotFoundException.printStackTrace();
-            }
+//            try {
+//                itemStorage.addWishList(user, Integer.parseInt(itemID));
+//            } catch (ItemNotFoundException itemNotFoundException) {
+//                itemNotFoundException.printStackTrace();
+//            }
         });
 
         btnRequest.addActionListener(e -> {
