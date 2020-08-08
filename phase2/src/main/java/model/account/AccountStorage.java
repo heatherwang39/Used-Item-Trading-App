@@ -217,6 +217,14 @@ public class AccountStorage implements Storage {
 
     //Threshold Methods Below
 
+    /** Set the BorrowThreshold of the given account to be the following.
+     *
+     * @param username The username of the account you'd like to modify
+     * @param threshold What you want to set the threshold to
+     * @throws NegativeThresholdException Thrown if the suggested threshold is negative
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     */
     public void setBorrowThreshold(String username, int threshold) throws NegativeThresholdException, WrongAccountTypeException,
             AccountNotFoundException{
         if(threshold < 0){
@@ -229,6 +237,14 @@ public class AccountStorage implements Storage {
         throw new WrongAccountTypeException();
     }
 
+    /** Set the IncompleteThreshold of the given account to be the following.
+     *
+     * @param username The username of the account you'd like to modify
+     * @param threshold What you want to set the threshold to
+     * @throws NegativeThresholdException Thrown if the suggested threshold is negative
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     */
     public void setIncompleteThreshold(String username, int threshold) throws NegativeThresholdException, WrongAccountTypeException,
             AccountNotFoundException{
         if(threshold < 0){
@@ -241,6 +257,14 @@ public class AccountStorage implements Storage {
         throw new WrongAccountTypeException();
     }
 
+    /** Set the WeeklyThreshold of the given account to be the following.
+     *
+     * @param username The username of the account you'd like to modify
+     * @param threshold What you want to set the threshold to
+     * @throws NegativeThresholdException Thrown if the suggested threshold is negative
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     */
     public void setWeeklyThreshold(String username, int threshold) throws NegativeThresholdException, WrongAccountTypeException,
             AccountNotFoundException{
         if(threshold < 0){
@@ -253,6 +277,13 @@ public class AccountStorage implements Storage {
         throw new WrongAccountTypeException();
     }
 
+    /** Return the BorrowThreshold of the given account
+     *
+     * @param username The username of the account you're interested in
+     * @return The Threshold associated with this account.
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     */
     public int getBorrowThreshold(String username) throws WrongAccountTypeException, AccountNotFoundException{
         Account a = getAccount(username);
         if(a.getType() == "USER"){
@@ -261,6 +292,13 @@ public class AccountStorage implements Storage {
         throw new WrongAccountTypeException();
     }
 
+    /** Return the IncompleteThreshold of the given account
+     *
+     * @param username The username of the account you're interested in
+     * @return The Threshold associated with this account.
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     */
     public int getIncompleteThreshold(String username) throws WrongAccountTypeException, AccountNotFoundException{
         Account a = getAccount(username);
         if(a.getType() == "USER"){
@@ -269,6 +307,13 @@ public class AccountStorage implements Storage {
         throw new WrongAccountTypeException();
     }
 
+    /** Return the WeeklyThreshold of the given account
+     *
+     * @param username The username of the account you're interested in
+     * @return The Threshold associated with this account.
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     */
     public int getWeeklyThreshold(String username) throws WrongAccountTypeException, AccountNotFoundException{
         Account a = getAccount(username);
         if(a.getType() == "USER"){
