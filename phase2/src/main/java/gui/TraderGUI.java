@@ -4,6 +4,7 @@ import main.java.controller.*;
 import main.java.model.account.*;
 import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
+import main.java.model.status.StatusNotFoundException;
 import main.java.model.trade.TradeNumberException;
 import main.java.system2.StorageGateway;
 import main.java.model.status.InvalidStatusTypeException;
@@ -11,6 +12,8 @@ import main.java.presenter.*;
 
 import javax.swing.*;
 // From: https://stackoverflow.com/questions/9119481/how-to-present-a-simple-alert-message-in-java
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -89,7 +92,7 @@ public class TraderGUI {
     private JRadioButton rbtnFreezeUser;
     private JRadioButton rbtnIgnoreUser;
     private JButton btnFreezeEnter;
-    private JTextField textField1;
+    private JTextField txtOffersOutput;
     private JRadioButton rbtnAcceptOffer;
     private JRadioButton rbtnDenyOffer;
     private JButton btnOfferEnter;
@@ -97,6 +100,12 @@ public class TraderGUI {
     private JTextField textField3;
     private JTextField textField4;
     private JTextArea txtAreaLoggingOutput;
+    private JTextArea txtAreaRequestsOutput;
+    private JRadioButton rbtnAcceptRequest;
+    private JRadioButton rbtnDenyRequest;
+    private JButton btnRequestsEnter;
+    private JTextField txtRequestsOutput;
+    private JTextArea txtAreaOffersOutput;
     private JTextArea accountInformationTextArea;
 
     private LoginController loginController;
@@ -110,6 +119,7 @@ public class TraderGUI {
     private OffersController offersController;
     private RequestsController requestsController;
     private AccountTabController accountTabController;
+    private AddItemsController addItemsController;
 
     private String user;
 
@@ -120,6 +130,7 @@ public class TraderGUI {
         } catch (IOException | ClassNotFoundException e) {
             showMessageDialog(null, e.getStackTrace());
         }
+
     }
 
 
@@ -150,6 +161,10 @@ public class TraderGUI {
         ButtonGroup freezeButtonGroup = new ButtonGroup();
         freezeButtonGroup.add(rbtnFreezeUser);
         freezeButtonGroup.add(rbtnIgnoreUser);
+
+        ButtonGroup offersButtonGroup = new ButtonGroup();
+        offersButtonGroup.add(rbtnAcceptOffer);
+        offersButtonGroup.add(rbtnDenyOffer);
 
 
 
@@ -191,6 +206,7 @@ public class TraderGUI {
                 addAdminController = new AddAdminController(storageGateway, user);
                 requestController = new RequestController(storageGateway, user);
                 accountTabController = new AccountTabController(storageGateway, user);
+                addItemsController = new AddItemsController(storageGateway, user);
 
                 if (loginController.login(user, pass).equals("USER")) {
                     MainTabbedPane.removeAll();
@@ -236,17 +252,18 @@ public class TraderGUI {
 
                     // Not done
                     MainTabbedPane.insertTab("Offers", null, Offers, null, 4);
-//                    List<HashMap<String, List<String>>> offerList = offersController.getOffers();
-//                    for (HashMap<String, List<String>> stringListHashMap : offerList) {
-//                        for (String str : stringListHashMap.keySet()) {
-//
-//                        }
-//                    }
+                    List<HashMap<String, List<String>>> unformattedOfferList = offersController.getOffers();
+
+                    List<String> offerList = tradePresenter.formatTradeForListView(unformattedOfferList);
+                    for (String s : offerList) {
+                        txtAreaOffersOutput.append(s);
+                    }
+
 
                     // Partially done
                     MainTabbedPane.insertTab("Request", null, Request, null, 5);
 
-                    // Partially done
+                    // done but not tested
                     MainTabbedPane.insertTab("Add Items", null, AddItems, null, 6);
 
                     // Not done
@@ -259,6 +276,15 @@ public class TraderGUI {
 
                     // Not done
                     MainTabbedPane.insertTab("Requests", null, Requests, null, 1);
+                    List<HashMap<String, String>> requestsList = null;
+                    try {
+                        requestsList = requestsController.getRequests();
+                    } catch (ItemNotFoundException itemNotFoundException) {
+                        itemNotFoundException.printStackTrace();
+                    }
+                    for (int i = 0; i < requestsList.size(); i++){
+
+                    }
 
                     // Done but not tested
                     MainTabbedPane.insertTab("Freeze", null, Freeze, null, 2);
@@ -307,16 +333,23 @@ public class TraderGUI {
         });
 
         btnInventoryRequest.addActionListener(e -> {
-
+            String name =  txtInventoryInput.getText();
+            String description = txtAreaDescriptionInput.getText();
+            List<String> tagList = Arrays.asList(txtTagsInput.getText().split("\\s*,\\s*")); // TODO: test this specifically
+            try {
+                addItemsController.addInventoryItem(name, description, tagList);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
         });
 
         btnWishlistAddition.addActionListener(e -> {
             String itemID = txtWishlistInput.getText();
-//            try {
-//                itemStorage.addWishList(user, Integer.parseInt(itemID));
-//            } catch (ItemNotFoundException itemNotFoundException) {
-//                itemNotFoundException.printStackTrace();
-//            }
+            try {
+                itemStorage.addWishList(user, Integer.parseInt(itemID));
+            } catch (ItemNotFoundException itemNotFoundException) {
+                itemNotFoundException.printStackTrace();
+            }
         });
 
         btnRequest.addActionListener(e -> {
@@ -333,7 +366,33 @@ public class TraderGUI {
         });
 
         btnOfferEnter.addActionListener(e -> {
+            List<HashMap<String, List<String>>> unformattedOfferList = null;
+            List<String> offerList = null;
+            try {
+                unformattedOfferList = offersController.getOffers();
+                offerList = tradePresenter.formatTradeForListView(unformattedOfferList);
+            } catch (ItemNotFoundException itemNotFoundException) {
+                itemNotFoundException.printStackTrace();
+            } catch (TradeNumberException tradeNumberException) {
+                tradeNumberException.printStackTrace();
+            }
+            assert offerList != null;
+            txtOffersOutput.setText(offerList.get(0));
+            try {
+            if (rbtnAcceptOffer.isSelected()){
+                offersController.acceptOffer(Integer.parseInt(unformattedOfferList.get(0).get("id").get(0)));
 
+            } else if (rbtnDenyOffer.isSelected()){
+                offersController.rejectOffer(Integer.parseInt(unformattedOfferList.get(0).get("id").get(0)));
+            }
+                // these stackTraces are placeholders
+            } catch (TradeNumberException tradeNumberException) {
+                tradeNumberException.printStackTrace();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            } catch (StatusNotFoundException statusNotFoundException) {
+                statusNotFoundException.printStackTrace();
+            }
         });
 
 
@@ -364,6 +423,10 @@ public class TraderGUI {
                  }
                 }
                 */
+        });
+
+        btnRequestsEnter.addActionListener(e -> {
+
         });
 
         btnPromote.addActionListener(e -> {
