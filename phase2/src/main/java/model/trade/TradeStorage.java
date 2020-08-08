@@ -1,7 +1,6 @@
 package main.java.model.trade;
 
 import main.java.model.Storage;
-import main.java.model.account.LoginAccount;
 import main.java.model.meeting.MeetingObserver;
 import main.java.model.status.StatusNotFoundException;
 
@@ -18,8 +17,7 @@ import java.util.*;
 public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
     private List<Trade> trades;
     private final TradeAlgorithmFactory taf = new TradeAlgorithmFactory();
-    private final FreezeManager fm = new FreezeManager();
-    private final ActivityManager am = new ActivityManager();
+    private final TradeActivityManager tam = new TradeActivityManager();
 
     private final List<TradeObserver> observers = new ArrayList<>();
 
@@ -652,7 +650,7 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
      */
     public List<List<Integer>> recentItemsTraded(String username) throws TradeNumberException {
         List <Trade> userTrades = getUserTrades(username);
-        return am.recentItemsTraded(userTrades);
+        return tam.recentItemsTraded(userTrades);
     }
 
     /**
@@ -664,7 +662,7 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
      */
     public List<String> frequentTradePartners(String username) throws TradeNumberException {
         List <Trade> userTrades = getUserTrades(username);
-        return am.frequentTradePartners(username, userTrades);
+        return tam.frequentTradePartners(username, userTrades);
     }
 
     /**
@@ -684,19 +682,15 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
      * @return a list of lists that contain the username and reasons why that user should be frozen. Empty if there are no users to freeze
      */
     public List<List<String>> showFreezeUsers(List<String> usernames, int borrowThreshold, int incompleteThreshold,
-                                              int weeklyThreshold) {
+                                              int weeklyThreshold) throws TradeNumberException {
         List<List<String>> freezeList = new ArrayList<>();
         for (String user : usernames) {
-            try {
-                List<String> userFreezeReasons = checkUserShouldFreeze(user, borrowThreshold, incompleteThreshold, weeklyThreshold);
-                if (userFreezeReasons.size() > 1) {
-                    List<String> userData = new ArrayList<>();
-                    userData.add(user);
-                    userData.addAll(userFreezeReasons);
-                    freezeList.add(userData);
-                }
-            } catch (TradeNumberException e) {
-                break;
+            List<String> userFreezeReasons = checkUserShouldFreeze(user, borrowThreshold, incompleteThreshold, weeklyThreshold);
+            if (userFreezeReasons.size() > 1) {
+                List<String> userData = new ArrayList<>();
+                userData.add(user);
+                userData.addAll(userFreezeReasons);
+                freezeList.add(userData);
             }
         }
         return freezeList;
@@ -705,7 +699,7 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
     private List<String> checkUserShouldFreeze(String username, int borrowThreshold, int incompleteThreshold,
                                                int weeklyThreshold) throws TradeNumberException {
         List <Trade> userTrades = getUserTrades(username);
-        return fm.checkUserShouldFreeze(username, userTrades, borrowThreshold, incompleteThreshold, weeklyThreshold);
+        return tam.checkUserShouldFreeze(username, userTrades, borrowThreshold, incompleteThreshold, weeklyThreshold);
     }
 
     private boolean checkIsGilded(String username) throws TradeNumberException {
