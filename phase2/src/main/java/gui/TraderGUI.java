@@ -31,7 +31,6 @@ import static javax.swing.JOptionPane.showMessageDialog;
 
 
 
-
 public class TraderGUI {
     private JTabbedPane MainTabbedPane;
     public JPanel MainContainer;
@@ -134,8 +133,10 @@ public class TraderGUI {
     private BrowseController browseController;
     private MessageController messageController;
 
+
+
     private String user;
-    private int currUserIndex;
+    private int currUserIndex = 0;
 
     public TraderGUI(StorageGateway storageGateway) {
         MainTabbedPane.removeAll();
@@ -273,16 +274,7 @@ public class TraderGUI {
 
                     // partially done
                     MainTabbedPane.insertTab("Requests", null, Requests, null, 1);
-                    List<HashMap<String, String>> requestsList = null;
-                    try {
-                        requestsList = requestsController.getRequests();
-                    } catch (ItemNotFoundException itemNotFoundException) {
-                        showMessageDialog(null, itemNotFoundException.getStackTrace());
-                    }
-                    // need presenter to display info
-                    for (int i = 0; i < requestsList.size(); i++){
-                        // text area appends each line of the formatted list
-                    }
+                    requestsController.displayRequests(txtAreaRequestsOutput);
 
                     // Done but not tested
                     MainTabbedPane.insertTab("Freeze", null, Freeze, null, 2);
@@ -372,26 +364,12 @@ public class TraderGUI {
             offersController.offerResponse(user, txtOffersOutput, rbtnAcceptOffer, rbtnDenyOffer);
         });
 
-
         btnFreezeEnter.addActionListener(e -> {
             freezeController.freezeDecision(txtFrozenUser, txtAreaFrozenUsers, rbtnUnfreezeUser, rbtnIgnoreUser, currUserIndex);
         });
 
         btnRequestsEnter.addActionListener(e -> {
-            List<HashMap<String, String>> requestsList = null;
-            try {
-                requestsList = requestsController.getRequests();
-            } catch (ItemNotFoundException itemNotFoundException) {
-                showMessageDialog(null, itemNotFoundException.getStackTrace());
-            }
-            // txtRequestsOutput.setText(formatted list .get(0));
-            if (rbtnAcceptRequest.isSelected()){
-                // do stuff
-            } else if (rbtnDenyRequest.isSelected()){
-                // do stuff
-            } else{
-                showMessageDialog(null, "Please accept or deny this request!");
-            }
+            requestsController.requestsResponse(txtRequestsOutput, rbtnAcceptRequest, rbtnDenyRequest);
         });
 
         btnAddAdmin.addActionListener(e -> {
@@ -400,8 +378,8 @@ public class TraderGUI {
             String emailAdmin = txtAdminEmailInput.getText();
             try {
                 addAdminController.addAdmin(usernameAdmin, passwordAdmin, emailAdmin);
-            } catch (IOException | InvalidUsernameException | InvalidPasswordException | InvalidEmailAddressException | EmailAddressInUseException | UsernameInUseException ioException) {
-                ioException.printStackTrace();
+            } catch (IOException | InvalidUsernameException | InvalidPasswordException | InvalidEmailAddressException | EmailAddressInUseException | UsernameInUseException exception) {
+                showMessageDialog(null, exception.getStackTrace());
             }
         });
 
@@ -425,7 +403,6 @@ public class TraderGUI {
                 showMessageDialog(null, exception.getStackTrace());
             }
         });
-
     }
 
 
