@@ -207,7 +207,7 @@ public class TraderGUI {
                     case "USER":
                         MainTabbedPane.removeAll();
                         MainTabbedPane.insertTab("Home", null, Home, null, 0);
-                        initializeAccount();
+                        initializeUserLogin();
                         break;
                     case "ADMIN":
                         MainTabbedPane.removeAll();
@@ -218,6 +218,7 @@ public class TraderGUI {
                         initializeAddAdmin();
                         initializeLogging();
                         initializeFreeze();
+                        initializeMessages();
                         break;
                     default:
                         showMessageDialog(null, "Your account did not match any credentials in " +
@@ -226,12 +227,8 @@ public class TraderGUI {
                 }
             } catch (AccountNotFoundException accountNotFoundException) {
                 showMessageDialog(null, accountNotFoundException.getMessage());
-            } catch (IOException | ClassNotFoundException exception) {
+            } catch (IOException | ClassNotFoundException | TradeNumberException | ItemNotFoundException exception) {
                 exception.printStackTrace();
-            } catch (TradeNumberException tradeNumberException) {
-                tradeNumberException.printStackTrace();
-            } catch (ItemNotFoundException itemNotFoundException) {
-                itemNotFoundException.printStackTrace();
             }
         });
 
@@ -257,9 +254,9 @@ public class TraderGUI {
     }
 
 
-    private void initializeAccount() throws IOException, ClassNotFoundException, TradeNumberException, ItemNotFoundException {
+    private void initializeUserLogin() throws IOException, ClassNotFoundException, TradeNumberException, ItemNotFoundException, AccountNotFoundException {
         StatusController statusController = new StatusController(user, storageGateway);
-        MainTabbedPane.insertTab("Account", null, Account, null, 1);
+        initializeAccount();
         initializeActivity();
         initializeBrowse();
         initializeOffers();
@@ -268,6 +265,21 @@ public class TraderGUI {
         initializeMessages();
     }
 
+    private void initializeAccount() throws IOException, ClassNotFoundException, AccountNotFoundException {
+        MainTabbedPane.insertTab("Account", null, Account, null, 1);
+        AccountController accountController = new AccountController(storageGateway, user);
+        txtUsernameOutput.setText(user);
+        txtEmailOutput.setText(accountController.getEmail());
+        List<String> inventory = accountController.getInventory();
+        List<String> wishlist = accountController.getWishlist();
+        for (String s : inventory) {
+            txtAreaInventoryOutput.append(s + "\n");
+        }
+
+        for (String s : wishlist) {
+            txtAreaWishlistOutput.append(s + "\n");
+        }
+    }
 
     private void initializeActivity() throws IOException, ClassNotFoundException, TradeNumberException {
         MainTabbedPane.insertTab("Activity", null, Activity, null, 2);
@@ -341,7 +353,6 @@ public class TraderGUI {
             if (rbtnPermTrade.isSelected()){
                 perm = true;
             } else if(rbtnTempTrade.isSelected()){
-                perm = false;
             } else{
                 showMessageDialog(null, "Please select a type of trade for this request!");
             }
@@ -411,6 +422,9 @@ public class TraderGUI {
             }
         });
     }
+
+
+
 
     // Admin Tabs
 
