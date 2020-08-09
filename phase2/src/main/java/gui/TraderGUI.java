@@ -121,8 +121,8 @@ public class TraderGUI {
     private JPanel UserList;
     private JTextArea txtAreaUserListOutput;
     private JTextField txtAccountStatuses;
-    private JButton setStatusButton;
-    private JTextField txtAwayStatus;
+    private JButton btnAccountSetAwayStatus;
+    private JTextField txtAccountAwayStatus;
     private JTextField textField1;
     private JRadioButton rbtnUserListMute;
     private JRadioButton rbtnUserListNext;
@@ -143,6 +143,7 @@ public class TraderGUI {
         } catch (IOException | ClassNotFoundException e) {
             showMessageDialog(null, e.getStackTrace());
         }
+
     }
 
     private void initializeLogin() throws IOException, ClassNotFoundException {
@@ -187,7 +188,11 @@ public class TraderGUI {
 
         guestButton.addActionListener(e -> {
             tabCleaner();
-            initializeBrowse();
+            try {
+                initializeBrowse();
+            } catch (IOException | ClassNotFoundException | ItemNotFoundException exception) {
+                exception.printStackTrace();
+            }
 
         });
 
@@ -225,7 +230,7 @@ public class TraderGUI {
                 }
             } catch (AccountNotFoundException | ItemNotFoundException accountNotFoundException) {
                 showMessageDialog(null, accountNotFoundException.getMessage());
-            } catch (IOException | ClassNotFoundException exception) {
+            } catch (IOException | ClassNotFoundException | TradeNumberException exception) {
                 exception.printStackTrace();
             }
         });
@@ -250,11 +255,7 @@ public class TraderGUI {
         });
     }
 
-    private void initializeBrowse() {
-        MainTabbedPane.insertTab("Browse", null, Browse, null, 1);
-    }
-
-    private void initializeStatus() throws IOException, ClassNotFoundException {
+    private void initializeStatus() throws IOException, ClassNotFoundException, TradeNumberException {
         StatusController statusController = new StatusController(user, storageGateway);
         if (!statusController.getStatuses().contains("AWAY") || !statusController.getStatuses().contains("FROZEN")) {
             initializeRequest();
@@ -281,14 +282,66 @@ public class TraderGUI {
         for (String s : inventory) {
             txtAreaInventoryOutput.append(s + "\n");
         }
-
         for (String s : wishlist) {
             txtAreaWishlistOutput.append(s + "\n");
         }
+
+        String statusString = accountController.getStatusString();
+        txtAccountStatuses.setText(statusString);
+
+        if (accountController.isAway()){
+            txtAccountAwayStatus.setText("You are marked as 'away'. Click the button to the right to return");
+        } else{
+            txtAccountAwayStatus.setText("Click the button to the right to be marked as 'away'");
+        }
+
+        btnAccountSetAwayStatus.addActionListener(e -> {
+            if (accountController.isAway()){
+                try {
+                    accountController.removeAwayStatus();
+                } catch (StatusNotFoundException statusNotFoundException) {
+                    statusNotFoundException.printStackTrace();
+                }
+            } else{
+                try {
+                    accountController.setAwayStatus();
+                } catch (InvalidStatusTypeException invalidStatusTypeException) {
+                    invalidStatusTypeException.printStackTrace();
+                }
+            }
+        });
     }
 
-    private void initializeActivity() {
+    private void initializeActivity() throws IOException, ClassNotFoundException, TradeNumberException {
         MainTabbedPane.insertTab("Activity", null, Activity, null, 3);
+        ActivityController activityController = new ActivityController(storageGateway, user);
+
+        List<List<Integer>> tradeList = activityController.recentItemsTraded();
+        StringBuilder tradeString = new StringBuilder();
+        for (List<Integer> integers : tradeList) {
+            for (Integer integer : integers) {
+                tradeString.append(", ").append(integer);
+                txtAreaActivityTradeOutput.append(tradeString + "\n");
+            }
+        }
+
+        List<String> partnerList = activityController.frequentTradingPartners();
+        for (String s : partnerList) {
+            txtAreaActivityPartnerOutput.append(s + "\n");
+        }
+    }
+
+    private void initializeBrowse() throws IOException, ClassNotFoundException, ItemNotFoundException {
+        MainTabbedPane.insertTab("Browse", null, Browse, null, 1);
+        BrowseController browseController = new BrowseController(storageGateway);
+
+        MainTabbedPane.insertTab("Browse", null, Browse, null, 1);
+        List<HashMap<String, String>> listingList = browseController.getVerifiedItems();
+        for (HashMap<String, String> stringStringHashMap : listingList) {
+            for (String str : stringStringHashMap.keySet()) {
+                txtAreaBrowseListingsOutput.append(str + stringStringHashMap.get(str) + "\n");
+            }
+        }
     }
 
     private void initializeOffers() throws IOException, ClassNotFoundException {
