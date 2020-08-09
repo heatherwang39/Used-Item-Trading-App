@@ -349,12 +349,14 @@ public class AccountStorage implements Storage, StatusObserver {
      * @param status The status added to the user
      * @param user The user that had a status added
      */
-    public void updateStatusAdded(String status, String user) throws AccountNotFoundException {
+    public void updateStatusAdded(String status, String user) {
         if (status.equals("GILDED")) {
-            UserAccount userAccount = (UserAccount) getAccount(user);
-            userAccount.setBorrowThreshold(userAccount.getBorrowThreshold()*2);
-            userAccount.setWeeklyThreshold(userAccount.getWeeklyThreshold()*2);
-            userAccount.setIncompleteThreshold(userAccount.getIncompleteThreshold()*2);
+            try {
+                UserAccount userAccount = (UserAccount) getAccount(user);
+                userAccount.setBorrowThreshold(userAccount.getBorrowThreshold() * 2);
+                userAccount.setWeeklyThreshold(userAccount.getWeeklyThreshold() * 2);
+                userAccount.setIncompleteThreshold(userAccount.getIncompleteThreshold() * 2);
+            } catch (AccountNotFoundException ignored) {}
         }
     }
 
@@ -364,12 +366,14 @@ public class AccountStorage implements Storage, StatusObserver {
      * @param status The status removed from the user
      * @param user The user that had a status removed
      */
-    public void updateStatusRemoved(String status, String user) throws AccountNotFoundException {
+    public void updateStatusRemoved(String status, String user) {
         if (status.equals("GILDED")) {
-            UserAccount userAccount = (UserAccount) getAccount(user);
-            userAccount.setBorrowThreshold(userAccount.getBorrowThreshold()/2);
-            userAccount.setWeeklyThreshold(userAccount.getWeeklyThreshold()/2);
-            userAccount.setIncompleteThreshold(userAccount.getIncompleteThreshold()/2);
+            try {
+                UserAccount userAccount = (UserAccount) getAccount(user);
+                userAccount.setBorrowThreshold(userAccount.getBorrowThreshold()/2);
+                userAccount.setWeeklyThreshold(userAccount.getWeeklyThreshold()/2);
+                userAccount.setIncompleteThreshold(userAccount.getIncompleteThreshold()/2);
+            } catch (AccountNotFoundException ignored) {}
         }
     }
 }

@@ -35,7 +35,8 @@ public class ItemPresenter {
                     ", Description: " +
                     itemData.get("description") +
                     ", Tags: " +
-                    itemData.get("tags");
+                    itemData.get("tags") +
+                    "\n";
             formatItem.add(itemInfo);
         }
         return formatItem;
