@@ -30,8 +30,6 @@ public class RequestController {
      *
      * @param storageGateway gateway for loading and saving information
      * @param username username of the user accessing the Request tab
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
     public RequestController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
         this.storageGateway = storageGateway;
@@ -47,9 +45,8 @@ public class RequestController {
      * @param permanent Whether the trade is permanent or not
      * @param tradeAlgorithmName The name of the Trade Algorithm that is associated with this trade
      * @param items list of itemIDs part of request
-     * @throws ItemNotFoundException
+     * @throws ItemNotFoundException Thrown if there is an invalid itemID in items
      * @throws NoSuchTradeAlgorithmException Thrown if no tradeAlgorithm has the given name
-     * @throws IOException
      */
     public void createRequest(boolean permanent, TradeAlgorithmName tradeAlgorithmName, List<Integer> items)
             throws ItemNotFoundException, NoSuchTradeAlgorithmException, IOException {
@@ -57,6 +54,7 @@ public class RequestController {
         for (Integer itemID : items) {
             traders.add(itemStorage.getData(itemID).get("owner"));
         }
+        if (!(traders.contains(username))) traders.add(username);
         tradeStorage.newTrade(permanent, tradeAlgorithmName, traders, items);
         storageGateway.saveStorageData(StorageEnum.valueOf("TRADE"));
     }

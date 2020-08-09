@@ -198,6 +198,22 @@ public class AccountStorage implements Storage {
         accounts.remove(user.getUsername());
     }
 
+    /**
+     * Return all the usernames of users who are not admins
+     *
+     * @return The list of usernames of users
+     */
+    public List<String> getUsers() {
+        List<String> allUsers = new ArrayList<>();
+        List<Account> allAccounts = getAccounts();
+        for (Account account : allAccounts) {
+            if (!account.getType().equals("ADMIN")){
+                allUsers.add(account.getUsername());
+            }
+        }
+        return allUsers;
+    }
+
     /** Return all the usernames of admins
      *
      *
