@@ -222,7 +222,7 @@ public class TraderGUI {
                                 "our system.");
                         break;
                 }
-            } catch (AccountNotFoundException accountNotFoundException) {
+            } catch (AccountNotFoundException | ItemNotFoundException accountNotFoundException) {
                 showMessageDialog(null, accountNotFoundException.getMessage());
             } catch (IOException | ClassNotFoundException exception) {
                 exception.printStackTrace();
@@ -361,13 +361,44 @@ public class TraderGUI {
 
     // Admin Tabs
 
-    private void initializeRequests() throws IOException, ClassNotFoundException {
+    private void initializeRequests() throws IOException, ClassNotFoundException, ItemNotFoundException {
         MainTabbedPane.insertTab("Requests", null, Requests, null, 2);
 
         ItemPresenter itemPresenter = new ItemPresenter();
-        RequestsController requestsController = new RequestsController(storageGateway, itemPresenter, user);
+        RequestsController requestsController = new RequestsController(storageGateway, itemPresenter);
 
-        btnRequestsEnter.addActionListener(e -> requestsController.requestsResponse(txtRequestsOutput, rbtnAcceptRequest, rbtnDenyRequest));
+        for (String s : requestsController.getFormattedRequests()) {
+            // text area appends each line of the formatted list
+            txtAreaRequestsOutput.append(s);
+        }
+
+        btnRequestsEnter.addActionListener(e -> {
+            try {
+                List<HashMap<String, String>> requestsList = requestsController.getRequests();
+                List<String> formattedRequestsList = requestsController.getFormattedRequests();
+                txtRequestsOutput.setText(formattedRequestsList.get(0));
+                if (requestsList != null) {
+                    requestsList.remove(requestsList.get(0));
+                    formattedRequestsList.remove(formattedRequestsList.get(0));
+                    if (rbtnAcceptRequest.isSelected()) {
+                        requestsController.verifyItem(Integer.parseInt(requestsList.get(0).get("id")));
+
+                    } else if (rbtnDenyRequest.isSelected()) {
+                        requestsController.rejectItem(Integer.parseInt(requestsList.get(0).get("id")));
+
+                    } else {
+                        requestsList.add(requestsList.get(0));
+                        formattedRequestsList.add(formattedRequestsList.get(0));
+                        showMessageDialog(null, "Please accept or deny this request!");
+                    }
+                }
+                requestsController.requestsResponse(txtRequestsOutput, rbtnAcceptRequest, rbtnDenyRequest);
+            } catch (ItemNotFoundException exception) {
+                showMessageDialog(null, exception.getMessage());
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
     }
 
     private void initializeThreshold() {
