@@ -16,6 +16,7 @@ public class UserAccount extends LoginAccount {
     private int weeklyThreshold = 3;
     private int gildedThreshold = 10;
     private int numberOfCompletedTrades;
+    private List<String> freezeReasons = new ArrayList<>();
     private List<StatusEnum> statuses = new ArrayList<>();
 
     /**
@@ -62,6 +63,14 @@ public class UserAccount extends LoginAccount {
 
     public void setGildedThreshold(int gildedThreshold) {
         this.gildedThreshold = gildedThreshold;
+    }
+
+    public List<String> getFreezeReasons() {
+        return freezeReasons;
+    }
+
+    public void setFreezeReasons(List<String> freezeReasons) {
+        this.freezeReasons = freezeReasons;
     }
 
 
