@@ -14,12 +14,11 @@ import main.java.presenter.*;
 
 import javax.swing.*;
 // From: https://stackoverflow.com/questions/9119481/how-to-present-a-simple-alert-message-in-java
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
@@ -123,7 +122,7 @@ public class TraderGUI {
     private JTextField txtAccountStatuses;
     private JButton btnAccountSetAwayStatus;
     private JTextField txtAccountAwayStatus;
-    private JTextField textField1;
+    private JTextField txtUserListOutput;
     private JRadioButton rbtnUserListMute;
     private JRadioButton rbtnUserListNext;
     private JButton btnUserListEnter;
@@ -173,6 +172,10 @@ public class TraderGUI {
         ButtonGroup requestsButtonGroup = new ButtonGroup();
         requestsButtonGroup.add(rbtnAcceptRequest);
         requestsButtonGroup.add(rbtnDenyRequest);
+
+        ButtonGroup userListButtonGroup = new ButtonGroup();
+        userListButtonGroup.add(rbtnUserListMute);
+        userListButtonGroup.add(rbtnUserListNext);
 
 
 
@@ -224,6 +227,7 @@ public class TraderGUI {
                         initializeAddAdmin();
                         initializeLogging();
                         initializeFreeze();
+                        initializeUserList();
                         break;
                     default:
                         showMessageDialog(null, "Your account did not match any credentials in " +
@@ -460,7 +464,6 @@ public class TraderGUI {
 
 
 
-
     // Admin Tabs
 
     private void initializeRequests() throws IOException, ClassNotFoundException, ItemNotFoundException {
@@ -532,10 +535,26 @@ public class TraderGUI {
     }
 
     private void initializeUserList() throws IOException, ClassNotFoundException {
+        AtomicInteger currUserIndex = new AtomicInteger();
         MainTabbedPane.insertTab("User List", null, UserList, null, 2);
         UserlistController userlistController = new UserlistController(storageGateway);
+        List<String> userList = userlistController.showUsers();
+        for (String s : userList) {
+            txtAreaUserListOutput.append(s);
+        }
+        txtUserListOutput.setText(userList.get(currUserIndex.get()));
         btnUserListEnter.addActionListener(e -> {
-
+            if (rbtnUserListMute.isSelected()){
+                try {
+                    userlistController.muteUser(userList.get(currUserIndex.get()));
+                } catch (InvalidStatusTypeException | IOException exception) {
+                    exception.printStackTrace();
+                }
+            } else if (rbtnUserListNext.isSelected()){
+                currUserIndex.getAndIncrement();
+            } else{
+                showMessageDialog(null, "Please select an option!");
+            }
         });
 
     }
