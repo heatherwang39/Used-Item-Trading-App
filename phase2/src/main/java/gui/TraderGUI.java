@@ -535,27 +535,29 @@ public class TraderGUI {
     }
 
     private void initializeUserList() throws IOException, ClassNotFoundException {
-        AtomicInteger currUserIndex = new AtomicInteger();
+        final int[] currUserIndex = {0};
         MainTabbedPane.insertTab("User List", null, UserList, null, 2);
         UserlistController userlistController = new UserlistController(storageGateway);
         List<String> userList = userlistController.showUsers();
         for (String s : userList) {
             txtAreaUserListOutput.append(s);
         }
-        txtUserListOutput.setText(userList.get(currUserIndex.get()));
-        btnUserListEnter.addActionListener(e -> {
-            if (rbtnUserListMute.isSelected()){
-                try {
-                    userlistController.muteUser(userList.get(currUserIndex.get()));
-                } catch (InvalidStatusTypeException | IOException exception) {
-                    exception.printStackTrace();
+        if (!userList.isEmpty()) {
+            txtUserListOutput.setText(userList.get(currUserIndex[0]));
+            btnUserListEnter.addActionListener(e -> {
+                if (rbtnUserListMute.isSelected()) {
+                    try {
+                        userlistController.muteUser(userList.get(currUserIndex[0]));
+                    } catch (InvalidStatusTypeException | IOException exception) {
+                        exception.printStackTrace();
+                    }
+                } else if (rbtnUserListNext.isSelected()) {
+                    currUserIndex[0]++;
+                } else {
+                    showMessageDialog(null, "Please select an option!");
                 }
-            } else if (rbtnUserListNext.isSelected()){
-                currUserIndex.getAndIncrement();
-            } else{
-                showMessageDialog(null, "Please select an option!");
-            }
-        });
+            });
+        }
 
     }
 
