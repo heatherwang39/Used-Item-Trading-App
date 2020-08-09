@@ -1,5 +1,6 @@
 package main.java.controller;
 
+import main.java.model.account.AccountNotFoundException;
 import main.java.model.account.AccountStorage;
 import main.java.model.status.InvalidStatusTypeException;
 import main.java.model.status.StatusStorage;
@@ -41,6 +42,18 @@ public class UserlistController {
      */
     public List<String> showUsers() {
         return accountStorage.getUsers();
+    }
+
+    /**
+     * Returns list of formatted user strings
+     * @return username and email
+     */
+    public List<String> showUserStrings() throws AccountNotFoundException {
+        List<String> users = new ArrayList<>();
+        for (String user: accountStorage.getUsers()) {
+            users.add("Username: (" + user + ") Email Address: (" + accountStorage.getEmail(user) +")\n");
+        }
+        return users;
     }
 
     /**

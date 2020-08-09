@@ -248,6 +248,9 @@ public class TraderGUI {
             try {
                 loginController.register(registerUser, registerPass, registerEmail);
                 showMessageDialog(null, "Welcome to the system, " + registerUser + "!");
+                txtRegisterEmail.setText("");
+                txtRegisterUsername.setText("");
+                txtRegisterPassword.setText("");
             } catch (UsernameInUseException | InvalidEmailAddressException | EmailAddressInUseException |
                     InvalidStatusTypeException | InvalidUsernameException | InvalidPasswordException invalidLoginException) {
                 showMessageDialog(null, invalidLoginException.getMessage());
@@ -557,31 +560,35 @@ public class TraderGUI {
         });
     }
 
-    private void initializeUserList() throws IOException, ClassNotFoundException {
-        final int[] currUserIndex = {0};
+    private void initializeUserList() throws IOException, ClassNotFoundException, AccountNotFoundException {
+        AtomicInteger currUserIndex = new AtomicInteger();
         MainTabbedPane.insertTab("User List", null, UserList, null, 2);
         UserlistController userlistController = new UserlistController(storageGateway);
         List<String> userList = userlistController.showUsers();
-        for (String s : userList) {
+        for (String s : userlistController.showUserStrings()) {
             txtAreaUserListOutput.append(s);
         }
-        if (!userList.isEmpty()) {
-            txtUserListOutput.setText(userList.get(currUserIndex[0]));
-            btnUserListEnter.addActionListener(e -> {
+        btnUserListEnter.addActionListener(e -> {
+            if (!userList.isEmpty()) {
+                txtUserListOutput.setText(userList.get(currUserIndex.get()));
                 if (rbtnUserListMute.isSelected()) {
                     try {
-                        userlistController.muteUser(userList.get(currUserIndex[0]));
+                        userlistController.muteUser(userList.get(currUserIndex.get()));
+                        showMessageDialog(null, "Account was muted!");
                     } catch (InvalidStatusTypeException | IOException exception) {
                         exception.printStackTrace();
                     }
                 } else if (rbtnUserListNext.isSelected()) {
-                    currUserIndex[0]++;
+                    currUserIndex.getAndIncrement();
+                    if (currUserIndex.get() >= userList.size()) {
+                        currUserIndex.set(0);
+                    }
+                    txtUserListOutput.setText(userList.get(currUserIndex.get()));
                 } else {
                     showMessageDialog(null, "Please select an option!");
                 }
-            });
-        }
-
+            }
+        });
     }
 
     private void initializeAddAdmin() throws IOException, ClassNotFoundException {
