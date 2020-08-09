@@ -420,7 +420,7 @@ public class TraderGUI {
         MainTabbedPane.insertTab("Requests", null, Requests, null, 1);
 
         ItemPresenter itemPresenter = new ItemPresenter();
-        RequestsController requestsController = new RequestsController(storageGateway, itemPresenter, user);
+        RequestsController requestsController = new RequestsController(storageGateway);
 
         btnRequestsEnter.addActionListener(e -> {
             List<HashMap<String, String>> requestsList = null;
@@ -429,7 +429,13 @@ public class TraderGUI {
             } catch (ItemNotFoundException itemNotFoundException) {
                 itemNotFoundException.printStackTrace();
             }
-            List<String> formattedRequestsList = requestsController.getFormattedRequests();
+            List<String> formattedRequestsList = null;
+            try {
+                formattedRequestsList = requestsController.getFormattedRequests();
+            } catch (ItemNotFoundException itemNotFoundException) {
+                itemNotFoundException.printStackTrace();
+            }
+            assert formattedRequestsList != null;
             txtRequestsOutput.setText(formattedRequestsList.get(0));
             if (requestsList != null) {
                 requestsList.remove(requestsList.get(0));
