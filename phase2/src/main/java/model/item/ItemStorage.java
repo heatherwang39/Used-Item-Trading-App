@@ -217,6 +217,28 @@ public class ItemStorage implements Storage, TradeObserver {
         return items;
     }
 
+    public List<String> getInventoryString(String username){
+        List<String> items = new ArrayList<>();
+        for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
+            Item item = entry.getValue();
+            if (item.isVerified() && item.getOwner().equals(username)) {
+                items.add(item.getName());
+            }
+        }
+        return items;
+    }
+
+    public List<String> getWishlistString(String username){
+        List<String> items = new ArrayList<>();
+        for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
+            Item item = entry.getValue();
+            if (item.isVerified() && item.getWishlist().contains(username)) {
+                items.add(item.getName());
+            }
+        }
+        return items;
+    }
+
     /**
      * Suggest items to lend to a given user.
      *
