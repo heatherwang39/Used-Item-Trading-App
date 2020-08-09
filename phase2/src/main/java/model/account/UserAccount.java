@@ -14,6 +14,7 @@ public class UserAccount extends LoginAccount {
     private int borrowThreshold = 1;
     private int incompleteThreshold = 3;
     private int weeklyThreshold = 3;
+    private int gildedThreshold = 10;
     private int numberOfCompletedTrades;
     private List<StatusEnum> statuses = new ArrayList<>();
 
@@ -50,9 +51,19 @@ public class UserAccount extends LoginAccount {
     }
 
     public int getNumberOfCompletedTrades(){return numberOfCompletedTrades;}
+
     public void updateNumberOfCompletedTrades(){
         numberOfCompletedTrades++;
     }
+
+    public int getGildedThreshold() {
+        return gildedThreshold;
+    }
+
+    public void setGildedThreshold(int gildedThreshold) {
+        this.gildedThreshold = gildedThreshold;
+    }
+
 
     //Threshold Methods Below
 
