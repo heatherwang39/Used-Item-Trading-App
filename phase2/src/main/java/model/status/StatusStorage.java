@@ -103,9 +103,8 @@ public class StatusStorage implements Storage {
      *
      * @param username Account username
      * @param type Status type
-
-    public void removeStatus(String username, String type) throws StatusNotFoundException {
-
+*/
+    public void removeStatus(String username, String type) {
         for (Status s: getAccountStatuses(username)) {
             if (s.getType().equals(type)) {
                 List<Status> accountStatuses = statuses.get(username);
@@ -117,9 +116,8 @@ public class StatusStorage implements Storage {
                 return;
             }
         }
-        throw new StatusNotFoundException();
     }
-     */
+
     /**
      * Create a Status under Account username
      *
