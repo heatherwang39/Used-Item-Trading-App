@@ -325,7 +325,7 @@ public class TraderGUI {
             try {
                 messageController.sendRequestToSystem(messageTitle, messageContent);
             } catch (EmptyTitleException | EmptyContentException | EmptyRecipientListException exception) {
-                showMessageDialog(null, exception.getStackTrace());
+                showMessageDialog(null, exception.getMessage());
             } catch (IOException exception) {
                 exception.printStackTrace();
             }
@@ -338,7 +338,7 @@ public class TraderGUI {
             try {
                 messageController.sendUserMessage(messageTitle, messageContent, recipientList);
             } catch (EmptyTitleException | EmptyContentException | EmptyRecipientListException exception) {
-                showMessageDialog(null, exception.getStackTrace());
+                showMessageDialog(null, exception.getMessage());
             } catch (IOException exception) {
                 exception.printStackTrace();
             }
@@ -375,8 +375,15 @@ public class TraderGUI {
             String emailAdmin = txtAdminEmailInput.getText();
             try {
                 addAdminController.addAdmin(usernameAdmin, passwordAdmin, emailAdmin);
-            } catch (IOException | InvalidUsernameException | InvalidPasswordException | InvalidEmailAddressException | EmailAddressInUseException | UsernameInUseException exception) {
-                showMessageDialog(null, exception.getStackTrace());
+                showMessageDialog(null, "Admin added : (" + usernameAdmin + ") (" + passwordAdmin + ")");
+                txtAdminUsernameInput.setText("");
+                txtAdminPasswordInput.setText("");
+                txtAdminEmailInput.setText("");
+            } catch (InvalidUsernameException | InvalidPasswordException | InvalidEmailAddressException |
+                    EmailAddressInUseException | UsernameInUseException exception) {
+                showMessageDialog(null, exception.getMessage());
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
         });
     }
