@@ -385,7 +385,7 @@ public class TraderGUI {
             } else{
                 showMessageDialog(null, "Please select a type of trade for this request!");
             }
-            List<Integer> tradeItemsList = new ArrayList<Integer>();
+            List<Integer> tradeItemsList = new ArrayList<>();
             String requestedItem = txtRequestedItemInput.getText();
             String offeredItem = txtRequestItemInput.getText();
             Integer requestedItemID = null;
@@ -428,6 +428,10 @@ public class TraderGUI {
             List<String> tagList = Arrays.asList(txtTagsInput.getText().split("\\s*,\\s*")); // TEST THIS
             try {
                 addItemsController.addInventoryItem(name, description, tagList);
+                showMessageDialog(null, "Item requested!");
+                txtInventoryInput.setText("");
+                txtAreaDescriptionInput.setText("");
+                txtTagsInput.setText("");
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
@@ -438,6 +442,7 @@ public class TraderGUI {
             try {
                 addItemsController.addWishlistItem(user, itemID);
                 showMessageDialog(null, "Item was added to wishlist! Changes will appear when you log back in.");
+                txtWishlistInput.setText("");
             } catch (ItemNotFoundException exception) {
                 showMessageDialog(null, exception.getMessage());
             } catch (IOException ioException) {

@@ -112,7 +112,7 @@ public class Item implements Serializable {
      *
      * @return usernames
      */
-    public List<String> getWishlist() {return new ArrayList<>(tags); }
+    public List<String> getWishlist() {return new ArrayList<>(wishlist); }
 
     /**
      * Add username to wishlist.
