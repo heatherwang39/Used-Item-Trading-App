@@ -1,5 +1,6 @@
 package main.java.model.trade;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * @since Phase 2
  */
 
-public class CycleTradeAlgorithm implements TradeAlgorithm {
+public class CycleTradeAlgorithm implements TradeAlgorithm, Serializable {
 
     /**
      * Return the new arrangement of items based on the original items

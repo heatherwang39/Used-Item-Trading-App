@@ -59,11 +59,22 @@ public class RequestController {
         storageGateway.saveStorageData(StorageEnum.valueOf("TRADE"));
     }
 
-    public boolean checkValidRequest(String str1, String str2){
-        if (str1.equals(str2)){ // we can expand on more ways the request is invalid.
+    public boolean checkValidRequest(String user, String str1, String str2) throws ItemNotFoundException {
+        int int1;
+        int int2;
+        try {
+            int1 = Integer.parseInt(str2);
+            int2 = Integer.parseInt(str1);
+        } catch (NumberFormatException e) {
             return false;
         }
-        return true;
+        String owner1 = itemStorage.getData(int1).get("owner");
+        String owner2 = itemStorage.getData(int2).get("owner");
+        return (!str1.equals(str2) &&
+                owner1 != null &&
+                owner2 != null &&
+                !owner1.equals(owner2) &&
+                !owner1.equals(user)) &&
+                owner2.equals(user);
     }
-
 }

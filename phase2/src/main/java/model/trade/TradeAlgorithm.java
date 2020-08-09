@@ -1,5 +1,6 @@
 package main.java.model.trade;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**

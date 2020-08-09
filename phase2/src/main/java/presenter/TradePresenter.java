@@ -55,6 +55,7 @@ public class TradePresenter {
                 tradeInfo.append(", ");
             }
             tradeInfo.deleteCharAt(tradeInfo.length() - 1);
+            tradeInfo.append("\n");
             formatTrade.add(tradeInfo.toString());
         }
         return formatTrade;

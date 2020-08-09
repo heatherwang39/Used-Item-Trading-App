@@ -263,7 +263,7 @@ public class TraderGUI {
         });
     }
 
-    private void initializeStatus() throws IOException, ClassNotFoundException, TradeNumberException {
+    private void initializeStatus() throws IOException, ClassNotFoundException, TradeNumberException, ItemNotFoundException {
         StatusController statusController = new StatusController(user, storageGateway);
         if (!statusController.getStatuses().contains("AWAY") || !statusController.getStatuses().contains("FROZEN")) {
             initializeRequest();
@@ -342,11 +342,15 @@ public class TraderGUI {
         txtAreaBrowseListingsOutput.setText(browseController.getItemsString());
     }
 
-    private void initializeOffers() throws IOException, ClassNotFoundException {
+    private void initializeOffers() throws IOException, ClassNotFoundException, TradeNumberException, ItemNotFoundException {
         MainTabbedPane.insertTab("Offers", null, Offers, null, 3);
 
         TradePresenter tradePresenter = new TradePresenter(storageGateway);
         OffersController offersController = new OffersController(storageGateway, user, tradePresenter);
+
+        for (String s: tradePresenter.formatTradeForListView(offersController.getOffers())) {
+            txtAreaOffersOutput.append(s);
+        }
 
         btnOfferEnter.addActionListener(e -> {
             List<HashMap<String, List<String>>> unformattedOfferList = null;
@@ -379,42 +383,42 @@ public class TraderGUI {
         RequestController requestController = new RequestController(storageGateway, user);
 
         btnRequest.addActionListener(e -> {
-            boolean perm = false;
-            if (rbtnPermTrade.isSelected()){
-                perm = true;
-            } else if(rbtnTempTrade.isSelected()){
-                perm = false;
-            } else{
+            if (!rbtnTempTrade.isSelected() && !rbtnPermTrade.isSelected()) {
                 showMessageDialog(null, "Please select a type of trade for this request!");
-            }
-            List<Integer> tradeItemsList = new ArrayList<>();
-            String requestedItem = txtRequestedItemInput.getText();
-            String offeredItem = txtRequestItemInput.getText();
-            Integer requestedItemID = null;
-            Integer offeredItemID = null;
+            } else {
+                List<Integer> tradeItemsList = new ArrayList<>();
+                String requestedItem = txtRequestedItemInput.getText();
+                String offeredItem = txtRequestItemInput.getText();
 
-            // this code could have an improved structure. Ill come back to it later if there is time.
-            if (!requestController.checkValidRequest(requestedItem, offeredItem)){
-                showMessageDialog(null, "Please enter a valid request"); // placeholder
-            } else{
-                requestedItemID = Integer.parseInt(requestedItem);
-                offeredItemID = Integer.parseInt(offeredItem);
-            }
-
-            if (offeredItem.equals("")){
-                tradeItemsList.add(requestedItemID);
-            } else if (requestedItem.equals("")) {
-                tradeItemsList.add(offeredItemID);
-            } else{
-                tradeItemsList.add(requestedItemID);
-                tradeItemsList.add(offeredItemID);
-            }
-
-            TradeAlgorithmName tradeAlgorithmName = TradeAlgorithmName.CYCLE;
-            try {
-                requestController.createRequest(perm, tradeAlgorithmName, tradeItemsList);
-            } catch (ItemNotFoundException | NoSuchTradeAlgorithmException | IOException exception) {
-                exception.printStackTrace();
+                // this code could have an improved structure. Ill come back to it later if there is time.
+                try {
+                    if (!requestController.checkValidRequest(user, requestedItem, offeredItem)) {
+                        showMessageDialog(null, "Please enter a valid request"); // placeholder
+                    } else {
+                        Integer requestedItemID = Integer.parseInt(requestedItem);
+                        Integer offeredItemID = Integer.parseInt(offeredItem);
+                        if (offeredItem.equals("")) {
+                            tradeItemsList.add(requestedItemID);
+                        } else if (requestedItem.equals("")) {
+                            tradeItemsList.add(offeredItemID);
+                        } else {
+                            tradeItemsList.add(requestedItemID);
+                            tradeItemsList.add(offeredItemID);
+                            TradeAlgorithmName tradeAlgorithmName = TradeAlgorithmName.CYCLE;
+                            requestController.createRequest(rbtnPermTrade.isSelected(), tradeAlgorithmName, tradeItemsList);
+                            showMessageDialog(null, "Request submitted!\n" +
+                                    "Items: " + tradeItemsList.toString());
+                            rbtnPermTrade.setSelected(false);
+                            rbtnTempTrade.setSelected(false);
+                            txtRequestedItemInput.setText("");
+                            txtRequestItemInput.setText("");
+                        }
+                    }
+                } catch (ItemNotFoundException | NoSuchTradeAlgorithmException exception) {
+                    showMessageDialog(null, exception.getMessage());
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
         });
     }
@@ -664,7 +668,7 @@ public class TraderGUI {
         }
     }
 
-    private void displayIncomingMessages(MessageController msgController, MessagePresenter msgPresenter) throws IOException, ClassNotFoundException {
+    private void displayIncomingMessages(MessageController msgController, MessagePresenter msgPresenter) {
         List<HashMap<String, String>> incomingMessagesList = msgController.getInbox();
         List<List<String>> formattedIncomingMessagesList = msgPresenter.formatMessageToListView(incomingMessagesList);
         for (List<String> strings : formattedIncomingMessagesList) {

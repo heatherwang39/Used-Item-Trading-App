@@ -1,5 +1,6 @@
 package main.java.model.trade;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.Random;
  * @version %I%, %G%
  * @since Phase 2
  */
-public class RandomTradeAlgorithm implements TradeAlgorithm{
+public class RandomTradeAlgorithm implements TradeAlgorithm, Serializable {
     private int seed;
 
 
