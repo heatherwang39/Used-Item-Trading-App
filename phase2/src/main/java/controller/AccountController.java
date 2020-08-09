@@ -1,6 +1,7 @@
 package main.java.controller;
 
 import main.java.model.account.*;
+import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
 import main.java.model.status.InvalidStatusTypeException;
 import main.java.model.status.StatusNotFoundException;
@@ -10,7 +11,9 @@ import main.java.system2.StorageFactory;
 import main.java.system2.StorageGateway;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A Controller for the Main, Register, and Login Tab
@@ -43,12 +46,12 @@ public class AccountController {
         return accountStorage.getEmail(username);
     }
 
-    public List<String> getInventory(){
-        return itemStorage.getInventoryString(username);
+    private List<HashMap<String, String>> getInventory() throws ItemNotFoundException {
+        return itemStorage.getVerifiedInventoryData(username);
     }
 
-    public List<String> getWishlist(){
-        return itemStorage.getWishlistString(username);
+    private List<HashMap<String, String>> getWishlist() throws ItemNotFoundException {
+        return itemStorage.getWishlistData(username);
     }
 
     private List<String> getStatuses(){
@@ -58,11 +61,42 @@ public class AccountController {
     // consider making this into a presenter class
     public String getStatusString(){
         List<String> userStatusList = getStatuses();
-        String statusString = null;
+        StringBuilder statusString = new StringBuilder();
         for (String s : userStatusList) {
-            statusString += (s + " | ");
+            statusString.append(s).append(" | ");
         }
-        return statusString;
+        return statusString.toString();
+    }
+
+    /**
+     * Get inventory items in a String
+     *
+     * @return inventory String
+     */
+    public String getInventoryString() throws ItemNotFoundException {
+        StringBuilder str = new StringBuilder();
+        for (Map<String, String> map : getInventory()) {
+            str.append("Item ID: ").append(map.get("id")).append("\n");
+            str.append(map.get("name")).append(": ").append(map.get("description")).append("\n");
+            str.append("Tags: ").append(map.get("tags")).append("\n\n");
+        }
+        return str.toString();
+    }
+
+    /**
+     * Get wishlist items in a string
+     *
+     * @return wishlist string
+     */
+    public String getWishlistString() throws ItemNotFoundException {
+        StringBuilder str = new StringBuilder();
+        for (Map<String, String> map: getWishlist()) {
+            str.append("Item ID: ").append(map.get("id")).append("\n");
+            str.append("Item Owner: ").append(map.get("owner")).append("\n");
+            str.append(map.get("name")).append(": ").append(map.get("description")).append("\n");
+            str.append("Tags: ").append(map.get("tags")).append("\n\n");
+        }
+        return str.toString();
     }
 
     public boolean isAway(){

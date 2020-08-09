@@ -274,21 +274,15 @@ public class TraderGUI {
         initializeAddItems();
     }
 
-    private void initializeAccount() throws IOException, ClassNotFoundException, AccountNotFoundException {
+    private void initializeAccount() throws IOException, ClassNotFoundException, AccountNotFoundException, ItemNotFoundException {
         MainTabbedPane.insertTab("Account", null, Account, null, 1);
 
         AccountController accountController = new AccountController(storageGateway, user);
 
         txtUsernameOutput.setText(user);
         txtEmailOutput.setText(accountController.getEmail());
-        List<String> inventory = accountController.getInventory();
-        List<String> wishlist = accountController.getWishlist();
-        for (String s : inventory) {
-            txtAreaInventoryOutput.append(s + "\n");
-        }
-        for (String s : wishlist) {
-            txtAreaWishlistOutput.append(s + "\n");
-        }
+        txtAreaInventoryOutput.setText(accountController.getInventoryString());
+        txtAreaWishlistOutput.setText(accountController.getWishlistString());
 
         String statusString = accountController.getStatusString();
         txtAccountStatuses.setText(statusString);
@@ -419,10 +413,12 @@ public class TraderGUI {
             String itemID = txtWishlistInput.getText();
             try {
                 addItemsController.addWishlistItem(user, itemID);
-            } catch (IOException | ItemNotFoundException ioException) {
+                showMessageDialog(null, "Item was added to wishlist! Changes will appear when you log back in.");
+            } catch (ItemNotFoundException exception) {
+                showMessageDialog(null, exception.getMessage());
+            } catch (IOException ioException) {
                 ioException.printStackTrace();
-            }
-        });
+            }       });
     }
 
     private void initializeMessages() throws IOException, ClassNotFoundException {

@@ -64,7 +64,7 @@ public class BrowseController {
             str.append("Item ID: ").append(map.get("id")).append("\n");
             str.append("Item Owner: ").append(map.get("owner")).append("\n");
             str.append(map.get("name")).append(": ").append(map.get("description")).append("\n");
-            str.append("Tags: ").append(": ").append(String.join(", ", map.get("tags"))).append("\n\n");
+            str.append("Tags: ").append(map.get("tags")).append("\n\n");
         }
         return str.toString();
     }

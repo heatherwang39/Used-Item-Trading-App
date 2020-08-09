@@ -318,8 +318,8 @@ public class ItemStorage implements Storage, TradeObserver {
         data.put("owner", item.getOwner());
         data.put("name", item.getName());
         data.put("description", item.getDescription());
-        data.put("tags", String.join(",", item.getTags()));
-        data.put("wishlist", String.join(",", item.getWishlist()));
+        data.put("tags", String.join(", ", item.getTags()));
+        data.put("wishlist", String.join(", ", item.getWishlist()));
         data.put("verified", String.valueOf(item.isVerified()));
         return data;
     }
