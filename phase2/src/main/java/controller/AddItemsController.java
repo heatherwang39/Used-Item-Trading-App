@@ -1,5 +1,6 @@
 package main.java.controller;
 
+import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
 import main.java.system2.StorageEnum;
 import main.java.system2.StorageFactory;
@@ -48,8 +49,9 @@ public class AddItemsController {
         storageGateway.saveStorageData(StorageEnum.valueOf("ITEM"));
     }
 
-    public void addWishlistItem(String name) throws IOException{
-
+    public void addWishlistItem(String user, String itemID) throws IOException, ItemNotFoundException {
+        itemStorage.addWishList(user, Integer.parseInt(itemID));
         storageGateway.saveStorageData(StorageEnum.valueOf("ITEM"));
     }
+
 }

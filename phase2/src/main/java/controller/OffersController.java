@@ -80,37 +80,7 @@ public class OffersController {
         storageGateway.saveStorageData(StorageEnum.valueOf("TRADE"));
     }
 
-    public void displayOffers(String username, JTextArea txtArea) throws TradeNumberException, ItemNotFoundException {
-        List<HashMap<String, List<String>>> unformattedOfferList = getOffers();
 
-        List<String> offerList = tradePresenter.formatTradeForListView(unformattedOfferList);
-        for (String s : offerList) {
-            txtArea.append(s);
-        }
-    }
 
-    public void offerResponse(String username, JTextField txt, JRadioButton rbtnAccept, JRadioButton rbtnDeny){
-        List<HashMap<String, List<String>>> unformattedOfferList = null;
-        List<String> offerList = null;
-        try {
-            unformattedOfferList = getOffers();
-            offerList = tradePresenter.formatTradeForListView(unformattedOfferList);
-        } catch (ItemNotFoundException | TradeNumberException exception) {
-            showMessageDialog(null, exception.getStackTrace());
-        }
-        assert offerList != null;
-        txt.setText(offerList.get(0));
-        try {
-            if (rbtnAccept.isSelected()){
-                acceptOffer(Integer.parseInt(unformattedOfferList.get(0).get("id").get(0)));
-            } else if (rbtnDeny.isSelected()){
-                rejectOffer(Integer.parseInt(unformattedOfferList.get(0).get("id").get(0)));
-            } else{
-                // we should consider adding a "decide later" option
-            }
 
-        } catch (TradeNumberException | StatusNotFoundException | IOException exception) {
-            showMessageDialog(null, exception.getStackTrace());
-        }
-    }
 }

@@ -258,7 +258,7 @@ public class AccountStorage implements Storage, StatusObserver {
             throw new NegativeThresholdException();
         }
         Account a = getAccount(username);
-        if(a.getType() == "USER"){
+        if(a.getType().equals("USER")){
             ((UserAccount) a).setBorrowThreshold(threshold);
         }
         throw new WrongAccountTypeException();
@@ -278,7 +278,7 @@ public class AccountStorage implements Storage, StatusObserver {
             throw new NegativeThresholdException();
         }
         Account a = getAccount(username);
-        if(a.getType() == "USER"){
+        if(a.getType().equals("USER")){
             ((UserAccount) a).setIncompleteThreshold(threshold);
         }
         throw new WrongAccountTypeException();
@@ -298,10 +298,34 @@ public class AccountStorage implements Storage, StatusObserver {
             throw new NegativeThresholdException();
         }
         Account a = getAccount(username);
-        if(a.getType() == "USER"){
+        if(a.getType().equals("USER")){
             ((UserAccount) a).setWeeklyThreshold(threshold);
         }
         throw new WrongAccountTypeException();
+    }
+
+    public void setAllBorrowThresholds(int threshold) throws AccountNotFoundException, NegativeThresholdException, WrongAccountTypeException {
+        for(String user: accounts.keySet()){
+            if (getType(user).equals("USER")){
+                setBorrowThreshold(user, threshold);
+            }
+        }
+    }
+
+    public void setAllIncompleteThresholds(int threshold) throws AccountNotFoundException, NegativeThresholdException, WrongAccountTypeException {
+        for(String user: accounts.keySet()){
+            if (getType(user).equals("USER")){
+                setIncompleteThreshold(user, threshold);
+            }
+        }
+    }
+
+    public void setAllWeeklyThresholds(int threshold) throws AccountNotFoundException, NegativeThresholdException, WrongAccountTypeException {
+        for(String user: accounts.keySet()){
+            if (getType(user).equals("USER")){
+                setWeeklyThreshold(user, threshold);
+            }
+        }
     }
 
     /** Return the BorrowThreshold of the given account
@@ -313,7 +337,7 @@ public class AccountStorage implements Storage, StatusObserver {
      */
     public int getBorrowThreshold(String username) throws WrongAccountTypeException, AccountNotFoundException{
         Account a = getAccount(username);
-        if(a.getType() == "USER"){
+        if(a.getType().equals("USER")){
             return ((UserAccount) a).getBorrowThreshold();
         }
         throw new WrongAccountTypeException();
@@ -328,7 +352,7 @@ public class AccountStorage implements Storage, StatusObserver {
      */
     public int getIncompleteThreshold(String username) throws WrongAccountTypeException, AccountNotFoundException{
         Account a = getAccount(username);
-        if(a.getType() == "USER"){
+        if(a.getType().equals("USER")){
             return ((UserAccount) a).getIncompleteThreshold();
         }
         throw new WrongAccountTypeException();
@@ -343,7 +367,7 @@ public class AccountStorage implements Storage, StatusObserver {
      */
     public int getWeeklyThreshold(String username) throws WrongAccountTypeException, AccountNotFoundException{
         Account a = getAccount(username);
-        if(a.getType() == "USER"){
+        if(a.getType().equals("USER")){
             return ((UserAccount) a).getWeeklyThreshold();
         }
         throw new WrongAccountTypeException();
