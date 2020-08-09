@@ -34,5 +34,5 @@ public interface TradeObservee {
      * @param itemID A parallel list representing the IDs of items involved in the trade
      * @param newOwner A parallel list representing the usernames of the new owners of the aforementioned items
      */
-    void notifyTradeComplete(List<Integer> itemID, List<String> newOwner) throws StatusNotFoundException;
+    void notifyTradeComplete(List<Integer> itemID, List<String> newOwner);
 }

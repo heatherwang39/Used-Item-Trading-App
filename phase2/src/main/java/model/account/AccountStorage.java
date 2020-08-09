@@ -1,6 +1,7 @@
 package main.java.model.account;
 
 import main.java.model.Storage;
+import main.java.model.status.StatusObserver;
 //import sun.rmi.runtime.Log;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.regex.Pattern;
  * @version %I%, %G%
  * @since Phase 1
  */
-public class AccountStorage implements Storage {
+public class AccountStorage implements Storage, StatusObserver {
 
     private Map<String, LoginAccount> accounts;
 
@@ -347,4 +348,23 @@ public class AccountStorage implements Storage {
         }
         throw new WrongAccountTypeException();
     }
+
+
+
+
+
+    /** Update the fact that a Status was added to a certain user
+     *
+     * @param status The status added to the user
+     * @param user The user that had a status added
+     */
+    public void updateStatusAdded(String status, String user){}
+
+
+    /** Update the fact that a Status was removed from a certain user
+     *
+     * @param status The status removed from the user
+     * @param user The user that had a status removed
+     */
+    public void updateStatusRemoved(String status, String user){}
 }
