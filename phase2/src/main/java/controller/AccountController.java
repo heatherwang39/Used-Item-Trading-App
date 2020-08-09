@@ -4,6 +4,7 @@ import main.java.model.account.*;
 import main.java.model.item.Item;
 import main.java.model.item.ItemStorage;
 import main.java.model.status.InvalidStatusTypeException;
+import main.java.model.status.StatusNotFoundException;
 import main.java.model.status.StatusStorage;
 import main.java.system2.StorageEnum;
 import main.java.system2.StorageFactory;
@@ -63,5 +64,23 @@ public class AccountController {
             statusString += (s + " | ");
         }
         return statusString;
+    }
+
+    public boolean isAway(){
+        List<String> userStatusList = getStatuses();
+        for (int i = 0; i < userStatusList.size(); i++){
+            if (userStatusList.contains("AWAY")){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void setAwayStatus() throws InvalidStatusTypeException {
+        statusStorage.createStatus(username, "AWAY");
+    }
+
+    public void removeAwayStatus() throws StatusNotFoundException {
+        statusStorage.removeStatus(username, "AWAY");
     }
 }

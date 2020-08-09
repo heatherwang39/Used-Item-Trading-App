@@ -522,7 +522,7 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="b81b0" class="javax.swing.JTextField" binding="txtAwayStatus">
+              <component id="b81b0" class="javax.swing.JTextField" binding="txtAccountAwayStatus">
                 <constraints>
                   <grid row="6" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -530,7 +530,7 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="a1aad" class="javax.swing.JButton" binding="setStatusButton" default-binding="true">
+              <component id="a1aad" class="javax.swing.JButton" binding="btnAccountSetAwayStatus">
                 <constraints>
                   <grid row="6" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
