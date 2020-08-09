@@ -630,7 +630,7 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
      * @param itemID A parallel list representing the IDs of items involved in the trade
      * @param newOwner A parallel list representing the usernames of the new owners of the aforementioned items
      */
-    public void notifyTradeComplete(List<Integer> itemID, List<String> newOwner) throws StatusNotFoundException {
+    public void notifyTradeComplete(List<Integer> itemID, List<String> newOwner){
         for (TradeObserver tradeObserver: observers) {
             tradeObserver.updateTradeComplete(itemID, newOwner);
         }

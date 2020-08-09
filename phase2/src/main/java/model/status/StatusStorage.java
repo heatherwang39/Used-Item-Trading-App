@@ -1,7 +1,6 @@
 package main.java.model.status;
 
 import main.java.model.Storage;
-import main.java.model.trade.Trade;
 import main.java.model.trade.TradeObserver;
 
 import java.util.*;
@@ -13,10 +12,12 @@ import java.util.*;
  * @version %I%, %G%
  * @since Phase 2
  */
-public class StatusStorage implements Storage, TradeObserver {
+public class StatusStorage implements Storage, TradeObserver, StatusObservee {
 
     private Map<String, List<Status>> statuses;
     private final StatusFactory statusFactory;
+
+    private final List<StatusObserver> observers = new ArrayList<>();
 
     /**
      * Class constructor.
@@ -113,6 +114,7 @@ public class StatusStorage implements Storage, TradeObserver {
                 if (accountStatuses.isEmpty()) {
                     statuses.remove(username);
                 }
+                notifyStatusRemoved(type, username);
                 return;
             }
         }
@@ -135,6 +137,7 @@ public class StatusStorage implements Storage, TradeObserver {
         } else {
             statuses.put(username, new ArrayList<>(Collections.singletonList(s)));
         }
+        notifyStatusAdded(type, username);
     }
 
     /**
@@ -142,14 +145,55 @@ public class StatusStorage implements Storage, TradeObserver {
      *
      * @param itemIDs ids of traded items
      * @param newOwner usernames of trades
-     * @throws StatusNotFoundException when no Status can be found
      */
-    @Override
-    public void updateTradeComplete(List<Integer> itemIDs, List<String> newOwner) throws StatusNotFoundException {
-        for(String username:newOwner){
-            if(containsStatus(username,"NEW")){
-                removeStatus(username,"NEW");
+    public void updateTradeComplete(List<Integer> itemIDs, List<String> newOwner){
+        try{
+            for(String username:newOwner){
+                if(containsStatus(username,"NEW")){
+                    removeStatus(username,"NEW");}
             }
+        }catch(StatusNotFoundException ignored){}
+    }
+
+
+    /** Add an observer to this subject/observed object
+     *
+     * @param statusObserver The newly-added observer for this object
+     */
+    public void attachStatusObserver(StatusObserver statusObserver){
+        observers.add(statusObserver);
+    }
+
+
+    /** Remove an observer from this subject/observed object
+     *
+     * @param statusObserver The recently-removed observer from this object
+     */
+    public void detachTradeObserver(StatusObserver statusObserver){
+        observers.remove(statusObserver);
+    }
+
+
+    /** Notify the observers that a status was added to a given user
+     *
+     * @param status The status added to the user
+     * @param user The user that had a status added
+     */
+    public void notifyStatusAdded(String status, String user){
+        for(StatusObserver x : observers){
+            x.updateStatusAdded(status, user);
+        }
+    }
+
+
+    /** Notify the observers that a status was removed from a given user
+     *
+     * @param status The status removed from the user
+     * @param user The user that had a status removed
+     */
+    public void notifyStatusRemoved(String status, String user){
+        for(StatusObserver x : observers){
+            x.updateStatusRemoved(status, user);
         }
     }
 }
