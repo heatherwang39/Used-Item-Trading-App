@@ -1,7 +1,6 @@
 package main.java.gui;
 
 import main.java.controller.*;
-import main.java.controller.deprectaed.AdminController;
 import main.java.model.account.*;
 import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
@@ -199,13 +198,18 @@ public class TraderGUI {
             try {
                 switch (loginController.login(user, pass)) {
                     case "USER":
+                        this.user = user;
                         MainTabbedPane.removeAll();
                         MainTabbedPane.insertTab("Home", null, Home, null, 0);
+                        initializeBrowse();
                         initializeAccount();
+                        initializeStatus();
                         break;
                     case "ADMIN":
+                        this.user = user;
                         MainTabbedPane.removeAll();
                         MainTabbedPane.insertTab("Home", null, Home, null, 0);
+                        initializeBrowse();
                         initializeRequests();
                         initializeThreshold();
                         initializeUserList();
@@ -249,19 +253,29 @@ public class TraderGUI {
         MainTabbedPane.insertTab("Browse", null, Browse, null, 1);
     }
 
-    private void initializeAccount() throws IOException, ClassNotFoundException {
+    private void initializeStatus() throws IOException, ClassNotFoundException {
         StatusController statusController = new StatusController(user, storageGateway);
-        MainTabbedPane.insertTab("Account", null, Account, null, 1);
-        initializeActivity();
-        initializeBrowse();
-        initializeOffers();
-        initializeRequest();
+        if (!statusController.getStatuses().contains("AWAY") || !statusController.getStatuses().contains("FROZEN")) {
+            initializeRequest();
+            initializeOffers();
+        }
+        if (!statusController.getStatuses().contains("FROZEN")) {
+            initializeMessages();
+        }
+        if (!statusController.getStatuses().contains("NEW")) {
+            initializeActivity();
+        }
         initializeAddItems();
-        initializeMessages();
+    }
+
+    private void initializeAccount() throws IOException, ClassNotFoundException {
+        AccountController accountController = new AccountController(storageGateway, user);
+
+        MainTabbedPane.insertTab("Account", null, Account, null, 1);
     }
 
     private void initializeActivity() {
-        MainTabbedPane.insertTab("Activity", null, Activity, null, 2);
+        MainTabbedPane.insertTab("Activity", null, Activity, null, 3);
     }
 
     private void initializeOffers() throws IOException, ClassNotFoundException {
@@ -274,7 +288,7 @@ public class TraderGUI {
     }
 
     private void initializeRequest() throws IOException, ClassNotFoundException {
-        MainTabbedPane.insertTab("Request", null, Request, null, 4);
+        MainTabbedPane.insertTab("Request", null, Request, null, 3);
 
         RequestController requestController = new RequestController(storageGateway, user);
 
@@ -298,7 +312,7 @@ public class TraderGUI {
     }
 
     private void initializeAddItems() throws IOException, ClassNotFoundException {
-        MainTabbedPane.insertTab("Add Items", null, AddItems, null, 5);
+        MainTabbedPane.insertTab("Add Items", null, AddItems, null, 3);
 
         AddItemsController addItemsController = new AddItemsController(storageGateway, user);
 
@@ -315,7 +329,7 @@ public class TraderGUI {
     }
 
     private void initializeMessages() throws IOException, ClassNotFoundException {
-        MainTabbedPane.insertTab("Messages", null, Messages, null, 6);
+        MainTabbedPane.insertTab("Messages", null, Messages, null, 3);
 
         MessageController messageController = new MessageController(storageGateway, user);
 
@@ -348,7 +362,7 @@ public class TraderGUI {
     // Admin Tabs
 
     private void initializeRequests() throws IOException, ClassNotFoundException {
-        MainTabbedPane.insertTab("Requests", null, Requests, null, 1);
+        MainTabbedPane.insertTab("Requests", null, Requests, null, 2);
 
         ItemPresenter itemPresenter = new ItemPresenter();
         RequestsController requestsController = new RequestsController(storageGateway, itemPresenter, user);
@@ -361,7 +375,7 @@ public class TraderGUI {
     }
 
     private void initializeUserList() {
-        MainTabbedPane.insertTab("User List", null, UserList, null, 3);
+        MainTabbedPane.insertTab("User List", null, UserList, null, 2);
     }
 
     private void initializeAddAdmin() throws IOException, ClassNotFoundException {
@@ -389,12 +403,12 @@ public class TraderGUI {
     }
 
     private void initializeLogging() {
-        MainTabbedPane.insertTab("Logging", null, Logging, null, 5);
+        MainTabbedPane.insertTab("Logging", null, Logging, null, 2);
     }
 
 
     private void initializeFreeze() throws IOException, ClassNotFoundException {
-        MainTabbedPane.insertTab("Un-Freeze", null, Freeze, null, 6);
+        MainTabbedPane.insertTab("Un-Freeze", null, Freeze, null, 2);
 
         FreezeController freezeController = new FreezeController(storageGateway);
 

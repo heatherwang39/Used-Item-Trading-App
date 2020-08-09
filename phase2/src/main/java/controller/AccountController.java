@@ -16,7 +16,7 @@ import java.io.IOException;
  * @version %I%, %G%
  * @since Phase 2
  */
-public class AccountTabController {
+public class AccountController {
 
     private final StorageGateway storageGateway;
     private final AccountStorage accountStorage;
@@ -26,7 +26,7 @@ public class AccountTabController {
      *
      * @param storageGateway Gateway class for reading and writing Storage Data
      */
-    public AccountTabController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
+    public AccountController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
         this.storageGateway = storageGateway;
         this.username = username;
         StorageFactory storageFactory = new StorageFactory();
