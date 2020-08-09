@@ -361,18 +361,20 @@ public class TraderGUI {
             } catch (ItemNotFoundException | TradeNumberException exception) {
                 showMessageDialog(null, exception.getStackTrace());
             }
-            assert offerList != null;
-            txtOffersOutput.setText(offerList.get(0));
-            try {
-                if (rbtnAcceptOffer.isSelected()){
-                    offersController.acceptOffer(Integer.parseInt(unformattedOfferList.get(0).get("id").get(0)));
-                } else if (rbtnDenyOffer.isSelected()){
-                    offersController.rejectOffer(Integer.parseInt(unformattedOfferList.get(0).get("id").get(0)));
-                } else{
-                    // we should consider adding a "decide later" option
+
+            if (offerList != null) {
+                txtOffersOutput.setText(offerList.get(0));
+                try {
+                    if (rbtnAcceptOffer.isSelected()) {
+                        offersController.acceptOffer(Integer.parseInt(unformattedOfferList.get(0).get("id").get(0)));
+                    } else if (rbtnDenyOffer.isSelected()) {
+                        offersController.rejectOffer(Integer.parseInt(unformattedOfferList.get(0).get("id").get(0)));
+                    } else {
+                        // we should consider adding a "decide later" option
+                    }
+                } catch (TradeNumberException | IOException exception) {
+                    showMessageDialog(null, exception.getStackTrace());
                 }
-            } catch (TradeNumberException | IOException exception) {
-                showMessageDialog(null, exception.getStackTrace());
             }
         });
     }
