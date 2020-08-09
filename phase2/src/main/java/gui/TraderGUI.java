@@ -128,6 +128,7 @@ public class TraderGUI {
     private JButton btnUserListEnter;
     private JButton btnThresholdIncompleteEnter;
     private JButton btnThresholdWeeklyEnter;
+    private JLabel MainLabel;
     private JTextArea accountInformationTextArea;
 
     private String user;
@@ -177,8 +178,6 @@ public class TraderGUI {
         userListButtonGroup.add(rbtnUserListMute);
         userListButtonGroup.add(rbtnUserListNext);
 
-
-
         btnRegisterMain.addActionListener(e -> {
             tabCleaner();
             MainTabbedPane.insertTab("Register", null, Register, null, 1);
@@ -227,7 +226,6 @@ public class TraderGUI {
                         initializeAddAdmin();
                         initializeLogging();
                         initializeFreeze();
-                        initializeUserList();
                         break;
                     default:
                         showMessageDialog(null, "Your account did not match any credentials in " +
@@ -342,12 +340,8 @@ public class TraderGUI {
         BrowseController browseController = new BrowseController(storageGateway);
 
         MainTabbedPane.insertTab("Browse", null, Browse, null, 1);
-        List<HashMap<String, String>> listingList = browseController.getVerifiedItems();
-        for (HashMap<String, String> stringStringHashMap : listingList) {
-            for (String str : stringStringHashMap.keySet()) {
-                txtAreaBrowseListingsOutput.append(str + stringStringHashMap.get(str) + "\n");
-            }
-        }
+
+        txtAreaBrowseListingsOutput.setText(browseController.getItemsString());
     }
 
     private void initializeOffers() throws IOException, ClassNotFoundException {
@@ -472,28 +466,32 @@ public class TraderGUI {
         ItemPresenter itemPresenter = new ItemPresenter();
         RequestsController requestsController = new RequestsController(storageGateway, itemPresenter);
 
-        for (String s : requestsController.getFormattedRequests()) {
-            // text area appends each line of the formatted list
-            txtAreaRequestsOutput.append(s);
-        }
+        txtAreaRequestsOutput.setText(requestsController.getRequestsString());
 
         btnRequestsEnter.addActionListener(e -> {
             try {
                 List<HashMap<String, String>> requestsList = requestsController.getRequests();
                 List<String> formattedRequestsList = requestsController.getFormattedRequests();
-                txtRequestsOutput.setText(formattedRequestsList.get(0));
-                if (requestsList != null) {
-                    requestsList.remove(requestsList.get(0));
-                    formattedRequestsList.remove(formattedRequestsList.get(0));
+                if (!requestsList.isEmpty()) {
+                    HashMap<String, String> item = requestsList.get(0);
+                    txtRequestsOutput.setText(formattedRequestsList.get(0));
                     if (rbtnAcceptRequest.isSelected()) {
-                        requestsController.verifyItem(Integer.parseInt(requestsList.get(0).get("id")));
-
+                        showMessageDialog(null, "Item accepted!\nName: " + item.get("name") +
+                                "\nDescription: " + item.get("description") +
+                                "\nTags: " + item.get("tags"));
+                        requestsController.verifyItem(Integer.parseInt(item.get("id")));
+                        requestsList.remove(item);
+                        formattedRequestsList.remove(formattedRequestsList.get(0));
+                        txtAreaRequestsOutput.setText(requestsController.getRequestsString());
                     } else if (rbtnDenyRequest.isSelected()) {
-                        requestsController.rejectItem(Integer.parseInt(requestsList.get(0).get("id")));
-
+                        showMessageDialog(null, "Item rejected!\nName: " + item.get("name") +
+                                "\nDescription: " + item.get("description") +
+                                "\nTags: " + item.get("tags"));
+                        requestsController.rejectItem(Integer.parseInt(item.get("id")));
+                        requestsList.remove(item);
+                        formattedRequestsList.remove(formattedRequestsList.get(0));
+                        txtAreaRequestsOutput.setText(requestsController.getRequestsString());
                     } else {
-                        requestsList.add(requestsList.get(0));
-                        formattedRequestsList.add(formattedRequestsList.get(0));
                         showMessageDialog(null, "Please accept or deny this request!");
                     }
                 }
@@ -535,29 +533,11 @@ public class TraderGUI {
     }
 
     private void initializeUserList() throws IOException, ClassNotFoundException {
-        final int[] currUserIndex = {0};
         MainTabbedPane.insertTab("User List", null, UserList, null, 2);
         UserlistController userlistController = new UserlistController(storageGateway);
-        List<String> userList = userlistController.showUsers();
-        for (String s : userList) {
-            txtAreaUserListOutput.append(s);
-        }
-        if (!userList.isEmpty()) {
-            txtUserListOutput.setText(userList.get(currUserIndex[0]));
-            btnUserListEnter.addActionListener(e -> {
-                if (rbtnUserListMute.isSelected()) {
-                    try {
-                        userlistController.muteUser(userList.get(currUserIndex[0]));
-                    } catch (InvalidStatusTypeException | IOException exception) {
-                        exception.printStackTrace();
-                    }
-                } else if (rbtnUserListNext.isSelected()) {
-                    currUserIndex[0]++;
-                } else {
-                    showMessageDialog(null, "Please select an option!");
-                }
-            });
-        }
+        btnUserListEnter.addActionListener(e -> {
+
+        });
 
     }
 

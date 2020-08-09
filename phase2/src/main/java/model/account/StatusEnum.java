@@ -8,7 +8,7 @@ package main.java.model.account;
  */
 
 public enum  StatusEnum {
-    NEW("NEW"),AWAY("AWAY"),MUTED("MUTED"),FROZEN("FROZEN"),GILDED("GILDED");
+    NEW("NEW"), AWAY("AWAY"), MUTED("MUTED"),FROZEN("FROZEN"),GILDED("GILDED");
     private final String name;
     /**
      * Class constructor

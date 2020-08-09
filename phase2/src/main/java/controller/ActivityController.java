@@ -27,8 +27,8 @@ public class ActivityController {
      *
      * @param storageGateway gateway for loading and saving information
      * @param username username of the user accessing the Activity tab
-     * @throws IOException
-     * @throws ClassNotFoundException
+     * @throws IOException file can't be read/written
+     * @throws ClassNotFoundException serialized class not found
      */
     public ActivityController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
         this.username = username;

@@ -7,7 +7,6 @@ import main.java.system2.StorageEnum;
 import main.java.system2.StorageFactory;
 import main.java.system2.StorageGateway;
 
-import javax.swing.*;
 import java.util.*;
 
 import java.io.IOException;
@@ -78,5 +77,16 @@ public class RequestsController {
         return itemPresenter.formatItemsToListView(getRequests());
     }
 
+    /**
+     * Get formatted string for requests box
+     * @return requests box string
+     */
+    public String getRequestsString() throws ItemNotFoundException {
+        StringBuilder string = new StringBuilder();
+        for (String s : getFormattedRequests()) {
+            string.append(s);
+        }
+        return string.toString();
+    }
 
 }

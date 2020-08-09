@@ -1,7 +1,6 @@
 package main.java.controller;
 
 import main.java.model.account.*;
-import main.java.model.item.Item;
 import main.java.model.item.ItemStorage;
 import main.java.model.status.InvalidStatusTypeException;
 import main.java.model.status.StatusNotFoundException;
