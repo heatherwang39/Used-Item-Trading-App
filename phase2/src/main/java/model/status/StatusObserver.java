@@ -1,5 +1,7 @@
 package main.java.model.status;
 
+import main.java.model.account.AccountNotFoundException;
+
 /**
  * An interface for something that "observes" something in the status package
  *
@@ -15,7 +17,7 @@ public interface StatusObserver {
      * @param status The status added to the user
      * @param user The user that had a status added
      */
-    void updateStatusAdded(String status, String user);
+    void updateStatusAdded(String status, String user) throws AccountNotFoundException;
 
 
     /** Update the fact that a Status was removed from a certain user
@@ -23,5 +25,5 @@ public interface StatusObserver {
      * @param status The status removed from the user
      * @param user The user that had a status removed
      */
-    void updateStatusRemoved(String status, String user);
+    void updateStatusRemoved(String status, String user) throws AccountNotFoundException;
 }

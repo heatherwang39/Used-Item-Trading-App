@@ -133,8 +133,6 @@ public class TraderGUI {
         } catch (IOException | ClassNotFoundException e) {
             showMessageDialog(null, e.getStackTrace());
         }
-        currUserIndex = 0; // testing smth
-
     }
 
     private void initializeLogin() throws IOException, ClassNotFoundException {

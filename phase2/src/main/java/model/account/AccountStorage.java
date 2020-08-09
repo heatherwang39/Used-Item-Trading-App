@@ -2,7 +2,6 @@ package main.java.model.account;
 
 import main.java.model.Storage;
 import main.java.model.status.StatusObserver;
-//import sun.rmi.runtime.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -195,10 +194,6 @@ public class AccountStorage implements Storage, StatusObserver {
         return getAccount(username).getType();
     }
 
-    public void removeUserAccount(Account user) throws AccountNotFoundException{
-        accounts.remove(user.getUsername());
-    }
-
     /**
      * Return all the usernames of users who are not admins
      *
@@ -258,7 +253,7 @@ public class AccountStorage implements Storage, StatusObserver {
             throw new NegativeThresholdException();
         }
         Account a = getAccount(username);
-        if(a.getType() == "USER"){
+        if(a.getType().equals("USER")){
             ((UserAccount) a).setBorrowThreshold(threshold);
         }
         throw new WrongAccountTypeException();
@@ -278,7 +273,7 @@ public class AccountStorage implements Storage, StatusObserver {
             throw new NegativeThresholdException();
         }
         Account a = getAccount(username);
-        if(a.getType() == "USER"){
+        if(a.getType().equals("USER")){
             ((UserAccount) a).setIncompleteThreshold(threshold);
         }
         throw new WrongAccountTypeException();
@@ -298,7 +293,7 @@ public class AccountStorage implements Storage, StatusObserver {
             throw new NegativeThresholdException();
         }
         Account a = getAccount(username);
-        if(a.getType() == "USER"){
+        if(a.getType().equals("USER")){
             ((UserAccount) a).setWeeklyThreshold(threshold);
         }
         throw new WrongAccountTypeException();
@@ -313,7 +308,7 @@ public class AccountStorage implements Storage, StatusObserver {
      */
     public int getBorrowThreshold(String username) throws WrongAccountTypeException, AccountNotFoundException{
         Account a = getAccount(username);
-        if(a.getType() == "USER"){
+        if(a.getType().equals("USER")){
             return ((UserAccount) a).getBorrowThreshold();
         }
         throw new WrongAccountTypeException();
@@ -328,7 +323,7 @@ public class AccountStorage implements Storage, StatusObserver {
      */
     public int getIncompleteThreshold(String username) throws WrongAccountTypeException, AccountNotFoundException{
         Account a = getAccount(username);
-        if(a.getType() == "USER"){
+        if(a.getType().equals("USER")){
             return ((UserAccount) a).getIncompleteThreshold();
         }
         throw new WrongAccountTypeException();
@@ -343,22 +338,25 @@ public class AccountStorage implements Storage, StatusObserver {
      */
     public int getWeeklyThreshold(String username) throws WrongAccountTypeException, AccountNotFoundException{
         Account a = getAccount(username);
-        if(a.getType() == "USER"){
+        if(a.getType().equals("USER")){
             return ((UserAccount) a).getWeeklyThreshold();
         }
         throw new WrongAccountTypeException();
     }
-
-
-
-
 
     /** Update the fact that a Status was added to a certain user
      *
      * @param status The status added to the user
      * @param user The user that had a status added
      */
-    public void updateStatusAdded(String status, String user){}
+    public void updateStatusAdded(String status, String user) throws AccountNotFoundException {
+        if (status.equals("GILDED")) {
+            UserAccount userAccount = (UserAccount) getAccount(user);
+            userAccount.setBorrowThreshold(userAccount.getBorrowThreshold()*2);
+            userAccount.setWeeklyThreshold(userAccount.getWeeklyThreshold()*2);
+            userAccount.setIncompleteThreshold(userAccount.getIncompleteThreshold()*2);
+        }
+    }
 
 
     /** Update the fact that a Status was removed from a certain user
@@ -366,5 +364,12 @@ public class AccountStorage implements Storage, StatusObserver {
      * @param status The status removed from the user
      * @param user The user that had a status removed
      */
-    public void updateStatusRemoved(String status, String user){}
+    public void updateStatusRemoved(String status, String user) throws AccountNotFoundException {
+        if (status.equals("GILDED")) {
+            UserAccount userAccount = (UserAccount) getAccount(user);
+            userAccount.setBorrowThreshold(userAccount.getBorrowThreshold()/2);
+            userAccount.setWeeklyThreshold(userAccount.getWeeklyThreshold()/2);
+            userAccount.setIncompleteThreshold(userAccount.getIncompleteThreshold()/2);
+        }
+    }
 }
