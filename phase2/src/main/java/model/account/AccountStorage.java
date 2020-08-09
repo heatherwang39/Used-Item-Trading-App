@@ -2,7 +2,6 @@ package main.java.model.account;
 
 import main.java.model.Storage;
 import main.java.model.status.Status;
-import main.java.model.status.StatusObserver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -441,6 +440,51 @@ public class AccountStorage implements Storage {
         }
         return false;
     }
+
+    /**
+     * Gets all accounts with type status
+     *
+     * @param type Status type
+     * @return list of usernames
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     */
+    public List<String> getAccountsWithStatus(String type) throws AccountNotFoundException, WrongAccountTypeException {
+        List<String> accountsWithStatus = new ArrayList<>();
+        for(String username:accounts.keySet()){
+            if(getType(username).equals("USER")){
+                if(containsStatus(username,type)){
+                    accountsWithStatus.add(username);
+                }
+            }
+        }
+        return accountsWithStatus;
+    }
+
+    /**
+     * Remove Status under Account username
+     * If it's to remove the gilded status, cut the threshold to half of the current value
+     *
+     * @param username Account username
+     * @param type Status type
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     * @throws StatusNotFoundException when no Status could be found
+     */
+    public void removeStatus(String username, String type) throws WrongAccountTypeException, AccountNotFoundException, StatusNotFoundException {
+        if(containsStatus(username,type)) {
+            UserAccount user = (UserAccount)getAccount(username);
+            StatusEnum typeEnum = StatusEnum.valueOf(type.toUpperCase());
+            user.removeStatus(typeEnum);
+            if(type.toUpperCase().equals("GILDED")){
+                user.setBorrowThreshold(user.getBorrowThreshold()/2);
+                user.setWeeklyThreshold(user.getWeeklyThreshold()/2);
+                user.setIncompleteThreshold(user.getIncompleteThreshold()/2);
+            }
+        }
+        throw new StatusNotFoundException();
+    }
+
 
 
 }
