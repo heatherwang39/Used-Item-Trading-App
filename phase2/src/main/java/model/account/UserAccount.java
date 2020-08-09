@@ -38,10 +38,14 @@ public class UserAccount extends LoginAccount {
         return "USER";
     }
 
-    public List<String> getStatuses(){
-        List<String> statusesNames = new ArrayList<>();
-        for(StatusEnum status:statuses){statusesNames.add(status.toString());}
-        return statusesNames;
+    public List<StatusEnum> getStatuses(){ return statuses;}
+
+    public void addStatus(StatusEnum status){
+        statuses.add(status);
+    }
+
+    public void removeStatus(StatusEnum status){
+        statuses.remove(status);
     }
 
     //Threshold Methods Below
