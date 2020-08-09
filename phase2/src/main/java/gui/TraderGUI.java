@@ -243,17 +243,6 @@ public class TraderGUI {
             MainTabbedPane.removeAll();
             MainTabbedPane.insertTab("Main", null, Main, null, 0);
         });
-
-        /**
-        btnWishlistAddition.addActionListener(e -> {
-            String itemID = txtWishlistInput.getText();
-            try {
-                itemStorage.addWishList(user, Integer.parseInt(itemID));
-            } catch (ItemNotFoundException itemNotFoundException) {
-                itemNotFoundException.printStackTrace();
-            }
-        });
-         **/
     }
 
     private void initializeBrowse() {
@@ -281,9 +270,7 @@ public class TraderGUI {
         TradePresenter tradePresenter = new TradePresenter(storageGateway);
         OffersController offersController = new OffersController(storageGateway, user, tradePresenter);
 
-        btnOfferEnter.addActionListener(e -> {
-            offersController.offerResponse(user, txtOffersOutput, rbtnAcceptOffer, rbtnDenyOffer);
-        });
+        btnOfferEnter.addActionListener(e -> offersController.offerResponse(user, txtOffersOutput, rbtnAcceptOffer, rbtnDenyOffer));
     }
 
     private void initializeRequest() throws IOException, ClassNotFoundException {
@@ -366,9 +353,7 @@ public class TraderGUI {
         ItemPresenter itemPresenter = new ItemPresenter();
         RequestsController requestsController = new RequestsController(storageGateway, itemPresenter, user);
 
-        btnRequestsEnter.addActionListener(e -> {
-            requestsController.requestsResponse(txtRequestsOutput, rbtnAcceptRequest, rbtnDenyRequest);
-        });
+        btnRequestsEnter.addActionListener(e -> requestsController.requestsResponse(txtRequestsOutput, rbtnAcceptRequest, rbtnDenyRequest));
     }
 
     private void initializeThreshold() {
@@ -382,7 +367,7 @@ public class TraderGUI {
     private void initializeAddAdmin() throws IOException, ClassNotFoundException {
         MainTabbedPane.insertTab("Add Admin", null, AddAdmin, null, 4);
 
-        AddAdminController addAdminController = new AddAdminController(storageGateway, user);
+        AddAdminController addAdminController = new AddAdminController(storageGateway);
 
         btnAddAdmin.addActionListener(e -> {
             String usernameAdmin = txtAdminUsernameInput.getText();
@@ -406,9 +391,7 @@ public class TraderGUI {
 
         FreezeController freezeController = new FreezeController(storageGateway);
 
-        btnFreezeEnter.addActionListener(e -> {
-            freezeController.freezeDecision(txtFrozenUser, txtAreaFrozenUsers, rbtnUnfreezeUser, rbtnIgnoreUser, currUserIndex);
-        });
+        btnFreezeEnter.addActionListener(e -> freezeController.freezeDecision(txtFrozenUser, txtAreaFrozenUsers, rbtnUnfreezeUser, rbtnIgnoreUser, currUserIndex));
     }
 
 
