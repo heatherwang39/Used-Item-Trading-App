@@ -6,6 +6,8 @@ import main.java.model.item.ItemNotFoundException;
 import main.java.model.message.EmptyContentException;
 import main.java.model.message.EmptyRecipientListException;
 import main.java.model.message.EmptyTitleException;
+import main.java.model.trade.NoSuchTradeAlgorithmException;
+import main.java.model.trade.TradeAlgorithmName;
 import main.java.model.trade.TradeNumberException;
 import main.java.system2.StorageGateway;
 import main.java.model.status.InvalidStatusTypeException;
@@ -14,6 +16,7 @@ import main.java.presenter.*;
 import javax.swing.*;
 // From: https://stackoverflow.com/questions/9119481/how-to-present-a-simple-alert-message-in-java
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -117,6 +120,7 @@ public class TraderGUI {
     private JPanel UserList;
     private JTextArea txtAreaUserListOutput;
     private JTextField txtAccountStatuses;
+    private JTextField txtRequestedItemInput;
     private JButton btnAccountSetAwayStatus;
     private JTextField txtUserListOutput;
     private JRadioButton rbtnUserListMute;
@@ -381,13 +385,35 @@ public class TraderGUI {
             } else{
                 showMessageDialog(null, "Please select a type of trade for this request!");
             }
-            List<String> requestedItemsList = Arrays.asList(txtRequestedItemsInput.getText().split("\\s*,\\s*")); // TEST THIS
-            List<String> offeredItemsList = Arrays.asList(txtRequestItemInput.getText().split("\\s*,\\s*"));
+            List<Integer> tradeItemsList = new ArrayList<Integer>();
+            String requestedItem = txtRequestedItemInput.getText();
+            String offeredItem = txtRequestItemInput.getText();
+            Integer requestedItemID = null;
+            Integer offeredItemID = null;
 
-            if (offeredItemsList.isEmpty()){ //then the user wants to borrow the items from the user
-
+            // this code could have an improved structure. Ill come back to it later if there is time.
+            if (!requestController.checkValidRequest(requestedItem, offeredItem)){
+                showMessageDialog(null, "Please enter a valid request"); // placeholder
+            } else{
+                requestedItemID = Integer.parseInt(requestedItem);
+                offeredItemID = Integer.parseInt(offeredItem);
             }
-            //requestController.createRequest(perm, tradeAlgorithimName, );
+
+            if (offeredItem.equals("")){
+                tradeItemsList.add(requestedItemID);
+            } else if (requestedItem.equals("")) {
+                tradeItemsList.add(offeredItemID);
+            } else{
+                tradeItemsList.add(requestedItemID);
+                tradeItemsList.add(offeredItemID);
+            }
+
+            TradeAlgorithmName tradeAlgorithmName = TradeAlgorithmName.CYCLE;
+            try {
+                requestController.createRequest(perm, tradeAlgorithmName, tradeItemsList);
+            } catch (ItemNotFoundException | NoSuchTradeAlgorithmException | IOException exception) {
+                exception.printStackTrace();
+            }
         });
     }
 
@@ -527,11 +553,29 @@ public class TraderGUI {
     }
 
     private void initializeUserList() throws IOException, ClassNotFoundException {
+        final int[] currUserIndex = {0};
         MainTabbedPane.insertTab("User List", null, UserList, null, 2);
         UserlistController userlistController = new UserlistController(storageGateway);
-        btnUserListEnter.addActionListener(e -> {
-
-        });
+        List<String> userList = userlistController.showUsers();
+        for (String s : userList) {
+            txtAreaUserListOutput.append(s);
+        }
+        if (!userList.isEmpty()) {
+            txtUserListOutput.setText(userList.get(currUserIndex[0]));
+            btnUserListEnter.addActionListener(e -> {
+                if (rbtnUserListMute.isSelected()) {
+                    try {
+                        userlistController.muteUser(userList.get(currUserIndex[0]));
+                    } catch (InvalidStatusTypeException | IOException exception) {
+                        exception.printStackTrace();
+                    }
+                } else if (rbtnUserListNext.isSelected()) {
+                    currUserIndex[0]++;
+                } else {
+                    showMessageDialog(null, "Please select an option!");
+                }
+            });
+        }
 
     }
 
