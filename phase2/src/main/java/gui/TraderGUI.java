@@ -121,8 +121,8 @@ public class TraderGUI {
     private JPanel UserList;
     private JTextArea txtAreaUserListOutput;
     private JTextField txtAccountStatuses;
-    private JButton setStatusButton;
-    private JTextField txtAwayStatus;
+    private JButton btnAccountSetAwayStatus;
+    private JTextField txtAccountAwayStatus;
     private JTextField textField1;
     private JRadioButton rbtnUserListMute;
     private JRadioButton rbtnUserListNext;
@@ -143,6 +143,7 @@ public class TraderGUI {
         } catch (IOException | ClassNotFoundException e) {
             showMessageDialog(null, e.getStackTrace());
         }
+
     }
 
     private void initializeLogin() throws IOException, ClassNotFoundException {
@@ -290,6 +291,27 @@ public class TraderGUI {
         String statusString = accountController.getStatusString();
         txtAccountStatuses.setText(statusString);
 
+        if (accountController.isAway()){
+            txtAccountAwayStatus.setText("You are marked as 'away'. Click the button to the right to return");
+        } else{
+            txtAccountAwayStatus.setText("Click the button to the right to be marked as 'away'");
+        }
+
+        btnAccountSetAwayStatus.addActionListener(e -> {
+            if (accountController.isAway()){
+                try {
+                    accountController.removeAwayStatus();
+                } catch (StatusNotFoundException statusNotFoundException) {
+                    statusNotFoundException.printStackTrace();
+                }
+            } else{
+                try {
+                    accountController.setAwayStatus();
+                } catch (InvalidStatusTypeException invalidStatusTypeException) {
+                    invalidStatusTypeException.printStackTrace();
+                }
+            }
+        });
     }
 
     private void initializeActivity() throws IOException, ClassNotFoundException, TradeNumberException {
