@@ -299,6 +299,9 @@ public class AccountStorage implements Storage {
     }
 
     public void setAllBorrowThresholds(int threshold) throws AccountNotFoundException, NegativeThresholdException, WrongAccountTypeException {
+        if(threshold < 0){
+            throw new NegativeThresholdException();
+        }
         for(String user: accounts.keySet()){
             if (getType(user).equals("USER")){
                 setBorrowThreshold(user, threshold);
@@ -307,6 +310,9 @@ public class AccountStorage implements Storage {
     }
 
     public void setAllIncompleteThresholds(int threshold) throws AccountNotFoundException, NegativeThresholdException, WrongAccountTypeException {
+        if(threshold < 0){
+            throw new NegativeThresholdException();
+        }
         for(String user: accounts.keySet()){
             if (getType(user).equals("USER")){
                 setIncompleteThreshold(user, threshold);
@@ -315,6 +321,9 @@ public class AccountStorage implements Storage {
     }
 
     public void setAllWeeklyThresholds(int threshold) throws AccountNotFoundException, NegativeThresholdException, WrongAccountTypeException {
+        if(threshold < 0){
+            throw new NegativeThresholdException();
+        }
         for(String user: accounts.keySet()){
             if (getType(user).equals("USER")){
                 setWeeklyThreshold(user, threshold);
@@ -475,7 +484,7 @@ public class AccountStorage implements Storage {
         throw new WrongAccountTypeException();
     }
 
-
+    //automatically freeze account below
     /**
      * Checks if a user with given username should be frozen based on if they violate any of the trade thresholds
      * There are three thresholds that are checked:
@@ -551,6 +560,7 @@ public class AccountStorage implements Storage {
                     int incompleteThreshold = user.getIncompleteThreshold();
                     int weeklyThreshold = user.getWeeklyThreshold();
                     List<String> userFreezeReasons = checkUserShouldFreeze(username,tradeStatus,itemIds,traders, meetingTime,borrowThreshold, incompleteThreshold, weeklyThreshold);
+                    user.setFreezeReasons(userFreezeReasons);
                     if (userFreezeReasons.size() > 1) {
                         user.addStatus(StatusEnum.FROZEN);
                     }
@@ -559,48 +569,70 @@ public class AccountStorage implements Storage {
             throw new WrongAccountTypeException();
         }
     }
-/*
+
+    public List<String> showFreezeReasons(String username) throws AccountNotFoundException, WrongAccountTypeException {
+        if (getType(username).equals("USER")){
+            UserAccount user = (UserAccount) getAccount(username);
+            return user.getFreezeReasons();
+        }
+        throw new WrongAccountTypeException();
+    }
+
+    //automatically gild User below
+    /** Set the WeeklyThreshold of the given account to be the following.
+     *
+     * @param username The username of the account you'd like to modify
+     * @param threshold What you want to set the threshold to
+     * @throws NegativeThresholdException Thrown if the suggested threshold is negative
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     */
+    public void setGildedThreshold(String username, int threshold) throws NegativeThresholdException, WrongAccountTypeException,
+            AccountNotFoundException{
+        if(threshold < 0){
+            throw new NegativeThresholdException();
+        }
+        Account user = getAccount(username);
+        if(user.getType().equals("USER")){
+            ((UserAccount) user).setGildedThreshold(threshold);
+        }
+        throw new WrongAccountTypeException();
+    }
+
+    /** Set the GildedThreshold for all users.
+     *
+     * @param threshold What you want to set the threshold to
+     * @throws NegativeThresholdException Thrown if the suggested threshold is negative
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     */
+    public void setAllGildedThresholds(int threshold) throws AccountNotFoundException, NegativeThresholdException, WrongAccountTypeException {
+        if(threshold < 0){
+            throw new NegativeThresholdException();
+        }
+        for(String user: accounts.keySet()){
+            if (getType(user).equals("USER")){
+                setGildedThreshold(user, threshold);
+            }
+        }
+    }
+
     //whenever a trade is completed (status=3)
     //need the tradeStatus,items, traders,  meeting time from trade
-    public void gildedUser(List<String> traders) throws AccountNotFoundException, WrongAccountTypeException {
+    public void gildUser(List<String> traders) throws AccountNotFoundException, WrongAccountTypeException {
         for(String username:traders) {
             if (getType(username).equals("USER")) {
-                UserAccount user = (UserAccount) getAccount(username);
-                user.updateNumberOfCompletedTrades();
-                if(user.getNumberOfCompletedTrades()>user.g)
+                if(!containsStatus(username,"GILDED")){
+                    UserAccount user = (UserAccount) getAccount(username);
+                    user.updateNumberOfCompletedTrades();
+                    if(user.getNumberOfCompletedTrades()>user.getGildedThreshold()){
+                        user.addStatus(StatusEnum.GILDED);
+                    }
+                }
             }
             throw new WrongAccountTypeException();
         }
-                if(!containsStatus(username,"FROZEN")) {
-
-                }
-        }
     }
 
-    private boolean checkIsGilded(String username) throws TradeNumberException {
-        List<Trade> userTrades = getUserTrades(username);
-        int completedTrades = 0;
-        for (Trade trade : userTrades) {
-            int tradeId = userTrades.indexOf(trade);
-            int tradeStatus = getStatus(tradeId);
-            if (tradeStatus == 3) completedTrades++;
-        }
-        return (completedTrades >= 20);
-    }
 
-    /**
-     * Returns a list of gilded users who have completed more than 20 trades
-     * @param usernames usernames of users
-     * @return list of the usernames of the gilded users
-     * @throws TradeNumberException an invalid trade number is found
-
-    public List<String> getGildedUsers(List<String> usernames) throws TradeNumberException {
-        List<String> gildedUsersList = new ArrayList<>();
-        for(String username:usernames){
-            if(checkIsGilded(username)){gildedUsersList.add(username);}
-        }
-        return gildedUsersList;
-    }
-
-    */
 }
