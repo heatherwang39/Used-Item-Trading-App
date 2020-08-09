@@ -1,6 +1,7 @@
 package main.java.model.account;
 
 import main.java.model.Storage;
+import main.java.model.status.Status;
 import main.java.model.status.StatusObserver;
 
 import java.util.ArrayList;
@@ -12,11 +13,11 @@ import java.util.regex.Pattern;
 /**
  * AccountStorage is a use case class that manages logging, signing up, and many general Account related tasks.
  *
- * @author Robbert Liu
+ * @author Robbert Liu, Heather Wang
  * @version %I%, %G%
- * @since Phase 1
+ * @since Phase 2
  */
-public class AccountStorage implements Storage, StatusObserver {
+public class AccountStorage implements Storage {
 
     private Map<String, LoginAccount> accounts;
 
@@ -372,7 +373,7 @@ public class AccountStorage implements Storage, StatusObserver {
      *
      * @param status The status added to the user
      * @param user The user that had a status added
-     */
+
     public void updateStatusAdded(String status, String user) {
         if (status.equals("GILDED")) {
             try {
@@ -384,12 +385,13 @@ public class AccountStorage implements Storage, StatusObserver {
         }
     }
 
+     */
 
     /** Update the fact that a Status was removed from a certain user
      *
      * @param status The status removed from the user
      * @param user The user that had a status removed
-     */
+
     public void updateStatusRemoved(String status, String user) {
         if (status.equals("GILDED")) {
             try {
@@ -400,4 +402,45 @@ public class AccountStorage implements Storage, StatusObserver {
             } catch (AccountNotFoundException ignored) {}
         }
     }
+    */
+
+    /**
+     * Get all active Account statuses as strings under a username
+     *
+     * @param username Account username
+     * @return Account status strings
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     */
+    public List<String> getAccountStatuses(String username) throws AccountNotFoundException, WrongAccountTypeException {
+        Account user = getAccount(username);
+        if(user.getType().equals("USER")){
+            List<StatusEnum> statuses = ((UserAccount) user).getStatuses();
+            List<String> statusesNames = new ArrayList<>();
+            for(StatusEnum status:statuses){statusesNames.add(status.toString());}
+            return statusesNames;
+        }
+        throw new WrongAccountTypeException();
+    }
+
+    /**
+     * Get whether Account has a certain status
+     *
+     * @param username Account username
+     * @param type Status type
+     * @return boolean representing existence of status
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     */
+    public boolean containsStatus(String username, String type) throws AccountNotFoundException, WrongAccountTypeException {
+        List<String> statuses = getAccountStatuses(username);
+        for (String status: statuses) {
+            if (status.equals(type)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }

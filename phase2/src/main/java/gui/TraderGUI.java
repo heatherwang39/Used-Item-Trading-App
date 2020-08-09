@@ -14,12 +14,11 @@ import main.java.presenter.*;
 
 import javax.swing.*;
 // From: https://stackoverflow.com/questions/9119481/how-to-present-a-simple-alert-message-in-java
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
@@ -123,7 +122,7 @@ public class TraderGUI {
     private JTextField txtAccountStatuses;
     private JButton btnAccountSetAwayStatus;
     private JTextField txtAccountAwayStatus;
-    private JTextField textField1;
+    private JTextField txtUserListOutput;
     private JRadioButton rbtnUserListMute;
     private JRadioButton rbtnUserListNext;
     private JButton btnUserListEnter;
@@ -173,6 +172,10 @@ public class TraderGUI {
         ButtonGroup requestsButtonGroup = new ButtonGroup();
         requestsButtonGroup.add(rbtnAcceptRequest);
         requestsButtonGroup.add(rbtnDenyRequest);
+
+        ButtonGroup userListButtonGroup = new ButtonGroup();
+        userListButtonGroup.add(rbtnUserListMute);
+        userListButtonGroup.add(rbtnUserListNext);
 
         btnRegisterMain.addActionListener(e -> {
             tabCleaner();
@@ -413,9 +416,6 @@ public class TraderGUI {
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
-            showMessageDialog(null, "Item added!\nName: " + name +
-                    "\nDescription: " + description +
-                    "\nTags: " + tagList);
         });
 
         btnWishlistAddition.addActionListener(e -> {
@@ -459,6 +459,8 @@ public class TraderGUI {
         });
     }
 
+
+
     // Admin Tabs
 
     private void initializeRequests() throws IOException, ClassNotFoundException, ItemNotFoundException {
@@ -467,32 +469,28 @@ public class TraderGUI {
         ItemPresenter itemPresenter = new ItemPresenter();
         RequestsController requestsController = new RequestsController(storageGateway, itemPresenter);
 
-        txtAreaRequestsOutput.setText(requestsController.getRequestsString());
+        for (String s : requestsController.getFormattedRequests()) {
+            // text area appends each line of the formatted list
+            txtAreaRequestsOutput.append(s);
+        }
 
         btnRequestsEnter.addActionListener(e -> {
             try {
                 List<HashMap<String, String>> requestsList = requestsController.getRequests();
                 List<String> formattedRequestsList = requestsController.getFormattedRequests();
-                if (!requestsList.isEmpty()) {
-                    HashMap<String, String> item = requestsList.get(0);
-                    txtRequestsOutput.setText(formattedRequestsList.get(0));
+                txtRequestsOutput.setText(formattedRequestsList.get(0));
+                if (requestsList != null) {
+                    requestsList.remove(requestsList.get(0));
+                    formattedRequestsList.remove(formattedRequestsList.get(0));
                     if (rbtnAcceptRequest.isSelected()) {
-                        showMessageDialog(null, "Item accepted!\nName: " + item.get("name") +
-                                "\nDescription: " + item.get("description") +
-                                "\nTags: " + item.get("tags"));
-                        requestsController.verifyItem(Integer.parseInt(item.get("id")));
-                        requestsList.remove(item);
-                        formattedRequestsList.remove(formattedRequestsList.get(0));
-                        txtAreaRequestsOutput.setText(requestsController.getRequestsString());
+                        requestsController.verifyItem(Integer.parseInt(requestsList.get(0).get("id")));
+
                     } else if (rbtnDenyRequest.isSelected()) {
-                        showMessageDialog(null, "Item rejected!\nName: " + item.get("name") +
-                                "\nDescription: " + item.get("description") +
-                                "\nTags: " + item.get("tags"));
-                        requestsController.rejectItem(Integer.parseInt(item.get("id")));
-                        requestsList.remove(item);
-                        formattedRequestsList.remove(formattedRequestsList.get(0));
-                        txtAreaRequestsOutput.setText(requestsController.getRequestsString());
+                        requestsController.rejectItem(Integer.parseInt(requestsList.get(0).get("id")));
+
                     } else {
+                        requestsList.add(requestsList.get(0));
+                        formattedRequestsList.add(formattedRequestsList.get(0));
                         showMessageDialog(null, "Please accept or deny this request!");
                     }
                 }
