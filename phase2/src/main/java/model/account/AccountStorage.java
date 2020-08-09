@@ -299,6 +299,30 @@ public class AccountStorage implements Storage, StatusObserver {
         throw new WrongAccountTypeException();
     }
 
+    public void setAllBorrowThresholds(int threshold) throws AccountNotFoundException, NegativeThresholdException, WrongAccountTypeException {
+        for(String user: accounts.keySet()){
+            if (getType(user).equals("USER")){
+                setBorrowThreshold(user, threshold);
+            }
+        }
+    }
+
+    public void setAllIncompleteThresholds(int threshold) throws AccountNotFoundException, NegativeThresholdException, WrongAccountTypeException {
+        for(String user: accounts.keySet()){
+            if (getType(user).equals("USER")){
+                setIncompleteThreshold(user, threshold);
+            }
+        }
+    }
+
+    public void setAllWeeklyThresholds(int threshold) throws AccountNotFoundException, NegativeThresholdException, WrongAccountTypeException {
+        for(String user: accounts.keySet()){
+            if (getType(user).equals("USER")){
+                setWeeklyThreshold(user, threshold);
+            }
+        }
+    }
+
     /** Return the BorrowThreshold of the given account
      *
      * @param username The username of the account you're interested in

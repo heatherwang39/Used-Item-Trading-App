@@ -43,12 +43,11 @@ public class BrowseController {
         return itemStorage.getVerifiedItemsData();
     }
 
-    public void displayListings(JTextArea txtArea) throws ItemNotFoundException {
+    public List<HashMap<String, String>> getVerifiedItems() throws ItemNotFoundException {
         List<HashMap<String, String>> listingList = itemStorage.getVerifiedItemsData();
-        for (HashMap<String, String> stringStringHashMap : listingList) {
-            for (String str : stringStringHashMap.keySet()) {
-                txtArea.append(str + stringStringHashMap.get(str) + "\n");
-            }
-        }
+        return listingList;
     }
+
+
+
 }
