@@ -1,12 +1,8 @@
 package main.java.model.account;
 
 import main.java.model.Storage;
-import main.java.model.status.Status;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -368,40 +364,6 @@ public class AccountStorage implements Storage {
         throw new WrongAccountTypeException();
     }
 
-    /** Update the fact that a Status was added to a certain user
-     *
-     * @param status The status added to the user
-     * @param user The user that had a status added
-
-    public void updateStatusAdded(String status, String user) {
-        if (status.equals("GILDED")) {
-            try {
-                UserAccount userAccount = (UserAccount) getAccount(user);
-                userAccount.setBorrowThreshold(userAccount.getBorrowThreshold() * 2);
-                userAccount.setWeeklyThreshold(userAccount.getWeeklyThreshold() * 2);
-                userAccount.setIncompleteThreshold(userAccount.getIncompleteThreshold() * 2);
-            } catch (AccountNotFoundException ignored) {}
-        }
-    }
-
-     */
-
-    /** Update the fact that a Status was removed from a certain user
-     *
-     * @param status The status removed from the user
-     * @param user The user that had a status removed
-
-    public void updateStatusRemoved(String status, String user) {
-        if (status.equals("GILDED")) {
-            try {
-                UserAccount userAccount = (UserAccount) getAccount(user);
-                userAccount.setBorrowThreshold(userAccount.getBorrowThreshold()/2);
-                userAccount.setWeeklyThreshold(userAccount.getWeeklyThreshold()/2);
-                userAccount.setIncompleteThreshold(userAccount.getIncompleteThreshold()/2);
-            } catch (AccountNotFoundException ignored) {}
-        }
-    }
-    */
 
     /**
      * Get all active Account statuses as strings under a username
@@ -485,6 +447,29 @@ public class AccountStorage implements Storage {
         throw new StatusNotFoundException();
     }
 
-
+    /**
+     * Add Status under Account username
+     * If it's to add the gilded status, multiply the the current value of threshold by 2
+     *
+     * @param username Account username
+     * @param type Status type
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     */
+    public void createStatus(String username, String type) throws AccountNotFoundException, WrongAccountTypeException {
+        if(getType(username).equals("USER")){
+            if(!containsStatus(username,type)){
+                UserAccount user = (UserAccount)getAccount(username);
+                StatusEnum typeEnum = StatusEnum.valueOf(type.toUpperCase());
+                user.addStatus(typeEnum);
+                if(type.toUpperCase().equals("GILDED")){
+                    user.setBorrowThreshold(user.getBorrowThreshold() * 2);
+                    user.setWeeklyThreshold(user.getWeeklyThreshold() * 2);
+                    user.setIncompleteThreshold(user.getIncompleteThreshold() * 2);
+                }
+            }
+        }
+        throw new WrongAccountTypeException();
+    }
 
 }

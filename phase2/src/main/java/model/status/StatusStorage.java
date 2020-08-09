@@ -12,7 +12,7 @@ import java.util.*;
  * @version %I%, %G%
  * @since Phase 2
  */
-public class StatusStorage implements Storage, TradeObserver, StatusObservee {
+public class StatusStorage implements Storage {
 
     private Map<String, List<Status>> statuses;
     private final StatusFactory statusFactory;
@@ -103,8 +103,7 @@ public class StatusStorage implements Storage, TradeObserver, StatusObservee {
      *
      * @param username Account username
      * @param type Status type
-     * @throws StatusNotFoundException when no Status could be found
-     */
+
     public void removeStatus(String username, String type) throws StatusNotFoundException {
 
         for (Status s: getAccountStatuses(username)) {
@@ -120,7 +119,7 @@ public class StatusStorage implements Storage, TradeObserver, StatusObservee {
         }
         throw new StatusNotFoundException();
     }
-
+     */
     /**
      * Create a Status under Account username
      *
@@ -145,7 +144,7 @@ public class StatusStorage implements Storage, TradeObserver, StatusObservee {
      *
      * @param itemIDs ids of traded items
      * @param newOwner usernames of trades
-     */
+
     public void updateTradeComplete(List<Integer> itemIDs, List<String> newOwner){
         try{
             for(String username:newOwner){
@@ -154,7 +153,7 @@ public class StatusStorage implements Storage, TradeObserver, StatusObservee {
             }
         }catch(StatusNotFoundException ignored){}
     }
-
+     */
 
     /** Add an observer to this subject/observed object
      *
