@@ -29,12 +29,13 @@ public class RequestsController {
      * Initializes a new RequestsController for the given username
      *
      * @param storageGateway gateway for loading and saving information
+     * @param itemPresenter presenter class for prepping items for gui
      * @throws IOException file can't be read/written
      * @throws ClassNotFoundException serialized class doesn't exist
      */
-    public RequestsController(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
+    public RequestsController(StorageGateway storageGateway, ItemPresenter itemPresenter) throws IOException, ClassNotFoundException {
         this.storageGateway = storageGateway;
-        itemPresenter = new ItemPresenter();
+        this.itemPresenter = itemPresenter;
         StorageFactory sf = new StorageFactory();
         itemStorage = (ItemStorage) sf.getStorage(storageGateway, StorageEnum.valueOf("ITEM"));
     }
