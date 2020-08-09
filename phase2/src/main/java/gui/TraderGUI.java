@@ -6,7 +6,6 @@ import main.java.model.item.ItemNotFoundException;
 import main.java.model.message.EmptyContentException;
 import main.java.model.message.EmptyRecipientListException;
 import main.java.model.message.EmptyTitleException;
-import main.java.model.status.StatusNotFoundException;
 import main.java.model.trade.TradeNumberException;
 import main.java.system2.StorageGateway;
 import main.java.model.status.InvalidStatusTypeException;
@@ -363,7 +362,7 @@ public class TraderGUI {
                 } else{
                     // we should consider adding a "decide later" option
                 }
-            } catch (TradeNumberException | StatusNotFoundException | IOException exception) {
+            } catch (TradeNumberException | IOException exception) {
                 showMessageDialog(null, exception.getStackTrace());
             }
         });
@@ -586,7 +585,7 @@ public class TraderGUI {
                     try {
                         freezeController.unfreezeUser(frozenUserList.get(0).get(0));
 
-                    } catch (IOException | StatusNotFoundException exception) {
+                    } catch (IOException exception) {
                         showMessageDialog(null, exception.getStackTrace());
                     }
                 } else if (rbtnIgnoreUser.isSelected()) {
