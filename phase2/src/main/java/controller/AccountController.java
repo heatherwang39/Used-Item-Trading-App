@@ -21,9 +21,9 @@ import java.util.List;
  */
 public class AccountController {
 
-    private final StorageGateway storageGateway;
     private final AccountStorage accountStorage;
-    private ItemStorage itemStorage;
+    private final ItemStorage itemStorage;
+    private final StatusStorage statusStorage;
     private final String username;
 
     /** Class constructor
@@ -31,10 +31,12 @@ public class AccountController {
      * @param storageGateway Gateway class for reading and writing Storage Data
      */
     public AccountController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
-        this.storageGateway = storageGateway;
         this.username = username;
+
         StorageFactory storageFactory = new StorageFactory();
+        statusStorage = (StatusStorage) storageFactory.getStorage(storageGateway, StorageEnum.STATUS);
         accountStorage = (AccountStorage) storageFactory.getStorage(storageGateway, StorageEnum.ACCOUNT);
+        itemStorage = (ItemStorage) storageFactory.getStorage(storageGateway, StorageEnum.ITEM);
     }
 
     public String getEmail() throws AccountNotFoundException {
@@ -47,5 +49,19 @@ public class AccountController {
 
     public List<String> getWishlist(){
         return itemStorage.getWishlistString(username);
+    }
+
+    private List<String> getStatuses(){
+        return statusStorage.getAccountStatusStrings(username);
+    }
+
+    // consider making this into a presenter class
+    public String getStatusString(){
+        List<String> userStatusList = getStatuses();
+        String statusString = null;
+        for (String s : userStatusList) {
+            statusString += (s + " | ");
+        }
+        return statusString;
     }
 }
