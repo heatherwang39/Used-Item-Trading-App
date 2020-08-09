@@ -14,6 +14,7 @@ public class UserAccount extends LoginAccount {
     private int borrowThreshold = 1;
     private int incompleteThreshold = 3;
     private int weeklyThreshold = 3;
+    private int numberOfCompletedTrades;
     private List<StatusEnum> statuses = new ArrayList<>();
 
     /**
@@ -46,6 +47,11 @@ public class UserAccount extends LoginAccount {
 
     public void removeStatus(StatusEnum status){
         statuses.remove(status);
+    }
+
+    public int getNumberOfCompletedTrades(){return numberOfCompletedTrades;}
+    public void updateNumberOfCompletedTrades(){
+        numberOfCompletedTrades++;
     }
 
     //Threshold Methods Below
@@ -103,4 +109,5 @@ public class UserAccount extends LoginAccount {
     public void setWeeklyThreshold(int weeklyThreshold){
         this.weeklyThreshold = weeklyThreshold;
     }
+
 }

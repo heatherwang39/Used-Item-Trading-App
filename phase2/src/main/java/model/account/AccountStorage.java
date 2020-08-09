@@ -1,7 +1,10 @@
 package main.java.model.account;
 
 import main.java.model.Storage;
+import main.java.model.trade.Trade;
+import main.java.model.trade.TradeNumberException;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -472,4 +475,132 @@ public class AccountStorage implements Storage {
         throw new WrongAccountTypeException();
     }
 
+
+    /**
+     * Checks if a user with given username should be frozen based on if they violate any of the trade thresholds
+     * There are three thresholds that are checked:
+     * (1) Borrow Threshold: if a user has borrowed more than they have lent out
+     * (2) Incomplete Threshold: if a user has too many incomplete trades
+     * (3) Weekly Threshold: if a user has traded too much in one week
+     * If a user violates any of these thresholds, a string representing the violation is added into a list, and a list
+     * of reasons is returned.
+     * If the list is empty, the user should not be frozen.
+     *
+     * @param username username of the user
+     * @param borrowThreshold threshold for borrowing more than lending
+     * @param incompleteThreshold threshold for too many incomplete trades
+     * @param weeklyThreshold threshold for too many trades in one week
+     * @return a list of reasons why that user should be frozen. Empty if there are no reasons
+     */
+
+    private List<String> checkUserShouldFreeze(String username,int tradeStatus, List<String> itemIds, List<String> traders,
+                                                 LocalDateTime meetingTime, int borrowThreshold,
+                                                 int incompleteThreshold, int weeklyThreshold) {
+        List<String> reasonsToFreeze = new ArrayList<>();
+        int borrowScore = 0;
+        int incompleteScore = 0;
+        int weeklyScore = 0;
+        if (tradeStatus == 1 || tradeStatus == 2 || tradeStatus == 3) borrowScore += checkBorrowThreshold(username, traders, itemIds);
+        if (checkWeeklyThreshold(meetingTime)) weeklyScore++;
+        if (checkIncompleteThreshold(tradeStatus)) incompleteScore++;
+
+        if (borrowScore > borrowThreshold) reasonsToFreeze.add("BORROW");
+        if (incompleteScore > incompleteThreshold) reasonsToFreeze.add("INCOMPLETE");
+        if (weeklyScore > weeklyThreshold) reasonsToFreeze.add("WEEKLY");
+        return reasonsToFreeze;
+    }
+
+    private int checkBorrowThreshold(String username, List<String> traders, List<String> itemIds) {
+        if (traders.get(0).equals(username) && itemIds.size() == 1) return 1;
+        else if (traders.get(1).equals(username) && itemIds.size() == 1) return -1;
+        else return 0;
+    }
+
+    private boolean checkWeeklyThreshold(LocalDateTime meetingTime) {
+        return (!(meetingTime == null) && meetingTime.isAfter(LocalDateTime.now().minusDays(7)));
+    }
+
+    private boolean checkIncompleteThreshold(int tradeStatus) {
+        return tradeStatus == -1;
+    }
+
+    /**
+     * Checks which users in usernames should be frozen based on if they violate any of the trade thresholds
+     * There are three thresholds that are checked:
+     * (1) Borrow Threshold: if a user has borrowed more than they have lent out
+     * (2) Incomplete Threshold: if a user has too many incomplete trades
+     * (3) Weekly Threshold: if a user has traded too much in one week
+     * If a user violates any of these thresholds, a string representing the violation is added into a list, and a list
+     * of reasons is returned.
+     * If the list is empty, the user should not be frozen.
+     *
+     * @param
+     * @return a list of lists that contain the username and reasons why that user should be frozen. Empty if there are no users to freeze
+     */
+
+    //whenever a trade happens
+    //need the tradeStatus,traders,items,   meeting time from trade
+
+    public void freezeUsers(int tradeStatus,List<String> traders, List<String> itemIds,
+                                           LocalDateTime meetingTime ) throws AccountNotFoundException, WrongAccountTypeException {
+        for(String username:traders){
+            if (getType(username).equals("USER")){
+                if(!containsStatus(username,"FROZEN")) {
+                    UserAccount user = (UserAccount) getAccount(username);
+                    int borrowThreshold = user.getBorrowThreshold();
+                    int incompleteThreshold = user.getIncompleteThreshold();
+                    int weeklyThreshold = user.getWeeklyThreshold();
+                    List<String> userFreezeReasons = checkUserShouldFreeze(username,tradeStatus,itemIds,traders, meetingTime,borrowThreshold, incompleteThreshold, weeklyThreshold);
+                    if (userFreezeReasons.size() > 1) {
+                        user.addStatus(StatusEnum.FROZEN);
+                    }
+                }
+            }
+            throw new WrongAccountTypeException();
+        }
+    }
+/*
+    //whenever a trade is completed (status=3)
+    //need the tradeStatus,items, traders,  meeting time from trade
+    public void gildedUser(List<String> traders) throws AccountNotFoundException, WrongAccountTypeException {
+        for(String username:traders) {
+            if (getType(username).equals("USER")) {
+                UserAccount user = (UserAccount) getAccount(username);
+                user.updateNumberOfCompletedTrades();
+                if(user.getNumberOfCompletedTrades()>user.g)
+            }
+            throw new WrongAccountTypeException();
+        }
+                if(!containsStatus(username,"FROZEN")) {
+
+                }
+        }
+    }
+
+    private boolean checkIsGilded(String username) throws TradeNumberException {
+        List<Trade> userTrades = getUserTrades(username);
+        int completedTrades = 0;
+        for (Trade trade : userTrades) {
+            int tradeId = userTrades.indexOf(trade);
+            int tradeStatus = getStatus(tradeId);
+            if (tradeStatus == 3) completedTrades++;
+        }
+        return (completedTrades >= 20);
+    }
+
+    /**
+     * Returns a list of gilded users who have completed more than 20 trades
+     * @param usernames usernames of users
+     * @return list of the usernames of the gilded users
+     * @throws TradeNumberException an invalid trade number is found
+
+    public List<String> getGildedUsers(List<String> usernames) throws TradeNumberException {
+        List<String> gildedUsersList = new ArrayList<>();
+        for(String username:usernames){
+            if(checkIsGilded(username)){gildedUsersList.add(username);}
+        }
+        return gildedUsersList;
+    }
+
+    */
 }
