@@ -59,4 +59,11 @@ public class RequestController {
         storageGateway.saveStorageData(StorageEnum.valueOf("TRADE"));
     }
 
+    public boolean checkValidRequest(String str1, String str2){
+        if (str1.equals(str2)){ // we can expand on more ways the request is invalid.
+            return false;
+        }
+        return true;
+    }
+
 }
