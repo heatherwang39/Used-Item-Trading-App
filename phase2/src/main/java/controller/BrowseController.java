@@ -25,8 +25,8 @@ public class BrowseController {
      * Initializes a new BrowseController for the given username
      *
      * @param storageGateway gateway for loading and saving information
-     * @throws IOException
-     * @throws ClassNotFoundException
+     * @throws IOException file cannot be read/write
+     * @throws ClassNotFoundException serialized class not found
      */
     public BrowseController(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
         StorageFactory sf = new StorageFactory();
@@ -43,9 +43,30 @@ public class BrowseController {
         return itemStorage.getVerifiedItemsData();
     }
 
+    /**
+     * Return the data of all verified items
+     * @return items data
+     *
+     * @throws ItemNotFoundException item isn't found
+     */
     public List<HashMap<String, String>> getVerifiedItems() throws ItemNotFoundException {
-        List<HashMap<String, String>> listingList = itemStorage.getVerifiedItemsData();
-        return listingList;
+        return itemStorage.getVerifiedItemsData();
+    }
+
+    /**
+     * Return every item that can be browsed in a single string
+     *
+     * @return browse string
+     */
+    public String getItemsString() throws ItemNotFoundException {
+        StringBuilder str = new StringBuilder();
+        for (HashMap<String, String> map : getVerifiedItems()) {
+            str.append("Item ID: ").append(map.get("id")).append("\n");
+            str.append("Item Owner: ").append(map.get("owner")).append("\n");
+            str.append(map.get("name")).append(": ").append(map.get("description")).append("\n");
+            str.append("Tags: ").append(": ").append(String.join(", ", map.get("tags"))).append("\n\n");
+        }
+        return str.toString();
     }
 
 

@@ -26,8 +26,8 @@ public class AddItemsController {
      *
      * @param storageGateway gateway for loading and saving information
      * @param username username of the user accessing the AddItems tab
-     * @throws IOException
-     * @throws ClassNotFoundException
+     * @throws IOException file can't be read/written
+     * @throws ClassNotFoundException serialized class not found
      */
     public AddItemsController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
         this.storageGateway = storageGateway;
@@ -42,7 +42,7 @@ public class AddItemsController {
      * @param name name of the item
      * @param description description of the item
      * @param tags any user-added search tags of the item
-     * @throws IOException
+     * @throws IOException file cannot be read/written
      */
     public void addInventoryItem(String name, String description, List<String> tags) throws IOException {
         itemStorage.newItem(username, name, description, tags);

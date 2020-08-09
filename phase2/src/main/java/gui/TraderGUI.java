@@ -128,6 +128,7 @@ public class TraderGUI {
     private JButton btnUserListEnter;
     private JButton btnThresholdIncompleteEnter;
     private JButton btnThresholdWeeklyEnter;
+    private JLabel MainLabel;
     private JTextArea accountInformationTextArea;
 
     private String user;
@@ -339,12 +340,8 @@ public class TraderGUI {
         BrowseController browseController = new BrowseController(storageGateway);
 
         MainTabbedPane.insertTab("Browse", null, Browse, null, 1);
-        List<HashMap<String, String>> listingList = browseController.getVerifiedItems();
-        for (HashMap<String, String> stringStringHashMap : listingList) {
-            for (String str : stringStringHashMap.keySet()) {
-                txtAreaBrowseListingsOutput.append(str + stringStringHashMap.get(str) + "\n");
-            }
-        }
+
+        txtAreaBrowseListingsOutput.setText(browseController.getItemsString());
     }
 
     private void initializeOffers() throws IOException, ClassNotFoundException {
