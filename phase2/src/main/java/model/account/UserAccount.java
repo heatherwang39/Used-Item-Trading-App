@@ -1,16 +1,20 @@
 package main.java.model.account;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * UserAccount is a LoginAccount that possesses an inventory and wishlist, and can trade with others and be frozen.
  *
- * @author Robbert Liu
+ * @author Robbert Liu, Heather Wang
  * @version %I%, %G%
- * @since Phase 1
+ * @since Phase 2
  */
 public class UserAccount extends LoginAccount {
     private int borrowThreshold = 1;
     private int incompleteThreshold = 3;
     private int weeklyThreshold = 3;
+    private List<StatusEnum> statuses = new ArrayList<>();
 
     /**
      * Class constructor.
@@ -21,6 +25,7 @@ public class UserAccount extends LoginAccount {
      */
     public UserAccount(String username, String password, String emailAddress) {
         super(username, password, emailAddress);
+        statuses.add(StatusEnum.NEW);
     }
 
 
@@ -33,6 +38,11 @@ public class UserAccount extends LoginAccount {
         return "USER";
     }
 
+    public List<String> getStatuses(){
+        List<String> statusesNames = new ArrayList<>();
+        for(StatusEnum status:statuses){statusesNames.add(status.toString());}
+        return statusesNames;
+    }
 
     //Threshold Methods Below
 
