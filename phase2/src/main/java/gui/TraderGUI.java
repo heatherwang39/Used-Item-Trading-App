@@ -173,8 +173,6 @@ public class TraderGUI {
         requestsButtonGroup.add(rbtnAcceptRequest);
         requestsButtonGroup.add(rbtnDenyRequest);
 
-
-
         btnRegisterMain.addActionListener(e -> {
             tabCleaner();
             MainTabbedPane.insertTab("Register", null, Register, null, 1);
@@ -362,6 +360,9 @@ public class TraderGUI {
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
+            showMessageDialog(null, "Item added!\nName: " + name +
+                    "\nDescription: " + description +
+                    "\nTags: " + tagList);
         });
 
         btnWishlistAddition.addActionListener(e -> {
@@ -405,9 +406,6 @@ public class TraderGUI {
         });
     }
 
-
-
-
     // Admin Tabs
 
     private void initializeRequests() throws IOException, ClassNotFoundException, ItemNotFoundException {
@@ -416,28 +414,32 @@ public class TraderGUI {
         ItemPresenter itemPresenter = new ItemPresenter();
         RequestsController requestsController = new RequestsController(storageGateway, itemPresenter);
 
-        for (String s : requestsController.getFormattedRequests()) {
-            // text area appends each line of the formatted list
-            txtAreaRequestsOutput.append(s);
-        }
+        txtAreaRequestsOutput.setText(requestsController.getRequestsString());
 
         btnRequestsEnter.addActionListener(e -> {
             try {
                 List<HashMap<String, String>> requestsList = requestsController.getRequests();
                 List<String> formattedRequestsList = requestsController.getFormattedRequests();
-                txtRequestsOutput.setText(formattedRequestsList.get(0));
-                if (requestsList != null) {
-                    requestsList.remove(requestsList.get(0));
-                    formattedRequestsList.remove(formattedRequestsList.get(0));
+                if (!requestsList.isEmpty()) {
+                    HashMap<String, String> item = requestsList.get(0);
+                    txtRequestsOutput.setText(formattedRequestsList.get(0));
                     if (rbtnAcceptRequest.isSelected()) {
-                        requestsController.verifyItem(Integer.parseInt(requestsList.get(0).get("id")));
-
+                        showMessageDialog(null, "Item accepted!\nName: " + item.get("name") +
+                                "\nDescription: " + item.get("description") +
+                                "\nTags: " + item.get("tags"));
+                        requestsController.verifyItem(Integer.parseInt(item.get("id")));
+                        requestsList.remove(item);
+                        formattedRequestsList.remove(formattedRequestsList.get(0));
+                        txtAreaRequestsOutput.setText(requestsController.getRequestsString());
                     } else if (rbtnDenyRequest.isSelected()) {
-                        requestsController.rejectItem(Integer.parseInt(requestsList.get(0).get("id")));
-
+                        showMessageDialog(null, "Item rejected!\nName: " + item.get("name") +
+                                "\nDescription: " + item.get("description") +
+                                "\nTags: " + item.get("tags"));
+                        requestsController.rejectItem(Integer.parseInt(item.get("id")));
+                        requestsList.remove(item);
+                        formattedRequestsList.remove(formattedRequestsList.get(0));
+                        txtAreaRequestsOutput.setText(requestsController.getRequestsString());
                     } else {
-                        requestsList.add(requestsList.get(0));
-                        formattedRequestsList.add(formattedRequestsList.get(0));
                         showMessageDialog(null, "Please accept or deny this request!");
                     }
                 }

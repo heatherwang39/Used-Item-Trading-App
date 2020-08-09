@@ -21,9 +21,8 @@ import java.util.List;
  */
 public class AccountController {
 
-    private final StorageGateway storageGateway;
     private final AccountStorage accountStorage;
-    private ItemStorage itemStorage;
+    private final ItemStorage itemStorage;
     private final String username;
 
     /** Class constructor
@@ -31,10 +30,10 @@ public class AccountController {
      * @param storageGateway Gateway class for reading and writing Storage Data
      */
     public AccountController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
-        this.storageGateway = storageGateway;
         this.username = username;
         StorageFactory storageFactory = new StorageFactory();
         accountStorage = (AccountStorage) storageFactory.getStorage(storageGateway, StorageEnum.ACCOUNT);
+        itemStorage = (ItemStorage) storageFactory.getStorage(storageGateway, StorageEnum.ITEM);
     }
 
     public String getEmail() throws AccountNotFoundException {
