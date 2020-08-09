@@ -2,7 +2,6 @@ package main.java.controller;
 
 import main.java.model.account.AccountStorage;
 import main.java.model.status.InvalidStatusTypeException;
-import main.java.model.status.StatusNotFoundException;
 import main.java.model.status.StatusStorage;
 import main.java.model.trade.TradeNumberException;
 import main.java.model.trade.TradeStorage;
@@ -68,9 +67,9 @@ public class GildedController {
     /** Remove the gilded status for a certain user
      *
      * @param username the username of the user
-     * @throws StatusNotFoundException cannot find the Gilded status in the account
+     * @throws IOException
      */
-    public void removeGildedStatus(String username) throws StatusNotFoundException, IOException {
+    public void removeGildedStatus(String username) throws IOException {
         statusStorage.removeStatus(username,"GILDED");
         storageGateway.saveStorageData(StorageEnum.STATUS);
     }

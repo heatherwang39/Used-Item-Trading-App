@@ -2,7 +2,6 @@ package main.java.controller;
 
 import main.java.model.account.AccountStorage;
 import main.java.model.status.InvalidStatusTypeException;
-import main.java.model.status.StatusNotFoundException;
 import main.java.model.status.StatusStorage;
 import main.java.model.trade.TradeNumberException;
 import main.java.model.trade.TradeStorage;
@@ -78,9 +77,9 @@ public class FreezeController {
      * Removes the freeze status from a certain user
      *
      * @param username username of the user
-     * @throws StatusNotFoundException Invalid status, not in system
+     * @throws IOException
      */
-    public void unfreezeUser(String username) throws StatusNotFoundException, IOException {
+    public void unfreezeUser(String username) throws  IOException {
         statusStorage.removeStatus(username, "FREEZE");
         storageGateway.saveStorageData(StorageEnum.valueOf("STATUS"));
     }
@@ -100,7 +99,7 @@ public class FreezeController {
                 try {
                     unfreezeUser(frozenUserList.get(0).get(0));
 
-                } catch (IOException | StatusNotFoundException exception) {
+                } catch (IOException exception) {
                     showMessageDialog(null, exception.getStackTrace());
                 }
             } else if (rbtnIgnoreUser.isSelected()) {

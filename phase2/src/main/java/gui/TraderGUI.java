@@ -109,8 +109,6 @@ public class TraderGUI {
     private JButton btnMessageAdmin;
     private JTextArea txtAreaMessageUserInput;
     private JTextArea txtAreaMessageAdminInput;
-    private JTextArea txtAreaMessagesIncomingOutput;
-    private JTextArea txtMessagesSentOutput;
     private JTextField txtMessageUserTitleInput;
     private JTextField txtMessageAdminTitleInput;
     private JTextField txtAdminEmailInput;
@@ -120,7 +118,6 @@ public class TraderGUI {
     private JTextArea txtAreaUserListOutput;
     private JTextField txtAccountStatuses;
     private JButton btnAccountSetAwayStatus;
-    private JTextField txtAccountAwayStatus;
     private JTextField txtUserListOutput;
     private JRadioButton rbtnUserListMute;
     private JRadioButton rbtnUserListNext;
@@ -128,6 +125,8 @@ public class TraderGUI {
     private JButton btnThresholdIncompleteEnter;
     private JButton btnThresholdWeeklyEnter;
     private JLabel MainLabel;
+    private JTree treeMessagesIncoming;
+    private JTree treeMessagesSent;
     private JTextArea accountInformationTextArea;
 
     private String user;
@@ -287,9 +286,9 @@ public class TraderGUI {
         txtAccountStatuses.setText(statusString);
 
         if (accountController.isAway()){
-            txtAccountAwayStatus.setText("You are marked as 'away'. Click the button to the right to return");
+            btnAccountSetAwayStatus.setText("Add Away Status");
         } else{
-            txtAccountAwayStatus.setText("Click the button to the right to be marked as 'away'");
+            btnAccountSetAwayStatus.setText("Remove Away Status");
         }
 
         btnAccountSetAwayStatus.addActionListener(e -> {

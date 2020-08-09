@@ -1,7 +1,6 @@
 package main.java.controller;
 
 import main.java.model.status.InvalidStatusTypeException;
-import main.java.model.status.StatusNotFoundException;
 import main.java.model.status.StatusStorage;
 import main.java.system2.StorageEnum;
 import main.java.system2.StorageFactory;
@@ -53,9 +52,9 @@ public class StatusController {
 
     /** Remove the away status
      *
-     * @throws StatusNotFoundException cannot find the away status in current account
+     * @throws IOException
      */
-    public void removeAwayStatus() throws StatusNotFoundException, IOException {
+    public void removeAwayStatus() throws IOException {
         statusStorage.removeStatus(username,"AWAY");
         storageGateway.saveStorageData(StorageEnum.STATUS);
     }

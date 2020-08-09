@@ -2,7 +2,6 @@ package main.java.model.trade;
 
 import main.java.model.Storage;
 import main.java.model.meeting.MeetingObserver;
-import main.java.model.status.StatusNotFoundException;
 
 import java.util.*;
 
@@ -136,7 +135,7 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
      * @return A boolean representing whether or not the change was made
      * @throws TradeNumberException Thrown if no Trade has the given TradeNumber
      */
-    public boolean setStatus(int tradeNumber, int status) throws TradeNumberException, StatusNotFoundException {
+    public boolean setStatus(int tradeNumber, int status) throws TradeNumberException {
         Trade t = getTrade(tradeNumber);
         boolean b = t.setStatus(status);
         if(b && getStatus(tradeNumber) == 3){

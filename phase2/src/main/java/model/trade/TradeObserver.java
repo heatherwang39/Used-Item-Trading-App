@@ -1,7 +1,7 @@
 package main.java.model.trade;
 
 import main.java.model.item.ItemNotFoundException;
-import main.java.model.status.StatusNotFoundException;
+
 
 import java.util.List;
 

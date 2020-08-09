@@ -1,7 +1,6 @@
 package main.java.controller;
 
 import main.java.model.item.ItemNotFoundException;
-import main.java.model.status.StatusNotFoundException;
 import main.java.model.trade.TradeNumberException;
 import main.java.model.trade.TradeStorage;
 import main.java.presenter.TradePresenter;
@@ -63,7 +62,7 @@ public class OffersController {
      * @throws TradeNumberException invalid tradeNumber, not in system
      * @throws IOException
      */
-    public void acceptOffer(int tradeNumber) throws TradeNumberException, IOException, StatusNotFoundException {
+    public void acceptOffer(int tradeNumber) throws TradeNumberException, IOException{
         tradeStorage.setStatus(tradeNumber, 1);
         storageGateway.saveStorageData(StorageEnum.valueOf("TRADE"));
     }
@@ -75,7 +74,7 @@ public class OffersController {
      * @throws TradeNumberException invalid tradeNumber, not in system
      * @throws IOException
      */
-    public void rejectOffer(int tradeNumber) throws TradeNumberException, IOException, StatusNotFoundException {
+    public void rejectOffer(int tradeNumber) throws TradeNumberException, IOException {
         tradeStorage.setStatus(tradeNumber, -1);
         storageGateway.saveStorageData(StorageEnum.valueOf("TRADE"));
     }
