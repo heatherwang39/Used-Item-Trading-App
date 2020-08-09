@@ -14,12 +14,10 @@ import main.java.model.status.InvalidStatusTypeException;
 import main.java.presenter.*;
 
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
 // From: https://stackoverflow.com/questions/9119481/how-to-present-a-simple-alert-message-in-java
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -129,8 +127,8 @@ public class TraderGUI {
     private JButton btnThresholdIncompleteEnter;
     private JButton btnThresholdWeeklyEnter;
     private JLabel MainLabel;
-    private JTree treeMessagesIncoming;
-    private JTree treeMessagesSent;
+    private JTextArea txtAreaMessagesIncoming;
+    private JTextArea txtAreaMessagesSent;
     private JTextArea accountInformationTextArea;
 
     private String user;
@@ -228,6 +226,7 @@ public class TraderGUI {
                         initializeAddAdmin();
                         initializeLogging();
                         initializeFreeze();
+                        initializeMessages();
                         break;
                     default:
                         showMessageDialog(null, "Your account did not match any credentials in " +
@@ -455,20 +454,11 @@ public class TraderGUI {
 
     private void initializeMessages() throws IOException, ClassNotFoundException {
         MainTabbedPane.insertTab("Messages", null, Messages, null, 3);
-
         MessageController messageController = new MessageController(storageGateway, user);
+        MessagePresenter messagePresenter = new MessagePresenter();
 
-        btnMessageAdmin.addActionListener(e -> {
-            String messageTitle = txtMessageAdminTitleInput.getText();
-            String messageContent = txtAreaMessageAdminInput.getText();
-            try {
-                messageController.sendRequestToSystem(messageTitle, messageContent);
-            } catch (EmptyTitleException | EmptyContentException | EmptyRecipientListException exception) {
-                showMessageDialog(null, exception.getMessage());
-            } catch (IOException exception) {
-                exception.printStackTrace();
-            }
-        });
+        displayIncomingMessages(messageController, messagePresenter);
+        displaySentMessages(messageController, messagePresenter);
 
         btnMessageUser.addActionListener(e -> {
             String messageTitle = txtMessageUserTitleInput.getText();
@@ -481,6 +471,20 @@ public class TraderGUI {
             } catch (IOException exception) {
                 exception.printStackTrace();
             }
+            displaySentMessages(messageController, messagePresenter); // we can also refresh incoming messages too here
+        });
+
+        btnMessageAdmin.addActionListener(e -> {
+            String messageTitle = txtMessageAdminTitleInput.getText();
+            String messageContent = txtAreaMessageAdminInput.getText();
+            try {
+                messageController.sendRequestToSystem(messageTitle, messageContent);
+            } catch (EmptyTitleException | EmptyContentException | EmptyRecipientListException exception) {
+                showMessageDialog(null, exception.getMessage());
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+            displaySentMessages(messageController, messagePresenter);
         });
     }
 
@@ -657,6 +661,24 @@ public class TraderGUI {
     private void tabCleaner(){
         if (MainTabbedPane.getTabCount() == 2) {
             MainTabbedPane.removeTabAt(1);
+        }
+    }
+
+    private void displayIncomingMessages(MessageController msgController, MessagePresenter msgPresenter) throws IOException, ClassNotFoundException {
+        List<HashMap<String, String>> incomingMessagesList = msgController.getInbox();
+        List<List<String>> formattedIncomingMessagesList = msgPresenter.formatMessageToListView(incomingMessagesList);
+        for (List<String> strings : formattedIncomingMessagesList) {
+            txtAreaMessagesIncoming.append(strings.get(0) + ":\n    " +
+                    strings.get(1) + "\n");
+        }
+    }
+
+    private void displaySentMessages(MessageController msgController, MessagePresenter msgPresenter){
+        List<HashMap<String, String>> sentMessagesList = msgController.getOutbox();
+        List<List<String>> formattedSentMessagesList = msgPresenter.formatMessageToListView(sentMessagesList);
+        for (List<String> strings : formattedSentMessagesList) {
+            txtAreaMessagesSent.append(strings.get(0) + ":\n    " +
+                    strings.get(1) + "\n");
         }
     }
 }
