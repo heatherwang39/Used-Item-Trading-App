@@ -305,7 +305,7 @@ public class TraderGUI {
                     accountController.setAwayStatus();
                     btnAccountSetAwayStatus.setText("Remove Away Status");
                 }
-            } catch (AccountNotFoundException | WrongAccountTypeException accountNotFoundException) {
+            } catch (AccountNotFoundException | WrongAccountTypeException | StatusNotFoundException accountNotFoundException) {
                 showMessageDialog(null, accountNotFoundException.getMessage());
             }
         });
