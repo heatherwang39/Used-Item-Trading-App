@@ -6,18 +6,10 @@ Instances of each pattern, as well as explanations for why these patterns have b
 
 (The list is sorted by alphabetical order for ease of navigation)
 
+
+
+
 ## Factory:
-
-####TradeAlgorithm/TradeAlgorithmFactory
-#####(By Warren Zhu)
-
-*Please refer to "Trade/TradeAlgorithm" under the Strategy Subheading to better understand TradeAlgorithms*
-
-As the program grows, a variety of TradeAlgorithms will very likely come into existence. As such, a TradeAlgorithmFactory has been implemented to make it easier to add new TradeAlgorithms.
-
-The implementation is quite simple--we placed all TradeAlgorithm constructors inside of the TradeAlgorithmFactory. We then placed the factory inside of TradeStorage. Thus, when TradeStorage is given the name of a TradeAlgorithm, it can go to the TradeAlgorithmFactory to retrieve one such TradeAlgorithm when initializing a new Trade. (Our TradeAlgorithmName--which is an enum file--tells us what type of TradeAlgorithms can be created.)
-
-This design makes it particularly easy to add new TradeAlgorithms--all we need to do is to write code for the TradeAlgorithm, and then add its constructor into the factory and the enum file!
 
 ####StatusFactory
 #####(By Robbert Liu)
@@ -29,10 +21,51 @@ The constructor of every Status is identical, and I wanted an extensible way to 
 
 StorageFactory is a Factory class that creates Storages. It's little more than a facade for the data retrieval that happens inside StorageGateway, but it fits the pattern nonetheless.
 
+####TradeAlgorithm/TradeAlgorithmFactory
+#####(By Warren Zhu)
+
+*Please refer to "Trade/TradeAlgorithm" under the Strategy Subheading to better understand TradeAlgorithms*
+
+
+######Classes involved:
+
+TradeAlgorithm (Interface for the Product)
+
+CycleTradeAlgorithm (Concrete Product)
+
+RandomTradeAlgorithm (Concrete Product)
+
+TradeAlgorithmFactory (Creator)
+
+TradeAlgorithmName
+
+######Details:
+
+As the program grows, a variety of TradeAlgorithms will very likely come into existence. As such, a TradeAlgorithmFactory has been implemented to make it easier to add new TradeAlgorithms.
+
+The implementation is quite simple--we placed all TradeAlgorithm constructors inside of the TradeAlgorithmFactory. We then placed the factory inside of TradeStorage. Thus, when TradeStorage is given the name of a TradeAlgorithm, it can go to the TradeAlgorithmFactory to retrieve one such TradeAlgorithm when initializing a new Trade. (Our TradeAlgorithmName--which is an enum file--tells us what type of TradeAlgorithms can be created.)
+
+This design makes it particularly easy to add new TradeAlgorithms--all we need to do is to write code for the TradeAlgorithm, and then add its constructor into the factory and the enum file!
+
+
+
+
 ## Strategy:
 
 ####Trade/TradeAlgorithm
 #####(By Warren Zhu)
+
+######Classes involved:
+
+TradeAlgorithm (Strategy)
+
+CycleTradeAlgorithm (Concrete Strategy)
+
+RandomTradeAlgorithm (Concrete Strategy)
+
+Trade (Context)
+
+######Details:
 
 Trade now implements a strategy pattern. In this case, the strategy is TradeAlgorithm, which is an algorithm that determines which items will be sent to who in the trade. My thought process for the design is below.
 
@@ -49,10 +82,24 @@ In order to further encapsulate our design, the TradeAlgorithms were given their
 The benefits of this design pattern are quite profound--it allows the program to be easily extended, as new types of trades will only vary in the distribution of items. We've already coded Trades so that as many traders can participate in a Trade as the client deems fit, and now with the Strategy Design Pattern, the behaviour of each Trade can easily be modified--if someone wants to design a new kind of Trade, all they need to do is to add a new Trade Algorithm.
 
 
+
+
 ## Observer:
 
-####TradeStorage/MeetingStorage
+####MeetingStorage/TradeStorage
 #####(By Warren Zhu)
+
+######Classes involved:
+
+MeetingObservee (Subject)
+
+MeetingObserver (Observer)
+
+MeetingStorage (Concrete Subject)
+
+TradeStorage (Concrete Observer)
+
+######Details:
 
 Trade Storage and Meeting Storage uses an Observer Pattern, where MeetingStorage is the Subject and TradeStorage is the Observer. My thought process on the design is below:
 
@@ -71,5 +118,17 @@ Originally the use case classes called the gateway method directly that would sa
 
 ####TradeStorage/ItemStorage
 #####(By Warren Zhu)
+
+######Classes involved:
+
+TradeObservee (Subject)
+
+TradeObserver (Observer)
+
+TradeStorage (Concrete Subject)
+
+ItemStorage (Concrete Observer)
+
+######Details:
 
 Once a Trade has been completed, TradeStorage will automatically notify its observers (in this case, ItemStorage) that a given Trade has been completed. In this particularly instance, ItemStorage will update the Items' owners according. Note that this Observer pattern works in tandem with the Observer pattern for TradeStorage and MeetingStorage--if the final meeting of a Trade has been completed, the Trade will then be marked as complete, which tells ItemStorage to update the owners accordingly.
