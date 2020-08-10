@@ -6,9 +6,9 @@ import main.java.model.trade.MaxNumMeetingsExceededException;
 import main.java.model.trade.TradeCancelledException;
 import main.java.model.trade.TradeNumberException;
 import main.java.model.trade.TradeStorage;
-import main.java.system2.StorageEnum;
-import main.java.system2.StorageFactory;
-import main.java.system2.StorageGateway;
+import main.java.system.StorageEnum;
+import main.java.system.StorageFactory;
+import main.java.system.StorageGateway;
 
 import java.io.IOException;
 import java.time.LocalDateTime;

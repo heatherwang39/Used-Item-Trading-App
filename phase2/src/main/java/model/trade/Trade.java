@@ -50,6 +50,7 @@ public abstract class Trade implements Serializable {
         this.traders = traders;
         this.accepted = new ArrayList<>(Collections.nCopies(traders.size(), false));
         this.items = items;
+        meetings = new ArrayList<>();
         status = 0;
         maxWarnings = 6;
     }

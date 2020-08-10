@@ -1,4 +1,4 @@
-package main.java.system2;
+package main.java.system;
 
 import main.java.gui.TraderGUI;
 

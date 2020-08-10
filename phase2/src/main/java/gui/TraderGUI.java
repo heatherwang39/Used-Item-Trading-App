@@ -6,15 +6,12 @@ import main.java.model.item.ItemNotFoundException;
 import main.java.model.message.EmptyContentException;
 import main.java.model.message.EmptyRecipientListException;
 import main.java.model.message.EmptyTitleException;
-import main.java.model.trade.NoSuchTradeAlgorithmException;
-import main.java.model.trade.TradeAlgorithmName;
-import main.java.model.trade.TradeNumberException;
-import main.java.system2.StorageGateway;
+import main.java.model.trade.*;
+import main.java.system.StorageGateway;
 import main.java.model.status.InvalidStatusTypeException;
 import main.java.presenter.*;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
 // From: https://stackoverflow.com/questions/9119481/how-to-present-a-simple-alert-message-in-java
 import java.io.IOException;
 import java.util.*;
@@ -233,7 +230,7 @@ public class TraderGUI {
                                 "our system.");
                         break;
                 }
-            } catch (AccountNotFoundException | ItemNotFoundException accountNotFoundException) {
+            } catch (AccountNotFoundException | ItemNotFoundException | WrongAccountTypeException accountNotFoundException) {
                 showMessageDialog(null, accountNotFoundException.getMessage());
             } catch (IOException | ClassNotFoundException | TradeNumberException exception) {
                 exception.printStackTrace();
@@ -263,7 +260,7 @@ public class TraderGUI {
         });
     }
 
-    private void initializeStatus() throws IOException, ClassNotFoundException, TradeNumberException, ItemNotFoundException {
+    private void initializeStatus() throws IOException, ClassNotFoundException, TradeNumberException, ItemNotFoundException, AccountNotFoundException, WrongAccountTypeException {
         StatusController statusController = new StatusController(user, storageGateway);
         if (!statusController.getStatuses().contains("AWAY") || !statusController.getStatuses().contains("FROZEN")) {
             initializeRequest();
@@ -299,14 +296,12 @@ public class TraderGUI {
 
         btnAccountSetAwayStatus.addActionListener(e -> {
             if (accountController.isAway()){
-                try {
-                    accountController.removeAwayStatus();
-                } catch (StatusNotFoundException statusNotFoundException) {
-                    statusNotFoundException.printStackTrace();
-                }
+                accountController.removeAwayStatus();
+                btnAccountSetAwayStatus.setText("Add Away Status");
             } else{
                 try {
                     accountController.setAwayStatus();
+                    btnAccountSetAwayStatus.setText("Remove Away Status");
                 } catch (InvalidStatusTypeException invalidStatusTypeException) {
                     invalidStatusTypeException.printStackTrace();
                 }
@@ -348,33 +343,31 @@ public class TraderGUI {
         TradePresenter tradePresenter = new TradePresenter(storageGateway);
         OffersController offersController = new OffersController(storageGateway, user, tradePresenter);
 
-        for (String s: tradePresenter.formatTradeForListView(offersController.getOffers())) {
-            txtAreaOffersOutput.append(s);
-        }
+        txtAreaOffersOutput.setText(tradePresenter.formatTradeString(offersController.getOffers()));
 
         btnOfferEnter.addActionListener(e -> {
-            List<HashMap<String, List<String>>> unformattedOfferList = null;
-            List<String> offerList = null;
-            try {
-                unformattedOfferList = offersController.getOffers();
-                offerList = tradePresenter.formatTradeForListView(unformattedOfferList);
-            } catch (ItemNotFoundException | TradeNumberException exception) {
-                showMessageDialog(null, exception.getStackTrace());
-            }
-
-            if (offerList != null) {
-                txtOffersOutput.setText(offerList.get(0));
-                try {
+            try{
+                List<HashMap<String, List<String>>> unformattedOfferList = offersController.getOffers();
+                List<String> offerList = tradePresenter.formatTradeForListView(unformattedOfferList);
+                if (!offerList.isEmpty()) {
+                    txtOffersOutput.setText(offerList.get(0));
                     if (rbtnAcceptOffer.isSelected()) {
                         offersController.acceptOffer(Integer.parseInt(unformattedOfferList.get(0).get("id").get(0)));
+                        txtAreaOffersOutput.setText(tradePresenter.formatTradeString(offersController.getOffers()));
+                        showMessageDialog(null, "Trade accepted! Log back in to see changes");
                     } else if (rbtnDenyOffer.isSelected()) {
                         offersController.rejectOffer(Integer.parseInt(unformattedOfferList.get(0).get("id").get(0)));
+                        txtAreaOffersOutput.setText(tradePresenter.formatTradeString(offersController.getOffers()));
+                        showMessageDialog(null, "Trade rejected!");
                     } else {
-                        // we should consider adding a "decide later" option
+                        showMessageDialog(null, "Please select an option!");
                     }
-                } catch (TradeNumberException | IOException exception) {
-                    showMessageDialog(null, exception.getStackTrace());
                 }
+            } catch (TradeNumberException | ItemNotFoundException | WrongTradeAccountException |
+                    TradeCancelledException exception) {
+                showMessageDialog(null, exception.getMessage());
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
         });
     }

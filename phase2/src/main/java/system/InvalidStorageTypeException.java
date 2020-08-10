@@ -1,4 +1,4 @@
-package main.java.system2;
+package main.java.system;
 
 /**
  * Exception to be thrown when attempting to get a Storage with an invalid type.

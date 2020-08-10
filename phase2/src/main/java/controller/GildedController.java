@@ -5,9 +5,9 @@ import main.java.model.status.InvalidStatusTypeException;
 import main.java.model.status.StatusStorage;
 import main.java.model.trade.TradeNumberException;
 import main.java.model.trade.TradeStorage;
-import main.java.system2.StorageEnum;
-import main.java.system2.StorageFactory;
-import main.java.system2.StorageGateway;
+import main.java.system.StorageEnum;
+import main.java.system.StorageFactory;
+import main.java.system.StorageGateway;
 
 import java.io.IOException;
 import java.util.List;
@@ -67,7 +67,7 @@ public class GildedController {
     /** Remove the gilded status for a certain user
      *
      * @param username the username of the user
-     * @throws IOException
+     * @throws IOException file cannot be read/written
      */
     public void removeGildedStatus(String username) throws IOException {
         statusStorage.removeStatus(username,"GILDED");

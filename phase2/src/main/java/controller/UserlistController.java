@@ -4,9 +4,9 @@ import main.java.model.account.AccountNotFoundException;
 import main.java.model.account.AccountStorage;
 import main.java.model.status.InvalidStatusTypeException;
 import main.java.model.status.StatusStorage;
-import main.java.system2.StorageEnum;
-import main.java.system2.StorageFactory;
-import main.java.system2.StorageGateway;
+import main.java.system.StorageEnum;
+import main.java.system.StorageFactory;
+import main.java.system.StorageGateway;
 
 import java.io.IOException;
 import java.util.*;

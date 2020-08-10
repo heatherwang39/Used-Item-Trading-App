@@ -2,9 +2,9 @@ package main.java.presenter;
 
 import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
-import main.java.system2.StorageEnum;
-import main.java.system2.StorageFactory;
-import main.java.system2.StorageGateway;
+import main.java.system.StorageEnum;
+import main.java.system.StorageFactory;
+import main.java.system.StorageGateway;
 
 import java.io.IOException;
 import java.util.*;
@@ -59,6 +59,21 @@ public class TradePresenter {
             formatTrade.add(tradeInfo.toString());
         }
         return formatTrade;
+    }
+
+    /**
+     * formatted string of trades data
+     *
+     * @param tradesData trades data
+     * @return formatted string
+     * @throws ItemNotFoundException item was not found
+     */
+    public String formatTradeString(List<HashMap<String, List<String>>> tradesData) throws ItemNotFoundException {
+        StringBuilder trades = new StringBuilder();
+        for (String s: formatTradeForListView(tradesData)) {
+            trades.append(s);
+        }
+        return trades.toString();
     }
 
     /**

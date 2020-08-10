@@ -2,9 +2,9 @@ package main.java.controller;
 
 import main.java.model.trade.TradeNumberException;
 import main.java.model.trade.TradeStorage;
-import main.java.system2.StorageEnum;
-import main.java.system2.StorageFactory;
-import main.java.system2.StorageGateway;
+import main.java.system.StorageEnum;
+import main.java.system.StorageFactory;
+import main.java.system.StorageGateway;
 
 import javax.swing.*;
 import java.util.*;

@@ -1,4 +1,4 @@
-package main.java.system2;
+package main.java.system;
 
 /**
  * Enum Class for Storage types

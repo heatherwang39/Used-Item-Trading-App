@@ -5,13 +5,12 @@ import main.java.model.status.InvalidStatusTypeException;
 import main.java.model.status.StatusStorage;
 import main.java.model.trade.TradeNumberException;
 import main.java.model.trade.TradeStorage;
-import main.java.system2.StorageEnum;
-import main.java.system2.StorageFactory;
-import main.java.system2.StorageGateway;
+import main.java.system.StorageEnum;
+import main.java.system.StorageFactory;
+import main.java.system.StorageGateway;
 
 import javax.swing.*;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -55,8 +54,8 @@ public class FreezeController {
     public List<List<String>> showAllFrozenUsers(int borrowThreshold, int incompleteThreshold, int weeklyThreshold) throws InvalidStatusTypeException, IOException, TradeNumberException {
         List<String> allUsers = accountStorage.getUsernames();
         List<List<String>> frozenUsersAndReasons = tradeStorage.showFreezeUsers(allUsers, borrowThreshold, incompleteThreshold, weeklyThreshold);
-        for (int i = 0; i < frozenUsersAndReasons.size(); i++) {
-            statusStorage.createStatus(frozenUsersAndReasons.get(i).get(0), "FROZEN");
+        for (List<String> frozenUsersAndReason : frozenUsersAndReasons) {
+            statusStorage.createStatus(frozenUsersAndReason.get(0), "FROZEN");
         }
         storageGateway.saveStorageData(StorageEnum.STATUS);
         return frozenUsersAndReasons;
@@ -77,7 +76,7 @@ public class FreezeController {
      * Removes the freeze status from a certain user
      *
      * @param username username of the user
-     * @throws IOException
+     * @throws IOException file cnanot be read/written
      */
     public void unfreezeUser(String username) throws  IOException {
         statusStorage.removeStatus(username, "FREEZE");

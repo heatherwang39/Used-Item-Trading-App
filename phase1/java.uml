@@ -12,7 +12,7 @@
     <node x="1662.0" y="2408.0">main.java.account.InvalidLoginException</node>
     <node x="1124.0" y="2408.0">main.java.account.UsernameInUseException</node>
     <node x="570.0" y="2408.0">main.java.transaction.trade.TradeCancelledException</node>
-    <node x="2276.0" y="1369.0">main.java.system2.FileReadWriter</node>
+    <node x="2276.0" y="1369.0">main.java.system.FileReadWriter</node>
     <node x="893.0000000000001" y="983.0">main.java.account.AdminAccount</node>
     <node x="498.0" y="2507.0">main.java.transaction.trade.NoMeetingException</node>
     <node x="1923.0" y="2408.0">main.java.InvalidEmailException</node>

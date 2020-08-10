@@ -5,9 +5,9 @@ import main.java.model.item.ItemStorage;
 import main.java.model.trade.NoSuchTradeAlgorithmException;
 import main.java.model.trade.TradeAlgorithmName;
 import main.java.model.trade.TradeStorage;
-import main.java.system2.StorageEnum;
-import main.java.system2.StorageFactory;
-import main.java.system2.StorageGateway;
+import main.java.system.StorageEnum;
+import main.java.system.StorageFactory;
+import main.java.system.StorageGateway;
 import java.util.*;
 
 import java.io.IOException;
@@ -60,21 +60,32 @@ public class RequestController {
     }
 
     public boolean checkValidRequest(String user, String str1, String str2) throws ItemNotFoundException {
-        int int1;
-        int int2;
-        try {
-            int1 = Integer.parseInt(str2);
-            int2 = Integer.parseInt(str1);
-        } catch (NumberFormatException e) {
+        if (str1.isEmpty() && str2.isEmpty()){
             return false;
+        } else if (str1.isEmpty()){
+            try {
+                String owner2 = itemStorage.getData(Integer.parseInt(str2)).get("owner");
+                return owner2 != null && owner2.equals(user);
+            } catch (NumberFormatException e){
+                return false;
+            }
+        } else if (str2.isEmpty()){
+            try {
+                String owner1 = itemStorage.getData(Integer.parseInt(str1)).get("owner");
+                return owner1 != null && !owner1.equals(user);
+            } catch (NumberFormatException e){
+                return false;
+            }
+        } else {
+            try {
+                String owner1 = itemStorage.getData(Integer.parseInt(str1)).get("owner");
+                String owner2 = itemStorage.getData(Integer.parseInt(str2)).get("owner");
+                return (owner1 != null &&
+                        !owner1.equals(user)) &&
+                        owner2.equals(user);
+            } catch (NumberFormatException e){
+                return false;
+            }
         }
-        String owner1 = itemStorage.getData(int1).get("owner");
-        String owner2 = itemStorage.getData(int2).get("owner");
-        return (!str1.equals(str2) &&
-                owner1 != null &&
-                owner2 != null &&
-                !owner1.equals(owner2) &&
-                !owner1.equals(user)) &&
-                owner2.equals(user);
     }
 }
