@@ -6,9 +6,7 @@ import main.java.model.item.ItemNotFoundException;
 import main.java.model.message.EmptyContentException;
 import main.java.model.message.EmptyRecipientListException;
 import main.java.model.message.EmptyTitleException;
-import main.java.model.trade.NoSuchTradeAlgorithmException;
-import main.java.model.trade.TradeAlgorithmName;
-import main.java.model.trade.TradeNumberException;
+import main.java.model.trade.*;
 import main.java.system2.StorageGateway;
 import main.java.model.status.InvalidStatusTypeException;
 import main.java.presenter.*;
@@ -233,10 +231,12 @@ public class TraderGUI {
                                 "our system.");
                         break;
                 }
-            } catch (AccountNotFoundException | ItemNotFoundException accountNotFoundException) {
+            } catch (AccountNotFoundException | ItemNotFoundException accountNotFoundException ) {
                 showMessageDialog(null, accountNotFoundException.getMessage());
             } catch (IOException | ClassNotFoundException | TradeNumberException exception) {
                 exception.printStackTrace();
+            } catch (WrongAccountTypeException wrongAccountTypeException) {
+                showMessageDialog(null, wrongAccountTypeException.getMessage());
             }
         });
 
@@ -263,7 +263,7 @@ public class TraderGUI {
         });
     }
 
-    private void initializeStatus() throws IOException, ClassNotFoundException, TradeNumberException, ItemNotFoundException {
+    private void initializeStatus() throws IOException, ClassNotFoundException, TradeNumberException, ItemNotFoundException, AccountNotFoundException, WrongAccountTypeException {
         StatusController statusController = new StatusController(user, storageGateway);
         if (!statusController.getStatuses().contains("AWAY") || !statusController.getStatuses().contains("FROZEN")) {
             initializeRequest();
@@ -278,7 +278,7 @@ public class TraderGUI {
         initializeAddItems();
     }
 
-    private void initializeAccount() throws IOException, ClassNotFoundException, AccountNotFoundException, ItemNotFoundException {
+    private void initializeAccount() throws IOException, ClassNotFoundException, AccountNotFoundException, ItemNotFoundException, WrongAccountTypeException {
         MainTabbedPane.insertTab("Account", null, Account, null, 1);
 
         AccountController accountController = new AccountController(storageGateway, user);
@@ -298,18 +298,20 @@ public class TraderGUI {
         }
 
         btnAccountSetAwayStatus.addActionListener(e -> {
-            if (accountController.isAway()){
-                try {
-                    accountController.removeAwayStatus();
-                } catch (StatusNotFoundException statusNotFoundException) {
-                    statusNotFoundException.printStackTrace();
-                }
-            } else{
-                try {
+            try {
+                if (accountController.isAway()){
+                    try {
+                        accountController.removeAwayStatus();
+                    } catch (StatusNotFoundException statusNotFoundException) {
+                        statusNotFoundException.printStackTrace();
+                    }
+                } else{
                     accountController.setAwayStatus();
-                } catch (InvalidStatusTypeException invalidStatusTypeException) {
-                    invalidStatusTypeException.printStackTrace();
                 }
+            } catch (AccountNotFoundException accountNotFoundException) {
+                showMessageDialog(null, accountNotFoundException.getMessage());
+            } catch (WrongAccountTypeException wrongAccountTypeException) {
+                showMessageDialog(null, wrongAccountTypeException.getMessage());
             }
         });
     }
@@ -372,7 +374,7 @@ public class TraderGUI {
                     } else {
                         // we should consider adding a "decide later" option
                     }
-                } catch (TradeNumberException | IOException exception) {
+                } catch (TradeNumberException | IOException | TradeCancelledException | WrongTradeAccountException exception) {
                     showMessageDialog(null, exception.getStackTrace());
                 }
             }
@@ -570,7 +572,7 @@ public class TraderGUI {
             try {
                 thresholdController.setBorrowingThreshold(newBorrowingThreshold);
             } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException exception) {
-                exception.printStackTrace();
+                showMessageDialog(null, exception.getMessage());
             }
         });
         btnThresholdIncompleteEnter.addActionListener(e -> {
@@ -578,7 +580,7 @@ public class TraderGUI {
             try {
                 thresholdController.setIncompleteThreshold(newIncompleteThreshold);
             } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException exception) {
-                exception.printStackTrace();
+                showMessageDialog(null, exception.getMessage());
             }
         });
         btnThresholdWeeklyEnter.addActionListener(e -> {
@@ -586,7 +588,7 @@ public class TraderGUI {
             try {
                 thresholdController.setWeeklyThreshold(newWeeklyThreshold);
             } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException exception) {
-                exception.printStackTrace();
+                showMessageDialog(null, exception.getMessage());
             }
         });
     }
@@ -607,7 +609,7 @@ public class TraderGUI {
                         userlistController.muteUser(userList.get(currUserIndex.get()));
                         showMessageDialog(null, "Account was muted!");
                     } catch (InvalidStatusTypeException | IOException exception) {
-                        exception.printStackTrace();
+                        showMessageDialog(null, exception.getMessage());
                     }
                 } else if (rbtnUserListNext.isSelected()) {
                     currUserIndex.getAndIncrement();
