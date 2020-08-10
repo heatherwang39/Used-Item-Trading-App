@@ -51,10 +51,9 @@ public class MessageStorage implements Storage {
     private List<Message> getSentMessages(String username) {
         List<Message> messages = new ArrayList<>();
         for (Message m: this.messages) {
-            if (m.getSender().equals(username)){
+            if (m.getSender() != null && m.getSender().equals(username))
                 messages.add(m);
             }
-        }
         return messages;
     }
 

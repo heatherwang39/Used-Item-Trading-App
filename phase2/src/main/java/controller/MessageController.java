@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
-import static javax.swing.JOptionPane.showMessageDialog;
-
 /**
  * A Controller for sending Messages, checking InBox and OutBox
  *
@@ -52,8 +50,6 @@ public class MessageController {
             EmptyContentException, EmptyRecipientListException, IOException {
         messageStorage.sendUserMessage(title, content, username, recipients);
         storageGateway.saveStorageData(StorageEnum.MESSAGE);
-        String recipientString = getRecipientString(recipients);
-        showMessageDialog(null, "Message sent to: " + recipientString);
     }
 
 
@@ -71,7 +67,6 @@ public class MessageController {
         List<String> recipients = accountStorage.getAdmins();
         messageStorage.sendSystemMessage(title, content, recipients);
         storageGateway.saveStorageData(StorageEnum.MESSAGE);
-        showMessageDialog(null, "Message sent to admins");
     }
 
     /**
@@ -92,12 +87,46 @@ public class MessageController {
         return messageStorage.getOutboxData(username);
     }
 
-    private String getRecipientString(List<String> recipients){
-        String s = null;
-        for (String recipient: recipients){
-            s += recipient + ", ";
-        }
-        return s;
+    /**
+     * Get a string of all recipients
+     *
+     * @param recipients message recipients
+     * @return recipients list string
+     */
+    public String getRecipientString(List<String> recipients){
+        return String.join(", ", recipients);
     }
 
+    /**
+     * Check if message is nonempty and if user exists
+     *
+     * @param messageTitle message title
+     * @param messageContent message content
+     * @param recipientList recpient list
+     *
+     * @return if message is valid
+     */
+    public boolean validMessage(String messageTitle, String messageContent, List<String> recipientList) {
+        if (!messageTitle.isEmpty() && !messageContent.isEmpty()) {
+            for (String s: recipientList) {
+                if (!accountStorage.isUsernameInUse(s)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if message is nonempty
+     *
+     * @param messageTitle message title
+     * @param messageContent message content
+     *
+     * @return if message is valid
+     */
+    public boolean validMessage(String messageTitle, String messageContent) {
+        return !messageTitle.isEmpty() && !messageContent.isEmpty();
+    }
 }

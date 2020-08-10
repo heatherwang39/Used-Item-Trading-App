@@ -470,28 +470,48 @@ public class TraderGUI {
             String messageTitle = txtMessageUserTitleInput.getText();
             String messageContent = txtAreaMessageUserInput.getText();
             List<String> recipientList = Arrays.asList(txtMessageRecipientInput.getText().split("\\s*,\\s*"));
-            try {
-                messageController.sendUserMessage(messageTitle, messageContent, recipientList);
-
-            } catch (EmptyTitleException | EmptyContentException | EmptyRecipientListException exception) {
-                showMessageDialog(null, exception.getMessage());
-            } catch (IOException exception) {
-                exception.printStackTrace();
+            if (!messageController.validMessage(messageTitle, messageContent, recipientList)) {
+                showMessageDialog(null,"Plead send a valid message to an existing user!");
             }
-            displaySentMessages(messageController, messagePresenter); // we can also refresh incoming messages too here
+            else {
+                try {
+                    messageController.sendUserMessage(messageTitle, messageContent, recipientList);
+                    displaySentMessages(messageController, messagePresenter); // we can also refresh incoming messages too here
+                    displayIncomingMessages(messageController, messagePresenter);
+                    txtMessageRecipientInput.setText("");
+                    txtMessageUserTitleInput.setText("");
+                    txtAreaMessageUserInput.setText("");
+                    System.out.println(recipientList);
+                    String recipientString = messageController.getRecipientString(recipientList);
+                    showMessageDialog(null, "Message sent to: " + recipientString);
+
+                } catch (EmptyTitleException | EmptyContentException | EmptyRecipientListException exception) {
+                    showMessageDialog(null, exception.getMessage());
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
+            }
+
         });
 
         btnMessageAdmin.addActionListener(e -> {
             String messageTitle = txtMessageAdminTitleInput.getText();
             String messageContent = txtAreaMessageAdminInput.getText();
-            try {
-                messageController.sendRequestToSystem(messageTitle, messageContent);
-            } catch (EmptyTitleException | EmptyContentException | EmptyRecipientListException exception) {
-                showMessageDialog(null, exception.getMessage());
-            } catch (IOException exception) {
-                exception.printStackTrace();
+            if (!messageController.validMessage(messageTitle, messageContent)) {
+                showMessageDialog(null,"Plead send a valid message!");
+            } else {
+                try {
+                    messageController.sendRequestToSystem(messageTitle, messageContent);
+                    displayIncomingMessages(messageController, messagePresenter);
+                    txtMessageAdminTitleInput.setText("");
+                    txtAreaMessageAdminInput.setText("");
+                    showMessageDialog(null, "Message sent to admins");
+                } catch (EmptyTitleException | EmptyContentException | EmptyRecipientListException exception) {
+                    showMessageDialog(null, exception.getMessage());
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
             }
-            displaySentMessages(messageController, messagePresenter);
         });
     }
 
@@ -672,18 +692,22 @@ public class TraderGUI {
     }
 
     private void displayIncomingMessages(MessageController msgController, MessagePresenter msgPresenter) {
+        txtAreaMessagesIncoming.append("\n\n");
         List<HashMap<String, String>> incomingMessagesList = msgController.getInbox();
         List<List<String>> formattedIncomingMessagesList = msgPresenter.formatMessageToListView(incomingMessagesList);
         for (List<String> strings : formattedIncomingMessagesList) {
+            txtAreaMessagesIncoming.append("-----------------------------------------------\n");
             txtAreaMessagesIncoming.append(strings.get(0) + ":\n    " +
                     strings.get(1) + "\n");
         }
     }
 
     private void displaySentMessages(MessageController msgController, MessagePresenter msgPresenter){
+        txtAreaMessagesSent.append("\n\n");
         List<HashMap<String, String>> sentMessagesList = msgController.getOutbox();
         List<List<String>> formattedSentMessagesList = msgPresenter.formatMessageToListView(sentMessagesList);
         for (List<String> strings : formattedSentMessagesList) {
+            txtAreaMessagesSent.append("-----------------------------------------------\n");
             txtAreaMessagesSent.append(strings.get(0) + ":\n    " +
                     strings.get(1) + "\n");
         }

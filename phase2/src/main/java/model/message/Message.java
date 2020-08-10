@@ -1,8 +1,8 @@
 package main.java.model.message;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,5 +76,5 @@ public abstract class Message implements Serializable {
      *
      * @return yyyy-MM-dd HH:mm:ss
      */
-    public String getStringDateTime() { return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(dateTime); }
+    public String getStringDateTime() { return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")); }
 }
