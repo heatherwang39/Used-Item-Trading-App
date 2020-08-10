@@ -1,5 +1,7 @@
 package main.java.controller;
 
+import main.java.model.account.AccountNotFoundException;
+import main.java.model.account.WrongAccountTypeException;
 import main.java.model.item.Item;
 import main.java.model.item.ItemStorage;
 import main.java.model.trade.TradeCancelledException;
@@ -82,7 +84,7 @@ public class OffersController {
      * @param tradeNumber id of Trade being rejected
      * @throws TradeNumberException invalid tradeNumber, not in system
      */
-    public void rejectOffer(int tradeNumber) throws TradeNumberException, IOException {
+    public void rejectOffer(int tradeNumber) throws TradeNumberException, IOException, AccountNotFoundException, WrongAccountTypeException {
         tradeStorage.setStatus(tradeNumber, -1);
         storageGateway.saveStorageData(StorageEnum.valueOf("TRADE"));
     }

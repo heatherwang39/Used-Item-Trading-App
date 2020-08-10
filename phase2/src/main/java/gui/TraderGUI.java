@@ -297,7 +297,6 @@ public class TraderGUI {
 
         btnAccountSetAwayStatus.addActionListener(e -> {
             try {
-
                 if (accountController.isAway()){
                     accountController.removeAwayStatus();
                     btnAccountSetAwayStatus.setText("Add Away Status");
@@ -366,7 +365,7 @@ public class TraderGUI {
                     }
                 }
             } catch (TradeNumberException | ItemNotFoundException | WrongTradeAccountException |
-                    TradeCancelledException exception) {
+                    TradeCancelledException | AccountNotFoundException | WrongAccountTypeException exception) {
                 showMessageDialog(null, exception.getMessage());
             } catch (IOException ioException) {
                 ioException.printStackTrace();
