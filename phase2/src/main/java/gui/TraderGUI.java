@@ -12,6 +12,7 @@ import main.java.model.status.InvalidStatusTypeException;
 import main.java.presenter.*;
 
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
 // From: https://stackoverflow.com/questions/9119481/how-to-present-a-simple-alert-message-in-java
 import java.io.IOException;
 import java.util.*;
@@ -275,7 +276,7 @@ public class TraderGUI {
         initializeAddItems();
     }
 
-    private void initializeAccount() throws IOException, ClassNotFoundException, AccountNotFoundException, ItemNotFoundException {
+    private void initializeAccount() throws IOException, ClassNotFoundException, AccountNotFoundException, ItemNotFoundException, WrongAccountTypeException {
         MainTabbedPane.insertTab("Account", null, Account, null, 1);
 
         AccountController accountController = new AccountController(storageGateway, user);
@@ -295,16 +296,17 @@ public class TraderGUI {
         }
 
         btnAccountSetAwayStatus.addActionListener(e -> {
-            if (accountController.isAway()){
-                accountController.removeAwayStatus();
-                btnAccountSetAwayStatus.setText("Add Away Status");
-            } else{
-                try {
+            try {
+
+                if (accountController.isAway()){
+                    accountController.removeAwayStatus();
+                    btnAccountSetAwayStatus.setText("Add Away Status");
+                } else {
                     accountController.setAwayStatus();
                     btnAccountSetAwayStatus.setText("Remove Away Status");
-                } catch (InvalidStatusTypeException invalidStatusTypeException) {
-                    invalidStatusTypeException.printStackTrace();
                 }
+            } catch (AccountNotFoundException | WrongAccountTypeException accountNotFoundException) {
+                showMessageDialog(null, accountNotFoundException.getMessage());
             }
         });
     }
@@ -563,7 +565,7 @@ public class TraderGUI {
             try {
                 thresholdController.setBorrowingThreshold(newBorrowingThreshold);
             } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException exception) {
-                exception.printStackTrace();
+                showMessageDialog(null, exception.getMessage());
             }
         });
         btnThresholdIncompleteEnter.addActionListener(e -> {
@@ -571,7 +573,7 @@ public class TraderGUI {
             try {
                 thresholdController.setIncompleteThreshold(newIncompleteThreshold);
             } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException exception) {
-                exception.printStackTrace();
+                showMessageDialog(null, exception.getMessage());
             }
         });
         btnThresholdWeeklyEnter.addActionListener(e -> {
@@ -579,7 +581,7 @@ public class TraderGUI {
             try {
                 thresholdController.setWeeklyThreshold(newWeeklyThreshold);
             } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException exception) {
-                exception.printStackTrace();
+                showMessageDialog(null, exception.getMessage());
             }
         });
     }
@@ -600,7 +602,7 @@ public class TraderGUI {
                         userlistController.muteUser(userList.get(currUserIndex.get()));
                         showMessageDialog(null, "Account was muted!");
                     } catch (InvalidStatusTypeException | IOException exception) {
-                        exception.printStackTrace();
+                        showMessageDialog(null, exception.getMessage());
                     }
                 } else if (rbtnUserListNext.isSelected()) {
                     currUserIndex.getAndIncrement();
