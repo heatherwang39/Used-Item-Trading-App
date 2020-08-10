@@ -3,8 +3,6 @@ package main.java.controller;
 import main.java.model.account.*;
 import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
-import main.java.model.status.InvalidStatusTypeException;
-import main.java.model.status.StatusStorage;
 import main.java.system.StorageEnum;
 import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
@@ -25,6 +23,7 @@ public class AccountController {
 
     private final AccountStorage accountStorage;
     private final ItemStorage itemStorage;
+    private final StorageGateway storageGateway;
     private final String username;
 
     /** Class constructor
@@ -33,7 +32,7 @@ public class AccountController {
      */
     public AccountController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
         this.username = username;
-
+        this.storageGateway = storageGateway;
         StorageFactory storageFactory = new StorageFactory();
         accountStorage = (AccountStorage) storageFactory.getStorage(storageGateway, StorageEnum.ACCOUNT);
         itemStorage = (ItemStorage) storageFactory.getStorage(storageGateway, StorageEnum.ITEM);
@@ -106,11 +105,13 @@ public class AccountController {
         return false;
     }
 
-    public void setAwayStatus() throws AccountNotFoundException, WrongAccountTypeException {
+    public void setAwayStatus() throws AccountNotFoundException, WrongAccountTypeException, IOException {
         accountStorage.createStatus(username, "AWAY");
+        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
     }
 
-    public void removeAwayStatus() throws StatusNotFoundException, WrongAccountTypeException, AccountNotFoundException {
+    public void removeAwayStatus() throws StatusNotFoundException, WrongAccountTypeException, AccountNotFoundException, IOException {
         accountStorage.removeStatus(username, "AWAY");
+        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
     }
 }

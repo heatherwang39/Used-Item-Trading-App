@@ -454,8 +454,9 @@ public class AccountStorage implements Storage, TradeObserver {
                 user.setWeeklyThreshold(user.getWeeklyThreshold()/2);
                 user.setIncompleteThreshold(user.getIncompleteThreshold()/2);
             }
+        } else {
+            throw new StatusNotFoundException();
         }
-        throw new StatusNotFoundException();
     }
 
     /**
@@ -479,8 +480,9 @@ public class AccountStorage implements Storage, TradeObserver {
                     user.setIncompleteThreshold(user.getIncompleteThreshold() * 2);
                 }
             }
+        } else {
+            throw new WrongAccountTypeException();
         }
-        throw new WrongAccountTypeException();
     }
 
     //automatically freeze account below

@@ -1,6 +1,8 @@
 package main.java.controller;
 
+import main.java.model.account.AccountNotFoundException;
 import main.java.model.account.AccountStorage;
+import main.java.model.account.WrongAccountTypeException;
 import main.java.model.status.InvalidStatusTypeException;
 import main.java.model.status.StatusStorage;
 import main.java.model.trade.TradeNumberException;
@@ -65,10 +67,12 @@ public class FreezeController {
      * Sets a certain user's status to frozen
      *
      * @param username username of the user
-     * @throws InvalidStatusTypeException Invalid status, not in system
+     * @throws IOException file can't be read/written
+     * @throws AccountNotFoundException account not found
+     * @throws WrongAccountTypeException wrong account type
      */
-    public void freezeUser(String username) throws InvalidStatusTypeException, IOException {
-        statusStorage.createStatus(username, "FREEZE");
+    public void freezeUser(String username) throws IOException, AccountNotFoundException, WrongAccountTypeException {
+        accountStorage.createStatus(username, "FREEZE");
         storageGateway.saveStorageData(StorageEnum.valueOf("STATUS"));
     }
 

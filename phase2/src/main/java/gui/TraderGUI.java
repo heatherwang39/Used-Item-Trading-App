@@ -263,7 +263,7 @@ public class TraderGUI {
 
     private void initializeStatus() throws IOException, ClassNotFoundException, TradeNumberException, ItemNotFoundException, AccountNotFoundException, WrongAccountTypeException {
         StatusController statusController = new StatusController(user, storageGateway);
-        if (!statusController.getStatuses().contains("AWAY") || !statusController.getStatuses().contains("FROZEN")) {
+        if (!statusController.getStatuses().contains("AWAY") && !statusController.getStatuses().contains("FROZEN")) {
             initializeRequest();
             initializeOffers();
         }
@@ -290,9 +290,9 @@ public class TraderGUI {
         txtAccountStatuses.setText(statusString);
 
         if (accountController.isAway()){
-            btnAccountSetAwayStatus.setText("Add Away Status");
-        } else{
             btnAccountSetAwayStatus.setText("Remove Away Status");
+        } else{
+            btnAccountSetAwayStatus.setText("Add Away Status");
         }
 
         btnAccountSetAwayStatus.addActionListener(e -> {
@@ -306,6 +306,8 @@ public class TraderGUI {
                 }
             } catch (AccountNotFoundException | WrongAccountTypeException | StatusNotFoundException accountNotFoundException) {
                 showMessageDialog(null, accountNotFoundException.getMessage());
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
         });
     }
@@ -475,7 +477,6 @@ public class TraderGUI {
                     txtMessageRecipientInput.setText("");
                     txtMessageUserTitleInput.setText("");
                     txtAreaMessageUserInput.setText("");
-                    System.out.println(recipientList);
                     String recipientString = messageController.getRecipientString(recipientList);
                     showMessageDialog(null, "Message sent to: " + recipientString);
 
@@ -600,7 +601,7 @@ public class TraderGUI {
                     try {
                         userlistController.muteUser(userList.get(currUserIndex.get()));
                         showMessageDialog(null, "Account was muted!");
-                    } catch (InvalidStatusTypeException | IOException exception) {
+                    } catch (IOException | AccountNotFoundException | WrongAccountTypeException exception) {
                         showMessageDialog(null, exception.getMessage());
                     }
                 } else if (rbtnUserListNext.isSelected()) {
