@@ -2,6 +2,7 @@ package main.java.model.meeting;
 
 import main.java.model.Storage;
 import main.java.model.message.Message;
+import main.java.model.trade.TradeNumberException;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -202,6 +203,21 @@ public class MeetingStorage  implements Storage, MeetingObservee{
         meetingData.put("unaccepted", meeting.getUnacceptedAttendees());
         meetingData.put("unconfirmed", meeting.getUnconfirmedAttendees());
         return meetingData;
+    }
+
+    /**
+     * Gets all relevant data for all meetings in given list of meetingNumbers in HashMap format
+     *
+     * @param meetings list of meetingNumbers of the Meetings getting data of
+     * @return List of HashMaps, with each element being the data of a Meeting
+     * @throws MeetingIDException Thrown if no Meeting has one of the given meetingNumbers
+     */
+    public List<HashMap<String, List<String>>> getMeetingsData(List<Integer> meetings) throws MeetingIDException {
+        List<HashMap<String, List<String>>> meetingsData = new ArrayList<>();
+        for (Integer meetingNumber: meetings) {
+            meetingsData.add(getMeetingData(meetingNumber));
+        }
+        return meetingsData;
     }
 
 

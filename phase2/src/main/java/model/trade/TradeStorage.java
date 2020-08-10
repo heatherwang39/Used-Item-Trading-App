@@ -475,6 +475,24 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
     }
 
 
+    /** Return all accepted Trades that have no meetings suggested yet and involve the given user.
+     *
+     * @param username The username of user you're interested in
+     * @return A list containing the TradeIDs of all accepted Trades that involve the given user
+     */
+    public List<Integer> getAcceptedTradesWithUser(String username){
+        List<Integer> acceptedUserTrades = new ArrayList<>();
+        for (Trade t : trades) {
+            if (t.getTraders().contains(username)) {
+                if(t.getStatus() == 1 && t.getMeetings().size() == 0){
+                    acceptedUserTrades.add(t.getTradeNumber());
+                }
+            }
+        }
+        return acceptedUserTrades;
+    }
+
+
     /** Return all active Trades that involved the given user.
      *
      * @param username The username of user you're interested in
