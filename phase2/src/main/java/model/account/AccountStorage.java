@@ -237,8 +237,6 @@ public class AccountStorage implements Storage, TradeObserver {
     }
 
 
-    //Threshold Methods Below
-
     /** Set the BorrowThreshold of the given account to be the following.
      *
      * @param username The username of the account you'd like to modify
@@ -444,7 +442,7 @@ public class AccountStorage implements Storage, TradeObserver {
      * @param type Status type
      * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      * @throws AccountNotFoundException Thrown when no account has the given username
-     * @throws StatusNotFoundException when no Status could be found
+     * @throws StatusNotFoundException when no Status with given type could be found
      */
     public void removeStatus(String username, String type) throws WrongAccountTypeException, AccountNotFoundException, StatusNotFoundException {
         if(containsStatus(username,type)) {
@@ -528,8 +526,8 @@ public class AccountStorage implements Storage, TradeObserver {
      * If the list is empty, the user should not be frozen.
      *
      * @param traders list of usernames of traders involved
-     * @throws AccountNotFoundException
-     * @throws WrongAccountTypeException
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      */
 
 

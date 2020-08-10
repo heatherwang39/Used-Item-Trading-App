@@ -1,5 +1,9 @@
 package main.java.controller;
 
+import main.java.model.account.AccountNotFoundException;
+import main.java.model.account.AccountStorage;
+import main.java.model.account.StatusNotFoundException;
+import main.java.model.account.WrongAccountTypeException;
 import main.java.model.status.InvalidStatusTypeException;
 import main.java.model.status.StatusStorage;
 import main.java.system2.StorageEnum;
@@ -19,7 +23,7 @@ import java.util.List;
 public class StatusController {
     private String username;
     private final StorageGateway storageGateway;
-    private final StatusStorage statusStorage;
+    private final AccountStorage accountStorage;
 
     /** Class constructor
      *
@@ -30,36 +34,39 @@ public class StatusController {
         this.username = username;
         StorageFactory storageFactory = new StorageFactory();
         this.storageGateway = storageGateway;
-        this.statusStorage = (StatusStorage)storageFactory.getStorage(storageGateway, StorageEnum.STATUS);
+        accountStorage = (AccountStorage) storageFactory.getStorage(storageGateway, StorageEnum.ACCOUNT);
     }
 
     /** Get all status that the user has
      *
      * @return all status that the user has
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      */
-    public List<String> getStatuses() {
-        return statusStorage.getAccountStatusStrings(username);
+    public List<String> getStatuses() throws AccountNotFoundException, WrongAccountTypeException {
+        return accountStorage.getAccountStatuses(username);
     }
 
     /** Set the away status for current account
      *
-     * @throws InvalidStatusTypeException when the type of status is invalid
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      */
-    public void setAwayStatus() throws InvalidStatusTypeException, IOException {
-        statusStorage.createStatus(username,"AWAY");
+    public void setAwayStatus() throws IOException, AccountNotFoundException, WrongAccountTypeException {
+        accountStorage.createStatus(username,"AWAY");
         storageGateway.saveStorageData(StorageEnum.STATUS);
     }
 
     /** Remove the away status
      *
-     * @throws IOException
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     * @throws StatusNotFoundException when no Status with given type could be found
      */
-    public void removeAwayStatus() throws IOException {
-        statusStorage.removeStatus(username,"AWAY");
+    public void removeAwayStatus() throws IOException, StatusNotFoundException, AccountNotFoundException, WrongAccountTypeException {
+        accountStorage.removeStatus(username,"AWAY");
         storageGateway.saveStorageData(StorageEnum.STATUS);
     }
-
-
 
 
 }
