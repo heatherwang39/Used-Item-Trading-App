@@ -34,10 +34,11 @@ public class OffersController {
      *
      * @param storageGateway gateway for loading and saving information
      * @param username username of the user accessing the Offers tab
+     * @param tradePresenter trade presenter
      * @throws IOException file cannot be read/written
      * @throws ClassNotFoundException serialized class not found
      */
-    public OffersController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
+    public OffersController(StorageGateway storageGateway, String username, TradePresenter tradePresenter) throws IOException, ClassNotFoundException {
         this.storageGateway = storageGateway;
         this.username = username;
 

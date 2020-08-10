@@ -312,7 +312,6 @@ public class TraderGUI {
         btnAccountSetAwayStatus.addActionListener(e -> {
             try {
                 if (accountController.isAway()){
-
                     accountController.removeAwayStatus();
                     btnAccountSetAwayStatus.setText("Add Away Status");
                     showMessageDialog(null, "Away status removed! This will take effect once you re-login.");
@@ -323,6 +322,8 @@ public class TraderGUI {
                 }
             } catch (AccountNotFoundException | WrongAccountTypeException | StatusNotFoundException accountNotFoundException) {
                 showMessageDialog(null, accountNotFoundException.getMessage());
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
         });
     }
@@ -583,7 +584,7 @@ public class TraderGUI {
             int newBorrowingThreshold = Integer.parseInt(txtThresholdBorrowedInput.getText());
             try {
                 thresholdController.setBorrowingThreshold(newBorrowingThreshold);
-                showMessageDialog(null, "New Borrowing Threshold has been set to: " + Integer.toString(newBorrowingThreshold));
+                showMessageDialog(null, "New Borrowing Threshold has been set to: " + newBorrowingThreshold);
             } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException exception) {
                 exception.printStackTrace();
             }
@@ -593,7 +594,7 @@ public class TraderGUI {
             int newIncompleteThreshold = Integer.parseInt(txtThresholdIncompleteInput.getText());
             try {
                 thresholdController.setIncompleteThreshold(newIncompleteThreshold);
-                showMessageDialog(null, "New Incompleted Trades Threshold has been set to: " + Integer.toString(newIncompleteThreshold));
+                showMessageDialog(null, "New Incompleted Trades Threshold has been set to: " + newIncompleteThreshold);
             } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException exception) {
                 exception.printStackTrace();
             }
@@ -603,7 +604,7 @@ public class TraderGUI {
             int newWeeklyThreshold = Integer.parseInt(txtThresholdWeeklyInput.getText());
             try {
                 thresholdController.setWeeklyThreshold(newWeeklyThreshold);
-                showMessageDialog(null, "New Weekly Trade Threshold has been set to: " + Integer.toString(newWeeklyThreshold));
+                showMessageDialog(null, "New Weekly Trade Threshold has been set to: " + newWeeklyThreshold);
             } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException exception) {
                 exception.printStackTrace();
             }
@@ -625,8 +626,10 @@ public class TraderGUI {
                     try {
                         userlistController.muteUser(userList.get(currUserIndex.get()));
                         showMessageDialog(null, "Account was muted!");
-                    } catch (InvalidStatusTypeException | IOException exception) {
-                        exception.printStackTrace();
+                    } catch (AccountNotFoundException | WrongAccountTypeException exception) {
+                        showMessageDialog(null, exception.getMessage());
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
                     }
                 } else if (rbtnUserListNext.isSelected()) {
                     currUserIndex.getAndIncrement();
@@ -684,7 +687,7 @@ public class TraderGUI {
                 showMessageDialog(null, exception.getStackTrace());
             }
 
-            if(frozenUserList != null){
+            if(frozenUserList != null && !frozenUserList.isEmpty()){
                 txtFrozenUser.setText(frozenUserList.get(currUserIndex).get(0) + frozenUserList.get(currUserIndex).get(1));
                 if (rbtnUnfreezeUser.isSelected()) {
                     try {
