@@ -96,6 +96,16 @@ public class AccountController {
         return str.toString();
     }
 
+    public String getThresholdsString() throws WrongAccountTypeException, AccountNotFoundException {
+        HashMap<String, Integer> thresholds = getCurrentThresholds();
+        String formattedString = "";
+        formattedString += ("Borrowing Threshold: " + thresholds.get("borrowingThreshold") + " items \n") +
+                ("Incomplete Trades Threshold: " + thresholds.get("incompleteThreshold") + "trades \n") +
+                ("Weekly Trades Threshold: " + thresholds.get("weeklyThreshold") + " trades \n") +
+                        ("Gilded Requirement Threshold: " + thresholds.get("gildedThreshold") + " trades \n");
+        return formattedString;
+    }
+
     /**
      * Get whether the user has "AWAY" status
      *

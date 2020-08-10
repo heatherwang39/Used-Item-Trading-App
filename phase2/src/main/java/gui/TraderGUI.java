@@ -16,6 +16,8 @@ import main.java.presenter.*;
 
 import javax.swing.*;
 // From: https://stackoverflow.com/questions/9119481/how-to-present-a-simple-alert-message-in-java
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -148,6 +150,9 @@ public class TraderGUI {
     private JTextField txtMeetingTimeInput;
     private JRadioButton rbtnMeetingNext;
     private JRadioButton rbtnMeetingCompleted;
+    private JTextField txtThresholdGildedInput;
+    private JButton btnThresholdGuildedEnter;
+    private JTextArea txtAreaAccountThresholds;
     private JTextArea accountInformationTextArea;
 
     private String user;
@@ -162,6 +167,7 @@ public class TraderGUI {
         } catch (IOException | ClassNotFoundException e) {
             showMessageDialog(null, e.getStackTrace());
         }
+
     }
 
     private void initializeLogin() throws IOException, ClassNotFoundException {
@@ -319,7 +325,8 @@ public class TraderGUI {
 
         String statusString = accountController.getStatusString();
         txtAccountStatuses.setText(statusString);
-
+        
+        txtAreaAccountThresholds.setText(accountController.getThresholdsString());
         if (accountController.isAway()){
             btnAccountSetAwayStatus.setText("Remove Away Status");
         } else{
@@ -763,6 +770,16 @@ public class TraderGUI {
                 showMessageDialog(null, "New Weekly Trade Threshold has been set to: " + newWeeklyThreshold);
             } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException | IOException exception) {
                 showMessageDialog(null,exception.getMessage());
+            }
+        });
+        btnThresholdGuildedEnter.addActionListener(e -> {
+            txtThresholdGildedInput.setText("");
+            int newGildedThreshold = Integer.parseInt(txtThresholdGildedInput.getText());
+            try {
+                thresholdController.setGildedThreshold(newGildedThreshold);
+                showMessageDialog(null, "New Threshold for Users to obtain Guilded Status set to: " + newGildedThreshold);
+            } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException | IOException exception) {
+                exception.printStackTrace();
             }
         });
     }
