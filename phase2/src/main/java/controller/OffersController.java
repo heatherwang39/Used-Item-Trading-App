@@ -1,8 +1,11 @@
 package main.java.controller;
 
 import main.java.model.item.ItemNotFoundException;
+import main.java.model.meeting.MeetingStorage;
+import main.java.model.trade.TradeCancelledException;
 import main.java.model.trade.TradeNumberException;
 import main.java.model.trade.TradeStorage;
+import main.java.model.trade.WrongTradeAccountException;
 import main.java.presenter.TradePresenter;
 import main.java.system2.StorageEnum;
 import main.java.system2.StorageFactory;
@@ -42,7 +45,7 @@ public class OffersController {
         this.username = username;
         this.tradePresenter = tradePresenter;
         StorageFactory sf = new StorageFactory();
-        tradeStorage = (TradeStorage) sf.getStorage(storageGateway, StorageEnum.valueOf("TRADE"));
+        tradeStorage = (TradeStorage) sf.getStorage(storageGateway, StorageEnum.TRADE);
     }
 
     /**
@@ -60,10 +63,13 @@ public class OffersController {
      *
      * @param tradeNumber id of Trade being accepted
      * @throws TradeNumberException invalid tradeNumber, not in system
-     * @throws IOException
+     * @throws TradeCancelledException if the given trade has already been cancelled
+     * @throws WrongTradeAccountException if the given trade does not involve the user
      */
-    public void acceptOffer(int tradeNumber) throws TradeNumberException, IOException{
-        tradeStorage.setStatus(tradeNumber, 1);
+    public void acceptOffer(int tradeNumber) throws TradeNumberException, IOException, TradeCancelledException, WrongTradeAccountException {
+        tradeStorage.acceptTrade(tradeNumber, username);
+        if (tradeStorage.isPermanent(tradeNumber)) tradeStorage.setNumMeetings(tradeNumber, 1);
+        else tradeStorage.setNumMeetings(tradeNumber, 2);
         storageGateway.saveStorageData(StorageEnum.valueOf("TRADE"));
     }
 
@@ -72,7 +78,6 @@ public class OffersController {
      *
      * @param tradeNumber id of Trade being rejected
      * @throws TradeNumberException invalid tradeNumber, not in system
-     * @throws IOException
      */
     public void rejectOffer(int tradeNumber) throws TradeNumberException, IOException {
         tradeStorage.setStatus(tradeNumber, -1);
