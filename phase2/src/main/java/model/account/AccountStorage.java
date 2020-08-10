@@ -3,6 +3,7 @@ package main.java.model.account;
 import main.java.model.Storage;
 import main.java.model.trade.Trade;
 import main.java.model.trade.TradeNumberException;
+import main.java.model.trade.TradeObserver;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -15,7 +16,7 @@ import java.util.regex.Pattern;
  * @version %I%, %G%
  * @since Phase 2
  */
-public class AccountStorage implements Storage {
+public class AccountStorage implements Storage, TradeObserver {
 
     private Map<String, LoginAccount> accounts;
 
@@ -496,42 +497,25 @@ public class AccountStorage implements Storage {
      * If the list is empty, the user should not be frozen.
      *
      * @param username username of the user
-     * @param borrowThreshold threshold for borrowing more than lending
-     * @param incompleteThreshold threshold for too many incomplete trades
-     * @param weeklyThreshold threshold for too many trades in one week
      * @return a list of reasons why that user should be frozen. Empty if there are no reasons
      */
 
-    private List<String> checkUserShouldFreeze(String username,int tradeStatus, List<String> itemIds, List<String> traders,
-                                                 LocalDateTime meetingTime, int borrowThreshold,
-                                                 int incompleteThreshold, int weeklyThreshold) {
+    private List<String> checkUserShouldFreeze(String username) throws AccountNotFoundException {
         List<String> reasonsToFreeze = new ArrayList<>();
-        int borrowScore = 0;
-        int incompleteScore = 0;
-        int weeklyScore = 0;
-        if (tradeStatus == 1 || tradeStatus == 2 || tradeStatus == 3) borrowScore += checkBorrowThreshold(username, traders, itemIds);
-        if (checkWeeklyThreshold(meetingTime)) weeklyScore++;
-        if (checkIncompleteThreshold(tradeStatus)) incompleteScore++;
+        UserAccount user = (UserAccount) getAccount(username);
+        int borrowThreshold = user.getBorrowThreshold();
+        int incompleteThreshold = user.getIncompleteThreshold();
+        int weeklyThreshold = user.getWeeklyThreshold();
+        int numberOfBorrowedItems = user.getNumberOfBorrowedItems();
+        int numberOfIncompleteTrades= user.getNumberOfIncompleteTrades();
+        int numberOfWeeklyTrades = user.getNumberOfWeeklyTrades();
 
-        if (borrowScore > borrowThreshold) reasonsToFreeze.add("BORROW");
-        if (incompleteScore > incompleteThreshold) reasonsToFreeze.add("INCOMPLETE");
-        if (weeklyScore > weeklyThreshold) reasonsToFreeze.add("WEEKLY");
+        if (numberOfBorrowedItems > borrowThreshold) reasonsToFreeze.add("BORROW");
+        if (numberOfIncompleteTrades > incompleteThreshold) reasonsToFreeze.add("INCOMPLETE");
+        if (numberOfWeeklyTrades > weeklyThreshold) reasonsToFreeze.add("WEEKLY");
         return reasonsToFreeze;
     }
 
-    private int checkBorrowThreshold(String username, List<String> traders, List<String> itemIds) {
-        if (traders.get(0).equals(username) && itemIds.size() == 1) return 1;
-        else if (traders.get(1).equals(username) && itemIds.size() == 1) return -1;
-        else return 0;
-    }
-
-    private boolean checkWeeklyThreshold(LocalDateTime meetingTime) {
-        return (!(meetingTime == null) && meetingTime.isAfter(LocalDateTime.now().minusDays(7)));
-    }
-
-    private boolean checkIncompleteThreshold(int tradeStatus) {
-        return tradeStatus == -1;
-    }
 
     /**
      * Checks which users in usernames should be frozen based on if they violate any of the trade thresholds
@@ -543,30 +527,22 @@ public class AccountStorage implements Storage {
      * of reasons is returned.
      * If the list is empty, the user should not be frozen.
      *
-     * @param
-     * @return a list of lists that contain the username and reasons why that user should be frozen. Empty if there are no users to freeze
+     * @param traders list of usernames of traders involved
+     * @throws AccountNotFoundException
+     * @throws WrongAccountTypeException
      */
 
-    //whenever a trade happens
-    //need the tradeStatus,traders,items,   meeting time from trade
 
-    public void freezeUsers(int tradeStatus,List<String> traders, List<String> itemIds,
-                                           LocalDateTime meetingTime ) throws AccountNotFoundException, WrongAccountTypeException {
+    private void freezeUsers(List<String> traders) throws AccountNotFoundException, WrongAccountTypeException {
         for(String username:traders){
-            if (getType(username).equals("USER")){
-                if(!containsStatus(username,"FROZEN")) {
-                    UserAccount user = (UserAccount) getAccount(username);
-                    int borrowThreshold = user.getBorrowThreshold();
-                    int incompleteThreshold = user.getIncompleteThreshold();
-                    int weeklyThreshold = user.getWeeklyThreshold();
-                    List<String> userFreezeReasons = checkUserShouldFreeze(username,tradeStatus,itemIds,traders, meetingTime,borrowThreshold, incompleteThreshold, weeklyThreshold);
-                    user.setFreezeReasons(userFreezeReasons);
-                    if (userFreezeReasons.size() > 1) {
-                        user.addStatus(StatusEnum.FROZEN);
-                    }
+            if(!containsStatus(username,"FROZEN")) {
+                UserAccount user = (UserAccount) getAccount(username);
+                List<String> userFreezeReasons = checkUserShouldFreeze(username);
+                user.setFreezeReasons(userFreezeReasons);
+                if (userFreezeReasons.size() > 1) {
+                    user.addStatus(StatusEnum.FROZEN);
                 }
             }
-            throw new WrongAccountTypeException();
         }
     }
 
@@ -617,14 +593,11 @@ public class AccountStorage implements Storage {
         }
     }
 
-    //whenever a trade is completed (status=3)
-    //need the tradeStatus,items, traders,  meeting time from trade
-    public void gildUser(List<String> traders) throws AccountNotFoundException, WrongAccountTypeException {
+    private void gildUsers(List<String> traders) throws AccountNotFoundException, WrongAccountTypeException {
         for(String username:traders) {
             if (getType(username).equals("USER")) {
                 if(!containsStatus(username,"GILDED")){
                     UserAccount user = (UserAccount) getAccount(username);
-                    user.updateNumberOfCompletedTrades();
                     if(user.getNumberOfCompletedTrades()>user.getGildedThreshold()){
                         user.addStatus(StatusEnum.GILDED);
                     }
@@ -635,4 +608,60 @@ public class AccountStorage implements Storage {
     }
 
 
+    /**
+     * Record the fact that a Trade's status has changed
+     *
+     * @param exchangeData A HashMap representing the Exchange Data of the Trade
+     * @param newStatus    The new Status of the Trade
+     */
+    @Override
+    public void updateTradeChange(HashMap<String, HashMap<String, Integer>> exchangeData, int newStatus) throws AccountNotFoundException, WrongAccountTypeException {
+        List<String> traders = (List<String>) exchangeData.keySet();
+        if(newStatus==3){
+            for(String username:traders){
+                UserAccount user = (UserAccount) getAccount(username);
+                int numberOfCompletedTrades = user.getNumberOfCompletedTrades()+1;
+                user.setNumberOfCompletedTrades(numberOfCompletedTrades);
+                int numberOfWeeklyTrades = user.getNumberOfWeeklyTrades()+1;
+                user.setNumberOfWeeklyTrades(numberOfWeeklyTrades);
+                int numberOfIncompleteTrades = user.getNumberOfIncompleteTrades()-1;
+                user.setNumberOfIncompleteTrades(numberOfIncompleteTrades);
+            }
+            updateNumberOfBorrowedItems(exchangeData);
+            gildUsers(traders);
+            freezeUsers(traders);
+        }
+
+        if(newStatus==0){
+            for(String username:traders) {
+                UserAccount user = (UserAccount) getAccount(username);
+                int numberOfIncompleteTrades = user.getNumberOfIncompleteTrades()+1;
+                user.setNumberOfIncompleteTrades(numberOfIncompleteTrades);
+            }
+        }
+
+        if(newStatus==-1){
+            for(String username:traders) {
+                UserAccount user = (UserAccount) getAccount(username);
+                int numberOfIncompleteTrades = user.getNumberOfIncompleteTrades()-1;
+                user.setNumberOfIncompleteTrades(numberOfIncompleteTrades);
+            }
+        }
+    }
+
+    private void updateNumberOfBorrowedItems(HashMap<String, HashMap<String, Integer>> exchangeData) throws AccountNotFoundException {
+        for(String username : exchangeData.keySet()) {
+            Integer itemSent = exchangeData.get(username).get("SENT");
+            Integer itemReceived = exchangeData.get(username).get("RECEIVED");
+            UserAccount user = (UserAccount) getAccount(username);
+            if(itemSent!=null){
+                int numberOfBorrowedItems = user.getNumberOfBorrowedItems()-1;
+                user.setNumberOfBorrowedItems(numberOfBorrowedItems);
+            }
+            if(itemReceived!=null){
+                int numberOfBorrowedItems = user.getNumberOfBorrowedItems()+1;
+                user.setNumberOfBorrowedItems(numberOfBorrowedItems);
+            }
+        }
+    }
 }
