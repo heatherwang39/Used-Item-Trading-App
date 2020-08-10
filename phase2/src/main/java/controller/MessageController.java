@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
+import static javax.swing.JOptionPane.showMessageDialog;
+
 /**
  * A Controller for sending Messages, checking InBox and OutBox
  *
@@ -50,7 +52,10 @@ public class MessageController {
             EmptyContentException, EmptyRecipientListException, IOException {
         messageStorage.sendUserMessage(title, content, username, recipients);
         storageGateway.saveStorageData(StorageEnum.MESSAGE);
+        String recipientString = getRecipientString(recipients);
+        showMessageDialog(null, "Message sent to: " + recipientString);
     }
+
 
     /**
      * Creates a new SystemMessage and send to all admins.
@@ -66,6 +71,7 @@ public class MessageController {
         List<String> recipients = accountStorage.getAdmins();
         messageStorage.sendSystemMessage(title, content, recipients);
         storageGateway.saveStorageData(StorageEnum.MESSAGE);
+        showMessageDialog(null, "Message sent to admins");
     }
 
     /**
@@ -84,6 +90,14 @@ public class MessageController {
      */
     public List<HashMap<String, String>> getOutbox() {
         return messageStorage.getOutboxData(username);
+    }
+
+    private String getRecipientString(List<String> recipients){
+        String s = null;
+        for (String recipient: recipients){
+            s += recipient + ", ";
+        }
+        return s;
     }
 
 }

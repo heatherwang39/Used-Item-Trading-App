@@ -472,6 +472,7 @@ public class TraderGUI {
             List<String> recipientList = Arrays.asList(txtMessageRecipientInput.getText().split("\\s*,\\s*"));
             try {
                 messageController.sendUserMessage(messageTitle, messageContent, recipientList);
+
             } catch (EmptyTitleException | EmptyContentException | EmptyRecipientListException exception) {
                 showMessageDialog(null, exception.getMessage());
             } catch (IOException exception) {
