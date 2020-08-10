@@ -23,6 +23,7 @@ public class MeetingPresenter {
         this.username = username;
     }
 
+
     /**
      * Formats a list of hashmaps representing data of meetings for GUI Lists to display
      * Format of meeting: "id. otherAttendee1, otherAttendee2, ..., Place: place (dow mon dd hh:mm:ss zzz yyy)"

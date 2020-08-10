@@ -6,6 +6,7 @@ import main.java.model.trade.MaxNumMeetingsExceededException;
 import main.java.model.trade.TradeCancelledException;
 import main.java.model.trade.TradeNumberException;
 import main.java.model.trade.TradeStorage;
+import main.java.presenter.MeetingPresenter;
 import main.java.system.StorageEnum;
 import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
@@ -24,9 +25,9 @@ import java.util.*;
 public class MeetingController {
     private final StorageGateway storageGateway;
     private final TradeStorage tradeStorage;
-    private final ItemStorage itemStorage;
     private final MeetingStorage meetingStorage;
     private final String username;
+    private MeetingPresenter meetingPresenter;
 
     /**
      * Initializes a new MeetingController for the given username
@@ -39,8 +40,9 @@ public class MeetingController {
         this.username = username;
         StorageFactory sf = new StorageFactory();
         tradeStorage = (TradeStorage) sf.getStorage(storageGateway, StorageEnum.TRADE);
-        itemStorage = (ItemStorage) sf.getStorage(storageGateway, StorageEnum.ITEM);
+        ItemStorage itemStorage = (ItemStorage) sf.getStorage(storageGateway, StorageEnum.ITEM);
         meetingStorage = (MeetingStorage) sf.getStorage(storageGateway, StorageEnum.MEETING);
+        meetingPresenter = new MeetingPresenter(username);
     }
 
 
@@ -53,9 +55,21 @@ public class MeetingController {
      * @return List of hashmaps that contain trade data
      * @throws TradeNumberException invalid trade id found in system
      */
-    public List<HashMap<String, List<String>>> getAcceptedTrades() throws TradeNumberException {
+    public List<HashMap<String, List<String>>> getAcceptedTradesUnformatted() throws TradeNumberException {
         return tradeStorage.getTradesData(tradeStorage.getAcceptedTradesWithUser(username));
     }
+
+
+    /**
+     * Gets all formatted accepted trades involving user that have not set a meeting yet
+     *
+     * @return List of strings that contain formatted trade data
+     * @throws TradeNumberException invalid trade id found in system
+     */
+    public List<String> getAcceptedTrades() throws TradeNumberException {
+        return meetingPresenter.formatMeetingToListView(getAcceptedTradesUnformatted());
+    }
+
 
     /**
      * Suggests a meeting for the trade with given tradeNumber
@@ -84,8 +98,18 @@ public class MeetingController {
      * @return List of hashmaps that contain meeting data
      * @throws MeetingIDException invalid meeting id found in system
      */
-    public List<HashMap<String, List<String>>> getSuggestedMeetings() throws MeetingIDException {
+    public List<HashMap<String, List<String>>> getSuggestedMeetingsUnformatted() throws MeetingIDException {
         return meetingStorage.getMeetingsData(meetingStorage.getSuggestedMeetings(username));
+    }
+
+    /**
+     * Gets all formatted meeting suggestions the user has not replied to yet
+     *
+     * @return List of strings that contain formatted meeting data
+     * @throws MeetingIDException invalid meeting id found in system
+     */
+    public List<String> getSuggestedMeetings() throws MeetingIDException {
+        return meetingPresenter.formatMeetingToListView(getSuggestedMeetingsUnformatted());
     }
 
     /**
@@ -123,8 +147,19 @@ public class MeetingController {
      * @return List of hashmaps that contain meeting data
      * @throws MeetingIDException invalid meeting id found in system
      */
-    public List<HashMap<String, List<String>>> getOngoingMeetings() throws MeetingIDException {
+    public List<HashMap<String, List<String>>> getOngoingMeetingsUnformatted() throws MeetingIDException {
         return meetingStorage.getMeetingsData(meetingStorage.getOngoingMeetings(username));
+    }
+
+
+    /**
+     * Gets all meetings the user is participating in that are currently ongoing formatted
+     *
+     * @return List of strings that contain formatted meeting data
+     * @throws MeetingIDException invalid meeting id found in system
+     */
+    public List<String> getOngoingMeetings() throws MeetingIDException{
+        return meetingPresenter.formatMeetingToListView(getOngoingMeetingsUnformatted());
     }
 
     /**
@@ -154,7 +189,18 @@ public class MeetingController {
      * @return List of hashmaps that contain meeting data
      * @throws MeetingIDException invalid meeting id found in system
      */
-    public List<HashMap<String, List<String>>> getCompletedMeetings() throws MeetingIDException {
+    public List<HashMap<String, List<String>>> getCompletedMeetingsUnformatted() throws MeetingIDException {
         return meetingStorage.getMeetingsData(meetingStorage.getCompletedMeetings(username));
+    }
+
+    /**
+     * Gets all meetings the user has participated in that are completed. There is nothing to interact with, this is
+     * just to view meeting history formatted
+     *
+     * @return List of strings that contain formatted meeting data
+     * @throws MeetingIDException invalid meeting id found in system
+     */
+    public List<String> getCompletedMeetings() throws MeetingIDException {
+        return meetingPresenter.formatMeetingToListView(getCompletedMeetingsUnformatted());
     }
 }

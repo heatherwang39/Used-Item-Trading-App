@@ -13,7 +13,7 @@ public class TraderMain {
         try {
             StorageGateway storageGateway = new StorageGateway(RESOURCE_PATH, FILENAME_CONFIG);
             JFrame frame = new JFrame("Trader Client");
-            String user = null;
+            String user = null; // does this line do anything?
             frame.setContentPane(new TraderGUI(storageGateway).MainContainer);
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             frame.pack();

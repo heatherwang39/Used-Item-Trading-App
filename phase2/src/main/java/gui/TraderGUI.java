@@ -3,6 +3,10 @@ package main.java.gui;
 import main.java.controller.*;
 import main.java.model.account.*;
 import main.java.model.item.ItemNotFoundException;
+import main.java.model.meeting.MeetingAlreadyConfirmedException;
+import main.java.model.meeting.MeetingIDException;
+import main.java.model.meeting.TimeException;
+import main.java.model.meeting.WrongMeetingAccountException;
 import main.java.model.message.EmptyContentException;
 import main.java.model.message.EmptyRecipientListException;
 import main.java.model.message.EmptyTitleException;
@@ -126,11 +130,29 @@ public class TraderGUI {
     private JTextArea txtAreaMessagesSent;
     private JTextArea txtAreaRequestSuggestTradesOutput;
     private JButton btnRequestSuggestion;
+    private JTextArea txtAreaMeetingAcceptedTrades;
+    private JTextField txtMeetingAcceptedTrade;
+    private JTextField txtMeetingSuggestInput;
+    private JButton btnMeetingSuggest;
+    private JTabbedPane tabbedPane1;
+    private JTextArea txtAreaMeetingSuggestions;
+    private JTextField txtMeetingSuggested;
+    private JRadioButton rbtnMeetingAccept;
+    private JRadioButton rbtnMeetingDeny;
+    private JTextArea txtAreaMeetingOngoing;
+    private JTextField txtMeetingOngoingOutput;
+    private JButton btnMeetingOngoingEnter;
+    private JPanel Meeting;
+    private JButton btnMeetingEnterResponse;
+    private JTextArea txtAreaMeetingCompleted;
+    private JTextField txtMeetingTimeInput;
+    private JRadioButton rbtnMeetingNext;
+    private JRadioButton rbtnMeetingCompleted;
     private JTextArea accountInformationTextArea;
 
     private String user;
     private final StorageGateway storageGateway;
-    private int currUserIndex = 0;
+
 
     public TraderGUI(StorageGateway storageGateway) {
         this.storageGateway = storageGateway;
@@ -140,7 +162,6 @@ public class TraderGUI {
         } catch (IOException | ClassNotFoundException e) {
             showMessageDialog(null, e.getStackTrace());
         }
-
     }
 
     private void initializeLogin() throws IOException, ClassNotFoundException {
@@ -469,6 +490,145 @@ public class TraderGUI {
             }       });
     }
 
+    private void displaySuggestMeetings(MeetingController meetingController){
+        List<String> acceptedTradesList = null;
+        try {
+            acceptedTradesList = meetingController.getAcceptedTrades();
+        } catch (TradeNumberException tradeNumberException) {
+            tradeNumberException.printStackTrace();
+        }
+        if (acceptedTradesList != null && !acceptedTradesList.isEmpty()) {
+            for (String s : acceptedTradesList) {
+                txtAreaMeetingAcceptedTrades.append(s + "\n ----------------------");
+            }
+            txtMeetingAcceptedTrade.setText("");
+            txtMeetingAcceptedTrade.setText(acceptedTradesList.get(0));
+        }
+    }
+
+    private void displayMeetingSuggestions(MeetingController meetingController){
+        List<String> meetingSuggestionsList = null;
+        try {
+            meetingSuggestionsList = meetingController.getSuggestedMeetings();
+        } catch (MeetingIDException meetingIDException) {
+            meetingIDException.printStackTrace();
+        }
+        if (meetingSuggestionsList != null && !meetingSuggestionsList.isEmpty()){
+            for (String s: meetingSuggestionsList){
+                txtAreaMeetingSuggestions.append(s + "\n ----------------------");
+            }
+            txtMeetingSuggested.setText("");
+            txtMeetingSuggested.setText(meetingSuggestionsList.get(0));
+        }
+    }
+
+    private void displayOngoingMeetings(MeetingController meetingController, int currMeetingIndex){
+        List<String> ongoingMeetingsList = null;
+        try {
+            ongoingMeetingsList = meetingController.getOngoingMeetings();
+        } catch (MeetingIDException meetingIDException) {
+            meetingIDException.printStackTrace();
+        }
+
+        if(ongoingMeetingsList != null && !ongoingMeetingsList.isEmpty()){
+            for (String s : ongoingMeetingsList){
+                txtAreaMeetingOngoing.append(s + "\n ----------------------");
+            }
+            txtMeetingOngoingOutput.setText(ongoingMeetingsList.get(currMeetingIndex));
+        }
+    }
+
+    private void displayCompletedMeetings(MeetingController meetingController){
+        List<String> completedMeetingsList = null;
+        try {
+            completedMeetingsList = meetingController.getCompletedMeetings();
+        } catch (MeetingIDException meetingIDException) {
+            meetingIDException.printStackTrace();
+        }
+
+        if (completedMeetingsList != null && !completedMeetingsList.isEmpty()) {
+            for (String s : completedMeetingsList){
+                txtAreaMeetingCompleted.append(s + "\n ----------------------");
+            }
+        }
+    }
+
+    private void initializeMeeting() throws IOException, ClassNotFoundException {
+        MainTabbedPane.insertTab("Meeting", null, Meeting, null, 3);
+        MeetingController meetingController = new MeetingController(storageGateway, user);
+        displaySuggestMeetings(meetingController);
+        displayMeetingSuggestions(meetingController);
+        displayOngoingMeetings(meetingController, 0);
+        displayCompletedMeetings(meetingController);
+
+
+
+        final int[] currMeetingOngoingIndex = {0};
+        btnMeetingSuggest.addActionListener(e -> {
+            displaySuggestMeetings(meetingController);
+            List<HashMap<String, List<String>>> acceptedTradesListUnformatted = null;
+            try {
+                acceptedTradesListUnformatted = meetingController.getAcceptedTradesUnformatted();
+            } catch (TradeNumberException tradeNumberException) {
+                tradeNumberException.printStackTrace();
+            }
+
+            String suggestedPlace = txtMeetingSuggestInput.getText();
+            String suggestedTime = txtMeetingTimeInput.getText();
+            // will come back to this once I hear from Warren what to do with LocalDateTime and if we can remove it
+//            if (acceptedTradesListUnformatted != null && !acceptedTradesListUnformatted.isEmpty()) {
+//                meetingController.suggestMeeting(Integer.parseInt(acceptedTradesListUnformatted.get(0).get("id").get(0)), suggestedPlace, suggestedTime);
+//            }
+        });
+
+        btnMeetingEnterResponse.addActionListener(e ->{
+            displayMeetingSuggestions(meetingController);
+            List<HashMap<String, List<String>>> meetingSuggestionsListUnformatted = null;
+
+            try {
+                meetingSuggestionsListUnformatted = meetingController.getSuggestedMeetingsUnformatted();
+                if (meetingSuggestionsListUnformatted != null && !meetingSuggestionsListUnformatted.isEmpty()){
+                    if (rbtnMeetingAccept.isSelected()){
+                        meetingController.acceptMeeting(Integer.parseInt(meetingSuggestionsListUnformatted.get(0).get("id").get(0)));
+                    } else if (rbtnMeetingDeny.isSelected()){
+                        meetingController.rejectMeeting(Integer.parseInt(meetingSuggestionsListUnformatted.get(0).get("id").get(0)));
+                    } else{
+                        showMessageDialog(null, "Please either accept or deny this suggestion");
+                    }
+                }
+
+            } catch (WrongMeetingAccountException | MeetingIDException | IOException | MeetingAlreadyConfirmedException exception) {
+                exception.printStackTrace();
+            }
+        });
+
+
+        btnMeetingOngoingEnter.addActionListener(e -> {
+            displayOngoingMeetings(meetingController, currMeetingOngoingIndex[0]);
+            List<HashMap<String, List<String>>> ongoingMeetingsListUnformatted = null;
+            try {
+                ongoingMeetingsListUnformatted = meetingController.getOngoingMeetingsUnformatted();
+            } catch (MeetingIDException meetingIDException) {
+                meetingIDException.printStackTrace();
+            }
+            if (ongoingMeetingsListUnformatted != null && !ongoingMeetingsListUnformatted.isEmpty()){
+                if (rbtnMeetingCompleted.isSelected()) {
+                    try {
+                        meetingController.confirmMeeting(Integer.parseInt(ongoingMeetingsListUnformatted.get(currMeetingOngoingIndex[0]).get("id").get(0)));
+                    } catch (WrongMeetingAccountException | MeetingIDException | TimeException | IOException exception) {
+                        exception.printStackTrace();
+                    }
+                } else if (rbtnMeetingNext.isSelected()){
+                    currMeetingOngoingIndex[0]++;
+                } else{
+                    showMessageDialog(null, "Please select an option!");
+                }
+            }
+
+
+        });
+
+    }
     private void initializeMessages() throws IOException, ClassNotFoundException {
         MainTabbedPane.insertTab("Messages", null, Messages, null, 3);
         MessageController messageController = new MessageController(storageGateway, user);
@@ -670,6 +830,7 @@ public class TraderGUI {
 
 
     private void initializeFreeze() throws IOException, ClassNotFoundException {
+        final int[] currUserIndex = {0};
         MainTabbedPane.insertTab("Un-Freeze", null, Freeze, null, 2);
 
         FreezeController freezeController = new FreezeController(storageGateway);
@@ -684,7 +845,7 @@ public class TraderGUI {
             }
 
             if(frozenUserList != null && !frozenUserList.isEmpty()){
-                txtFrozenUser.setText(frozenUserList.get(currUserIndex).get(0) + frozenUserList.get(currUserIndex).get(1));
+                txtFrozenUser.setText(frozenUserList.get(currUserIndex[0]).get(0) + frozenUserList.get(currUserIndex[0]).get(1));
                 if (rbtnUnfreezeUser.isSelected()) {
                     try {
                         freezeController.unfreezeUser(frozenUserList.get(0).get(0));
@@ -693,7 +854,7 @@ public class TraderGUI {
                         showMessageDialog(null, exception.getMessage());
                     }
                 } else if (rbtnIgnoreUser.isSelected()) {
-                    currUserIndex++;
+                    currUserIndex[0]++;
 
                 } else {
                     showMessageDialog(null, "Please make a verdict!");
