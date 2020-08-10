@@ -1,4 +1,4 @@
-package main.java.system2;
+package main.java.system;
 
 import main.java.model.Storage;
 import main.java.model.account.AccountStorage;

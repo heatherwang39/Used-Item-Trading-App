@@ -1,13 +1,12 @@
 package main.java.controller;
 
+import main.java.model.account.AccountNotFoundException;
 import main.java.model.account.AccountStorage;
-import main.java.model.status.InvalidStatusTypeException;
-import main.java.model.status.StatusStorage;
-import main.java.model.trade.TradeNumberException;
-import main.java.model.trade.TradeStorage;
-import main.java.system2.StorageEnum;
-import main.java.system2.StorageFactory;
-import main.java.system2.StorageGateway;
+import main.java.model.account.StatusNotFoundException;
+import main.java.model.account.WrongAccountTypeException;
+import main.java.system.StorageEnum;
+import main.java.system.StorageFactory;
+import main.java.system.StorageGateway;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,9 +21,7 @@ import java.util.List;
 public class GildedController {
 
     private final StorageGateway storageGateway;
-    private final StatusStorage statusStorage;
     private final AccountStorage accountStorage;
-    private final TradeStorage tradeStorage;
 
     /** Class constructor
      *
@@ -33,45 +30,43 @@ public class GildedController {
     public GildedController(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
         StorageFactory storageFactory = new StorageFactory();
         this.storageGateway = storageGateway;
-        statusStorage = (StatusStorage)storageFactory.getStorage(storageGateway, StorageEnum.STATUS);
         accountStorage = (AccountStorage)storageFactory.getStorage(storageGateway,StorageEnum.ACCOUNT);
-        tradeStorage = (TradeStorage)storageFactory.getStorage(storageGateway, StorageEnum.TRADE);
     }
 
     /** Get all gilded Users who have completed more than 20 trades and set their status to be gilded in the same time
      *
      * @return the usernames of all gilded Users
-     * @throws TradeNumberException an invalid trade number is found
-     * @throws InvalidStatusTypeException an invalid type of status if found
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      */
-    public List<String> getAllGildedUsers() throws TradeNumberException, InvalidStatusTypeException, IOException {
-        List<String> allUsers = accountStorage.getUsernames();
-        List<String> gildedUsers = tradeStorage.getGildedUsers(allUsers);
-        for(String username:gildedUsers){
-            statusStorage.createStatus(username,"GILDED");
-        }
-        storageGateway.saveStorageData(StorageEnum.STATUS);
+    public List<String> getAllGildedUsers() throws AccountNotFoundException, WrongAccountTypeException {
+        List<String> gildedUsers = accountStorage.getAccountsWithStatus("GILDED");
+
         return gildedUsers;
     }
 
     /** Add the gilded status for a certain user
      *
      * @param username the username of the user
-     * @throws InvalidStatusTypeException when the type of status is invalid
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      */
-    public void setGildedStatus(String username) throws InvalidStatusTypeException, IOException {
-        statusStorage.createStatus(username,"GILDED");
-        storageGateway.saveStorageData(StorageEnum.STATUS);
+    public void setGildedStatus(String username) throws IOException, AccountNotFoundException, WrongAccountTypeException {
+        accountStorage.createStatus(username,"GILDED");
+        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
     }
 
     /** Remove the gilded status for a certain user
      *
      * @param username the username of the user
-     * @throws IOException
+     * @throws IOException file cannot be read/written
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     *
      */
-    public void removeGildedStatus(String username) throws IOException {
-        statusStorage.removeStatus(username,"GILDED");
-        storageGateway.saveStorageData(StorageEnum.STATUS);
+    public void removeGildedStatus(String username) throws IOException, StatusNotFoundException, AccountNotFoundException, WrongAccountTypeException {
+        accountStorage.removeStatus(username,"GILDED");
+        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
     }
 
 

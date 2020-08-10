@@ -1,4 +1,4 @@
-package main.java.system2;
+package main.java.system;
 
 /**
  * Enum Class for Storage types
@@ -8,8 +8,8 @@ package main.java.system2;
  * @since Phase 2
  */
 public enum StorageEnum{
-    ACCOUNT("ACCOUNT"), MEETING("MEETING"), STATUS("STATUS"), MESSAGE("MESSAGE"),
-    TRADE("TRADE"), ITEM("ITEM");
+    ACCOUNT("ACCOUNT"), MEETING("MEETING"), MESSAGE("MESSAGE"),
+    TRADE("TRADE"), ITEM("ITEM"), STATUS("STATUS");
 
     private final String name;
 

@@ -3,11 +3,10 @@ package main.java.controller;
 import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
 import main.java.model.item.NotInWishlistException;
-import main.java.system2.StorageEnum;
-import main.java.system2.StorageFactory;
-import main.java.system2.StorageGateway;
+import main.java.system.StorageEnum;
+import main.java.system.StorageFactory;
+import main.java.system.StorageGateway;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.*;
 

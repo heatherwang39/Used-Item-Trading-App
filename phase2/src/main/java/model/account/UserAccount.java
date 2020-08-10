@@ -15,7 +15,10 @@ public class UserAccount extends LoginAccount {
     private int incompleteThreshold = 3;
     private int weeklyThreshold = 3;
     private int gildedThreshold = 10;
+    private int numberOfBorrowedItems;
     private int numberOfCompletedTrades;
+    private int numberOfWeeklyTrades;
+    private int numberOfIncompleteTrades;
     private List<String> freezeReasons = new ArrayList<>();
     private List<StatusEnum> statuses = new ArrayList<>();
 
@@ -53,17 +56,14 @@ public class UserAccount extends LoginAccount {
 
     public int getNumberOfCompletedTrades(){return numberOfCompletedTrades;}
 
+    //temporary, need to delete later
     public void updateNumberOfCompletedTrades(){
         numberOfCompletedTrades++;
     }
-
-    public int getGildedThreshold() {
-        return gildedThreshold;
+    public void setNumberOfCompletedTrades(int numberOfCompletedTrades){
+        this.numberOfCompletedTrades = numberOfCompletedTrades;
     }
 
-    public void setGildedThreshold(int gildedThreshold) {
-        this.gildedThreshold = gildedThreshold;
-    }
 
     public List<String> getFreezeReasons() {
         return freezeReasons;
@@ -74,7 +74,43 @@ public class UserAccount extends LoginAccount {
     }
 
 
+    public int getNumberOfWeeklyTrades() {
+        return numberOfWeeklyTrades;
+    }
+
+    public void setNumberOfWeeklyTrades(int numberOfWeeklyTrades) {
+        this.numberOfWeeklyTrades = numberOfWeeklyTrades;
+    }
+
+
+    public int getNumberOfIncompleteTrades() {
+        return numberOfIncompleteTrades;
+    }
+
+    public void setNumberOfIncompleteTrades(int numberOfIncompleteTrades) {
+        this.numberOfIncompleteTrades = numberOfIncompleteTrades;
+    }
+
+
+    public int getNumberOfBorrowedItems() {
+        return numberOfBorrowedItems;
+    }
+
+    public void setNumberOfBorrowedItems(int numberOfBorrowedItems) {
+        this.numberOfBorrowedItems = numberOfBorrowedItems;
+    }
+
+
+
     //Threshold Methods Below
+
+    public int getGildedThreshold() {
+        return gildedThreshold;
+    }
+
+    public void setGildedThreshold(int gildedThreshold) {
+        this.gildedThreshold = gildedThreshold;
+    }
 
     /** Return the BorrowThreshold for this given Account
      *

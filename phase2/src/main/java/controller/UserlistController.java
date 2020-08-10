@@ -2,11 +2,12 @@ package main.java.controller;
 
 import main.java.model.account.AccountNotFoundException;
 import main.java.model.account.AccountStorage;
+import main.java.model.account.WrongAccountTypeException;
 import main.java.model.status.InvalidStatusTypeException;
 import main.java.model.status.StatusStorage;
-import main.java.system2.StorageEnum;
-import main.java.system2.StorageFactory;
-import main.java.system2.StorageGateway;
+import main.java.system.StorageEnum;
+import main.java.system.StorageFactory;
+import main.java.system.StorageGateway;
 
 import java.io.IOException;
 import java.util.*;
@@ -21,7 +22,6 @@ import java.util.*;
 public class UserlistController {
     private final StorageGateway storageGateway;
     private final AccountStorage accountStorage;
-    private final StatusStorage statusStorage;
 
     /**
      * Initializes a new UserlistController for the given username
@@ -32,7 +32,6 @@ public class UserlistController {
         this.storageGateway = storageGateway;
         StorageFactory sf = new StorageFactory();
         accountStorage = (AccountStorage) sf.getStorage(storageGateway, StorageEnum.ACCOUNT);
-        statusStorage = (StatusStorage) sf.getStorage(storageGateway, StorageEnum.STATUS);
     }
 
     /**
@@ -60,10 +59,12 @@ public class UserlistController {
      * Mutes the user with given username
      *
      * @param username username of user
-     * @throws InvalidStatusTypeException invalid status type is given
+     * @throws IOException file cannot be read/written
+     * @throws AccountNotFoundException account not found
+     * @throws WrongAccountTypeException wrong account type
      */
-    public void muteUser(String username) throws InvalidStatusTypeException, IOException {
-        statusStorage.createStatus(username, "MUTED");
-        storageGateway.saveStorageData(StorageEnum.STATUS);
+    public void muteUser(String username) throws IOException, AccountNotFoundException, WrongAccountTypeException {
+        accountStorage.createStatus(username, "MUTED");
+        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
     }
 }

@@ -1,5 +1,8 @@
 package main.java.model.trade;
 
+import main.java.model.account.AccountNotFoundException;
+import main.java.model.account.WrongAccountTypeException;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,5 +35,5 @@ public interface TradeObservee {
      * @param exchangeData A HashMap representing the Exchange Data of the Trade
      * @param newStatus The new Status of the Trade
      */
-    void notifyTradeChange(HashMap<String, HashMap<String, Integer>> exchangeData, int newStatus);
+    void notifyTradeChange(HashMap<String, HashMap<String, Integer>> exchangeData, int newStatus) throws AccountNotFoundException, WrongAccountTypeException;
 }

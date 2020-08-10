@@ -6,16 +6,16 @@ import main.java.model.item.ItemNotFoundException;
 import main.java.model.message.EmptyContentException;
 import main.java.model.message.EmptyRecipientListException;
 import main.java.model.message.EmptyTitleException;
-import main.java.model.trade.NoSuchTradeAlgorithmException;
-import main.java.model.trade.TradeAlgorithmName;
-import main.java.model.trade.TradeNumberException;
-import main.java.system2.StorageGateway;
+import main.java.model.trade.*;
+import main.java.system.StorageGateway;
 import main.java.model.status.InvalidStatusTypeException;
 import main.java.presenter.*;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 // From: https://stackoverflow.com/questions/9119481/how-to-present-a-simple-alert-message-in-java
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -94,7 +94,6 @@ public class TraderGUI {
     private JRadioButton rbtnAcceptOffer;
     private JRadioButton rbtnDenyOffer;
     private JButton btnOfferEnter;
-    private JTextField txtRequestedItemsInput;
     private JTextField txtThresholdIncompleteInput;
     private JTextField txtThresholdWeeklyInput;
     private JTextArea txtAreaLoggingOutput;
@@ -129,6 +128,8 @@ public class TraderGUI {
     private JLabel MainLabel;
     private JTextArea txtAreaMessagesIncoming;
     private JTextArea txtAreaMessagesSent;
+    private JTextArea txtAreaRequestSuggestTradesOutput;
+    private JButton btnRequestSuggestion;
     private JTextArea accountInformationTextArea;
 
     private String user;
@@ -152,9 +153,20 @@ public class TraderGUI {
 
         MainTabbedPane.insertTab("Main", null, Main, null, 0);
 
-        // set all appropriate text fields and area to not be editable here
+        // Sets all appropriate text fields and areas to not be editable
         txtUsernameOutput.setEditable(false);
         txtEmailOutput.setEditable(false);
+        txtOffersOutput.setEditable(false);
+        txtAccountStatuses.setEditable(false);
+        txtRequestsOutput.setEditable(false);
+        txtAreaBrowseListingsOutput.setEditable(false);
+        txtAreaFrozenUsers.setEditable(false);
+        txtAreaLoggingOutput.setEditable(false);
+        txtAreaUserListOutput.setEditable(false);
+        txtAreaInventoryOutput.setEditable(false);
+        txtAreaWishlistOutput.setEditable(false);
+        txtAreaRequestsOutput.setEditable(false);
+        txtAreaOffersOutput.setEditable(false);
 
 
         // this is so users cannot select two radio buttons simultaneously
@@ -235,7 +247,7 @@ public class TraderGUI {
                 }
             } catch (AccountNotFoundException | ItemNotFoundException accountNotFoundException) {
                 showMessageDialog(null, accountNotFoundException.getMessage());
-            } catch (IOException | ClassNotFoundException | TradeNumberException exception) {
+            } catch (IOException | ClassNotFoundException | TradeNumberException | WrongAccountTypeException exception) {
                 exception.printStackTrace();
             }
         });
@@ -251,7 +263,7 @@ public class TraderGUI {
                 txtRegisterUsername.setText("");
                 txtRegisterPassword.setText("");
             } catch (UsernameInUseException | InvalidEmailAddressException | EmailAddressInUseException |
-                    InvalidStatusTypeException | InvalidUsernameException | InvalidPasswordException invalidLoginException) {
+                    InvalidUsernameException | InvalidPasswordException | AccountNotFoundException | WrongAccountTypeException invalidLoginException) {
                 showMessageDialog(null, invalidLoginException.getMessage());
             } catch (IOException ioException) {
                 ioException.printStackTrace();
@@ -263,9 +275,9 @@ public class TraderGUI {
         });
     }
 
-    private void initializeStatus() throws IOException, ClassNotFoundException, TradeNumberException, ItemNotFoundException {
+    private void initializeStatus() throws IOException, ClassNotFoundException, TradeNumberException, ItemNotFoundException, AccountNotFoundException, WrongAccountTypeException {
         StatusController statusController = new StatusController(user, storageGateway);
-        if (!statusController.getStatuses().contains("AWAY") || !statusController.getStatuses().contains("FROZEN")) {
+        if (!statusController.getStatuses().contains("AWAY") && !statusController.getStatuses().contains("FROZEN")) {
             initializeRequest();
             initializeOffers();
         }
@@ -278,7 +290,7 @@ public class TraderGUI {
         initializeAddItems();
     }
 
-    private void initializeAccount() throws IOException, ClassNotFoundException, AccountNotFoundException, ItemNotFoundException {
+    private void initializeAccount() throws IOException, ClassNotFoundException, AccountNotFoundException, ItemNotFoundException, WrongAccountTypeException {
         MainTabbedPane.insertTab("Account", null, Account, null, 1);
 
         AccountController accountController = new AccountController(storageGateway, user);
@@ -292,24 +304,26 @@ public class TraderGUI {
         txtAccountStatuses.setText(statusString);
 
         if (accountController.isAway()){
-            btnAccountSetAwayStatus.setText("Add Away Status");
-        } else{
             btnAccountSetAwayStatus.setText("Remove Away Status");
+        } else{
+            btnAccountSetAwayStatus.setText("Add Away Status");
         }
 
         btnAccountSetAwayStatus.addActionListener(e -> {
-            if (accountController.isAway()){
-                try {
+            try {
+                if (accountController.isAway()){
                     accountController.removeAwayStatus();
-                } catch (StatusNotFoundException statusNotFoundException) {
-                    statusNotFoundException.printStackTrace();
-                }
-            } else{
-                try {
+                    btnAccountSetAwayStatus.setText("Add Away Status");
+                    showMessageDialog(null, "Away status removed! This will take effect once you re-login.");
+                } else {
                     accountController.setAwayStatus();
-                } catch (InvalidStatusTypeException invalidStatusTypeException) {
-                    invalidStatusTypeException.printStackTrace();
+                    btnAccountSetAwayStatus.setText("Remove Away Status");
+                    showMessageDialog(null, "Away status added! This will take effect once you re-login");
                 }
+            } catch (AccountNotFoundException | WrongAccountTypeException | StatusNotFoundException accountNotFoundException) {
+                showMessageDialog(null, accountNotFoundException.getMessage());
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
         });
     }
@@ -344,37 +358,34 @@ public class TraderGUI {
 
     private void initializeOffers() throws IOException, ClassNotFoundException, TradeNumberException, ItemNotFoundException {
         MainTabbedPane.insertTab("Offers", null, Offers, null, 3);
-
         TradePresenter tradePresenter = new TradePresenter(storageGateway);
         OffersController offersController = new OffersController(storageGateway, user, tradePresenter);
 
-        for (String s: tradePresenter.formatTradeForListView(offersController.getOffers())) {
-            txtAreaOffersOutput.append(s);
-        }
+        txtAreaOffersOutput.setText(tradePresenter.formatTradeString(offersController.getOffers()));
 
         btnOfferEnter.addActionListener(e -> {
-            List<HashMap<String, List<String>>> unformattedOfferList = null;
-            List<String> offerList = null;
-            try {
-                unformattedOfferList = offersController.getOffers();
-                offerList = tradePresenter.formatTradeForListView(unformattedOfferList);
-            } catch (ItemNotFoundException | TradeNumberException exception) {
-                showMessageDialog(null, exception.getStackTrace());
-            }
-
-            if (offerList != null) {
-                txtOffersOutput.setText(offerList.get(0));
-                try {
+            try{
+                List<HashMap<String, List<String>>> unformattedOfferList = offersController.getOffers();
+                List<String> offerList = tradePresenter.formatTradeForListView(unformattedOfferList);
+                if (!offerList.isEmpty()) {
+                    txtOffersOutput.setText(offerList.get(0));
                     if (rbtnAcceptOffer.isSelected()) {
                         offersController.acceptOffer(Integer.parseInt(unformattedOfferList.get(0).get("id").get(0)));
+                        txtAreaOffersOutput.setText(tradePresenter.formatTradeString(offersController.getOffers()));
+                        showMessageDialog(null, "Trade accepted! Log back in to see changes");
                     } else if (rbtnDenyOffer.isSelected()) {
                         offersController.rejectOffer(Integer.parseInt(unformattedOfferList.get(0).get("id").get(0)));
+                        txtAreaOffersOutput.setText(tradePresenter.formatTradeString(offersController.getOffers()));
+                        showMessageDialog(null, "Trade rejected!");
                     } else {
-                        // we should consider adding a "decide later" option
+                        showMessageDialog(null, "Please select an option!");
                     }
-                } catch (TradeNumberException | IOException exception) {
-                    showMessageDialog(null, exception.getStackTrace());
                 }
+            } catch (TradeNumberException | ItemNotFoundException | WrongTradeAccountException |
+                    TradeCancelledException | AccountNotFoundException | WrongAccountTypeException exception) {
+                showMessageDialog(null, exception.getMessage());
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
         });
     }
@@ -392,7 +403,7 @@ public class TraderGUI {
                 String requestedItem = txtRequestedItemInput.getText();
                 String offeredItem = txtRequestItemInput.getText();
 
-                // this code could have an improved structure. Ill come back to it later if there is time.
+
                 try {
                     if (!requestController.checkValidRequest(user, requestedItem, offeredItem)) {
                         showMessageDialog(null, "Please enter a valid request"); // placeholder
@@ -406,15 +417,15 @@ public class TraderGUI {
                         } else {
                             tradeItemsList.add(requestedItemID);
                             tradeItemsList.add(offeredItemID);
-                            TradeAlgorithmName tradeAlgorithmName = TradeAlgorithmName.CYCLE;
-                            requestController.createRequest(rbtnPermTrade.isSelected(), tradeAlgorithmName, tradeItemsList);
-                            showMessageDialog(null, "Request submitted!\n" +
-                                    "Items: " + tradeItemsList.toString());
-                            rbtnPermTrade.setSelected(false);
-                            rbtnTempTrade.setSelected(false);
-                            txtRequestedItemInput.setText("");
-                            txtRequestItemInput.setText("");
                         }
+                        TradeAlgorithmName tradeAlgorithmName = TradeAlgorithmName.CYCLE;
+                        requestController.createRequest(rbtnPermTrade.isSelected(), tradeAlgorithmName, tradeItemsList);
+                        showMessageDialog(null, "Request submitted!\n" +
+                                "Items: " + tradeItemsList.toString());
+                        rbtnPermTrade.setSelected(false);
+                        rbtnTempTrade.setSelected(false);
+                        txtRequestedItemInput.setText("");
+                        txtRequestItemInput.setText("");
                     }
                 } catch (ItemNotFoundException | NoSuchTradeAlgorithmException exception) {
                     showMessageDialog(null, exception.getMessage());
@@ -422,6 +433,10 @@ public class TraderGUI {
                     ioException.printStackTrace();
                 }
             }
+        });
+
+        btnRequestSuggestion.addActionListener(e -> {
+
         });
     }
 
@@ -448,7 +463,7 @@ public class TraderGUI {
         btnWishlistAddition.addActionListener(e -> {
             String itemID = txtWishlistInput.getText();
             try {
-                addItemsController.addWishlistItem(user, itemID);
+                addItemsController.addWishlistItem(itemID);
                 showMessageDialog(null, "Item was added to wishlist! Changes will appear when you log back in.");
                 txtWishlistInput.setText("");
             } catch (ItemNotFoundException exception) {
@@ -481,7 +496,6 @@ public class TraderGUI {
                     txtMessageRecipientInput.setText("");
                     txtMessageUserTitleInput.setText("");
                     txtAreaMessageUserInput.setText("");
-                    System.out.println(recipientList);
                     String recipientString = messageController.getRecipientString(recipientList);
                     showMessageDialog(null, "Message sent to: " + recipientString);
 
@@ -566,25 +580,31 @@ public class TraderGUI {
         MainTabbedPane.insertTab("Trade Threshold", null, Threshold, null, 2);
         ThresholdController thresholdController = new ThresholdController(storageGateway);
         btnThresholdBorrowedEnter.addActionListener(e -> {
+            txtThresholdBorrowedInput.setText("");
             int newBorrowingThreshold = Integer.parseInt(txtThresholdBorrowedInput.getText());
             try {
                 thresholdController.setBorrowingThreshold(newBorrowingThreshold);
+                showMessageDialog(null, "New Borrowing Threshold has been set to: " + newBorrowingThreshold);
             } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException exception) {
                 exception.printStackTrace();
             }
         });
         btnThresholdIncompleteEnter.addActionListener(e -> {
+            txtThresholdIncompleteInput.setText("");
             int newIncompleteThreshold = Integer.parseInt(txtThresholdIncompleteInput.getText());
             try {
                 thresholdController.setIncompleteThreshold(newIncompleteThreshold);
+                showMessageDialog(null, "New Incompleted Trades Threshold has been set to: " + newIncompleteThreshold);
             } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException exception) {
                 exception.printStackTrace();
             }
         });
         btnThresholdWeeklyEnter.addActionListener(e -> {
+            txtThresholdWeeklyInput.setText("");
             int newWeeklyThreshold = Integer.parseInt(txtThresholdWeeklyInput.getText());
             try {
                 thresholdController.setWeeklyThreshold(newWeeklyThreshold);
+                showMessageDialog(null, "New Weekly Trade Threshold has been set to: " + newWeeklyThreshold);
             } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException exception) {
                 exception.printStackTrace();
             }
@@ -606,8 +626,10 @@ public class TraderGUI {
                     try {
                         userlistController.muteUser(userList.get(currUserIndex.get()));
                         showMessageDialog(null, "Account was muted!");
-                    } catch (InvalidStatusTypeException | IOException exception) {
-                        exception.printStackTrace();
+                    } catch (AccountNotFoundException | WrongAccountTypeException exception) {
+                        showMessageDialog(null, exception.getMessage());
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
                     }
                 } else if (rbtnUserListNext.isSelected()) {
                     currUserIndex.getAndIncrement();
@@ -660,19 +682,19 @@ public class TraderGUI {
             List<List<String>> frozenUserList = null;
 
             try {
-                frozenUserList = freezeController.showAllFrozenUsers(3, 3, 3);
-            } catch (InvalidStatusTypeException | IOException | TradeNumberException exception) {
-                showMessageDialog(null, exception.getStackTrace());
+                frozenUserList = freezeController.showAllFrozenUsers();
+            } catch (AccountNotFoundException | WrongAccountTypeException exception) {
+                showMessageDialog(null, exception.getMessage());
             }
 
-            if(frozenUserList != null){
+            if(frozenUserList != null && !frozenUserList.isEmpty()){
                 txtFrozenUser.setText(frozenUserList.get(currUserIndex).get(0) + frozenUserList.get(currUserIndex).get(1));
                 if (rbtnUnfreezeUser.isSelected()) {
                     try {
                         freezeController.unfreezeUser(frozenUserList.get(0).get(0));
-
-                    } catch (IOException exception) {
-                        showMessageDialog(null, exception.getStackTrace());
+                        showMessageDialog(null, "User: " + frozenUserList.get(0).get(0) + " has been unfrozen!");
+                    } catch (IOException | StatusNotFoundException | AccountNotFoundException | WrongAccountTypeException exception) {
+                        showMessageDialog(null, exception.getMessage());
                     }
                 } else if (rbtnIgnoreUser.isSelected()) {
                     currUserIndex++;
@@ -683,7 +705,6 @@ public class TraderGUI {
             }
         });
     }
-
 
     private void tabCleaner(){
         if (MainTabbedPane.getTabCount() == 2) {

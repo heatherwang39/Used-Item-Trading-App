@@ -1,14 +1,12 @@
 package main.java.controller;
 
 import main.java.model.account.*;
-import main.java.model.item.ItemStorage;
 import main.java.model.status.InvalidStatusTypeException;
 import main.java.model.status.StatusStorage;
-import main.java.system2.StorageEnum;
-import main.java.system2.StorageFactory;
-import main.java.system2.StorageGateway;
+import main.java.system.StorageEnum;
+import main.java.system.StorageFactory;
+import main.java.system.StorageGateway;
 
-import javax.swing.*;
 import java.io.IOException;
 
 /**
@@ -22,7 +20,6 @@ public class LoginController {
 
     private final StorageGateway storageGateway;
     private final AccountStorage accountStorage;
-    private final StatusStorage statusStorage;
 
     /** Class constructor
      *
@@ -32,7 +29,6 @@ public class LoginController {
         this.storageGateway = storageGateway;
         StorageFactory storageFactory = new StorageFactory();
         accountStorage = (AccountStorage) storageFactory.getStorage(storageGateway, StorageEnum.ACCOUNT);
-        statusStorage = (StatusStorage) storageFactory.getStorage(storageGateway, StorageEnum.STATUS);
     }
 
      /** Check if you can login with the given data. If you can, return True
@@ -58,13 +54,13 @@ public class LoginController {
      * @throws UsernameInUseException username is in use
      * @throws InvalidEmailAddressException Email is Invalid
      * @throws EmailAddressInUseException Email is in use
-     * @throws InvalidStatusTypeException Status is Invalid
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      */
     public void register(String username, String password, String emailAddress) throws
-            UsernameInUseException, InvalidEmailAddressException, EmailAddressInUseException, IOException, InvalidStatusTypeException, InvalidUsernameException, InvalidPasswordException {
+            UsernameInUseException, InvalidEmailAddressException, EmailAddressInUseException, IOException, InvalidUsernameException, InvalidPasswordException, AccountNotFoundException, WrongAccountTypeException {
         accountStorage.createUser(username, password, emailAddress);
-        statusStorage.createStatus(username,"NEW");
+        accountStorage.createStatus(username,"NEW");
         storageGateway.saveStorageData(StorageEnum.ACCOUNT);
-        storageGateway.saveStorageData(StorageEnum.STATUS);
     }
 }

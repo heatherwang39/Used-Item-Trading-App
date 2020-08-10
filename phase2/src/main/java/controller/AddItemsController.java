@@ -2,9 +2,9 @@ package main.java.controller;
 
 import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
-import main.java.system2.StorageEnum;
-import main.java.system2.StorageFactory;
-import main.java.system2.StorageGateway;
+import main.java.system.StorageEnum;
+import main.java.system.StorageFactory;
+import main.java.system.StorageGateway;
 
 import java.io.IOException;
 import java.util.List;
@@ -49,8 +49,8 @@ public class AddItemsController {
         storageGateway.saveStorageData(StorageEnum.valueOf("ITEM"));
     }
 
-    public void addWishlistItem(String user, String itemID) throws IOException, ItemNotFoundException {
-        itemStorage.addWishList(user, Integer.parseInt(itemID));
+    public void addWishlistItem(String itemID) throws IOException, ItemNotFoundException {
+        itemStorage.addWishList(username, Integer.parseInt(itemID));
         storageGateway.saveStorageData(StorageEnum.valueOf("ITEM"));
     }
 

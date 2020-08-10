@@ -1,6 +1,8 @@
 package main.java.model.trade;
 
 import main.java.model.Storage;
+import main.java.model.account.AccountNotFoundException;
+import main.java.model.account.WrongAccountTypeException;
 import main.java.model.meeting.MeetingObserver;
 
 import java.util.*;
@@ -135,7 +137,7 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
      * @return A boolean representing whether or not the change was made
      * @throws TradeNumberException Thrown if no Trade has the given TradeNumber
      */
-    public boolean setStatus(int tradeNumber, int status) throws TradeNumberException {
+    public boolean setStatus(int tradeNumber, int status) throws TradeNumberException, AccountNotFoundException, WrongAccountTypeException {
         Trade t = getTrade(tradeNumber);
         boolean b = t.setStatus(status);
         if(b){
@@ -475,6 +477,24 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
     }
 
 
+    /** Return all accepted Trades that have no meetings suggested yet and involve the given user.
+     *
+     * @param username The username of user you're interested in
+     * @return A list containing the TradeIDs of all accepted Trades that involve the given user
+     */
+    public List<Integer> getAcceptedTradesWithUser(String username){
+        List<Integer> acceptedUserTrades = new ArrayList<>();
+        for (Trade t : trades) {
+            if (t.getTraders().contains(username)) {
+                if(t.getStatus() == 1 && t.getMeetings().size() == 0){
+                    acceptedUserTrades.add(t.getTradeNumber());
+                }
+            }
+        }
+        return acceptedUserTrades;
+    }
+
+
     /** Return all active Trades that involved the given user.
      *
      * @param username The username of user you're interested in
@@ -657,7 +677,7 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
      * @param exchangeData A HashMap representing the Exchange Data of the Trade
      * @param newStatus The new Status of the Trade
      */
-    public void notifyTradeChange(HashMap<String, HashMap<String, Integer>> exchangeData, int newStatus){
+    public void notifyTradeChange(HashMap<String, HashMap<String, Integer>> exchangeData, int newStatus) throws AccountNotFoundException, WrongAccountTypeException {
         for (TradeObserver tradeObserver: observers) {
             tradeObserver.updateTradeChange(exchangeData, newStatus);
         }

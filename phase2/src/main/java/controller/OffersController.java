@@ -1,14 +1,15 @@
 package main.java.controller;
 
-import main.java.model.item.ItemNotFoundException;
-import main.java.model.trade.TradeNumberException;
-import main.java.model.trade.TradeStorage;
+import main.java.model.account.AccountNotFoundException;
+import main.java.model.account.WrongAccountTypeException;
+import main.java.model.item.Item;
+import main.java.model.item.ItemStorage;
+import main.java.model.trade.*;
 import main.java.presenter.TradePresenter;
-import main.java.system2.StorageEnum;
-import main.java.system2.StorageFactory;
-import main.java.system2.StorageGateway;
+import main.java.system.StorageEnum;
+import main.java.system.StorageFactory;
+import main.java.system.StorageGateway;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -25,24 +26,26 @@ import static javax.swing.JOptionPane.showMessageDialog;
 public class OffersController {
     private final StorageGateway storageGateway;
     private final TradeStorage tradeStorage;
+    private final ItemStorage itemStorage;
     private final String username;
-    private final TradePresenter tradePresenter;
 
     /**
      * Initializes a new OffersController for the given username
      *
      * @param storageGateway gateway for loading and saving information
      * @param username username of the user accessing the Offers tab
-     * @param tradePresenter
-     * @throws IOException
-     * @throws ClassNotFoundException
+     * @param tradePresenter trade presenter
+     * @throws IOException file cannot be read/written
+     * @throws ClassNotFoundException serialized class not found
      */
     public OffersController(StorageGateway storageGateway, String username, TradePresenter tradePresenter) throws IOException, ClassNotFoundException {
         this.storageGateway = storageGateway;
         this.username = username;
-        this.tradePresenter = tradePresenter;
+
         StorageFactory sf = new StorageFactory();
-        tradeStorage = (TradeStorage) sf.getStorage(storageGateway, StorageEnum.valueOf("TRADE"));
+        tradeStorage = (TradeStorage) sf.getStorage(storageGateway, StorageEnum.TRADE);
+        itemStorage = (ItemStorage) sf.getStorage(storageGateway, StorageEnum.ITEM);
+        tradeStorage.attachTradeObserver(itemStorage);
     }
 
     /**
@@ -60,11 +63,15 @@ public class OffersController {
      *
      * @param tradeNumber id of Trade being accepted
      * @throws TradeNumberException invalid tradeNumber, not in system
-     * @throws IOException
+     * @throws TradeCancelledException if the given trade has already been cancelled
+     * @throws WrongTradeAccountException if the given trade does not involve the user
      */
-    public void acceptOffer(int tradeNumber) throws TradeNumberException, IOException{
-        tradeStorage.setStatus(tradeNumber, 1);
-        storageGateway.saveStorageData(StorageEnum.valueOf("TRADE"));
+    public void acceptOffer(int tradeNumber) throws TradeNumberException, IOException, TradeCancelledException, WrongTradeAccountException {
+        tradeStorage.acceptTrade(tradeNumber, username);
+        if (tradeStorage.isPermanent(tradeNumber)) tradeStorage.setNumMeetings(tradeNumber, 1);
+        else tradeStorage.setNumMeetings(tradeNumber, 2);
+        storageGateway.saveStorageData(StorageEnum.TRADE);
+        storageGateway.saveStorageData(StorageEnum.ITEM);
     }
 
     /**
@@ -72,14 +79,11 @@ public class OffersController {
      *
      * @param tradeNumber id of Trade being rejected
      * @throws TradeNumberException invalid tradeNumber, not in system
-     * @throws IOException
      */
-    public void rejectOffer(int tradeNumber) throws TradeNumberException, IOException {
+    public void rejectOffer(int tradeNumber) throws TradeNumberException, IOException, AccountNotFoundException, WrongAccountTypeException {
         tradeStorage.setStatus(tradeNumber, -1);
         storageGateway.saveStorageData(StorageEnum.valueOf("TRADE"));
     }
-
-
 
 
 }

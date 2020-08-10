@@ -1,13 +1,16 @@
 package main.java.controller;
 
+import main.java.model.account.AccountNotFoundException;
 import main.java.model.account.AccountStorage;
+import main.java.model.account.StatusNotFoundException;
+import main.java.model.account.WrongAccountTypeException;
 import main.java.model.status.InvalidStatusTypeException;
 import main.java.model.status.StatusStorage;
 import main.java.model.trade.TradeNumberException;
 import main.java.model.trade.TradeStorage;
-import main.java.system2.StorageEnum;
-import main.java.system2.StorageFactory;
-import main.java.system2.StorageGateway;
+import main.java.system.StorageEnum;
+import main.java.system.StorageFactory;
+import main.java.system.StorageGateway;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -26,7 +29,6 @@ import static javax.swing.JOptionPane.showMessageDialog;
 public class FreezeController {
     private final StorageGateway storageGateway;
     private final TradeStorage tradeStorage;
-    private final StatusStorage statusStorage;
     private final AccountStorage accountStorage;
 
 
@@ -39,58 +41,61 @@ public class FreezeController {
         this.storageGateway = storageGateway;
         StorageFactory sf = new StorageFactory();
         tradeStorage = (TradeStorage) sf.getStorage(storageGateway, StorageEnum.TRADE);
-        statusStorage = (StatusStorage) sf.getStorage(storageGateway, StorageEnum.STATUS);
         accountStorage = (AccountStorage) sf.getStorage(storageGateway, StorageEnum.ACCOUNT);
     }
 
     /**
      * Show all the users that need to be frozen based on threshold and set their status to be frozen
      *
-     * @param borrowThreshold     threshold for borrowing more than lending
-     * @param incompleteThreshold threshold for too many incomplete trades
-     * @param weeklyThreshold     threshold for too many trades in one week
      * @return the frozen users and the frozen reasons
-     * @throws InvalidStatusTypeException Invalid status, not in system
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     *
      */
-    public List<List<String>> showAllFrozenUsers(int borrowThreshold, int incompleteThreshold, int weeklyThreshold) throws InvalidStatusTypeException, IOException, TradeNumberException {
-        List<String> allUsers = accountStorage.getUsernames();
-        List<List<String>> frozenUsersAndReasons = tradeStorage.showFreezeUsers(allUsers, borrowThreshold, incompleteThreshold, weeklyThreshold);
-        for (int i = 0; i < frozenUsersAndReasons.size(); i++) {
-            statusStorage.createStatus(frozenUsersAndReasons.get(i).get(0), "FROZEN");
+    public List<List<String>> showAllFrozenUsers() throws AccountNotFoundException, WrongAccountTypeException {
+        List<String> frozenUsers = accountStorage.getAccountsWithStatus("FROZEN");
+        List<List<String>> allFrozenUsersAndReasons = new ArrayList<>();
+        for (String username: frozenUsers) {
+            List<String> userAndReasons = new ArrayList<>();
+            List<String> reasons = accountStorage.showFreezeReasons(username);
+            userAndReasons.add(username);
+            userAndReasons.addAll(reasons);
+            allFrozenUsersAndReasons.add(userAndReasons);
         }
-        storageGateway.saveStorageData(StorageEnum.STATUS);
-        return frozenUsersAndReasons;
+        return allFrozenUsersAndReasons;
     }
 
     /**
      * Sets a certain user's status to frozen
      *
      * @param username username of the user
-     * @throws InvalidStatusTypeException Invalid status, not in system
+     * @throws IOException file can't be read/written
+     * @throws AccountNotFoundException account not found
+     * @throws WrongAccountTypeException wrong account type
      */
-    public void freezeUser(String username) throws InvalidStatusTypeException, IOException {
-        statusStorage.createStatus(username, "FREEZE");
-        storageGateway.saveStorageData(StorageEnum.valueOf("STATUS"));
+    public void freezeUser(String username) throws IOException, AccountNotFoundException, WrongAccountTypeException {
+        accountStorage.createStatus(username, "FREEZE");
+        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
     }
 
     /**
      * Removes the freeze status from a certain user
      *
      * @param username username of the user
-     * @throws IOException
+     * @throws IOException file cnanot be read/written
      */
-    public void unfreezeUser(String username) throws  IOException {
-        statusStorage.removeStatus(username, "FREEZE");
-        storageGateway.saveStorageData(StorageEnum.valueOf("STATUS"));
+    public void unfreezeUser(String username) throws IOException, StatusNotFoundException, AccountNotFoundException, WrongAccountTypeException {
+        accountStorage.removeStatus(username, "FREEZE");
+        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
     }
 
     public int freezeDecision(JTextField txt, JTextArea txtArea, JRadioButton rbtnUnfreezeUser, JRadioButton rbtnIgnoreUser, int currUserIndex) {
         List<List<String>> frozenUserList = null;
 
         try {
-            frozenUserList = showAllFrozenUsers(3, 3, 3);
-        } catch (InvalidStatusTypeException | IOException | TradeNumberException exception) {
-            showMessageDialog(null, exception.getStackTrace());
+            frozenUserList = showAllFrozenUsers();
+        } catch (AccountNotFoundException | WrongAccountTypeException exception) {
+            showMessageDialog(null, exception.getMessage());
         }
 
         if(frozenUserList != null){
@@ -99,8 +104,8 @@ public class FreezeController {
                 try {
                     unfreezeUser(frozenUserList.get(0).get(0));
 
-                } catch (IOException exception) {
-                    showMessageDialog(null, exception.getStackTrace());
+                } catch (IOException | StatusNotFoundException | AccountNotFoundException | WrongAccountTypeException exception) {
+                    showMessageDialog(null, exception.getMessage());
                 }
             } else if (rbtnIgnoreUser.isSelected()) {
                 currUserIndex++;
@@ -112,8 +117,5 @@ public class FreezeController {
 
         return currUserIndex;
     }
-
-
-
 
 }
