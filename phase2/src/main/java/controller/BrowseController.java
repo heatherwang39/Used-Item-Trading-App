@@ -33,23 +33,13 @@ public class BrowseController {
     }
 
     /**
-     * Gets all verified items for users to browse
-     *
-     * @return List of HashMaps that each represent item data
-     * @throws ItemNotFoundException incorrect itemID found in system
-     */
-    public List<HashMap<String, String>> getItems() throws ItemNotFoundException {
-        return itemStorage.getVerifiedItemsData();
-    }
-
-    /**
      * Return the data of all verified items
-     * @return items data
      *
+     * @return items data
      * @throws ItemNotFoundException item isn't found
      */
     public List<HashMap<String, String>> getVerifiedItems() throws ItemNotFoundException {
-        return itemStorage.getVerifiedItemsData();
+        return itemStorage.getBrowsableItemsData();
     }
 
     /**

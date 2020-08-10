@@ -304,7 +304,6 @@ public class ItemStorage implements Storage, TradeObserver {
             verifiedInventoryData.add(getData(i.getID()));
         }
         return verifiedInventoryData;
-
     }
 
     /**
@@ -322,6 +321,7 @@ public class ItemStorage implements Storage, TradeObserver {
         data.put("tags", String.join(", ", item.getTags()));
         data.put("wishlist", String.join(", ", item.getWishlist()));
         data.put("verified", String.valueOf(item.isVerified()));
+        data.put("hidden", String.valueOf(item.isHidden()));
         return data;
     }
 
@@ -346,6 +346,86 @@ public class ItemStorage implements Storage, TradeObserver {
      */
     public void changeOwner(int itemId, String username) throws ItemNotFoundException {
         getItem(itemId).setOwner(username);
+    }
+
+    /**
+     * Hides an Item.
+     *
+     * @param itemId The id of the Item object that needs to be hidden.
+     *
+     * @throws ItemNotFoundException item not in system
+     * @throws AlreadyHiddenException item already hidden
+     */
+    public void hideItem(int itemId) throws ItemNotFoundException, AlreadyHiddenException {
+        if (items.containsKey(itemId)) {
+            if (!items.get(itemId).hide()) throw new AlreadyHiddenException();
+        } else {
+            throw new ItemNotFoundException();
+        }
+    }
+
+    /**
+     * Unhides an Item.
+     *
+     * @param itemId The id of the Item object that needs to be hidden.
+     *
+     * @throws ItemNotFoundException item not in system
+     * @throws AlreadyNotHiddenException item already not hidden
+     */
+    public void unhideItem(int itemId) throws ItemNotFoundException, AlreadyNotHiddenException {
+        if (items.containsKey(itemId)) {
+            if (!items.get(itemId).unhide()) throw new AlreadyNotHiddenException();
+        } else {
+            throw new ItemNotFoundException();
+        }
+    }
+
+    /**
+     * Returns a list with each element being the Item data of a verified, hidden Item in the given user's inventory
+     *
+     * @param username Account username
+     * @return data of verified, hidden items in user's inventory
+     */
+    public List<HashMap<String, String>> getHiddenInventoryData(String username) throws ItemNotFoundException {
+        List<HashMap<String, String>> hiddenInventoryData = new ArrayList<>();
+        List<Item> verifiedInventory = getVerifiedInventory(username);
+        for(Item i : verifiedInventory){
+            if (i.isHidden()) hiddenInventoryData.add(getData(i.getID()));
+        }
+        return hiddenInventoryData;
+    }
+
+    /**
+     * Returns a list with each element being the Item data of a verified, not hidden Item in the given user's inventory
+     *
+     * @param username Account username
+     * @return data of verified, not hidden items in user's inventory
+     */
+    public List<HashMap<String, String>> getUnhiddenInventoryData(String username) throws ItemNotFoundException {
+        List<HashMap<String, String>> unhiddenInventoryData = new ArrayList<>();
+        List<Item> verifiedInventory = getVerifiedInventory(username);
+        for(Item i : verifiedInventory){
+            if (!i.isHidden()) unhiddenInventoryData.add(getData(i.getID()));
+        }
+        return unhiddenInventoryData;
+    }
+
+    /**
+     * Get all the data of verified, not hidden Items in the overall list of Items
+     *
+     * @return all data of verified, not hidden Items
+     */
+    public List<HashMap<String, String>> getBrowsableItemsData() throws ItemNotFoundException {
+        List<HashMap<String, String>> itemData = new ArrayList<>();
+        // From here:
+        // https://stackoverflow.com/questions/46898/how-do-i-efficiently-iterate-over-each-entry-in-a-java-map
+        for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
+            Item item = entry.getValue();
+            if (item.isVerified() && !item.isHidden()) {
+                itemData.add(getData(item.getID()));
+            }
+        }
+        return itemData;
     }
 
     //Item and Trade Observer Pattern below

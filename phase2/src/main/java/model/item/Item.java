@@ -21,6 +21,7 @@ public class Item implements Serializable {
     private final List<String> tags;
     private final List<String> wishlist;
     private boolean isVerified;
+    private boolean isHidden;
 
     /**
      * Class constructor.
@@ -36,6 +37,7 @@ public class Item implements Serializable {
         this.tags = tags;
         this.wishlist = new ArrayList<>();
         isVerified = false;
+        isHidden = false;
     }
 
     /**
@@ -131,5 +133,38 @@ public class Item implements Serializable {
             throw new NotInWishlistException();
         }
         wishlist.remove(username);
+    }
+
+    /**
+     * Get whether this item has been hidden by its owner
+     *
+     * @return true if it has been hidden by its owner, false if not
+     */
+    public boolean isHidden() { return isHidden; }
+
+    /**
+     * Hides this item
+     *
+     * @return true if successfully hidden, false if already hidden
+     */
+    public boolean hide() {
+        if (isHidden) return false;
+        else {
+            isHidden = true;
+            return true;
+        }
+    }
+
+    /**
+     * Unhides this item
+     *
+     * @return true if successfully unhidden, false if already not hidden
+     */
+    public boolean unhide() {
+        if (!isHidden) return false;
+        else {
+            isHidden = false;
+            return true;
+        }
     }
 }
