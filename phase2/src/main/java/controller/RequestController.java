@@ -1,5 +1,6 @@
 package main.java.controller;
 
+import main.java.model.account.AccountStorage;
 import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
 import main.java.model.trade.NoSuchTradeAlgorithmException;
@@ -23,6 +24,7 @@ public class RequestController {
     private final StorageGateway storageGateway;
     private final TradeStorage tradeStorage;
     private final ItemStorage itemStorage;
+    private final AccountStorage accountStorage;
     private final String username;
 
     /**
@@ -37,6 +39,7 @@ public class RequestController {
         StorageFactory sf = new StorageFactory();
         tradeStorage = (TradeStorage) sf.getStorage(storageGateway, StorageEnum.valueOf("TRADE"));
         itemStorage = (ItemStorage) sf.getStorage(storageGateway, StorageEnum.valueOf("ITEM"));
+        accountStorage = (AccountStorage) sf.getStorage(storageGateway, StorageEnum.valueOf("ACCOUNT"));
     }
 
     /**
@@ -88,4 +91,11 @@ public class RequestController {
             }
         }
     }
+
+//    public List<String> getAllSuggestedItems() throws ItemNotFoundException {
+//        List<String> userList = accountStorage.getUsers();
+//        for (int i = 0; i < )
+//        List<HashMap<String, String>> suggestedItemsList1 = itemStorage.suggestItems(username, other); // returns intersection
+//
+//    }
 }

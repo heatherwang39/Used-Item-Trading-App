@@ -4,10 +4,7 @@ import main.java.model.account.AccountNotFoundException;
 import main.java.model.account.WrongAccountTypeException;
 import main.java.model.item.Item;
 import main.java.model.item.ItemStorage;
-import main.java.model.trade.TradeCancelledException;
-import main.java.model.trade.TradeNumberException;
-import main.java.model.trade.TradeStorage;
-import main.java.model.trade.WrongTradeAccountException;
+import main.java.model.trade.*;
 import main.java.presenter.TradePresenter;
 import main.java.system.StorageEnum;
 import main.java.system.StorageFactory;
@@ -31,21 +28,19 @@ public class OffersController {
     private final TradeStorage tradeStorage;
     private final ItemStorage itemStorage;
     private final String username;
-    private final TradePresenter tradePresenter;
 
     /**
      * Initializes a new OffersController for the given username
      *
      * @param storageGateway gateway for loading and saving information
      * @param username username of the user accessing the Offers tab
-     * @param tradePresenter trade presenter class
      * @throws IOException file cannot be read/written
      * @throws ClassNotFoundException serialized class not found
      */
-    public OffersController(StorageGateway storageGateway, String username, TradePresenter tradePresenter) throws IOException, ClassNotFoundException {
+    public OffersController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
         this.storageGateway = storageGateway;
         this.username = username;
-        this.tradePresenter = tradePresenter;
+
         StorageFactory sf = new StorageFactory();
         tradeStorage = (TradeStorage) sf.getStorage(storageGateway, StorageEnum.TRADE);
         itemStorage = (ItemStorage) sf.getStorage(storageGateway, StorageEnum.ITEM);
@@ -88,8 +83,6 @@ public class OffersController {
         tradeStorage.setStatus(tradeNumber, -1);
         storageGateway.saveStorageData(StorageEnum.valueOf("TRADE"));
     }
-
-
 
 
 }
