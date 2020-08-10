@@ -11,10 +11,7 @@ import main.java.system.StorageGateway;
 import main.java.presenter.*;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
 // From: https://stackoverflow.com/questions/9119481/how-to-present-a-simple-alert-message-in-java
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -442,14 +439,14 @@ public class TraderGUI {
     private void initializeAddItems() throws IOException, ClassNotFoundException {
         MainTabbedPane.insertTab("Add Items", null, AddItems, null, 3);
 
-        AddItemsController addItemsController = new AddItemsController(storageGateway, user);
+        ItemsController itemsController = new ItemsController(storageGateway, user);
 
         btnInventoryRequest.addActionListener(e -> {
             String name =  txtInventoryInput.getText();
             String description = txtAreaDescriptionInput.getText();
             List<String> tagList = Arrays.asList(txtTagsInput.getText().split("\\s*,\\s*")); // TEST THIS
             try {
-                addItemsController.addInventoryItem(name, description, tagList);
+                itemsController.addInventoryItem(name, description, tagList);
                 showMessageDialog(null, "Item requested!");
                 txtInventoryInput.setText("");
                 txtAreaDescriptionInput.setText("");
@@ -462,7 +459,7 @@ public class TraderGUI {
         btnWishlistAddition.addActionListener(e -> {
             String itemID = txtWishlistInput.getText();
             try {
-                addItemsController.addWishlistItem(itemID);
+                itemsController.addWishlistItem(itemID);
                 showMessageDialog(null, "Item was added to wishlist! Changes will appear when you log back in.");
                 txtWishlistInput.setText("");
             } catch (ItemNotFoundException exception) {
