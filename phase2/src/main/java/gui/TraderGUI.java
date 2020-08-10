@@ -682,9 +682,9 @@ public class TraderGUI {
             List<List<String>> frozenUserList = null;
 
             try {
-                frozenUserList = freezeController.showAllFrozenUsers(3, 3, 3);
-            } catch (InvalidStatusTypeException | IOException | TradeNumberException exception) {
-                showMessageDialog(null, exception.getStackTrace());
+                frozenUserList = freezeController.showAllFrozenUsers();
+            } catch (AccountNotFoundException | WrongAccountTypeException exception) {
+                showMessageDialog(null, exception.getMessage());
             }
 
             if(frozenUserList != null && !frozenUserList.isEmpty()){
@@ -693,8 +693,8 @@ public class TraderGUI {
                     try {
                         freezeController.unfreezeUser(frozenUserList.get(0).get(0));
                         showMessageDialog(null, "User: " + frozenUserList.get(0).get(0) + " has been unfrozen!");
-                    } catch (IOException exception) {
-                        showMessageDialog(null, exception.getStackTrace());
+                    } catch (IOException | StatusNotFoundException | AccountNotFoundException | WrongAccountTypeException exception) {
+                        showMessageDialog(null, exception.getMessage());
                     }
                 } else if (rbtnIgnoreUser.isSelected()) {
                     currUserIndex++;
