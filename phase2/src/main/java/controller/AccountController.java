@@ -83,6 +83,7 @@ public class AccountController {
      * Get wishlist items in a string
      *
      * @return wishlist string
+     * @throws ItemNotFoundException Thrown when the item is not in system
      */
     public String getWishlistString() throws ItemNotFoundException {
         StringBuilder str = new StringBuilder();
@@ -95,6 +96,13 @@ public class AccountController {
         return str.toString();
     }
 
+    /**
+     * Get whether the user has "AWAY" status
+     *
+     * @return true if the User's statuses contains "AWAY"
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     */
     public boolean isAway() throws AccountNotFoundException, WrongAccountTypeException {
         List<String> userStatusList = getStatuses();
         for (int i = 0; i < userStatusList.size(); i++){
@@ -105,13 +113,37 @@ public class AccountController {
         return false;
     }
 
+    /**
+     * Add "AWAY" to the user's current statuses
+     *
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     */
     public void setAwayStatus() throws AccountNotFoundException, IOException, WrongAccountTypeException {
         accountStorage.createStatus(username, "AWAY");
         storageGateway.saveStorageData(StorageEnum.ACCOUNT);
     }
 
+    /**
+     * Remove "AWAY" from the user's current statuses
+     *
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     * @throws StatusNotFoundException when "AWAY" Status with given type could be found
+     */
     public void removeAwayStatus() throws StatusNotFoundException, AccountNotFoundException, IOException, WrongAccountTypeException {
         accountStorage.removeStatus(username, "AWAY");
         storageGateway.saveStorageData(StorageEnum.ACCOUNT);
     }
+
+    /** Return all current thresholds of the given account
+     *
+     * @return A HashMap with key is the threshold's name and value is threshold's number
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     */
+    public HashMap<String, Integer> getCurrentThresholds() throws WrongAccountTypeException, AccountNotFoundException {
+        return accountStorage.getCurrentThresholds(username);
+    }
+
 }

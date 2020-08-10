@@ -9,6 +9,7 @@ import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * Controller that returns the needed information for GUI client to display for Threshold tab
@@ -86,6 +87,17 @@ public class ThresholdController {
     public void setGildedThreshold(int threshold) throws AccountNotFoundException, WrongAccountTypeException, NegativeThresholdException, IOException {
         accountStorage.setAllGildedThresholds(threshold);
         storageGateway.saveStorageData(StorageEnum.ACCOUNT);
+    }
+
+    /** Return all current thresholds of the given account
+     *
+     * @param username The username of the account you're interested in
+     * @return A HashMap with key is the threshold's name and value is threshold's number
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     */
+    public HashMap<String, Integer> getCurrentThresholds(String username) throws WrongAccountTypeException, AccountNotFoundException {
+        return accountStorage.getCurrentThresholds(username);
     }
 
     /**

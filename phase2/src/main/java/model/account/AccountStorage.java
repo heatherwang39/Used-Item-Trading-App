@@ -326,47 +326,27 @@ public class AccountStorage implements Storage, TradeObserver {
         }
     }
 
-    /** Return the BorrowThreshold of the given account
-     *
-     * @param username The username of the account you're interested in
-     * @return The Threshold associated with this account.
-     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
-     * @throws AccountNotFoundException Thrown when no account has the given username
-     */
-    public int getBorrowThreshold(String username) throws WrongAccountTypeException, AccountNotFoundException{
-        Account a = getAccount(username);
-        if(a.getType().equals("USER")){
-            return ((UserAccount) a).getBorrowThreshold();
-        }
-        throw new WrongAccountTypeException();
-    }
 
-    /** Return the IncompleteThreshold of the given account
+    /** Return all current thresholds of the given account
      *
      * @param username The username of the account you're interested in
-     * @return The Threshold associated with this account.
+     * @return A HashMap with key is the threshold's name and value is threshold's number
      * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      * @throws AccountNotFoundException Thrown when no account has the given username
      */
-    public int getIncompleteThreshold(String username) throws WrongAccountTypeException, AccountNotFoundException{
-        Account a = getAccount(username);
-        if(a.getType().equals("USER")){
-            return ((UserAccount) a).getIncompleteThreshold();
-        }
-        throw new WrongAccountTypeException();
-    }
-
-    /** Return the WeeklyThreshold of the given account
-     *
-     * @param username The username of the account you're interested in
-     * @return The Threshold associated with this account.
-     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
-     * @throws AccountNotFoundException Thrown when no account has the given username
-     */
-    public int getWeeklyThreshold(String username) throws WrongAccountTypeException, AccountNotFoundException{
-        Account a = getAccount(username);
-        if(a.getType().equals("USER")){
-            return ((UserAccount) a).getWeeklyThreshold();
+    public HashMap<String, Integer> getCurrentThresholds(String username) throws WrongAccountTypeException, AccountNotFoundException{
+        Account account = getAccount(username);
+        HashMap <String, Integer> thresholdData = new HashMap<>();
+        if(account.getType().equals("USER")){
+            int borrowThreshold = ((UserAccount)account).getBorrowThreshold();
+            int incompleteThreshold = ((UserAccount)account).getIncompleteThreshold();
+            int weeklyThreshold = ((UserAccount)account).getWeeklyThreshold();
+            int gildedThreshold = ((UserAccount)account).getGildedThreshold();
+            thresholdData.put("borrowThreshold",borrowThreshold);
+            thresholdData.put("incompleteThreshold",incompleteThreshold);
+            thresholdData.put("weeklyThreshold",weeklyThreshold);
+            thresholdData.put("gildedThreshold",gildedThreshold);
+            return thresholdData;
         }
         throw new WrongAccountTypeException();
     }
