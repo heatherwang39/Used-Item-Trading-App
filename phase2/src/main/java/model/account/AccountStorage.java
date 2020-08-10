@@ -617,6 +617,9 @@ public class AccountStorage implements Storage, TradeObserver {
                 user.setNumberOfWeeklyTrades(numberOfWeeklyTrades);
                 int numberOfIncompleteTrades = user.getNumberOfIncompleteTrades()-1;
                 user.setNumberOfIncompleteTrades(numberOfIncompleteTrades);
+                if (containsStatus(username, "NEW")) {
+                    user.removeStatus(StatusEnum.NEW);
+                }
             }
             updateNumberOfBorrowedItems(exchangeData);
             gildUsers(traders);
