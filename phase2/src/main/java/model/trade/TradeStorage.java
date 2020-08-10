@@ -303,6 +303,23 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
     }
 
 
+    /** Remove the last meeting that has been suggested in the trade
+     *
+     * @param tradeNumber The Trade you're trying to modify
+     * @param meetingID The Meeting you want to remove from the given Trade
+     * @throws TradeNumberException Thrown if no Trade has the given TradeNumber
+     * @throws TradeCancelledException Thrown if the Trade is cancelled
+     * @throws MeetingNotInTradeException Thrown if the given Meeting is not in the given Trade
+     */
+    public void removeMeeting(int tradeNumber, int meetingID) throws TradeNumberException, TradeCancelledException,
+            MeetingNotInTradeException{
+        Trade t = getTrade(tradeNumber);
+        checkTradeCancelled(t);
+        try{t.removeMeeting(meetingID);}catch(IndexOutOfBoundsException e){throw new MeetingNotInTradeException();}
+    }
+
+
+
     /** Return the total number of meetings that should occur in this trade (given by the Trade Number)
      *
      * @param tradeNumber The tradeNumber of the Trade that you want to get information about
@@ -599,6 +616,18 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
         catch(TradeNumberException | NoTradeWithMeetingIDException ignored){}
     }
 
+
+    /** Record the fact that the given meeting has been cancelled
+     *
+     * @param meetingID The ID of the cancelled meeting
+     */
+    public void updateCancelled(int meetingID){
+        try{
+            Trade t = getTrade(getTradeWithMeeting(meetingID));
+            t.removeMeeting(meetingID);
+            }
+        catch(TradeNumberException | NoTradeWithMeetingIDException ignored){}
+    }
 
 
 

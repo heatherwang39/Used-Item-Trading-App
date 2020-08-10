@@ -270,7 +270,9 @@ public class MeetingStorage  implements Storage, MeetingObservee{
         if(m.isConfirmed()){
             throw new MeetingAlreadyConfirmedException();
         }
-        m.cancel();
+        if(m.cancel()){
+            notifyCancelled(meetingID);
+        }
     }
 
 
@@ -316,6 +318,17 @@ public class MeetingStorage  implements Storage, MeetingObservee{
     public void notifyConfirmed(int meetingID){
         for (MeetingObserver meetingObserver: observers) {
             meetingObserver.updateConfirmed(meetingID);
+        }
+    }
+
+
+    /** Record the fact that the given meeting has been cancelled
+     *
+     * @param meetingID The ID of the cancelled meeting
+     */
+    public void notifyCancelled(int meetingID){
+        for (MeetingObserver meetingObserver: observers) {
+            meetingObserver.updateCancelled(meetingID);
         }
     }
 }

@@ -193,6 +193,17 @@ public abstract class Trade implements Serializable {
     }
 
 
+    /** Remove the given meeting
+     *
+     * Precondition: The meeting is part of this Trade
+     *
+     * @param meetingID The meeting(ID) that you're removing from this trade
+     */
+    public void removeMeeting(int meetingID){
+        meetings.remove(meetings.get(meetingID));
+    }
+
+
     /** Return a list consisting of all the IDs of the suggested meetings
      *
      * @return A list consisting of all the IDs of the suggested meetings

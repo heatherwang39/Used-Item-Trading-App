@@ -37,4 +37,11 @@ public interface MeetingObservee {
      * @param meetingID The meeting that was confirmed
      */
     void notifyConfirmed(int meetingID);
+
+
+    /** Record the fact that the given meeting has been cancelled
+     *
+     * @param meetingID The ID of the cancelled meeting
+     */
+    void notifyCancelled(int meetingID);
 }

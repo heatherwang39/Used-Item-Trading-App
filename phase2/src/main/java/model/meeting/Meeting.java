@@ -179,8 +179,13 @@ public class Meeting {
 
     /** Cancel the Meeting
      *
+     * @return Whether the Meeting was succesfully cancelled
      */
-    public void cancel(){
+    public boolean cancel(){
+        if(cancelled){
+            return false;
+        }
         cancelled = true;
+        return true;
     }
 }

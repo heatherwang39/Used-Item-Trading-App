@@ -21,4 +21,11 @@ public interface MeetingObserver {
      * @param meetingID The ID of the confirmed meeting
      */
     void updateConfirmed(int meetingID);
+
+
+    /** Record the fact that the given meeting has been cancelled
+     *
+     * @param meetingID The ID of the cancelled meeting
+     */
+    void updateCancelled(int meetingID);
 }
