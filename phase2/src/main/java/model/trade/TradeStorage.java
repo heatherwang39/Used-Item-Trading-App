@@ -138,8 +138,8 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
     public boolean setStatus(int tradeNumber, int status) throws TradeNumberException {
         Trade t = getTrade(tradeNumber);
         boolean b = t.setStatus(status);
-        if(b && getStatus(tradeNumber) == 3){
-            notifyTradeComplete(t.getItemsFinal(), t.getTraders());
+        if(b){
+            notifyTradeChange(t.getExchangeData(), status);
         }
         return b;
     }
@@ -623,15 +623,14 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
     }
 
 
-    /** Notify the observers that a Trade with the items distributed between owners as stored in the two parallel lists
-     * (inputs/parameters) has been completed.
+    /** Notify the observers that a Trade's status has changed
      *
-     * @param itemID A parallel list representing the IDs of items involved in the trade
-     * @param newOwner A parallel list representing the usernames of the new owners of the aforementioned items
+     * @param exchangeData A HashMap representing the Exchange Data of the Trade
+     * @param newStatus The new Status of the Trade
      */
-    public void notifyTradeComplete(List<Integer> itemID, List<String> newOwner){
+    public void notifyTradeChange(HashMap<String, HashMap<String, Integer>> exchangeData, int newStatus){
         for (TradeObserver tradeObserver: observers) {
-            tradeObserver.updateTradeComplete(itemID, newOwner);
+            tradeObserver.updateTradeChange(exchangeData, newStatus);
         }
     }
 

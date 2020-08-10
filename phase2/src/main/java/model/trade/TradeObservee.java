@@ -1,5 +1,6 @@
 package main.java.model.trade;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -26,11 +27,10 @@ public interface TradeObservee {
     void detachTradeObserver(TradeObserver tradeObserver);
 
 
-    /** Notify the observers that a Trade with the items distributed between owners as stored in the two parallel lists
-     * (inputs/parameters) has been completed.
+    /** Notify the observers that a Trade's status has changed
      *
-     * @param itemID A parallel list representing the IDs of items involved in the trade
-     * @param newOwner A parallel list representing the usernames of the new owners of the aforementioned items
+     * @param exchangeData A HashMap representing the Exchange Data of the Trade
+     * @param newStatus The new Status of the Trade
      */
-    void notifyTradeComplete(List<Integer> itemID, List<String> newOwner);
+    void notifyTradeChange(HashMap<String, HashMap<String, Integer>> exchangeData, int newStatus);
 }
