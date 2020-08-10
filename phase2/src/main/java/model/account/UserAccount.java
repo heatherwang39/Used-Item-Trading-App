@@ -16,6 +16,8 @@ public class UserAccount extends LoginAccount {
     private int weeklyThreshold = 3;
     private int gildedThreshold = 10;
     private int numberOfCompletedTrades;
+    private int numberOfWeeklyTrades;
+    private int numberOfIncompleteTrades;
     private List<String> freezeReasons = new ArrayList<>();
     private List<StatusEnum> statuses = new ArrayList<>();
 
@@ -53,8 +55,8 @@ public class UserAccount extends LoginAccount {
 
     public int getNumberOfCompletedTrades(){return numberOfCompletedTrades;}
 
-    public void updateNumberOfCompletedTrades(){
-        numberOfCompletedTrades++;
+    public void setNumberOfCompletedTrades(int numberOfCompletedTrades){
+        this.numberOfCompletedTrades = numberOfCompletedTrades;
     }
 
     public int getGildedThreshold() {
@@ -72,6 +74,25 @@ public class UserAccount extends LoginAccount {
     public void setFreezeReasons(List<String> freezeReasons) {
         this.freezeReasons = freezeReasons;
     }
+
+
+    public int getNumberOfWeeklyTrades() {
+        return numberOfWeeklyTrades;
+    }
+
+    public void setNumberOfWeeklyTrades(int numberOfWeeklyTrades) {
+        this.numberOfWeeklyTrades = numberOfWeeklyTrades;
+    }
+
+
+    public int getNumberOfIncompleteTrades() {
+        return numberOfIncompleteTrades;
+    }
+
+    public void setNumberOfIncompleteTrades(int numberOfIncompleteTrades) {
+        this.numberOfIncompleteTrades = numberOfIncompleteTrades;
+    }
+
 
 
     //Threshold Methods Below
