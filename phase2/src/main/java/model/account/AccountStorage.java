@@ -1,11 +1,7 @@
 package main.java.model.account;
 
 import main.java.model.Storage;
-import main.java.model.trade.Trade;
-import main.java.model.trade.TradeNumberException;
 import main.java.model.trade.TradeObserver;
-
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -480,9 +476,8 @@ public class AccountStorage implements Storage, TradeObserver {
                     user.setIncompleteThreshold(user.getIncompleteThreshold() * 2);
                 }
             }
-        } else {
-            throw new WrongAccountTypeException();
         }
+
     }
 
     //automatically freeze account below
@@ -546,12 +541,9 @@ public class AccountStorage implements Storage, TradeObserver {
         }
     }
 
-    public List<String> showFreezeReasons(String username) throws AccountNotFoundException, WrongAccountTypeException {
-        if (getType(username).equals("USER")){
-            UserAccount user = (UserAccount) getAccount(username);
-            return user.getFreezeReasons();
-        }
-        throw new WrongAccountTypeException();
+    public List<String> showFreezeReasons(String username) throws AccountNotFoundException {
+        UserAccount user = (UserAccount) getAccount(username);
+        return user.getFreezeReasons();
     }
 
     //automatically gild User below
@@ -595,17 +587,16 @@ public class AccountStorage implements Storage, TradeObserver {
 
     private void gildUsers(List<String> traders) throws AccountNotFoundException, WrongAccountTypeException {
         for(String username:traders) {
-            if (getType(username).equals("USER")) {
-                if(!containsStatus(username,"GILDED")){
-                    UserAccount user = (UserAccount) getAccount(username);
-                    if(user.getNumberOfCompletedTrades()>user.getGildedThreshold()){
-                        user.addStatus(StatusEnum.GILDED);
-                    }
+            if(!containsStatus(username,"GILDED")){
+                UserAccount user = (UserAccount) getAccount(username);
+                if(user.getNumberOfCompletedTrades()>user.getGildedThreshold()){
+                    user.addStatus(StatusEnum.GILDED);
                 }
             }
-            throw new WrongAccountTypeException();
         }
     }
+
+
 
 
     /**

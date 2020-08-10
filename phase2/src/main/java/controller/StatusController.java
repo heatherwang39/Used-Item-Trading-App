@@ -4,8 +4,6 @@ import main.java.model.account.AccountNotFoundException;
 import main.java.model.account.AccountStorage;
 import main.java.model.account.StatusNotFoundException;
 import main.java.model.account.WrongAccountTypeException;
-import main.java.model.status.InvalidStatusTypeException;
-import main.java.model.status.StatusStorage;
 import main.java.system.StorageEnum;
 import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
@@ -54,7 +52,7 @@ public class StatusController {
      */
     public void setAwayStatus() throws IOException, AccountNotFoundException, WrongAccountTypeException {
         accountStorage.createStatus(username,"AWAY");
-        storageGateway.saveStorageData(StorageEnum.STATUS);
+        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
     }
 
     /** Remove the away status
@@ -65,7 +63,7 @@ public class StatusController {
      */
     public void removeAwayStatus() throws IOException, StatusNotFoundException, AccountNotFoundException, WrongAccountTypeException {
         accountStorage.removeStatus(username,"AWAY");
-        storageGateway.saveStorageData(StorageEnum.STATUS);
+        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
     }
 
 

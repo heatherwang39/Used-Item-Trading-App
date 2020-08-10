@@ -105,12 +105,12 @@ public class AccountController {
         return false;
     }
 
-    public void setAwayStatus() throws AccountNotFoundException, WrongAccountTypeException, IOException {
+    public void setAwayStatus() throws AccountNotFoundException, IOException, WrongAccountTypeException {
         accountStorage.createStatus(username, "AWAY");
         storageGateway.saveStorageData(StorageEnum.ACCOUNT);
     }
 
-    public void removeAwayStatus() throws StatusNotFoundException, WrongAccountTypeException, AccountNotFoundException, IOException {
+    public void removeAwayStatus() throws StatusNotFoundException, AccountNotFoundException, IOException, WrongAccountTypeException {
         accountStorage.removeStatus(username, "AWAY");
         storageGateway.saveStorageData(StorageEnum.ACCOUNT);
     }

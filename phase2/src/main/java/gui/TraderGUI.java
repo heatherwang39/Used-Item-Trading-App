@@ -263,7 +263,7 @@ public class TraderGUI {
                 txtRegisterUsername.setText("");
                 txtRegisterPassword.setText("");
             } catch (UsernameInUseException | InvalidEmailAddressException | EmailAddressInUseException |
-                    InvalidStatusTypeException | InvalidUsernameException | InvalidPasswordException invalidLoginException) {
+                    InvalidUsernameException | InvalidPasswordException | AccountNotFoundException | WrongAccountTypeException invalidLoginException) {
                 showMessageDialog(null, invalidLoginException.getMessage());
             } catch (IOException ioException) {
                 ioException.printStackTrace();
