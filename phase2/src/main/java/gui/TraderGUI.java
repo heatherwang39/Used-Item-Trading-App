@@ -8,7 +8,6 @@ import main.java.model.message.EmptyRecipientListException;
 import main.java.model.message.EmptyTitleException;
 import main.java.model.trade.*;
 import main.java.system.StorageGateway;
-import main.java.model.status.InvalidStatusTypeException;
 import main.java.presenter.*;
 
 import javax.swing.*;
@@ -585,8 +584,8 @@ public class TraderGUI {
             try {
                 thresholdController.setBorrowingThreshold(newBorrowingThreshold);
                 showMessageDialog(null, "New Borrowing Threshold has been set to: " + newBorrowingThreshold);
-            } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException exception) {
-                exception.printStackTrace();
+            } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException | IOException exception) {
+                showMessageDialog(null,exception.getMessage());
             }
         });
         btnThresholdIncompleteEnter.addActionListener(e -> {
@@ -595,8 +594,8 @@ public class TraderGUI {
             try {
                 thresholdController.setIncompleteThreshold(newIncompleteThreshold);
                 showMessageDialog(null, "New Incompleted Trades Threshold has been set to: " + newIncompleteThreshold);
-            } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException exception) {
-                exception.printStackTrace();
+            } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException | IOException exception) {
+                showMessageDialog(null,exception.getMessage());
             }
         });
         btnThresholdWeeklyEnter.addActionListener(e -> {
@@ -605,8 +604,8 @@ public class TraderGUI {
             try {
                 thresholdController.setWeeklyThreshold(newWeeklyThreshold);
                 showMessageDialog(null, "New Weekly Trade Threshold has been set to: " + newWeeklyThreshold);
-            } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException exception) {
-                exception.printStackTrace();
+            } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException | IOException exception) {
+                showMessageDialog(null,exception.getMessage());
             }
         });
     }
