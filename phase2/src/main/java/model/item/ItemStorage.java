@@ -240,14 +240,13 @@ public class ItemStorage implements Storage, TradeObserver {
     }
 
     /**
-     * Suggest items to lend to a given user.
+     * Suggest items to lend to a given user
      *
      * @param currentUser current Account username who needs suggestion
      * @param givenUser the given Account username who may want to borrow
      * @return data of suggested items
      */
-    public List<HashMap<String, String>> suggestItems(String currentUser,String givenUser) throws ItemNotFoundException {
-
+    public List<HashMap<String, String>> suggestItems(String currentUser, String givenUser) throws ItemNotFoundException {
         List<Item> inventory = getVerifiedInventory(currentUser);
         List<Item> wishlist = getWishlist(givenUser);
         List<Item> suggestedItems = new ArrayList<>(inventory);
@@ -257,7 +256,9 @@ public class ItemStorage implements Storage, TradeObserver {
             suggestItemsData.add(getData(i.getID()));
         }
         return suggestItemsData;
+        // this gets the intersection of currentUser's inventory and givenUser's wishlist
     }
+
 
     /**
      * Returns a list with each element being the Item data of an Item that is in the given user's wishlist

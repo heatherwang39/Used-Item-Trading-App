@@ -49,8 +49,8 @@ public class AddItemsController {
         storageGateway.saveStorageData(StorageEnum.valueOf("ITEM"));
     }
 
-    public void addWishlistItem(String user, String itemID) throws IOException, ItemNotFoundException {
-        itemStorage.addWishList(user, Integer.parseInt(itemID));
+    public void addWishlistItem(String itemID) throws IOException, ItemNotFoundException {
+        itemStorage.addWishList(username, Integer.parseInt(itemID));
         storageGateway.saveStorageData(StorageEnum.valueOf("ITEM"));
     }
 
