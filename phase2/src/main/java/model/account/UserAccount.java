@@ -56,6 +56,10 @@ public class UserAccount extends LoginAccount {
 
     public int getNumberOfCompletedTrades(){return numberOfCompletedTrades;}
 
+    //temporary, need to delete later
+    public void updateNumberOfCompletedTrades(){
+        numberOfCompletedTrades++;
+    }
     public void setNumberOfCompletedTrades(int numberOfCompletedTrades){
         this.numberOfCompletedTrades = numberOfCompletedTrades;
     }
