@@ -15,6 +15,7 @@ public class UserAccount extends LoginAccount {
     private int incompleteThreshold = 3;
     private int weeklyThreshold = 3;
     private int gildedThreshold = 10;
+    private int numberOfBorrowedItems;
     private int numberOfCompletedTrades;
     private int numberOfWeeklyTrades;
     private int numberOfIncompleteTrades;
@@ -59,13 +60,6 @@ public class UserAccount extends LoginAccount {
         this.numberOfCompletedTrades = numberOfCompletedTrades;
     }
 
-    public int getGildedThreshold() {
-        return gildedThreshold;
-    }
-
-    public void setGildedThreshold(int gildedThreshold) {
-        this.gildedThreshold = gildedThreshold;
-    }
 
     public List<String> getFreezeReasons() {
         return freezeReasons;
@@ -94,8 +88,25 @@ public class UserAccount extends LoginAccount {
     }
 
 
+    public int getNumberOfBorrowedItems() {
+        return numberOfBorrowedItems;
+    }
+
+    public void setNumberOfBorrowedItems(int numberOfBorrowedItems) {
+        this.numberOfBorrowedItems = numberOfBorrowedItems;
+    }
+
+
 
     //Threshold Methods Below
+
+    public int getGildedThreshold() {
+        return gildedThreshold;
+    }
+
+    public void setGildedThreshold(int gildedThreshold) {
+        this.gildedThreshold = gildedThreshold;
+    }
 
     /** Return the BorrowThreshold for this given Account
      *
