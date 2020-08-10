@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * A Controller for the Main, Register, and Login Tab
  *
- * @author Warren Zhu
+ * @author Warren Zhu, Heather Wang
  * @version %I%, %G%
  * @since Phase 2
  */
@@ -25,7 +25,6 @@ public class AccountController {
 
     private final AccountStorage accountStorage;
     private final ItemStorage itemStorage;
-    private final StatusStorage statusStorage;
     private final String username;
 
     /** Class constructor
@@ -36,7 +35,6 @@ public class AccountController {
         this.username = username;
 
         StorageFactory storageFactory = new StorageFactory();
-        statusStorage = (StatusStorage) storageFactory.getStorage(storageGateway, StorageEnum.STATUS);
         accountStorage = (AccountStorage) storageFactory.getStorage(storageGateway, StorageEnum.ACCOUNT);
         itemStorage = (ItemStorage) storageFactory.getStorage(storageGateway, StorageEnum.ITEM);
     }
@@ -53,12 +51,12 @@ public class AccountController {
         return itemStorage.getWishlistData(username);
     }
 
-    private List<String> getStatuses(){
-        return statusStorage.getAccountStatusStrings(username);
+    private List<String> getStatuses() throws AccountNotFoundException, WrongAccountTypeException {
+        return accountStorage.getAccountStatuses(username);
     }
 
     // consider making this into a presenter class
-    public String getStatusString(){
+    public String getStatusString() throws AccountNotFoundException, WrongAccountTypeException {
         List<String> userStatusList = getStatuses();
         StringBuilder statusString = new StringBuilder();
         for (String s : userStatusList) {
@@ -98,7 +96,7 @@ public class AccountController {
         return str.toString();
     }
 
-    public boolean isAway(){
+    public boolean isAway() throws AccountNotFoundException, WrongAccountTypeException {
         List<String> userStatusList = getStatuses();
         for (int i = 0; i < userStatusList.size(); i++){
             if (userStatusList.contains("AWAY")){
@@ -108,11 +106,11 @@ public class AccountController {
         return false;
     }
 
-    public void setAwayStatus() throws InvalidStatusTypeException {
-        statusStorage.createStatus(username, "AWAY");
+    public void setAwayStatus() throws AccountNotFoundException, WrongAccountTypeException {
+        accountStorage.createStatus(username, "AWAY");
     }
 
-    public void removeAwayStatus() throws StatusNotFoundException {
-        statusStorage.removeStatus(username, "AWAY");
+    public void removeAwayStatus() throws StatusNotFoundException, WrongAccountTypeException, AccountNotFoundException {
+        accountStorage.removeStatus(username, "AWAY");
     }
 }
