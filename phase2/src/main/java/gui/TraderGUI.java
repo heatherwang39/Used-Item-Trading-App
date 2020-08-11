@@ -75,8 +75,6 @@ public class TraderGUI {
     private JPanel Threshold;
     private JTextField txtAdminPasswordInput;
     private JButton btnAddAdmin;
-    private JScrollPane scrlInventoryOutput;
-    private JScrollPane scrlWishlistOutput;
     private JTextArea txtAreaInventoryOutput;
     private JTextArea txtAreaWishlistOutput;
     private JButton btnInventoryRequest;
