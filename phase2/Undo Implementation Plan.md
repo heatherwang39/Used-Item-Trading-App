@@ -56,7 +56,7 @@ Let's go through the "Undoable" list above and see what 'A<sup>-1</sup>' are imp
 
 2) This is already implemented.
 
-3) There already is an Observer pattern that updates the necessary classes when a status is added or removed.
+3) This is already implemented.
 
 As of now, everything in the UseCase level that is necessary for this feature is implemented. This means our program adheres well to the Open/Closed principle.
 

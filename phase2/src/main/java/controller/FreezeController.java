@@ -4,8 +4,6 @@ import main.java.model.account.AccountNotFoundException;
 import main.java.model.account.AccountStorage;
 import main.java.model.account.StatusNotFoundException;
 import main.java.model.account.WrongAccountTypeException;
-import main.java.model.status.InvalidStatusTypeException;
-import main.java.model.status.StatusStorage;
 import main.java.model.trade.TradeNumberException;
 import main.java.model.trade.TradeStorage;
 import main.java.system.StorageEnum;
