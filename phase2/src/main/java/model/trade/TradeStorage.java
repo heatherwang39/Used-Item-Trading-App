@@ -1,8 +1,6 @@
 package main.java.model.trade;
 
 import main.java.model.Storage;
-import main.java.model.account.AccountNotFoundException;
-import main.java.model.account.WrongAccountTypeException;
 import main.java.model.meeting.MeetingObserver;
 
 import java.util.*;
@@ -534,7 +532,7 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
         List<Integer> inactiveUserOffers = new ArrayList<>();
         List<Integer> inactiveUserTrades = getInactiveTradesWithUser(username);
         for (Integer tradeNumber: inactiveUserTrades) {
-            if (!getTrade(tradeNumber).getTraders().get(0).equals(username)) inactiveUserOffers.add(tradeNumber);
+            if (!getTrade(tradeNumber).getTradeInitializer().equals(username)) inactiveUserOffers.add(tradeNumber);
         }
         return inactiveUserOffers;
     }
@@ -712,42 +710,9 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
         return tam.frequentTradePartners(username, userTrades);
     }
 
-    /**
-     * Checks which users in usernames should be frozen based on if they violate any of the trade thresholds
-     * There are three thresholds that are checked:
-     * (1) Borrow Threshold: if a user has borrowed more than they have lent out
-     * (2) Incomplete Threshold: if a user has too many incomplete trades
-     * (3) Weekly Threshold: if a user has traded too much in one week
-     * If a user violates any of these thresholds, a string representing the violation is added into a list, and a list
-     * of reasons is returned.
-     * If the list is empty, the user should not be frozen.
-     *
-     * @param usernames usernames of all users
-     * @param borrowThreshold threshold for borrowing more than lending
-     * @param incompleteThreshold threshold for too many incomplete trades
-     * @param weeklyThreshold threshold for too many trades in one week
-     * @return a list of lists that contain the username and reasons why that user should be frozen. Empty if there are no users to freeze
-     */
-    public List<List<String>> showFreezeUsers(List<String> usernames, int borrowThreshold, int incompleteThreshold,
-                                              int weeklyThreshold) throws TradeNumberException {
-        List<List<String>> freezeList = new ArrayList<>();
-        for (String user : usernames) {
-            List<String> userFreezeReasons = checkUserShouldFreeze(user, borrowThreshold, incompleteThreshold, weeklyThreshold);
-            if (userFreezeReasons.size() > 1) {
-                List<String> userData = new ArrayList<>();
-                userData.add(user);
-                userData.addAll(userFreezeReasons);
-                freezeList.add(userData);
-            }
-        }
-        return freezeList;
-    }
 
-    private List<String> checkUserShouldFreeze(String username, int borrowThreshold, int incompleteThreshold,
-                                               int weeklyThreshold) throws TradeNumberException {
-        List <Trade> userTrades = getUserTrades(username);
-        return tam.checkUserShouldFreeze(username, userTrades, borrowThreshold, incompleteThreshold, weeklyThreshold);
-    }
+
+
 
     private boolean checkIsGilded(String username) throws TradeNumberException {
         List<Trade> userTrades = getUserTrades(username);

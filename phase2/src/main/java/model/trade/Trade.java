@@ -41,7 +41,7 @@ public abstract class Trade implements Serializable {
      *
      * @param tradeNumber The unique TradeNumber associated with this trade
      * @param tradeAlgorithm The algorithm that determines how the trade functions
-     * @param traders The traders involved in this trade
+     * @param traders The traders involved in this trade, with the person who made the request stored at the index 0.
      * @param items The items involved in this trade in the order of their owners (in traders)
      */
     public Trade(int tradeNumber, TradeAlgorithm tradeAlgorithm, List<String> traders, List<Integer> items){
@@ -118,6 +118,15 @@ public abstract class Trade implements Serializable {
      */
     public boolean isOneWay(){
         return traders.size() == 2 && items.contains(null);
+    }
+
+
+    /** Return the username of the trader who made the trade request
+     *
+     * @return the trader who made the trade request
+     */
+    public String getTradeInitializer(){
+        return traders.get(0);
     }
 
 
