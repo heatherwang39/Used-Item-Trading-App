@@ -26,7 +26,6 @@ import static javax.swing.JOptionPane.showMessageDialog;
 public class OffersController {
     private final StorageGateway storageGateway;
     private final TradeStorage tradeStorage;
-    private final ItemStorage itemStorage;
     private final String username;
 
     /**
@@ -34,7 +33,6 @@ public class OffersController {
      *
      * @param storageGateway gateway for loading and saving information
      * @param username username of the user accessing the Offers tab
-     * @param tradePresenter trade presenter
      * @throws IOException file cannot be read/written
      * @throws ClassNotFoundException serialized class not found
      */
@@ -44,7 +42,7 @@ public class OffersController {
 
         StorageFactory sf = new StorageFactory();
         tradeStorage = (TradeStorage) sf.getStorage(storageGateway, StorageEnum.TRADE);
-        itemStorage = (ItemStorage) sf.getStorage(storageGateway, StorageEnum.ITEM);
+        ItemStorage itemStorage = (ItemStorage) sf.getStorage(storageGateway, StorageEnum.ITEM);
         tradeStorage.attachTradeObserver(itemStorage);
     }
 
