@@ -3,9 +3,7 @@ package main.java.controller;
 import main.java.model.account.AccountStorage;
 import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
-import main.java.model.trade.NoSuchTradeAlgorithmException;
-import main.java.model.trade.TradeAlgorithmName;
-import main.java.model.trade.TradeStorage;
+import main.java.model.trade.*;
 import main.java.system.StorageEnum;
 import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
@@ -52,13 +50,14 @@ public class RequestController {
      * @throws NoSuchTradeAlgorithmException Thrown if no tradeAlgorithm has the given name
      */
     public void createRequest(boolean permanent, TradeAlgorithmName tradeAlgorithmName, List<Integer> items)
-            throws ItemNotFoundException, NoSuchTradeAlgorithmException, IOException {
+            throws ItemNotFoundException, NoSuchTradeAlgorithmException, IOException, WrongTradeAccountException, TradeNumberException, TradeCancelledException {
         List<String> traders = new ArrayList<>();
         for (Integer itemID : items) {
             traders.add(itemStorage.getData(itemID).get("owner"));
         }
         if (!(traders.contains(username))) traders.add(username);
-        tradeStorage.newTrade(permanent, tradeAlgorithmName, traders, items);
+        int tradeNumber = tradeStorage.newTrade(permanent, tradeAlgorithmName, traders, items);
+        tradeStorage.acceptTrade(tradeNumber, username);
         storageGateway.saveStorageData(StorageEnum.valueOf("TRADE"));
     }
 

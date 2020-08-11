@@ -54,6 +54,10 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
             t = new TemporaryTrade(getNumberOfTrades() + 1, ta, traders, items);
         }
         trades.add(t);
+
+        if (permanent) t.setNumMeetings(1);
+        else t.setNumMeetings(2);
+
         return t.getTradeNumber();
     }
 

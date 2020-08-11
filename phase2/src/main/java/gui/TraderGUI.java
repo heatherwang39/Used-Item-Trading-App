@@ -16,6 +16,8 @@ import main.java.presenter.*;
 
 import javax.swing.*;
 // From: https://stackoverflow.com/questions/9119481/how-to-present-a-simple-alert-message-in-java
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -155,6 +157,8 @@ public class TraderGUI {
     private JTextArea txtAreaAccountThresholds;
     private JRadioButton rbtnLend;
     private JRadioButton rbtnViewNextSuggestion;
+    private JTextField txtFreezeUserInput;
+    private JButton btnFreezeUser;
     private JTextArea accountInformationTextArea;
 
     private String user;
@@ -167,9 +171,8 @@ public class TraderGUI {
         try {
             initializeLogin();
         } catch (IOException | ClassNotFoundException e) {
-            showMessageDialog(null, e.getStackTrace());
+            e.printStackTrace();
         }
-
     }
 
     private void initializeLogin() throws IOException, ClassNotFoundException {
@@ -214,6 +217,18 @@ public class TraderGUI {
         ButtonGroup userListButtonGroup = new ButtonGroup();
         userListButtonGroup.add(rbtnUserListMute);
         userListButtonGroup.add(rbtnUserListNext);
+
+        ButtonGroup requestButtonGroup = new ButtonGroup();
+        requestButtonGroup.add(rbtnLend);
+        requestButtonGroup.add(rbtnViewNextSuggestion);
+
+        ButtonGroup meetingSuggestionButtonGroup = new ButtonGroup();
+        meetingSuggestionButtonGroup.add(rbtnMeetingAccept);
+        meetingSuggestionButtonGroup.add(rbtnMeetingDeny);
+
+        ButtonGroup meetingOngoingButtonGroup = new ButtonGroup();
+        meetingOngoingButtonGroup.add(rbtnMeetingCompleted);
+        meetingOngoingButtonGroup.add(rbtnMeetingNext);
 
         btnRegisterMain.addActionListener(e -> {
             tabCleaner();
@@ -442,8 +457,11 @@ public class TraderGUI {
                         requestController.createRequest(false, tradeAlgorithmName, tradeItemList);
                     }
 
-                } catch (ItemNotFoundException | NoSuchTradeAlgorithmException | IOException exception) {
-                    exception.printStackTrace();
+                } catch (ItemNotFoundException | NoSuchTradeAlgorithmException | WrongTradeAccountException |
+                        TradeCancelledException exception) {
+                    showMessageDialog(null, exception.getMessage());
+                } catch (TradeNumberException | IOException ioException){
+                    ioException.printStackTrace();
                 }
                 txtAreaRequestSuggestTradesOutput.setText("");
                 suggestionList.remove(0);
@@ -490,7 +508,8 @@ public class TraderGUI {
                         txtRequestedItemInput.setText("");
                         txtRequestItemInput.setText("");
                     }
-                } catch (ItemNotFoundException | NoSuchTradeAlgorithmException exception) {
+                } catch (ItemNotFoundException | NoSuchTradeAlgorithmException | TradeCancelledException |
+                        WrongTradeAccountException | TradeNumberException exception) {
                     showMessageDialog(null, exception.getMessage());
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
@@ -550,7 +569,7 @@ public class TraderGUI {
             try {
                 acceptedTradesListUnformatted = meetingController.getAcceptedTradesUnformatted();
             } catch (TradeNumberException tradeNumberException) {
-                tradeNumberException.printStackTrace();
+                showMessageDialog(null, tradeNumberException.getMessage());
             }
 
             String suggestedPlace = txtMeetingSuggestInput.getText();
@@ -563,8 +582,10 @@ public class TraderGUI {
             if (!acceptedTradesListUnformatted.isEmpty()) {
                 try {
                     meetingController.suggestMeeting(Integer.parseInt(acceptedTradesListUnformatted.get(0).get("id").get(0)), suggestedPlace, suggestedTime);
-                } catch (TradeNumberException | IOException | TradeCancelledException | MaxNumMeetingsExceededException exception) {
-                    exception.printStackTrace();
+                } catch (TradeNumberException | TradeCancelledException | MaxNumMeetingsExceededException exception) {
+                    showMessageDialog(null, exception.getMessage());
+                } catch (IOException ioException){
+                    ioException.printStackTrace();
                 }
             }
         });
@@ -584,8 +605,10 @@ public class TraderGUI {
                 }
 
 
-            } catch (WrongMeetingAccountException | MeetingIDException | IOException | MeetingAlreadyConfirmedException exception) {
-                exception.printStackTrace();
+            } catch (WrongMeetingAccountException | MeetingIDException | MeetingAlreadyConfirmedException exception) {
+                showMessageDialog(null, exception.getMessage());
+            } catch (IOException ioException){
+                ioException.printStackTrace();
             }
         });
 
@@ -595,15 +618,17 @@ public class TraderGUI {
             List<HashMap<String, List<String>>> ongoingMeetingsListUnformatted = new ArrayList<>();
             try {
                 ongoingMeetingsListUnformatted = meetingController.getOngoingMeetingsUnformatted();
-            } catch (MeetingIDException meetingIDException) {
-                meetingIDException.printStackTrace();
+            } catch (MeetingIDException exception) {
+                showMessageDialog(null, exception.getMessage());
             }
             if (!ongoingMeetingsListUnformatted.isEmpty()){
                 if (rbtnMeetingCompleted.isSelected()) {
                     try {
                         meetingController.confirmMeeting(Integer.parseInt(ongoingMeetingsListUnformatted.get(currMeetingOngoingIndex[0]).get("id").get(0)));
-                    } catch (WrongMeetingAccountException | MeetingIDException | TimeException | IOException exception) {
-                        exception.printStackTrace();
+                    } catch (WrongMeetingAccountException | MeetingIDException | TimeException exception) {
+                        showMessageDialog(null, exception.getMessage());
+                    } catch (IOException ioException){
+                        ioException.printStackTrace();
                     }
                 } else if (rbtnMeetingNext.isSelected()){
                     currMeetingOngoingIndex[0]++;
@@ -665,8 +690,8 @@ public class TraderGUI {
                     showMessageDialog(null, "Message sent to admins");
                 } catch (EmptyTitleException | EmptyContentException | EmptyRecipientListException exception) {
                     showMessageDialog(null, exception.getMessage());
-                } catch (IOException exception) {
-                    exception.printStackTrace();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
                 }
             }
         });
@@ -758,8 +783,10 @@ public class TraderGUI {
             try {
                 thresholdController.setGildedThreshold(newGildedThreshold);
                 showMessageDialog(null, "New Threshold for Users to obtain the Guilded Status set to: " + newGildedThreshold);
-            } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException | IOException exception) {
-                exception.printStackTrace();
+            } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException exception) {
+                 showMessageDialog(null,exception.getMessage());
+            } catch (IOException ioException){
+                 ioException.printStackTrace();
             }
         });
     }
@@ -858,6 +885,17 @@ public class TraderGUI {
                 }
             }
         });
+
+        btnFreezeUser.addActionListener(e -> {
+           String userToFreeze = txtFreezeUserInput.getText();
+            try {
+                freezeController.freezeUser(userToFreeze);
+            } catch (AccountNotFoundException | WrongAccountTypeException exception) {
+                showMessageDialog(null, exception.getMessage());
+            } catch (IOException ioException){
+                ioException.printStackTrace();
+            }
+        });
     }
 
     private void tabCleaner(){
@@ -892,12 +930,12 @@ public class TraderGUI {
         List<String> acceptedTradesList = new ArrayList<>();
         try {
             acceptedTradesList = meetingController.getAcceptedTrades();
-        } catch (TradeNumberException tradeNumberException) {
+        } catch (TradeNumberException | ItemNotFoundException tradeNumberException) {
             tradeNumberException.printStackTrace();
         }
         if (!acceptedTradesList.isEmpty()) {
             for (String s : acceptedTradesList) {
-                txtAreaMeetingAcceptedTrades.append(s + "\n ----------------------");
+                txtAreaMeetingAcceptedTrades.append("\n ---------------------- \n" + s);
             }
             txtMeetingAcceptedTrade.setText("");
             txtMeetingAcceptedTrade.setText(acceptedTradesList.get(0));
@@ -913,7 +951,7 @@ public class TraderGUI {
         }
         if (!meetingSuggestionsList.isEmpty()){
             for (String s: meetingSuggestionsList){
-                txtAreaMeetingSuggestions.append(s + "\n ----------------------");
+                txtAreaMeetingSuggestions.append("\n ---------------------- \n" + s);
             }
             txtMeetingSuggested.setText("");
             txtMeetingSuggested.setText(meetingSuggestionsList.get(0));
@@ -930,7 +968,7 @@ public class TraderGUI {
 
         if(!ongoingMeetingsList.isEmpty()){
             for (String s : ongoingMeetingsList){
-                txtAreaMeetingOngoing.append(s + "\n ----------------------");
+                txtAreaMeetingOngoing.append("\n ---------------------- \n" + s);
             }
             txtMeetingOngoingOutput.setText(ongoingMeetingsList.get(currMeetingIndex));
         }
@@ -946,7 +984,7 @@ public class TraderGUI {
 
         if (!completedMeetingsList.isEmpty()) {
             for (String s : completedMeetingsList){
-                txtAreaMeetingCompleted.append(s + "\n ----------------------");
+                txtAreaMeetingCompleted.append("\n ---------------------- \n" + s);
             }
         }
     }

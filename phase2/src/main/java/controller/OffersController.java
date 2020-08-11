@@ -68,8 +68,6 @@ public class OffersController {
      */
     public void acceptOffer(int tradeNumber) throws TradeNumberException, IOException, TradeCancelledException, WrongTradeAccountException {
         tradeStorage.acceptTrade(tradeNumber, username);
-        if (tradeStorage.isPermanent(tradeNumber)) tradeStorage.setNumMeetings(tradeNumber, 1);
-        else tradeStorage.setNumMeetings(tradeNumber, 2);
         storageGateway.saveStorageData(StorageEnum.TRADE);
         storageGateway.saveStorageData(StorageEnum.ITEM);
     }
