@@ -442,8 +442,11 @@ public class TraderGUI {
                         requestController.createRequest(false, tradeAlgorithmName, tradeItemList);
                     }
 
-                } catch (ItemNotFoundException | NoSuchTradeAlgorithmException | IOException exception) {
+                } catch (ItemNotFoundException | NoSuchTradeAlgorithmException | WrongTradeAccountException |
+                        TradeNumberException | IOException exception) {
                     exception.printStackTrace();
+                } catch (TradeCancelledException exception) {
+                    showMessageDialog(null, exception.getMessage());
                 }
                 txtAreaRequestSuggestTradesOutput.setText("");
                 suggestionList.remove(0);
@@ -490,7 +493,8 @@ public class TraderGUI {
                         txtRequestedItemInput.setText("");
                         txtRequestItemInput.setText("");
                     }
-                } catch (ItemNotFoundException | NoSuchTradeAlgorithmException exception) {
+                } catch (ItemNotFoundException | NoSuchTradeAlgorithmException | TradeCancelledException |
+                        WrongTradeAccountException | TradeNumberException exception) {
                     showMessageDialog(null, exception.getMessage());
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
@@ -892,12 +896,12 @@ public class TraderGUI {
         List<String> acceptedTradesList = new ArrayList<>();
         try {
             acceptedTradesList = meetingController.getAcceptedTrades();
-        } catch (TradeNumberException tradeNumberException) {
+        } catch (TradeNumberException | ItemNotFoundException tradeNumberException) {
             tradeNumberException.printStackTrace();
         }
         if (!acceptedTradesList.isEmpty()) {
             for (String s : acceptedTradesList) {
-                txtAreaMeetingAcceptedTrades.append(s + "\n ----------------------");
+                txtAreaMeetingAcceptedTrades.append("\n ---------------------- \n" + s);
             }
             txtMeetingAcceptedTrade.setText("");
             txtMeetingAcceptedTrade.setText(acceptedTradesList.get(0));
@@ -913,7 +917,7 @@ public class TraderGUI {
         }
         if (!meetingSuggestionsList.isEmpty()){
             for (String s: meetingSuggestionsList){
-                txtAreaMeetingSuggestions.append(s + "\n ----------------------");
+                txtAreaMeetingSuggestions.append("\n ---------------------- \n" + s);
             }
             txtMeetingSuggested.setText("");
             txtMeetingSuggested.setText(meetingSuggestionsList.get(0));
@@ -930,7 +934,7 @@ public class TraderGUI {
 
         if(!ongoingMeetingsList.isEmpty()){
             for (String s : ongoingMeetingsList){
-                txtAreaMeetingOngoing.append(s + "\n ----------------------");
+                txtAreaMeetingOngoing.append("\n ---------------------- \n" + s);
             }
             txtMeetingOngoingOutput.setText(ongoingMeetingsList.get(currMeetingIndex));
         }
@@ -946,7 +950,7 @@ public class TraderGUI {
 
         if (!completedMeetingsList.isEmpty()) {
             for (String s : completedMeetingsList){
-                txtAreaMeetingCompleted.append(s + "\n ----------------------");
+                txtAreaMeetingCompleted.append("\n ---------------------- \n" + s);
             }
         }
     }

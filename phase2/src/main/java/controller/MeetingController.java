@@ -1,5 +1,6 @@
 package main.java.controller;
 
+import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
 import main.java.model.meeting.*;
 import main.java.model.trade.MaxNumMeetingsExceededException;
@@ -7,6 +8,7 @@ import main.java.model.trade.TradeCancelledException;
 import main.java.model.trade.TradeNumberException;
 import main.java.model.trade.TradeStorage;
 import main.java.presenter.MeetingPresenter;
+import main.java.presenter.TradePresenter;
 import main.java.system.StorageEnum;
 import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
@@ -27,7 +29,8 @@ public class MeetingController {
     private final TradeStorage tradeStorage;
     private final MeetingStorage meetingStorage;
     private final String username;
-    private MeetingPresenter meetingPresenter;
+    private final MeetingPresenter meetingPresenter;
+    private final TradePresenter tradePresenter;
 
     /**
      * Initializes a new MeetingController for the given username
@@ -40,9 +43,9 @@ public class MeetingController {
         this.username = username;
         StorageFactory sf = new StorageFactory();
         tradeStorage = (TradeStorage) sf.getStorage(storageGateway, StorageEnum.TRADE);
-        ItemStorage itemStorage = (ItemStorage) sf.getStorage(storageGateway, StorageEnum.ITEM);
         meetingStorage = (MeetingStorage) sf.getStorage(storageGateway, StorageEnum.MEETING);
         meetingPresenter = new MeetingPresenter(username);
+        tradePresenter = new TradePresenter(storageGateway);
     }
 
 
@@ -66,8 +69,8 @@ public class MeetingController {
      * @return List of strings that contain formatted trade data
      * @throws TradeNumberException invalid trade id found in system
      */
-    public List<String> getAcceptedTrades() throws TradeNumberException {
-        return meetingPresenter.formatMeetingToListView(getAcceptedTradesUnformatted());
+    public List<String> getAcceptedTrades() throws TradeNumberException, ItemNotFoundException {
+        return tradePresenter.formatTradeForListView(getAcceptedTradesUnformatted());
     }
 
 

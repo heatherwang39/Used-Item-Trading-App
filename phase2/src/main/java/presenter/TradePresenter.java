@@ -45,16 +45,14 @@ public class TradePresenter {
             StringBuilder tradeInfo = new StringBuilder(tradeData.get("type").get(0));
             tradeInfo.append(", Traders: ");
             for (String username : tradeData.get("traders")) {
-                tradeInfo.append(username);
-                tradeInfo.append(", ");
+                tradeInfo.append(username).append(", ");
             }
             tradeInfo.append("Items: ");
             List<String> itemNames = itemStorage.showNames(getIntegerList(tradeData.get("items original")));
             for (String itemName : itemNames){
-                tradeInfo.append(itemName);
-                tradeInfo.append(", ");
+                tradeInfo.append(itemName).append(", ");
             }
-            tradeInfo.deleteCharAt(tradeInfo.length() - 1);
+            tradeInfo.deleteCharAt(tradeInfo.length() - 1).deleteCharAt(tradeInfo.length() - 1);
             tradeInfo.append("\n");
             formatTrade.add(tradeInfo.toString());
         }

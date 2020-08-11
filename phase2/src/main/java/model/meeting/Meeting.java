@@ -1,5 +1,6 @@
 package main.java.model.meeting;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.List;
  * @version %I%, %G%
  * @since Phase 2
  */
-public class Meeting {
+public class Meeting implements Serializable {
     private final int meetingID;
     private final String place;
     private final LocalDateTime dateTime;
