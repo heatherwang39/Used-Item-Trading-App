@@ -154,7 +154,7 @@ public class TraderGUI {
     private JButton btnThresholdGuildedEnter;
     private JTextArea txtAreaAccountThresholds;
     private JRadioButton rbtnLend;
-    private JRadioButton rbtnViewNext;
+    private JRadioButton rbtnViewNextSuggestion;
     private JTextArea accountInformationTextArea;
 
     private String user;
@@ -311,6 +311,7 @@ public class TraderGUI {
         }
         if (!accountController.getStatuses().contains("NEW")) {
             initializeActivity();
+            initializeMeeting();
         }
         initializeAddItems();
     }
@@ -416,10 +417,46 @@ public class TraderGUI {
         });
     }
 
-    private void initializeRequest() throws IOException, ClassNotFoundException {
+
+    private void initializeRequest() throws IOException, ClassNotFoundException, ItemNotFoundException {
         MainTabbedPane.insertTab("Request", null, Request, null, 3);
 
         RequestController requestController = new RequestController(storageGateway, user);
+        ItemPresenter itemPresenter = new ItemPresenter();
+
+        List<List<HashMap<String, String>>> suggestionList = requestController.suggestAllItems(user);
+        displayRequestSuggestions(suggestionList, itemPresenter);
+
+        btnRequestEnter.addActionListener(e -> {
+            displayRequestSuggestions(suggestionList, itemPresenter);
+
+            if (rbtnLend.isSelected()){
+                // lend the items
+
+                TradeAlgorithmName tradeAlgorithmName = TradeAlgorithmName.CYCLE;
+                List<Integer> tradeItemList = new ArrayList<>();
+
+                try {
+                    for (HashMap<String, String> individualItem : suggestionList.get(0)){
+                        tradeItemList.add(Integer.parseInt(individualItem.get("id")));
+                        requestController.createRequest(false, tradeAlgorithmName, tradeItemList);
+                    }
+
+                } catch (ItemNotFoundException | NoSuchTradeAlgorithmException | IOException exception) {
+                    exception.printStackTrace();
+                }
+                txtAreaRequestSuggestTradesOutput.setText("");
+                suggestionList.remove(0);
+
+            } else if(rbtnViewNextSuggestion.isSelected()){
+                txtAreaRequestSuggestTradesOutput.setText("");
+                suggestionList.remove(0);
+
+            } else{
+                showMessageDialog(null, "Please select an option!");
+            }
+        });
+
 
         btnRequest.addActionListener(e -> {
             if (!rbtnTempTrade.isSelected() && !rbtnPermTrade.isSelected()) {
@@ -461,9 +498,7 @@ public class TraderGUI {
             }
         });
 
-        btnRequestEnter.addActionListener(e -> {
 
-        });
     }
 
     private void initializeAddItems() throws IOException, ClassNotFoundException {
@@ -913,6 +948,15 @@ public class TraderGUI {
             for (String s : completedMeetingsList){
                 txtAreaMeetingCompleted.append(s + "\n ----------------------");
             }
+        }
+    }
+
+    private void displayRequestSuggestions(List<List<HashMap<String, String>>> unformattedSuggestionList, ItemPresenter itemPresenter){
+        for (List<HashMap<String, String>> subSuggestionList : unformattedSuggestionList){
+            for (String s : itemPresenter.formatItemsToListView(subSuggestionList)){
+                txtAreaRequestSuggestTradesOutput.append(s + "\n");
+            }
+            txtAreaRequestSuggestTradesOutput.append("----------------------- \n");
         }
     }
 }

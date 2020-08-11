@@ -92,10 +92,24 @@ public class RequestController {
         }
     }
 
-//    public List<String> getAllSuggestedItems() throws ItemNotFoundException {
-//        List<String> userList = accountStorage.getUsers();
-//        for (int i = 0; i < )
-//        List<HashMap<String, String>> suggestedItemsList1 = itemStorage.suggestItems(username, other); // returns intersection
-//
-//    }
+    public List<List<HashMap<String, String>>> suggestAllItems(String currentUser) throws ItemNotFoundException {
+        // iterate through every user in the system and find what currentUser can lend them
+        // iterate through every user in the system and find what they can lend currentUser
+        // get the intersection of these two lists.
+        // goal: return a list (unformatted) of every item username could lend to another user in the system, but only when that other user has something for username
+
+        List<List<HashMap<String, String>>> suggestedItemsToLendList = new ArrayList<>();
+        List<String> userList = accountStorage.getUsers();
+        userList.remove(currentUser);
+
+        for (String otherUser : userList){
+            List<HashMap<String, String>> currentUserLendList = itemStorage.suggestItems(currentUser, otherUser); // list of items currentUser could lend otherUser
+            List<HashMap<String, String>> otherUserLendList = itemStorage.suggestItems(otherUser, currentUser); // list of items otherUser could lend currentUser
+            if (!currentUserLendList.isEmpty() && !otherUserLendList.isEmpty()){
+                suggestedItemsToLendList.add(currentUserLendList);
+            }
+        }
+        return suggestedItemsToLendList;
+
+    }
 }

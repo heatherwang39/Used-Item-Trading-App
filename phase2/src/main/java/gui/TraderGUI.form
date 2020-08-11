@@ -748,7 +748,7 @@
                   <text value="Lend Item"/>
                 </properties>
               </component>
-              <component id="dc011" class="javax.swing.JRadioButton" binding="rbtnViewNext">
+              <component id="dc011" class="javax.swing.JRadioButton" binding="rbtnViewNextSuggestion">
                 <constraints>
                   <grid row="9" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
