@@ -1,0 +1,4 @@
+borrowThreshold:1
+incompleteThreshold:3
+weeklyThreshold:3
+gildedThreshold:10

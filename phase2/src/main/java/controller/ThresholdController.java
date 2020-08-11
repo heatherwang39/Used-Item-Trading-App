@@ -4,12 +4,14 @@ import main.java.model.account.AccountNotFoundException;
 import main.java.model.account.AccountStorage;
 import main.java.model.account.NegativeThresholdException;
 import main.java.model.account.WrongAccountTypeException;
+import main.java.system.FileReadWriter;
 import main.java.system.StorageEnum;
 import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Controller that returns the needed information for GUI client to display for Threshold tab
@@ -21,7 +23,9 @@ import java.util.HashMap;
 public class ThresholdController {
     private final StorageGateway storageGateway;
     private final AccountStorage accountStorage;
-
+    private final String path;
+    private String filename;
+    private String configKey = "THRESHOLDS";
 
     /**
      * Initializes a new ThresholdController
@@ -33,9 +37,26 @@ public class ThresholdController {
         this.storageGateway = storageGateway;
         StorageFactory sf = new StorageFactory();
         accountStorage = (AccountStorage) sf.getStorage(storageGateway, StorageEnum.ACCOUNT);
-
+        path = storageGateway.getPath();
+        filename = storageGateway.getFilenameMap().get(configKey);
     }
 
+    /** Set all thresholds for all user account from the data in text file
+     *
+     * @throws NegativeThresholdException Thrown if the suggested threshold is negative
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     */
+    public void setAllThresholdsFromTextFile() throws AccountNotFoundException, WrongAccountTypeException, NegativeThresholdException, IOException {
+        FileReadWriter frw = new FileReadWriter(path+filename);
+        HashMap<String, String> thresholdsData = frw.readAsMapFromTextFile();
+        int borrowThreshold = Integer.parseInt(thresholdsData.get("borrowThreshold"));
+        int incompleteThreshold = Integer.parseInt(thresholdsData.get("incompleteThreshold"));
+        int weeklyThreshold = Integer.parseInt(thresholdsData.get("weeklyThreshold"));
+        int gildedThreshold = Integer.parseInt(thresholdsData.get("gildedThreshold"));
+        accountStorage.setAllThresholds(borrowThreshold,incompleteThreshold,weeklyThreshold,gildedThreshold);
+        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
+    }
 
     /**
      * Set borrowing threshold for All Users
