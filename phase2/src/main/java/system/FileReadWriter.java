@@ -1,5 +1,7 @@
 package main.java.system;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A gateway to read object from file and save object to file.
@@ -52,4 +54,20 @@ public class FileReadWriter {
         return obj;
     }
 
+    /**
+     * Read object from the .txt file
+     *
+     * @return object
+     * @throws IOException cannot read from file
+     */
+    public List<String> readFromTextFileWithBR() throws IOException {
+        List<String> content = new ArrayList<>();
+        BufferedReader br = new BufferedReader((new FileReader(filePath)));
+        String line;
+        while((line = br.readLine())!=null){
+            content.add(line);
+        }
+        br.close();
+        return content;
+    }
 }
