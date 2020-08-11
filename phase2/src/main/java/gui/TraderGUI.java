@@ -75,6 +75,8 @@ public class TraderGUI {
     private JPanel Threshold;
     private JTextField txtAdminPasswordInput;
     private JButton btnAddAdmin;
+    private JScrollPane scrlInventoryOutput;
+    private JScrollPane scrlWishlistOutput;
     private JTextArea txtAreaInventoryOutput;
     private JTextArea txtAreaWishlistOutput;
     private JButton btnInventoryRequest;
@@ -452,9 +454,10 @@ public class TraderGUI {
                         requestController.createRequest(false, tradeAlgorithmName, tradeItemList);
                     }
 
-                } catch (ItemNotFoundException | NoSuchTradeAlgorithmException exception) {
+                } catch (ItemNotFoundException | NoSuchTradeAlgorithmException | WrongTradeAccountException |
+                        TradeCancelledException exception) {
                     showMessageDialog(null, exception.getMessage());
-                } catch (IOException ioException){
+                } catch (TradeNumberException | IOException ioException){
                     ioException.printStackTrace();
                 }
                 txtAreaRequestSuggestTradesOutput.setText("");
