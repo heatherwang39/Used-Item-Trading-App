@@ -1,7 +1,6 @@
 package main.java.model.message;
 
 import main.java.model.Storage;
-import main.java.model.status.Status;
 
 import java.util.ArrayList;
 import java.util.HashMap;

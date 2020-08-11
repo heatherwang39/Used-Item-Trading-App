@@ -5,7 +5,6 @@ import main.java.model.account.AccountStorage;
 import main.java.model.item.ItemStorage;
 import main.java.model.meeting.MeetingStorage;
 import main.java.model.message.MessageStorage;
-import main.java.model.status.StatusStorage;
 import main.java.model.trade.TradeStorage;
 
 import java.io.IOException;
@@ -37,9 +36,6 @@ public class StorageFactory {
                 break;
             case MEETING:
                 storage = new MeetingStorage();
-                break;
-            case STATUS:
-                storage = new StatusStorage();
                 break;
             case TRADE:
                 storage = new TradeStorage();
