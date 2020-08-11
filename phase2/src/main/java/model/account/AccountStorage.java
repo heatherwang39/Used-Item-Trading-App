@@ -328,6 +328,40 @@ public class AccountStorage implements Storage, TradeObserver {
         }
     }
 
+    /** Set the GildedThreshold for all users.
+     *
+     * @param threshold What you want to set the threshold to
+     * @throws NegativeThresholdException Thrown if the suggested threshold is negative
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     */
+    public void setAllGildedThresholds(int threshold) throws AccountNotFoundException, NegativeThresholdException, WrongAccountTypeException {
+        if(threshold < 0){
+            throw new NegativeThresholdException();
+        }
+        for(String user: accounts.keySet()){
+            if (getType(user).equals("USER")){
+                setGildedThreshold(user, threshold);
+            }
+        }
+    }
+
+    /** Set all thresholds for all user account in the same time
+     *
+     * @param borrowThreshold the number you want to set the borrowThreshold to
+     * @param incompleteThreshold the number you want to set the incompleteThreshold to
+     * @param weeklyThreshold the number you want to set the weeklyThreshold to
+     * @param gildedThreshold the number you want to set the gildedThreshold to
+     * @throws NegativeThresholdException Thrown if the suggested threshold is negative
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     */
+    public void setAllThresholds(int borrowThreshold,int incompleteThreshold,int weeklyThreshold,int gildedThreshold) throws AccountNotFoundException, WrongAccountTypeException, NegativeThresholdException {
+        setAllBorrowThresholds(borrowThreshold);
+        setAllIncompleteThresholds(incompleteThreshold);
+        setAllWeeklyThresholds(weeklyThreshold);
+        setAllGildedThresholds(gildedThreshold);
+    }
 
     /** Return all current thresholds of the given account
      *
@@ -549,23 +583,6 @@ public class AccountStorage implements Storage, TradeObserver {
         throw new WrongAccountTypeException();
     }
 
-    /** Set the GildedThreshold for all users.
-     *
-     * @param threshold What you want to set the threshold to
-     * @throws NegativeThresholdException Thrown if the suggested threshold is negative
-     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
-     * @throws AccountNotFoundException Thrown when no account has the given username
-     */
-    public void setAllGildedThresholds(int threshold) throws AccountNotFoundException, NegativeThresholdException, WrongAccountTypeException {
-        if(threshold < 0){
-            throw new NegativeThresholdException();
-        }
-        for(String user: accounts.keySet()){
-            if (getType(user).equals("USER")){
-                setGildedThreshold(user, threshold);
-            }
-        }
-    }
 
     private void gildUsers(List<String> traders) throws AccountNotFoundException, WrongAccountTypeException {
         for(String username:traders) {
