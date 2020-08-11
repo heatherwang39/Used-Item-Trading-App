@@ -208,6 +208,9 @@ public class TraderGUI {
         txtAreaWishlistOutput.setEditable(false);
         txtAreaRequestsOutput.setEditable(false);
         txtAreaOffersOutput.setEditable(false);
+        txtAreaRequestSuggestTradesOutput.setEditable(false);
+        txtAreaActivityTradeOutput.setEditable(false);
+        txtAreaActivityPartnerOutput.setEditable(false);
 
 
         // this is so users cannot select two radio buttons simultaneously
@@ -824,6 +827,7 @@ public class TraderGUI {
 
         String thresholdUser = txtThresholdUsernameInput.getText();
         btnThresholdUserBorrowing.addActionListener(e -> {
+            txtThresholdUserBorrowing.setText("");
             int userBorrowingThreshold = Integer.parseInt(txtThresholdUserBorrowing.getText());
             try {
                 thresholdController.setBorrowingThresholdForUser(thresholdUser, userBorrowingThreshold);
@@ -836,6 +840,7 @@ public class TraderGUI {
             }
         });
         btnThresholdUserIncompleted.addActionListener(e -> {
+            txtThresholdUserIncompleted.setText("");
             int userIncompletedThreshold = Integer.parseInt(txtThresholdUserIncompleted.getText());
             try {
                 thresholdController.setIncompleteThresholdForUser(thresholdUser, userIncompletedThreshold);
@@ -848,6 +853,7 @@ public class TraderGUI {
             }
         });
         btnThresholdUserWeekly.addActionListener(e -> {
+            txtThresholdUserWeekly.setText("");
             int userWeeklyThreshold = Integer.parseInt(txtThresholdUserWeekly.getText());
             try {
                 thresholdController.setWeeklyThresholdForUser(thresholdUser, userWeeklyThreshold);
@@ -860,6 +866,7 @@ public class TraderGUI {
             }
         });
         btnThresholdUserGilded.addActionListener(e -> {
+            txtThresholdUserGilded.setText("");
             int userGildedThreshold = Integer.parseInt(txtThresholdUserGilded.getText());
             try {
                 thresholdController.setGildedThresholdForUser(thresholdUser, userGildedThreshold);
