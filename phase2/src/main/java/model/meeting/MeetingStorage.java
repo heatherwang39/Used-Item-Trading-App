@@ -62,83 +62,6 @@ public class MeetingStorage  implements Storage, MeetingObservee{
     }
 
 
-    /** Return the place at which the meeting (corresponding to the Meeting ID) will take place
-     *
-     * @param meetingID The meetingID of the meeting you're interested in
-     * @return The place where the meeting will occur
-     * @throws MeetingIDException Thrown if no Meeting corresponds to the given MeetingID
-     */
-    public String getPlace(int meetingID) throws MeetingIDException{
-        return getMeeting(meetingID).getPlace();
-    }
-
-
-    /** Return the time when the meeting (corresponding to the Meeting ID) will take place
-     *
-     * @param meetingID The meetingID of the meeting you're interested in
-     * @return The time when the meeting will take place
-     * @throws MeetingIDException Thrown if no Meeting corresponds to the given MeetingID
-     */
-    public LocalDateTime getTime(int meetingID) throws MeetingIDException{
-        return getMeeting(meetingID).getDateTime();
-    }
-
-
-    /** Return a list containing all the attendees of the meeting (corresponding to the Meeting ID)
-     *
-     * @param meetingID The meetingID of the meeting you're interested in
-     * @return A list containing all the attendees of this meeting
-     * @throws MeetingIDException Thrown if no Meeting corresponds to the given MeetingID
-     */
-    public List<String> getAttendees(int meetingID) throws MeetingIDException{
-        return getMeeting(meetingID).getAttendees();
-    }
-
-
-    /** Return whether or not the meeting (corresponding to the Meeting ID) has been accepted (by everyone)
-     *
-     * @param meetingID The meetingID of the meeting you're interested in
-     * @return Whether the meeting has been accepted
-     * @throws MeetingIDException Thrown if no Meeting corresponds to the given MeetingID
-     */
-    public boolean isAccepted(int meetingID) throws MeetingIDException{
-        return getMeeting(meetingID).isAccepted();
-    }
-
-
-    /** Return whether or not the meeting (corresponding to the Meeting ID) has been confirmed (by everyone)
-     *
-     * @param meetingID The meetingID of the meeting you're interested in
-     * @return Whether the meeting has been confirmed
-     * @throws MeetingIDException Thrown if no Meeting corresponds to the given MeetingID
-     */
-    public boolean isConfirmed(int meetingID) throws MeetingIDException{
-        return getMeeting(meetingID).isConfirmed();
-    }
-
-
-    /** Return a list containing all the attendees that haven't accepted the meeting (corresponding to the Meeting ID)
-     *
-     * @param meetingID The meetingID of the meeting you're interested in
-     * @return A list containing all the attendees that haven't accepted this meeting
-     * @throws MeetingIDException Thrown if no Meeting corresponds to the given MeetingID
-     */
-    public List<String> getUnacceptedAttendees(int meetingID) throws MeetingIDException{
-        return getMeeting(meetingID).getUnacceptedAttendees();
-    }
-
-
-    /** Return a list containing all the attendees that haven't confirmed the meeting (corresponding to the Meeting ID)
-     *
-     * @param meetingID The meetingID of the meeting you're interested in
-     * @return A list containing all the attendees that haven't confirmed this meeting
-     * @throws MeetingIDException Thrown if no Meeting corresponds to the given MeetingID
-     */
-    public List<String> getUnconfirmedAttendees(int meetingID) throws MeetingIDException{
-        return getMeeting(meetingID).getUnacceptedAttendees();
-    }
-
-
     /** Record the fact that the attendee has accepted the meeting (corresponding to the Meeting ID).
      * Return true if this change has been successfully accepted.
      *
@@ -231,7 +154,9 @@ public class MeetingStorage  implements Storage, MeetingObservee{
         for(Meeting m: meetings){
             if(!m.isCancelled()){
                 if(!m.isAccepted()){
-                    meeting.add(m.getMeetingID());
+                    if(m.getAttendees().contains(participant)){
+                        meeting.add(m.getMeetingID());
+                    }
                 }
             }
         }
@@ -249,7 +174,9 @@ public class MeetingStorage  implements Storage, MeetingObservee{
         for(Meeting m: meetings){
             if(!m.isCancelled()){
                 if(m.isAccepted() && !m.isConfirmed()){
-                    meeting.add(m.getMeetingID());
+                    if(m.getAttendees().contains(participant)){
+                        meeting.add(m.getMeetingID());
+                    }
                 }
             }
         }
@@ -267,7 +194,9 @@ public class MeetingStorage  implements Storage, MeetingObservee{
         for(Meeting m: meetings){
             if(!m.isCancelled()){
                 if(m.isConfirmed()){
-                    meeting.add(m.getMeetingID());
+                    if(m.getAttendees().contains(participant)){
+                        meeting.add(m.getMeetingID());
+                    }
                 }
             }
         }

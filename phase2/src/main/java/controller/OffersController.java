@@ -51,7 +51,7 @@ public class OffersController {
     /**
      * Gets a list containing HashMaps of data of all Trades that the user has been offered
      *
-     * @return List of Trade datas
+     * @return List of Trade data
      * @throws TradeNumberException An invalid trade was found
      */
     public List<HashMap<String, List<String>>> getOffers() throws TradeNumberException {
@@ -78,7 +78,7 @@ public class OffersController {
      * @param tradeNumber id of Trade being rejected
      * @throws TradeNumberException invalid tradeNumber, not in system
      */
-    public void rejectOffer(int tradeNumber) throws TradeNumberException, IOException, AccountNotFoundException, WrongAccountTypeException {
+    public void rejectOffer(int tradeNumber) throws TradeNumberException, IOException{
         tradeStorage.setStatus(tradeNumber, -1);
         storageGateway.saveStorageData(StorageEnum.valueOf("TRADE"));
     }
