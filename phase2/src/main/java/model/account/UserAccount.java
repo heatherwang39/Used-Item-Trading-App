@@ -1,5 +1,6 @@
 package main.java.model.account;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,12 @@ public class UserAccount extends LoginAccount {
     private int numberOfIncompleteTrades;
     private List<String> freezeReasons = new ArrayList<>();
     private List<StatusEnum> statuses = new ArrayList<>();
+
+
+
+    private LocalDateTime weeklyTimer;
+
+
 
     /**
      * Class constructor.
@@ -164,6 +171,14 @@ public class UserAccount extends LoginAccount {
      */
     public void setWeeklyThreshold(int weeklyThreshold){
         this.weeklyThreshold = weeklyThreshold;
+    }
+
+    public LocalDateTime getWeeklyTimer() {
+        return weeklyTimer;
+    }
+
+    public void setWeeklyTimer(LocalDateTime weeklyTimer) {
+        this.weeklyTimer = weeklyTimer;
     }
 
 }

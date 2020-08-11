@@ -2,6 +2,8 @@ package main.java.model.account;
 
 import main.java.model.Storage;
 import main.java.model.trade.TradeObserver;
+
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -594,6 +596,7 @@ public class AccountStorage implements Storage, TradeObserver {
                     UserAccount user = (UserAccount) getAccount(username);
                     int numberOfCompletedTrades = user.getNumberOfCompletedTrades() + 1;
                     user.setNumberOfCompletedTrades(numberOfCompletedTrades);
+                    updateNumberOfWeeklyTrades(user);
                     int numberOfWeeklyTrades = user.getNumberOfWeeklyTrades() + 1;
                     user.setNumberOfWeeklyTrades(numberOfWeeklyTrades);
                     int numberOfIncompleteTrades = user.getNumberOfIncompleteTrades() - 1;
@@ -639,6 +642,15 @@ public class AccountStorage implements Storage, TradeObserver {
                 int numberOfBorrowedItems = user.getNumberOfBorrowedItems()+1;
                 user.setNumberOfBorrowedItems(numberOfBorrowedItems);
             }
+        }
+    }
+
+    private void updateNumberOfWeeklyTrades(UserAccount user){
+        LocalDateTime currentTime = LocalDateTime.now();
+        LocalDateTime lastCheckPoint = user.getWeeklyTimer();
+        if((lastCheckPoint == null ) || (currentTime.isAfter(lastCheckPoint.plusDays(7)))){
+            user.setNumberOfWeeklyTrades(0);
+            user.setWeeklyTimer(currentTime);
         }
     }
 }
