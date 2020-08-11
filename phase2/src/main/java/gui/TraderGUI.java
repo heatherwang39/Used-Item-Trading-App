@@ -16,9 +16,9 @@ import main.java.presenter.*;
 
 import javax.swing.*;
 // From: https://stackoverflow.com/questions/9119481/how-to-present-a-simple-alert-message-in-java
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -131,7 +131,7 @@ public class TraderGUI {
     private JTextArea txtAreaMessagesIncoming;
     private JTextArea txtAreaMessagesSent;
     private JTextArea txtAreaRequestSuggestTradesOutput;
-    private JButton btnRequestSuggestion;
+    private JButton btnRequestEnter;
     private JTextArea txtAreaMeetingAcceptedTrades;
     private JTextField txtMeetingAcceptedTrade;
     private JTextField txtMeetingSuggestInput;
@@ -153,6 +153,8 @@ public class TraderGUI {
     private JTextField txtThresholdGildedInput;
     private JButton btnThresholdGuildedEnter;
     private JTextArea txtAreaAccountThresholds;
+    private JRadioButton rbtnLend;
+    private JRadioButton rbtnViewNext;
     private JTextArea accountInformationTextArea;
 
     private String user;
@@ -459,7 +461,7 @@ public class TraderGUI {
             }
         });
 
-        btnRequestSuggestion.addActionListener(e -> {
+        btnRequestEnter.addActionListener(e -> {
 
         });
     }
@@ -497,68 +499,6 @@ public class TraderGUI {
             }       });
     }
 
-    private void displaySuggestMeetings(MeetingController meetingController){
-        List<String> acceptedTradesList = new ArrayList<>();
-        try {
-            acceptedTradesList = meetingController.getAcceptedTrades();
-        } catch (TradeNumberException tradeNumberException) {
-            tradeNumberException.printStackTrace();
-        }
-        if (!acceptedTradesList.isEmpty()) {
-            for (String s : acceptedTradesList) {
-                txtAreaMeetingAcceptedTrades.append(s + "\n ----------------------");
-            }
-            txtMeetingAcceptedTrade.setText("");
-            txtMeetingAcceptedTrade.setText(acceptedTradesList.get(0));
-        }
-    }
-
-    private void displayMeetingSuggestions(MeetingController meetingController){
-        List<String> meetingSuggestionsList = new ArrayList<>();
-        try {
-            meetingSuggestionsList = meetingController.getSuggestedMeetings();
-        } catch (MeetingIDException meetingIDException) {
-            meetingIDException.printStackTrace();
-        }
-        if (!meetingSuggestionsList.isEmpty()){
-            for (String s: meetingSuggestionsList){
-                txtAreaMeetingSuggestions.append(s + "\n ----------------------");
-            }
-            txtMeetingSuggested.setText("");
-            txtMeetingSuggested.setText(meetingSuggestionsList.get(0));
-        }
-    }
-
-    private void displayOngoingMeetings(MeetingController meetingController, int currMeetingIndex){
-        List<String> ongoingMeetingsList = new ArrayList<>();
-        try {
-            ongoingMeetingsList = meetingController.getOngoingMeetings();
-        } catch (MeetingIDException meetingIDException) {
-            meetingIDException.printStackTrace();
-        }
-
-        if(!ongoingMeetingsList.isEmpty()){
-            for (String s : ongoingMeetingsList){
-                txtAreaMeetingOngoing.append(s + "\n ----------------------");
-            }
-            txtMeetingOngoingOutput.setText(ongoingMeetingsList.get(currMeetingIndex));
-        }
-    }
-
-    private void displayCompletedMeetings(MeetingController meetingController){
-        List<String> completedMeetingsList = new ArrayList<>();
-        try {
-            completedMeetingsList = meetingController.getCompletedMeetings();
-        } catch (MeetingIDException meetingIDException) {
-            meetingIDException.printStackTrace();
-        }
-
-        if (!completedMeetingsList.isEmpty()) {
-            for (String s : completedMeetingsList){
-                txtAreaMeetingCompleted.append(s + "\n ----------------------");
-            }
-        }
-    }
 
     private void initializeMeeting() throws IOException, ClassNotFoundException {
         MainTabbedPane.insertTab("Meeting", null, Meeting, null, 3);
@@ -579,11 +519,19 @@ public class TraderGUI {
             }
 
             String suggestedPlace = txtMeetingSuggestInput.getText();
-            String suggestedTime = txtMeetingTimeInput.getText();
+            String suggestedTimeStr = txtMeetingTimeInput.getText();
+            // from https://www.java67.com/2016/04/how-to-convert-string-to-localdatetime-in-java8-example.html
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime suggestedTime = LocalDateTime.parse(suggestedTimeStr, dateTimeFormatter);
 
-//            if (!acceptedTradesListUnformatted.isEmpty()) {
-//                meetingController.suggestMeeting(Integer.parseInt(acceptedTradesListUnformatted.get(0).get("id").get(0)), suggestedPlace, suggestedTime);
-//            }
+
+            if (!acceptedTradesListUnformatted.isEmpty()) {
+                try {
+                    meetingController.suggestMeeting(Integer.parseInt(acceptedTradesListUnformatted.get(0).get("id").get(0)), suggestedPlace, suggestedTime);
+                } catch (TradeNumberException | IOException | TradeCancelledException | MaxNumMeetingsExceededException exception) {
+                    exception.printStackTrace();
+                }
+            }
         });
 
         btnMeetingEnterResponse.addActionListener(e ->{
@@ -774,7 +722,7 @@ public class TraderGUI {
             int newGildedThreshold = Integer.parseInt(txtThresholdGildedInput.getText());
             try {
                 thresholdController.setGildedThreshold(newGildedThreshold);
-                showMessageDialog(null, "New Threshold for Users to obtain Guilded Status set to: " + newGildedThreshold);
+                showMessageDialog(null, "New Threshold for Users to obtain the Guilded Status set to: " + newGildedThreshold);
             } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException | IOException exception) {
                 exception.printStackTrace();
             }
@@ -902,6 +850,69 @@ public class TraderGUI {
             txtAreaMessagesSent.append("-----------------------------------------------\n");
             txtAreaMessagesSent.append(strings.get(0) + ":\n    " +
                     strings.get(1) + "\n");
+        }
+    }
+
+    private void displaySuggestMeetings(MeetingController meetingController){
+        List<String> acceptedTradesList = new ArrayList<>();
+        try {
+            acceptedTradesList = meetingController.getAcceptedTrades();
+        } catch (TradeNumberException tradeNumberException) {
+            tradeNumberException.printStackTrace();
+        }
+        if (!acceptedTradesList.isEmpty()) {
+            for (String s : acceptedTradesList) {
+                txtAreaMeetingAcceptedTrades.append(s + "\n ----------------------");
+            }
+            txtMeetingAcceptedTrade.setText("");
+            txtMeetingAcceptedTrade.setText(acceptedTradesList.get(0));
+        }
+    }
+
+    private void displayMeetingSuggestions(MeetingController meetingController){
+        List<String> meetingSuggestionsList = new ArrayList<>();
+        try {
+            meetingSuggestionsList = meetingController.getSuggestedMeetings();
+        } catch (MeetingIDException meetingIDException) {
+            meetingIDException.printStackTrace();
+        }
+        if (!meetingSuggestionsList.isEmpty()){
+            for (String s: meetingSuggestionsList){
+                txtAreaMeetingSuggestions.append(s + "\n ----------------------");
+            }
+            txtMeetingSuggested.setText("");
+            txtMeetingSuggested.setText(meetingSuggestionsList.get(0));
+        }
+    }
+
+    private void displayOngoingMeetings(MeetingController meetingController, int currMeetingIndex){
+        List<String> ongoingMeetingsList = new ArrayList<>();
+        try {
+            ongoingMeetingsList = meetingController.getOngoingMeetings();
+        } catch (MeetingIDException meetingIDException) {
+            meetingIDException.printStackTrace();
+        }
+
+        if(!ongoingMeetingsList.isEmpty()){
+            for (String s : ongoingMeetingsList){
+                txtAreaMeetingOngoing.append(s + "\n ----------------------");
+            }
+            txtMeetingOngoingOutput.setText(ongoingMeetingsList.get(currMeetingIndex));
+        }
+    }
+
+    private void displayCompletedMeetings(MeetingController meetingController){
+        List<String> completedMeetingsList = new ArrayList<>();
+        try {
+            completedMeetingsList = meetingController.getCompletedMeetings();
+        } catch (MeetingIDException meetingIDException) {
+            meetingIDException.printStackTrace();
+        }
+
+        if (!completedMeetingsList.isEmpty()) {
+            for (String s : completedMeetingsList){
+                txtAreaMeetingCompleted.append(s + "\n ----------------------");
+            }
         }
     }
 }
