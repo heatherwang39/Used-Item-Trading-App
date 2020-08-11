@@ -249,7 +249,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <grid id="c2494" layout-manager="GridLayoutManager" row-count="4" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <grid id="c2494" layout-manager="GridLayoutManager" row-count="5" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <tabbedpane title="Set All Thresholds"/>
@@ -257,17 +257,9 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="bae6e" class="javax.swing.JLabel">
-                        <constraints>
-                          <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <text value="New Borrowed Items Threshold:"/>
-                        </properties>
-                      </component>
                       <component id="12f10" class="javax.swing.JLabel">
                         <constraints>
-                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <text value="New Incomplete Trades Threshold:"/>
@@ -275,7 +267,7 @@
                       </component>
                       <component id="a578" class="javax.swing.JLabel">
                         <constraints>
-                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <text value="New Weekly Trades Threshold:"/>
@@ -283,7 +275,7 @@
                       </component>
                       <component id="259ef" class="javax.swing.JLabel">
                         <constraints>
-                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <text value="New Gilded Status Threshold:"/>
@@ -291,7 +283,7 @@
                       </component>
                       <component id="c1ffc" class="javax.swing.JTextField" binding="txtThresholdBorrowedInput">
                         <constraints>
-                          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>
                           </grid>
                         </constraints>
@@ -299,7 +291,7 @@
                       </component>
                       <component id="bd70b" class="javax.swing.JTextField" binding="txtThresholdIncompleteInput">
                         <constraints>
-                          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>
                           </grid>
                         </constraints>
@@ -309,7 +301,7 @@
                       </component>
                       <component id="c6040" class="javax.swing.JTextField" binding="txtThresholdWeeklyInput">
                         <constraints>
-                          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>
                           </grid>
                         </constraints>
@@ -317,23 +309,15 @@
                       </component>
                       <component id="b38dc" class="javax.swing.JTextField" binding="txtThresholdGildedInput">
                         <constraints>
-                          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>
                           </grid>
                         </constraints>
                         <properties/>
                       </component>
-                      <component id="bc60" class="javax.swing.JButton" binding="btnThresholdBorrowedEnter">
-                        <constraints>
-                          <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <text value="Enter"/>
-                        </properties>
-                      </component>
                       <component id="7a728" class="javax.swing.JButton" binding="btnThresholdIncompleteEnter">
                         <constraints>
-                          <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <text value="Enter"/>
@@ -341,7 +325,7 @@
                       </component>
                       <component id="fc932" class="javax.swing.JButton" binding="btnThresholdWeeklyEnter">
                         <constraints>
-                          <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <text value="Enter"/>
@@ -349,7 +333,31 @@
                       </component>
                       <component id="bdaef" class="javax.swing.JButton" binding="btnThresholdGuildedEnter">
                         <constraints>
-                          <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                          <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Enter"/>
+                        </properties>
+                      </component>
+                      <component id="77da4" class="javax.swing.JButton" binding="btnThresholdSetToDefault">
+                        <constraints>
+                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Set Thresholds to the File Default"/>
+                        </properties>
+                      </component>
+                      <component id="bae6e" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="New Borrowed Items Threshold:"/>
+                        </properties>
+                      </component>
+                      <component id="bc60" class="javax.swing.JButton" binding="btnThresholdBorrowedEnter">
+                        <constraints>
+                          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <text value="Enter"/>

@@ -16,6 +16,8 @@ import main.java.presenter.*;
 
 import javax.swing.*;
 // From: https://stackoverflow.com/questions/9119481/how-to-present-a-simple-alert-message-in-java
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -169,6 +171,7 @@ public class TraderGUI {
     private JTabbedPane tabbedPane1;
     private JLabel MainLabel;
     private JTabbedPane MessagesTabbedPane;
+    private JButton btnThresholdSetToDefault;
 
     private String user;
     private final StorageGateway storageGateway;
@@ -182,6 +185,7 @@ public class TraderGUI {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+
     }
 
     private void initializeLogin() throws IOException, ClassNotFoundException {
@@ -756,7 +760,19 @@ public class TraderGUI {
     private void initializeThreshold() throws IOException, ClassNotFoundException {
         MainTabbedPane.insertTab("Trade Threshold", null, Threshold, null, 2);
         ThresholdController thresholdController = new ThresholdController(storageGateway);
-        btnThresholdBorrowedEnter.addActionListener(e -> {
+
+        btnThresholdSetToDefault.addActionListener(e -> {
+            try {
+                thresholdController.setAllThresholdsFromTextFile();
+                showMessageDialog(null, "All thresholds have been set to to the file default (set from thresholds.txt");
+            } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException exception) {
+                showMessageDialog(null, exception.getMessage());
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
+
+            btnThresholdBorrowedEnter.addActionListener(e -> {
             txtThresholdBorrowedInput.setText("");
             int newBorrowingThreshold = Integer.parseInt(txtThresholdBorrowedInput.getText());
             try {
