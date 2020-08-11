@@ -1,6 +1,7 @@
 package main.java.system;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -55,19 +56,24 @@ public class FileReadWriter {
     }
 
     /**
-     * Read object from the .txt file
+     * Read the content as map from the .txt file
+     * read txt file to hashmap: https://stackoverflow.com/questions/29061782/java-read-txt-file-to-hashmap-split-by
      *
-     * @return object
+     * @return a hashmap based on the content of txt file
      * @throws IOException cannot read from file
      */
-    public List<String> readFromTextFileWithBR() throws IOException {
-        List<String> content = new ArrayList<>();
-        BufferedReader br = new BufferedReader((new FileReader(filePath)));
+    public HashMap<String, String> readAsMapFromTextFile() throws IOException {
+        HashMap<String, String> map = new HashMap<String, String>();
         String line;
-        while((line = br.readLine())!=null){
-            content.add(line);
+        BufferedReader br = new BufferedReader(new FileReader(filePath));
+        while ((line = br.readLine()) != null)
+        {
+            String[] text = line.split(":", 2);
+            String key = text[0];
+            String value = text[1];
+            map.put(key, value);
         }
         br.close();
-        return content;
+        return map;
     }
 }
