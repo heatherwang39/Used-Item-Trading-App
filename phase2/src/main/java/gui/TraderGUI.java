@@ -16,8 +16,6 @@ import main.java.presenter.*;
 
 import javax.swing.*;
 // From: https://stackoverflow.com/questions/9119481/how-to-present-a-simple-alert-message-in-java
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -39,8 +37,6 @@ import static javax.swing.JOptionPane.showMessageDialog;
 public class TraderGUI {
     private JTabbedPane MainTabbedPane;
     public JPanel MainContainer;
-    private JButton exitButton;
-    private JTextPane traderSystemTextPane;
     private JTextField txtUsernameOutput;
     private JTextField txtEmailOutput;
     private JTextField txtInventoryInput;
@@ -77,8 +73,6 @@ public class TraderGUI {
     private JPanel Threshold;
     private JTextField txtAdminPasswordInput;
     private JButton btnAddAdmin;
-    private JScrollPane scrlInventoryOutput;
-    private JScrollPane scrlWishlistOutput;
     private JTextArea txtAreaInventoryOutput;
     private JTextArea txtAreaWishlistOutput;
     private JButton btnInventoryRequest;
@@ -107,7 +101,6 @@ public class TraderGUI {
     private JButton btnRequestsEnter;
     private JTextField txtRequestsOutput;
     private JTextArea txtAreaOffersOutput;
-    private JTabbedPane MessagesTabbedPane;
     private JTextField txtMessageRecipientInput;
     private JButton btnMessageUser;
     private JButton btnMessageAdmin;
@@ -129,7 +122,6 @@ public class TraderGUI {
     private JButton btnUserListEnter;
     private JButton btnThresholdIncompleteEnter;
     private JButton btnThresholdWeeklyEnter;
-    private JLabel MainLabel;
     private JTextArea txtAreaMessagesIncoming;
     private JTextArea txtAreaMessagesSent;
     private JTextArea txtAreaRequestSuggestTradesOutput;
@@ -138,7 +130,6 @@ public class TraderGUI {
     private JTextField txtMeetingAcceptedTrade;
     private JTextField txtMeetingSuggestInput;
     private JButton btnMeetingSuggest;
-    private JTabbedPane tabbedPane1;
     private JTextArea txtAreaMeetingSuggestions;
     private JTextField txtMeetingSuggested;
     private JRadioButton rbtnMeetingAccept;
@@ -159,6 +150,17 @@ public class TraderGUI {
     private JRadioButton rbtnViewNextSuggestion;
     private JTextField txtFreezeUserInput;
     private JButton btnFreezeUser;
+    private JTabbedPane tabbedPane2;
+    private JTextField txtThresholdUsernameInput;
+    private JTextField txtThresholdUserBorrowing;
+    private JTextField txtThresholdUserIncompleted;
+    private JTextField txtThresholdUserWeekly;
+    private JTextField txtThresholdUserGilded;
+    private JButton btnThresholdUserBorrowing;
+    private JButton btnThresholdUserIncompleted;
+    private JButton btnThresholdUserWeekly;
+    private JButton btnThresholdUserGilded;
+    private JButton enterButton;
     private JTextArea accountInformationTextArea;
 
     private String user;
@@ -787,6 +789,48 @@ public class TraderGUI {
                  showMessageDialog(null,exception.getMessage());
             } catch (IOException ioException){
                  ioException.printStackTrace();
+            }
+        });
+
+        String thresholdUser = txtThresholdUsernameInput.getText();
+        btnThresholdUserBorrowing.addActionListener(e -> {
+            int userBorrowingThreshold = Integer.parseInt(txtThresholdUserBorrowing.getText());
+            try {
+                thresholdController.setBorrowingThresholdForUser(thresholdUser, userBorrowingThreshold);
+            } catch (AccountNotFoundException | NegativeThresholdException | WrongAccountTypeException exception) {
+                showMessageDialog(null, exception.getMessage());
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
+        btnThresholdUserIncompleted.addActionListener(e -> {
+            int userIncompletedThreshold = Integer.parseInt(txtThresholdUserIncompleted.getText());
+            try {
+                thresholdController.setIncompleteThresholdForUser(thresholdUser, userIncompletedThreshold);
+            } catch (AccountNotFoundException | NegativeThresholdException | WrongAccountTypeException exception) {
+                showMessageDialog(null, exception.getMessage());
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
+        btnThresholdUserWeekly.addActionListener(e -> {
+            int userWeeklyThreshold = Integer.parseInt(txtThresholdUserWeekly.getText());
+            try {
+                thresholdController.setWeeklyThresholdForUser(thresholdUser, userWeeklyThreshold);
+            } catch (AccountNotFoundException | NegativeThresholdException | WrongAccountTypeException exception) {
+                showMessageDialog(null, exception.getMessage());
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
+        btnThresholdUserGilded.addActionListener(e -> {
+            int userGildedThreshold = Integer.parseInt(txtThresholdUserGilded.getText());
+            try {
+                thresholdController.setGildedThresholdForUser(thresholdUser, userGildedThreshold);
+            } catch (AccountNotFoundException | NegativeThresholdException | WrongAccountTypeException exception) {
+                showMessageDialog(null, exception.getMessage());
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
         });
     }
