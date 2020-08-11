@@ -586,41 +586,44 @@ public class AccountStorage implements Storage, TradeObserver {
      * @param newStatus    The new Status of the Trade
      */
     @Override
-    public void updateTradeChange(HashMap<String, HashMap<String, Integer>> exchangeData, int newStatus) throws AccountNotFoundException, WrongAccountTypeException {
-        List<String> traders = (List<String>) exchangeData.keySet();
-        if(newStatus==3){
-            for(String username:traders){
-                UserAccount user = (UserAccount) getAccount(username);
-                int numberOfCompletedTrades = user.getNumberOfCompletedTrades()+1;
-                user.setNumberOfCompletedTrades(numberOfCompletedTrades);
-                int numberOfWeeklyTrades = user.getNumberOfWeeklyTrades()+1;
-                user.setNumberOfWeeklyTrades(numberOfWeeklyTrades);
-                int numberOfIncompleteTrades = user.getNumberOfIncompleteTrades()-1;
-                user.setNumberOfIncompleteTrades(numberOfIncompleteTrades);
-                if (containsStatus(username, "NEW")) {
-                    user.removeStatus(StatusEnum.NEW);
+    public void updateTradeChange(HashMap<String, HashMap<String, Integer>> exchangeData, int newStatus){
+        try {
+            List<String> traders = (List<String>) exchangeData.keySet();
+            if (newStatus == 3) {
+                for (String username : traders) {
+                    UserAccount user = (UserAccount) getAccount(username);
+                    int numberOfCompletedTrades = user.getNumberOfCompletedTrades() + 1;
+                    user.setNumberOfCompletedTrades(numberOfCompletedTrades);
+                    int numberOfWeeklyTrades = user.getNumberOfWeeklyTrades() + 1;
+                    user.setNumberOfWeeklyTrades(numberOfWeeklyTrades);
+                    int numberOfIncompleteTrades = user.getNumberOfIncompleteTrades() - 1;
+                    user.setNumberOfIncompleteTrades(numberOfIncompleteTrades);
+                    if (containsStatus(username, "NEW")) {
+                        user.removeStatus(StatusEnum.NEW);
+                    }
+                }
+                updateNumberOfBorrowedItems(exchangeData);
+                gildUsers(traders);
+                freezeUsers(traders);
+            }
+
+            if (newStatus == 0) {
+                for (String username : traders) {
+                    UserAccount user = (UserAccount) getAccount(username);
+                    int numberOfIncompleteTrades = user.getNumberOfIncompleteTrades() + 1;
+                    user.setNumberOfIncompleteTrades(numberOfIncompleteTrades);
                 }
             }
-            updateNumberOfBorrowedItems(exchangeData);
-            gildUsers(traders);
-            freezeUsers(traders);
-        }
 
-        if(newStatus==0){
-            for(String username:traders) {
-                UserAccount user = (UserAccount) getAccount(username);
-                int numberOfIncompleteTrades = user.getNumberOfIncompleteTrades()+1;
-                user.setNumberOfIncompleteTrades(numberOfIncompleteTrades);
+            if (newStatus == -1) {
+                for (String username : traders) {
+                    UserAccount user = (UserAccount) getAccount(username);
+                    int numberOfIncompleteTrades = user.getNumberOfIncompleteTrades() - 1;
+                    user.setNumberOfIncompleteTrades(numberOfIncompleteTrades);
+                }
             }
         }
-
-        if(newStatus==-1){
-            for(String username:traders) {
-                UserAccount user = (UserAccount) getAccount(username);
-                int numberOfIncompleteTrades = user.getNumberOfIncompleteTrades()-1;
-                user.setNumberOfIncompleteTrades(numberOfIncompleteTrades);
-            }
-        }
+        catch(AccountNotFoundException | WrongAccountTypeException ignored){}
     }
 
     private void updateNumberOfBorrowedItems(HashMap<String, HashMap<String, Integer>> exchangeData) throws AccountNotFoundException {

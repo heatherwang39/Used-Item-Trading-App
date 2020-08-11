@@ -137,7 +137,7 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
      * @return A boolean representing whether or not the change was made
      * @throws TradeNumberException Thrown if no Trade has the given TradeNumber
      */
-    public boolean setStatus(int tradeNumber, int status) throws TradeNumberException, AccountNotFoundException, WrongAccountTypeException {
+    public boolean setStatus(int tradeNumber, int status) throws TradeNumberException{
         Trade t = getTrade(tradeNumber);
         boolean b = t.setStatus(status);
         if(b){
@@ -677,7 +677,7 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
      * @param exchangeData A HashMap representing the Exchange Data of the Trade
      * @param newStatus The new Status of the Trade
      */
-    public void notifyTradeChange(HashMap<String, HashMap<String, Integer>> exchangeData, int newStatus) throws AccountNotFoundException, WrongAccountTypeException {
+    public void notifyTradeChange(HashMap<String, HashMap<String, Integer>> exchangeData, int newStatus){
         for (TradeObserver tradeObserver: observers) {
             tradeObserver.updateTradeChange(exchangeData, newStatus);
         }

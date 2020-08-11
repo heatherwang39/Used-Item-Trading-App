@@ -35,5 +35,5 @@ public interface TradeObservee {
      * @param exchangeData A HashMap representing the Exchange Data of the Trade
      * @param newStatus The new Status of the Trade
      */
-    void notifyTradeChange(HashMap<String, HashMap<String, Integer>> exchangeData, int newStatus) throws AccountNotFoundException, WrongAccountTypeException;
+    void notifyTradeChange(HashMap<String, HashMap<String, Integer>> exchangeData, int newStatus);
 }
