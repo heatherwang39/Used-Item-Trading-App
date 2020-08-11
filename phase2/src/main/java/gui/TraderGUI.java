@@ -243,12 +243,8 @@ public class TraderGUI {
         meetingOngoingButtonGroup.add(rbtnMeetingCompleted);
         meetingOngoingButtonGroup.add(rbtnMeetingNext);
 
-        btnRegisterMain.addActionListener(e -> {
-            tabCleaner();
-            MainTabbedPane.insertTab("Register", null, Register, null, 1);
-            MainTabbedPane.setSelectedIndex(1);
-        });
 
+        initializeRegister();
         btnLoginMain.addActionListener(e -> {
             tabCleaner();
             MainTabbedPane.insertTab("Login", null, Login, null, 1);
@@ -315,16 +311,27 @@ public class TraderGUI {
                 txtRegisterEmail.setText("");
                 txtRegisterUsername.setText("");
                 txtRegisterPassword.setText("");
+                MainTabbedPane.removeAll();
+                MainTabbedPane.insertTab("Main", null, Main, null, 0);
             } catch (UsernameInUseException | InvalidEmailAddressException | EmailAddressInUseException |
                     InvalidUsernameException | InvalidPasswordException | AccountNotFoundException | WrongAccountTypeException invalidLoginException) {
                 showMessageDialog(null, invalidLoginException.getMessage());
+                initializeRegister();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
+                initializeRegister();
             }
-            txtLoginUsername.setText("");
+            txtLoginUsername.setText(""); // are we sure this should be here
             txtLoginPassword.setText("");
-            MainTabbedPane.removeAll();
-            MainTabbedPane.insertTab("Main", null, Main, null, 0);
+
+        });
+    }
+
+    private void initializeRegister(){
+        btnRegisterMain.addActionListener(e -> {
+            tabCleaner();
+            MainTabbedPane.insertTab("Register", null, Register, null, 1);
+            MainTabbedPane.setSelectedIndex(1);
         });
     }
 
