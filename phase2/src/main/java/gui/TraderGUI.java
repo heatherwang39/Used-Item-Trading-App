@@ -16,6 +16,8 @@ import main.java.presenter.*;
 
 import javax.swing.*;
 // From: https://stackoverflow.com/questions/9119481/how-to-present-a-simple-alert-message-in-java
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -155,6 +157,8 @@ public class TraderGUI {
     private JTextArea txtAreaAccountThresholds;
     private JRadioButton rbtnLend;
     private JRadioButton rbtnViewNextSuggestion;
+    private JTextField txtFreezeUserInput;
+    private JButton btnFreezeUser;
     private JTextArea accountInformationTextArea;
 
     private String user;
@@ -169,7 +173,6 @@ public class TraderGUI {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-
     }
 
     private void initializeLogin() throws IOException, ClassNotFoundException {
@@ -880,6 +883,17 @@ public class TraderGUI {
                 } else {
                     showMessageDialog(null, "Please make a verdict!");
                 }
+            }
+        });
+
+        btnFreezeUser.addActionListener(e -> {
+           String userToFreeze = txtFreezeUserInput.getText();
+            try {
+                freezeController.freezeUser(userToFreeze);
+            } catch (AccountNotFoundException | WrongAccountTypeException exception) {
+                showMessageDialog(null, exception.getMessage());
+            } catch (IOException ioException){
+                ioException.printStackTrace();
             }
         });
     }
