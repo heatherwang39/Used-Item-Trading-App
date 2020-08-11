@@ -87,33 +87,5 @@ public class FreezeController {
         storageGateway.saveStorageData(StorageEnum.ACCOUNT);
     }
 
-    public int freezeDecision(JTextField txt, JTextArea txtArea, JRadioButton rbtnUnfreezeUser, JRadioButton rbtnIgnoreUser, int currUserIndex) {
-        List<List<String>> frozenUserList = null;
-
-        try {
-            frozenUserList = showAllFrozenUsers();
-        } catch (AccountNotFoundException | WrongAccountTypeException exception) {
-            showMessageDialog(null, exception.getMessage());
-        }
-
-        if(frozenUserList != null){
-            txt.setText(frozenUserList.get(currUserIndex).get(0) + frozenUserList.get(currUserIndex).get(1));
-            if (rbtnUnfreezeUser.isSelected()) {
-                try {
-                    unfreezeUser(frozenUserList.get(0).get(0));
-
-                } catch (IOException | StatusNotFoundException | AccountNotFoundException | WrongAccountTypeException exception) {
-                    showMessageDialog(null, exception.getMessage());
-                }
-            } else if (rbtnIgnoreUser.isSelected()) {
-                currUserIndex++;
-
-            } else {
-                showMessageDialog(null, "Please make a verdict!");
-            }
-        }
-
-        return currUserIndex;
-    }
 
 }
