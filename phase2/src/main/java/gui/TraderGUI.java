@@ -305,13 +305,13 @@ public class TraderGUI {
         if (!accountController.getStatuses().contains("AWAY") && !accountController.getStatuses().contains("FROZEN")) {
             initializeRequest();
             initializeOffers();
+            initializeMeeting();
         }
         if (!accountController.getStatuses().contains("FROZEN")) {
             initializeMessages();
         }
         if (!accountController.getStatuses().contains("NEW")) {
             initializeActivity();
-            initializeMeeting();
         }
         initializeAddItems();
     }
@@ -478,8 +478,8 @@ public class TraderGUI {
                         } else if (requestedItem.equals("")) {
                             tradeItemsList.add(offeredItemID);
                         } else {
-                            tradeItemsList.add(requestedItemID);
                             tradeItemsList.add(offeredItemID);
+                            tradeItemsList.add(requestedItemID);
                         }
                         TradeAlgorithmName tradeAlgorithmName = TradeAlgorithmName.CYCLE;
                         requestController.createRequest(rbtnPermTrade.isSelected(), tradeAlgorithmName, tradeItemsList);
