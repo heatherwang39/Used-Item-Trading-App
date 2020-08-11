@@ -75,8 +75,6 @@ public class TraderGUI {
     private JPanel Threshold;
     private JTextField txtAdminPasswordInput;
     private JButton btnAddAdmin;
-    private JScrollPane scrlInventoryOutput;
-    private JScrollPane scrlWishlistOutput;
     private JTextArea txtAreaInventoryOutput;
     private JTextArea txtAreaWishlistOutput;
     private JButton btnInventoryRequest;
@@ -167,7 +165,7 @@ public class TraderGUI {
         try {
             initializeLogin();
         } catch (IOException | ClassNotFoundException e) {
-            showMessageDialog(null, e.getStackTrace());
+            e.printStackTrace();
         }
 
     }
@@ -214,6 +212,18 @@ public class TraderGUI {
         ButtonGroup userListButtonGroup = new ButtonGroup();
         userListButtonGroup.add(rbtnUserListMute);
         userListButtonGroup.add(rbtnUserListNext);
+
+        ButtonGroup requestButtonGroup = new ButtonGroup();
+        requestButtonGroup.add(rbtnLend);
+        requestButtonGroup.add(rbtnViewNextSuggestion);
+
+        ButtonGroup meetingSuggestionButtonGroup = new ButtonGroup();
+        meetingSuggestionButtonGroup.add(rbtnMeetingAccept);
+        meetingSuggestionButtonGroup.add(rbtnMeetingDeny);
+
+        ButtonGroup meetingOngoingButtonGroup = new ButtonGroup();
+        meetingOngoingButtonGroup.add(rbtnMeetingCompleted);
+        meetingOngoingButtonGroup.add(rbtnMeetingNext);
 
         btnRegisterMain.addActionListener(e -> {
             tabCleaner();
@@ -442,11 +452,10 @@ public class TraderGUI {
                         requestController.createRequest(false, tradeAlgorithmName, tradeItemList);
                     }
 
-                } catch (ItemNotFoundException | NoSuchTradeAlgorithmException | WrongTradeAccountException |
-                        TradeNumberException | IOException exception) {
-                    exception.printStackTrace();
-                } catch (TradeCancelledException exception) {
+                } catch (ItemNotFoundException | NoSuchTradeAlgorithmException exception) {
                     showMessageDialog(null, exception.getMessage());
+                } catch (IOException ioException){
+                    ioException.printStackTrace();
                 }
                 txtAreaRequestSuggestTradesOutput.setText("");
                 suggestionList.remove(0);
@@ -554,7 +563,7 @@ public class TraderGUI {
             try {
                 acceptedTradesListUnformatted = meetingController.getAcceptedTradesUnformatted();
             } catch (TradeNumberException tradeNumberException) {
-                tradeNumberException.printStackTrace();
+                showMessageDialog(null, tradeNumberException.getMessage());
             }
 
             String suggestedPlace = txtMeetingSuggestInput.getText();
@@ -567,8 +576,10 @@ public class TraderGUI {
             if (!acceptedTradesListUnformatted.isEmpty()) {
                 try {
                     meetingController.suggestMeeting(Integer.parseInt(acceptedTradesListUnformatted.get(0).get("id").get(0)), suggestedPlace, suggestedTime);
-                } catch (TradeNumberException | IOException | TradeCancelledException | MaxNumMeetingsExceededException exception) {
-                    exception.printStackTrace();
+                } catch (TradeNumberException | TradeCancelledException | MaxNumMeetingsExceededException exception) {
+                    showMessageDialog(null, exception.getMessage());
+                } catch (IOException ioException){
+                    ioException.printStackTrace();
                 }
             }
         });
@@ -588,8 +599,10 @@ public class TraderGUI {
                 }
 
 
-            } catch (WrongMeetingAccountException | MeetingIDException | IOException | MeetingAlreadyConfirmedException exception) {
-                exception.printStackTrace();
+            } catch (WrongMeetingAccountException | MeetingIDException | MeetingAlreadyConfirmedException exception) {
+                showMessageDialog(null, exception.getMessage());
+            } catch (IOException ioException){
+                ioException.printStackTrace();
             }
         });
 
@@ -599,15 +612,17 @@ public class TraderGUI {
             List<HashMap<String, List<String>>> ongoingMeetingsListUnformatted = new ArrayList<>();
             try {
                 ongoingMeetingsListUnformatted = meetingController.getOngoingMeetingsUnformatted();
-            } catch (MeetingIDException meetingIDException) {
-                meetingIDException.printStackTrace();
+            } catch (MeetingIDException exception) {
+                showMessageDialog(null, exception.getMessage());
             }
             if (!ongoingMeetingsListUnformatted.isEmpty()){
                 if (rbtnMeetingCompleted.isSelected()) {
                     try {
                         meetingController.confirmMeeting(Integer.parseInt(ongoingMeetingsListUnformatted.get(currMeetingOngoingIndex[0]).get("id").get(0)));
-                    } catch (WrongMeetingAccountException | MeetingIDException | TimeException | IOException exception) {
-                        exception.printStackTrace();
+                    } catch (WrongMeetingAccountException | MeetingIDException | TimeException exception) {
+                        showMessageDialog(null, exception.getMessage());
+                    } catch (IOException ioException){
+                        ioException.printStackTrace();
                     }
                 } else if (rbtnMeetingNext.isSelected()){
                     currMeetingOngoingIndex[0]++;
@@ -669,8 +684,8 @@ public class TraderGUI {
                     showMessageDialog(null, "Message sent to admins");
                 } catch (EmptyTitleException | EmptyContentException | EmptyRecipientListException exception) {
                     showMessageDialog(null, exception.getMessage());
-                } catch (IOException exception) {
-                    exception.printStackTrace();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
                 }
             }
         });
@@ -762,8 +777,10 @@ public class TraderGUI {
             try {
                 thresholdController.setGildedThreshold(newGildedThreshold);
                 showMessageDialog(null, "New Threshold for Users to obtain the Guilded Status set to: " + newGildedThreshold);
-            } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException | IOException exception) {
-                exception.printStackTrace();
+            } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException exception) {
+                 showMessageDialog(null,exception.getMessage());
+            } catch (IOException ioException){
+                 ioException.printStackTrace();
             }
         });
     }

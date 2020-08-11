@@ -77,5 +77,16 @@ public class StorageGateway {
         Object data = dataMap.get(type.toString());
         fileReadWriter.saveToFile(data);
     }
+
+
+
+    public String getPath() {
+        return path;
+    }
+
+    public Map<String, String> getFilenameMap() {
+        return filenameMap;
+    }
+
 }
 
