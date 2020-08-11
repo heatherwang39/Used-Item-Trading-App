@@ -301,15 +301,15 @@ public class TraderGUI {
     }
 
     private void initializeStatus() throws IOException, ClassNotFoundException, TradeNumberException, ItemNotFoundException, AccountNotFoundException, WrongAccountTypeException {
-        StatusController statusController = new StatusController(user, storageGateway);
-        if (!statusController.getStatuses().contains("AWAY") && !statusController.getStatuses().contains("FROZEN")) {
+        AccountController accountController = new AccountController(storageGateway,user);
+        if (!accountController.getStatuses().contains("AWAY") && !accountController.getStatuses().contains("FROZEN")) {
             initializeRequest();
             initializeOffers();
         }
-        if (!statusController.getStatuses().contains("FROZEN")) {
+        if (!accountController.getStatuses().contains("FROZEN")) {
             initializeMessages();
         }
-        if (!statusController.getStatuses().contains("NEW")) {
+        if (!accountController.getStatuses().contains("NEW")) {
             initializeActivity();
         }
         initializeAddItems();

@@ -50,7 +50,7 @@ public class AccountController {
         return itemStorage.getWishlistData(username);
     }
 
-    private List<String> getStatuses() throws AccountNotFoundException, WrongAccountTypeException {
+    public List<String> getStatuses() throws AccountNotFoundException, WrongAccountTypeException {
         return accountStorage.getAccountStatuses(username);
     }
 
