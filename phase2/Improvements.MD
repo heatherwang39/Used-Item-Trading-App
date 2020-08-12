@@ -11,21 +11,24 @@ There have been massive changes in our project from Phase 1. As such, we have ch
 
 3) Entities no longer throw exceptions. As entities are only suppose to represent the critical rules and data of a business, we've decided to move all the exceptions that entities originally threw to the UseCase level. Some entity methods now have preconditions stated in their JavaDocs.
 
+4) Entities now incorporate more elements of polymorphism, for example Account/LoginAccount/UserAccount/AdminAccount
+
 
 ##Use Cases
 
-1) The Use Case
+1) Use case classes no longer call Gateway-type methods, such as saving or getting data
 
-2) Several of the Storage classes now use an Observer Pattern, making the 
+2) Several of the Storage classes now use an Observer Pattern
+
+
 
 ##Controllers/Gateways/Presenters
 
 1) In Phase 1, some of our Entity classes were in the Controller Layer. This violates Clean Architecture.
 
+2) There is a single observer Gateway-type class tasked with the file reading and writing
 
-
-
-
+3) There are dedicated Presenter classes other than just Controller classes with Presenter like methods
 
 
 ##Other Changes
