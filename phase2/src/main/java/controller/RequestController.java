@@ -48,6 +48,11 @@ public class RequestController {
      * @param items list of itemIDs part of request
      * @throws ItemNotFoundException Thrown if there is an invalid itemID in items
      * @throws NoSuchTradeAlgorithmException Thrown if no tradeAlgorithm has the given name
+     * @throws IOException file cannot be read/written
+     * @throws WrongTradeAccountException attempted to edit trade through wrong account
+     * @throws TradeNumberException no trade has the given number
+     * @throws TradeCancelledException trade has been cancelled
+     *
      */
     public void createRequest(boolean permanent, TradeAlgorithmName tradeAlgorithmName, List<Integer> items)
             throws ItemNotFoundException, NoSuchTradeAlgorithmException, IOException, WrongTradeAccountException, TradeNumberException, TradeCancelledException {
@@ -61,6 +66,14 @@ public class RequestController {
         storageGateway.saveStorageData(StorageEnum.valueOf("TRADE"));
     }
 
+    /**
+     * Check if trade request is valid
+     * @param user username
+     * @param str1 requested item
+     * @param str2 offered item
+     * @return is the offer valid
+     * @throws ItemNotFoundException item was not found
+     */
     public boolean checkValidRequest(String user, String str1, String str2) throws ItemNotFoundException {
         if (str1.isEmpty() && str2.isEmpty()){
             return false;
@@ -91,6 +104,12 @@ public class RequestController {
         }
     }
 
+    /**
+     * Find all trade suggestions
+     * @param currentUser username
+     * @return List of trade suggestions data
+     * @throws ItemNotFoundException item was not found
+     */
     public List<List<HashMap<String, String>>> suggestAllItems(String currentUser) throws ItemNotFoundException {
         // iterate through every user in the system and find what currentUser can lend them
         // iterate through every user in the system and find what they can lend currentUser

@@ -25,6 +25,8 @@ public class UserlistController {
      * Initializes a new UserlistController for the given username
      *
      * @param storageGateway gateway for loading and saving information
+     * @throws IOException file cannot be read/written
+     * @throws ClassNotFoundException serialized class was not found
      */
     public UserlistController(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
         this.storageGateway = storageGateway;
@@ -44,6 +46,7 @@ public class UserlistController {
     /**
      * Returns list of formatted user strings
      * @return username and email
+     * @throws AccountNotFoundException account was not found
      */
     public List<String> showUserStrings() throws AccountNotFoundException {
         List<String> users = new ArrayList<>();

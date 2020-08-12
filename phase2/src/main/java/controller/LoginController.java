@@ -33,6 +33,7 @@ public class LoginController {
      *
      * @param username The username of the account
      * @param password The password of the account
+     * @throws AccountNotFoundException Account was not found
      * @return Whether you can login
      */
     public String login(String username, String password) throws AccountNotFoundException {
@@ -52,6 +53,7 @@ public class LoginController {
      * @throws UsernameInUseException username is in use
      * @throws InvalidEmailAddressException Email is Invalid
      * @throws EmailAddressInUseException Email is in use
+     * @throws IOException file cannot be read/written
      */
     public void register(String username, String password, String emailAddress) throws
             UsernameInUseException, InvalidEmailAddressException, EmailAddressInUseException, IOException, InvalidUsernameException, InvalidPasswordException {

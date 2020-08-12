@@ -24,7 +24,6 @@ public class ThresholdController {
     private final AccountStorage accountStorage;
     private final String path;
     private final String filename;
-    private final String configKey = "THRESHOLDS";
 
     /**
      * Initializes a new ThresholdController
@@ -37,6 +36,7 @@ public class ThresholdController {
         StorageFactory sf = new StorageFactory();
         accountStorage = (AccountStorage) sf.getStorage(storageGateway, StorageEnum.ACCOUNT);
         path = storageGateway.getPath();
+        String configKey = "THRESHOLDS";
         filename = storageGateway.getFilenameMap().get(configKey);
     }
 
@@ -45,6 +45,7 @@ public class ThresholdController {
      * @throws NegativeThresholdException Thrown if the suggested threshold is negative
      * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      * @throws AccountNotFoundException Thrown when no account has the given username
+     * @throws IOException file cannot be read/written
      */
     public void setAllThresholdsFromTextFile() throws AccountNotFoundException, WrongAccountTypeException, NegativeThresholdException, IOException {
         FileReadWriter frw = new FileReadWriter(path+filename);
@@ -64,6 +65,7 @@ public class ThresholdController {
      * @throws AccountNotFoundException Thrown when no account has the given username
      * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      * @throws NegativeThresholdException Thrown if the suggested threshold is negative
+     * @throws IOException file cannot be read/written
      */
     public void setBorrowingThreshold(int threshold) throws AccountNotFoundException, WrongAccountTypeException, NegativeThresholdException, IOException {
         accountStorage.setAllBorrowThresholds(threshold);
@@ -77,6 +79,7 @@ public class ThresholdController {
      * @throws AccountNotFoundException Thrown when no account has the given username
      * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      * @throws NegativeThresholdException Thrown if the suggested threshold is negative
+     * @throws IOException file cannot be read/written
      */
     public void setIncompleteThreshold(int threshold) throws AccountNotFoundException, WrongAccountTypeException, NegativeThresholdException, IOException {
         accountStorage.setAllIncompleteThresholds(threshold);
@@ -90,6 +93,7 @@ public class ThresholdController {
      * @throws AccountNotFoundException Thrown when no account has the given username
      * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      * @throws NegativeThresholdException Thrown if the suggested threshold is negative
+     * @throws IOException file cannot be read/written
      */
     public void setWeeklyThreshold(int threshold) throws AccountNotFoundException, WrongAccountTypeException, NegativeThresholdException, IOException {
         accountStorage.setAllWeeklyThresholds(threshold);
@@ -103,6 +107,7 @@ public class ThresholdController {
      * @throws AccountNotFoundException Thrown when no account has the given username
      * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      * @throws NegativeThresholdException Thrown if the suggested threshold is negative
+     * @throws IOException file cannot be read/written
      */
     public void setGildedThreshold(int threshold) throws AccountNotFoundException, WrongAccountTypeException, NegativeThresholdException, IOException {
         accountStorage.setAllGildedThresholds(threshold);
@@ -128,6 +133,7 @@ public class ThresholdController {
      * @throws AccountNotFoundException Thrown when no account has the given username
      * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      * @throws NegativeThresholdException Thrown if the suggested threshold is negative
+     * @throws IOException file cannot be read/written
      */
     public void setBorrowingThresholdForUser(String username, int threshold) throws AccountNotFoundException, NegativeThresholdException, WrongAccountTypeException, IOException {
         accountStorage.setBorrowThreshold(username,threshold);
@@ -142,6 +148,7 @@ public class ThresholdController {
      * @throws AccountNotFoundException Thrown when no account has the given username
      * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      * @throws NegativeThresholdException Thrown if the suggested threshold is negative
+     * @throws IOException file cannot be read/written
      */
     public void setIncompleteThresholdForUser(String username, int threshold) throws AccountNotFoundException, NegativeThresholdException, WrongAccountTypeException, IOException {
         accountStorage.setIncompleteThreshold(username,threshold);
@@ -156,6 +163,7 @@ public class ThresholdController {
      * @throws AccountNotFoundException Thrown when no account has the given username
      * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      * @throws NegativeThresholdException Thrown if the suggested threshold is negative
+     * @throws IOException file cannot be read/written
      */
     public void setWeeklyThresholdForUser(String username, int threshold) throws AccountNotFoundException, NegativeThresholdException, WrongAccountTypeException, IOException {
         accountStorage.setWeeklyThreshold(username,threshold);
@@ -170,6 +178,7 @@ public class ThresholdController {
      * @throws AccountNotFoundException Thrown when no account has the given username
      * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      * @throws NegativeThresholdException Thrown if the suggested threshold is negative
+     * @throws IOException file cannot be read/written
      */
     public void setGildedThresholdForUser(String username, int threshold) throws AccountNotFoundException, NegativeThresholdException, WrongAccountTypeException, IOException {
         accountStorage.setGildedThreshold(username,threshold);

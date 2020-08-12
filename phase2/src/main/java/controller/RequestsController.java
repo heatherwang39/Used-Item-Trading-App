@@ -72,6 +72,11 @@ public class RequestsController {
         storageGateway.saveStorageData(StorageEnum.valueOf("ITEM"));
     }
 
+    /**
+     * Get requests in formatted presenter string
+     * @return Presenter view of requests
+     * @throws ItemNotFoundException item was not found
+     */
     public List<String> getFormattedRequests() throws ItemNotFoundException {
         return itemPresenter.formatItemsToListView(getRequests());
     }
@@ -79,6 +84,7 @@ public class RequestsController {
     /**
      * Get formatted string for requests box
      * @return requests box string
+     * @throws ItemNotFoundException item was not found
      */
     public String getRequestsString() throws ItemNotFoundException {
         StringBuilder string = new StringBuilder();

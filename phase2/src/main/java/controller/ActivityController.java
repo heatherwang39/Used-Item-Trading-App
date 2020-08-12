@@ -55,22 +55,4 @@ public class ActivityController {
     public List<String> frequentTradingPartners() throws TradeNumberException {
         return tradeStorage.frequentTradePartners(username);
     }
-
-    public void displayTradeActivity(String user, JTextArea txtArea) throws TradeNumberException {
-        List<List<Integer>> tradeList = recentItemsTraded();
-        StringBuilder tradeString = new StringBuilder();
-        for (List<Integer> integers : tradeList) {
-            for (Integer integer : integers) {
-                tradeString.append(", ").append(integer);
-                txtArea.append(tradeString + "\n");
-            }
-        }
-    }
-
-    public void displayPartnerActivity(String user, JTextArea txtArea) throws TradeNumberException {
-        List<String> partnerList = frequentTradingPartners();
-        for (String s : partnerList) {
-            txtArea.append(s + "\n");
-        }
-    }
 }

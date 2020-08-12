@@ -61,6 +61,7 @@ public class ItemsController {
      *
      * @param itemID id of the item
      * @throws ItemNotFoundException invalid item id
+     * @throws IOException file cannot be read/written
      */
     public void addWishlistItem(String itemID) throws IOException, ItemNotFoundException {
         itemStorage.addWishList(username, Integer.parseInt(itemID));
@@ -87,6 +88,7 @@ public class ItemsController {
      * @param itemID id of item
      * @throws AlreadyHiddenException Item is already hidden
      * @throws ItemNotFoundException invalid item id
+     * @throws IOException files cannot be read/written
      */
     public void hideItem(String itemID) throws AlreadyHiddenException, ItemNotFoundException, IOException {
         itemStorage.hideItem(Integer.parseInt(itemID));
@@ -113,6 +115,7 @@ public class ItemsController {
      * @param itemID id of item
      * @throws AlreadyNotHiddenException Item is already not hidden
      * @throws ItemNotFoundException invalid item id
+     * @throws IOException file can't be read/written
      */
     public void unhideItem(String itemID) throws AlreadyNotHiddenException, ItemNotFoundException, IOException {
         itemStorage.unhideItem(Integer.parseInt(itemID));

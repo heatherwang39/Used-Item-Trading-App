@@ -77,6 +77,9 @@ public class FreezeController {
      *
      * @param username username of the user
      * @throws IOException file cannot be read/written
+     * @throws StatusNotFoundException status was not found
+     * @throws AccountNotFoundException account was not found
+     * @throws WrongAccountTypeException account type doesn't support statuses
      */
     public void unfreezeUser(String username) throws IOException, StatusNotFoundException, AccountNotFoundException, WrongAccountTypeException {
         accountStorage.removeStatus(username, "FREEZE");

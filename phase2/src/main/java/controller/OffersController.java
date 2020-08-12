@@ -58,6 +58,7 @@ public class OffersController {
      * @throws TradeNumberException invalid tradeNumber, not in system
      * @throws TradeCancelledException if the given trade has already been cancelled
      * @throws WrongTradeAccountException if the given trade does not involve the user
+     * @throws IOException file cannot be read/written
      */
     public void acceptOffer(int tradeNumber) throws TradeNumberException, IOException, TradeCancelledException, WrongTradeAccountException {
         tradeStorage.acceptTrade(tradeNumber, username);
@@ -70,6 +71,7 @@ public class OffersController {
      *
      * @param tradeNumber id of Trade being rejected
      * @throws TradeNumberException invalid tradeNumber, not in system
+     * @throws IOException file cannot be read/written
      */
     public void rejectOffer(int tradeNumber) throws TradeNumberException, IOException{
         tradeStorage.setStatus(tradeNumber, -1);

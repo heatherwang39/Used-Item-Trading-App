@@ -29,6 +29,7 @@ public class AccountController {
     /** Class constructor
      *
      * @param storageGateway Gateway class for reading and writing Storage Data
+     * @param username username of account
      */
     public AccountController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
         this.username = username;
@@ -38,22 +39,49 @@ public class AccountController {
         itemStorage = (ItemStorage) storageFactory.getStorage(storageGateway, StorageEnum.ITEM);
     }
 
+    /**
+     * Gets email string
+     * @return email address
+     * @throws AccountNotFoundException account was not found with username
+     */
     public String getEmail() throws AccountNotFoundException {
         return accountStorage.getEmail(username);
     }
 
+    /**
+     * gets a list of HashMaps representing items data
+     * @return inventory data
+     * @throws ItemNotFoundException items were not found
+     */
     private List<HashMap<String, String>> getInventory() throws ItemNotFoundException {
         return itemStorage.getVerifiedInventoryData(username);
     }
 
+    /**
+     * gets a list of HashMaps representing items data
+     * @return wishlist data
+     * @throws ItemNotFoundException items were not found
+     */
     private List<HashMap<String, String>> getWishlist() throws ItemNotFoundException {
         return itemStorage.getWishlistData(username);
     }
 
+    /**
+     * gets account statuses
+     * @return list of statuses
+     * @throws AccountNotFoundException account was not found
+     * @throws WrongAccountTypeException account not supporting statuses was entered
+     */
     public List<String> getStatuses() throws AccountNotFoundException, WrongAccountTypeException {
         return accountStorage.getAccountStatuses(username);
     }
 
+    /**
+     * gets string containing statuses
+     * @return statuses presenter string
+     * @throws AccountNotFoundException account was not found
+     * @throws WrongAccountTypeException account not supporting statuses was entered
+     */
     // consider making this into a presenter class
     public String getStatusString() throws AccountNotFoundException, WrongAccountTypeException {
         List<String> userStatusList = getStatuses();
