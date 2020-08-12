@@ -46,7 +46,7 @@ public class TraderGUI {
     private JTextField txtRequestItemInput;
     private JRadioButton rbtnTempTrade;
     private JRadioButton rbtnPermTrade;
-    private JButton btnRequest;
+    private JButton btnRequestTrade;
     private JButton btnLoginMain;
     private JButton btnRegisterMain;
     private JTextField txtThresholdBorrowedInput;
@@ -127,7 +127,7 @@ public class TraderGUI {
     private JTextArea txtAreaMessagesIncoming;
     private JTextArea txtAreaMessagesSent;
     private JTextArea txtAreaRequestSuggestTradesOutput;
-    private JButton btnRequestEnter;
+    private JButton btnRequestSuggestionEnter;
     private JTextArea txtAreaMeetingAcceptedTrades;
     private JTextField txtMeetingAcceptedTrade;
     private JTextField txtMeetingSuggestInput;
@@ -172,6 +172,13 @@ public class TraderGUI {
     private JLabel MainLabel;
     private JTabbedPane MessagesTabbedPane;
     private JButton btnThresholdSetToDefault;
+    private JTabbedPane tabbedPane3;
+    private JTextField txtItemsUnhiddenOutput;
+    private JTextField txtItemsHiddenOutput;
+    private JButton btnItemsHide;
+    private JButton btnItemsUnhide;
+    private JTextArea txtAreaItemsUnhiddenOutput;
+    private JTextArea txtAreaItemsHiddenOutput;
 
     private String user;
     private final StorageGateway storageGateway;
@@ -186,6 +193,18 @@ public class TraderGUI {
             e.printStackTrace();
         }
 
+        btnItemsHide.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        btnItemsUnhide.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
     }
 
     private void initializeLogin() throws IOException, ClassNotFoundException {
@@ -351,7 +370,7 @@ public class TraderGUI {
         if (!accountController.getStatuses().contains("NEW")) {
             initializeActivity();
         }
-        initializeAddItems();
+        initializeItems();
     }
 
     private void initializeAccount() throws IOException, ClassNotFoundException, AccountNotFoundException, ItemNotFoundException, WrongAccountTypeException {
@@ -467,7 +486,7 @@ public class TraderGUI {
         List<List<HashMap<String, String>>> suggestionList = requestController.suggestAllItems(user);
         displayRequestSuggestions(suggestionList, itemPresenter);
 
-        btnRequestEnter.addActionListener(e -> {
+        btnRequestSuggestionEnter.addActionListener(e -> {
             displayRequestSuggestions(suggestionList, itemPresenter);
 
             if (rbtnLend.isSelected()){
@@ -501,7 +520,7 @@ public class TraderGUI {
         });
 
 
-        btnRequest.addActionListener(e -> {
+        btnRequestTrade.addActionListener(e -> {
             if (!rbtnTempTrade.isSelected() && !rbtnPermTrade.isSelected()) {
                 showMessageDialog(null, "Please select a type of trade for this request!");
             } else {
@@ -545,7 +564,7 @@ public class TraderGUI {
 
     }
 
-    private void initializeAddItems() throws IOException, ClassNotFoundException {
+    private void initializeItems() throws IOException, ClassNotFoundException {
         MainTabbedPane.insertTab("Add Items", null, AddItems, null, 3);
 
         ItemsController itemsController = new ItemsController(storageGateway, user);
@@ -576,6 +595,8 @@ public class TraderGUI {
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }       });
+
+
     }
 
 
@@ -1102,12 +1123,16 @@ public class TraderGUI {
         }
     }
 
-    private void displayRequestSuggestions(List<List<HashMap<String, String>>> unformattedSuggestionList, ItemPresenter itemPresenter){
-        for (List<HashMap<String, String>> subSuggestionList : unformattedSuggestionList){
-            for (String s : itemPresenter.formatItemsToListView(subSuggestionList)){
-                txtAreaRequestSuggestTradesOutput.append(s + "\n");
+    private void displayRequestSuggestions(List<List<HashMap<String, String>>> unformattedSuggestionList, ItemPresenter itemPresenter) {
+        if (unformattedSuggestionList.isEmpty()) {
+            txtAreaRequestSuggestTradesOutput.setText("No Suggestions Available (nothing in your inventory is in anyone elses wishlist, or vice versa");
+        } else {
+            for (List<HashMap<String, String>> subSuggestionList : unformattedSuggestionList) {
+                for (String s : itemPresenter.formatItemsToListView(subSuggestionList)) {
+                    txtAreaRequestSuggestTradesOutput.append(s + "\n");
+                }
+                txtAreaRequestSuggestTradesOutput.append("----------------------- \n");
             }
-            txtAreaRequestSuggestTradesOutput.append("----------------------- \n");
         }
     }
 
