@@ -152,6 +152,7 @@ public class ItemStorage implements Storage, TradeObserver {
      * Get all the data of verified Items in the overall list of Items
      *
      * @return all data of verified Items
+     * @throws ItemNotFoundException item not in system
      */
     public List<HashMap<String, String>> getVerifiedItemsData() throws ItemNotFoundException {
         List<HashMap<String, String>> itemData = new ArrayList<>();
@@ -170,6 +171,7 @@ public class ItemStorage implements Storage, TradeObserver {
      * Get all unverified Items in the overall list of items.
      *
      * @return all unverified Items
+     * @throws ItemNotFoundException item not in system
      */
     public List<HashMap<String, String>> getUnverifiedItemsData() throws ItemNotFoundException {
         List<HashMap<String, String>> itemData = new ArrayList<>();
@@ -216,6 +218,12 @@ public class ItemStorage implements Storage, TradeObserver {
         return items;
     }
 
+    /**
+     * Get an Account's inventory by username.
+     *
+     * @param username Account username
+     * @return inventory
+     */
     public List<String> getInventoryString(String username){
         List<String> items = new ArrayList<>();
         for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
@@ -227,6 +235,12 @@ public class ItemStorage implements Storage, TradeObserver {
         return items;
     }
 
+    /**
+     * Get an account's formatted wishlist string
+     *
+     * @param username Account username
+     * @return formatted wishlist
+     */
     public List<String> getWishlistString(String username){
         List<String> items = new ArrayList<>();
         for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
@@ -243,6 +257,7 @@ public class ItemStorage implements Storage, TradeObserver {
      *
      * @param currentUser current Account username who needs suggestion
      * @param givenUser the given Account username who may want to borrow
+     * @throws ItemNotFoundException item not in system
      * @return data of suggested items
      */
     public List<HashMap<String, String>> suggestItems(String currentUser, String givenUser) throws ItemNotFoundException {
@@ -264,6 +279,7 @@ public class ItemStorage implements Storage, TradeObserver {
      *
      * @param username Account username
      * @return data of items in user's wishlist
+     * @throws ItemNotFoundException item not in system
      */
     public List<HashMap<String, String>> getWishlistData(String username) throws ItemNotFoundException {
         List<HashMap<String, String>> wishlistData = new ArrayList<>();
@@ -279,6 +295,7 @@ public class ItemStorage implements Storage, TradeObserver {
      *
      * @param username Account username
      * @return data of verified items in user's inventory
+     * @throws ItemNotFoundException item not in system
      */
     public List<HashMap<String, String>> getVerifiedInventoryData(String username) throws ItemNotFoundException {
         List<HashMap<String, String>> verifiedInventoryData = new ArrayList<>();
@@ -295,6 +312,7 @@ public class ItemStorage implements Storage, TradeObserver {
      * @param searchTerms keywords searched by the user
      * @param tags enabled item tags
      * @return data of verified items that match the search filter
+     * @throws ItemNotFoundException item not in system
      */
     public List<HashMap<String, String>> getVerifiedInventoryData(List<String> searchTerms, List<String> tags) throws ItemNotFoundException {
         List<HashMap<String, String>> verifiedInventoryData = new ArrayList<>();
@@ -309,6 +327,7 @@ public class ItemStorage implements Storage, TradeObserver {
      * Creates a HashMap containing the Item's data
      * @param itemID The id of the Item
      * @return Data in the form of {Label: Information, ...}
+     * @throws ItemNotFoundException item not in system
      */
     public HashMap<String, String> getData(Integer itemID) throws ItemNotFoundException {
         HashMap<String, String> data = new HashMap<>();
@@ -328,6 +347,7 @@ public class ItemStorage implements Storage, TradeObserver {
      * show names of the given items
      * @param ids the ids of the given items
      * @return List of names of the given items
+     * @throws ItemNotFoundException item not in system
      */
     public List<String> showNames(List<Integer> ids) throws ItemNotFoundException {
         List<String> names = new ArrayList<>();
@@ -342,6 +362,7 @@ public class ItemStorage implements Storage, TradeObserver {
      * Change owner of given item
      * @param itemId the id of the given item
      * @param username the username of new owner
+     * @throws ItemNotFoundException item not in system
      */
     public void changeOwner(int itemId, String username) throws ItemNotFoundException {
         getItem(itemId).setOwner(username);
@@ -384,6 +405,7 @@ public class ItemStorage implements Storage, TradeObserver {
      *
      * @param username Account username
      * @return data of verified, hidden items in user's inventory
+     * @throws ItemNotFoundException item not in system
      */
     public List<HashMap<String, String>> getHiddenInventoryData(String username) throws ItemNotFoundException {
         List<HashMap<String, String>> hiddenInventoryData = new ArrayList<>();
@@ -399,6 +421,7 @@ public class ItemStorage implements Storage, TradeObserver {
      *
      * @param username Account username
      * @return data of verified, not hidden items in user's inventory
+     * @throws ItemNotFoundException item not in system
      */
     public List<HashMap<String, String>> getUnhiddenInventoryData(String username) throws ItemNotFoundException {
         List<HashMap<String, String>> unhiddenInventoryData = new ArrayList<>();
@@ -413,6 +436,7 @@ public class ItemStorage implements Storage, TradeObserver {
      * Get all the data of verified, not hidden Items in the overall list of Items
      *
      * @return all data of verified, not hidden Items
+     * @throws ItemNotFoundException item not in system
      */
     public List<HashMap<String, String>> getBrowsableItemsData() throws ItemNotFoundException {
         List<HashMap<String, String>> itemData = new ArrayList<>();
