@@ -15,7 +15,7 @@ import java.util.*;
 
 public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
     private List<Trade> trades;
-    private final TradeAlgorithmFactory taf = new TradeAlgorithmFactory();
+    private final TradeAlgorithmCreator tac = new TradeAlgorithmFactory();
     private final TradeActivityManager tam = new TradeActivityManager();
 
     private final List<TradeObserver> observers = new ArrayList<>();
@@ -46,7 +46,7 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
 
         Trade t;
 
-        TradeAlgorithm ta = taf.getTradeAlgorithm(tradeAlgorithmName);
+        TradeAlgorithm ta = tac.getTradeAlgorithm(tradeAlgorithmName);
 
         if(permanent){
             t = new PermanentTrade(getNumberOfTrades() + 1, ta, traders, items);
@@ -713,34 +713,4 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
         List <Trade> userTrades = getUserTrades(username);
         return tam.frequentTradePartners(username, userTrades);
     }
-
-
-
-
-
-    private boolean checkIsGilded(String username) throws TradeNumberException {
-        List<Trade> userTrades = getUserTrades(username);
-        int completedTrades = 0;
-        for (Trade trade : userTrades) {
-            int tradeId = userTrades.indexOf(trade);
-            int tradeStatus = getStatus(tradeId);
-            if (tradeStatus == 3) completedTrades++;
-        }
-        return (completedTrades >= 20);
-    }
-
-    /**
-     * Returns a list of gilded users who have completed more than 20 trades
-     * @param usernames usernames of users
-     * @return list of the usernames of the gilded users
-     * @throws TradeNumberException an invalid trade number is found
-     */
-    public List<String> getGildedUsers(List<String> usernames) throws TradeNumberException {
-        List<String> gildedUsersList = new ArrayList<>();
-        for(String username:usernames){
-            if(checkIsGilded(username)){gildedUsersList.add(username);}
-        }
-        return gildedUsersList;
-    }
-
 }

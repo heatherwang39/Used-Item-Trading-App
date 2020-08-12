@@ -8,7 +8,7 @@ package main.java.model.trade;
  * @since Phase 2
  */
 
-public class TradeAlgorithmFactory {
+public class TradeAlgorithmFactory implements TradeAlgorithmCreator{
 
     /**
      * Constructs the a new instance of the given trade algorithm.
@@ -18,7 +18,6 @@ public class TradeAlgorithmFactory {
      * @throws NoSuchTradeAlgorithmException Exception thrown when no Trade Algorithm has the given name
      */
     public TradeAlgorithm getTradeAlgorithm(TradeAlgorithmName tradeAlgorithmName) throws NoSuchTradeAlgorithmException{
-        TradeAlgorithm ta;
         switch(tradeAlgorithmName) {
             case CYCLE:
                 return new CycleTradeAlgorithm();
