@@ -317,7 +317,7 @@ public class TraderGUI {
                 MainTabbedPane.removeAll();
                 MainTabbedPane.insertTab("Main", null, Main, null, 0);
             } catch (UsernameInUseException | InvalidEmailAddressException | EmailAddressInUseException |
-                    InvalidUsernameException | InvalidPasswordException | AccountNotFoundException | WrongAccountTypeException invalidLoginException) {
+                    InvalidUsernameException | InvalidPasswordException invalidLoginException) {
                 showMessageDialog(null, invalidLoginException.getMessage());
                 initializeRegister();
             } catch (IOException ioException) {
