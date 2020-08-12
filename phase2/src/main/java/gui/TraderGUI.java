@@ -1177,7 +1177,9 @@ public class TraderGUI {
         for (String item : formattedUnhiddenList){
             txtAreaItemsUnhiddenOutput.append(item + "\n");
         }
-        txtItemsUnhiddenOutput.setText(formattedUnhiddenList.get(0));
+        if (!formattedUnhiddenList.isEmpty()) {
+            txtItemsUnhiddenOutput.setText(formattedUnhiddenList.get(0));
+        }
 
     }
 
@@ -1188,7 +1190,9 @@ public class TraderGUI {
         for (String item : formattedHiddenList){
             txtAreaItemsHiddenOutput.append(item + "\n");
         }
-        txtItemsHiddenOutput.setText(formattedHiddenList.get(0));
+        if (!formattedHiddenList.isEmpty()) {
+            txtItemsHiddenOutput.setText(formattedHiddenList.get(0));
+        }
 
     }
 }
