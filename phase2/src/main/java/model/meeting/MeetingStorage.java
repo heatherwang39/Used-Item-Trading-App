@@ -152,11 +152,9 @@ public class MeetingStorage  implements Storage, MeetingObservee{
     public List<Integer> getSuggestedMeetings(String participant){
         List<Integer> meeting = new ArrayList<>();
         for(Meeting m: meetings){
-            if(!m.isCancelled()){
-                if(!m.isAccepted()){
-                    if(m.getAttendees().contains(participant)){
-                        meeting.add(m.getMeetingID());
-                    }
+            if(!m.isCancelled() && !m.isAccepted()){
+                if(m.getAttendees().contains(participant) && m.getUnacceptedAttendees().contains(participant)){
+                    meeting.add(m.getMeetingID());
                 }
             }
         }

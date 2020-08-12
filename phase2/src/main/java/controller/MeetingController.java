@@ -85,9 +85,12 @@ public class MeetingController {
      * @throws MaxNumMeetingsExceededException too many meeting suggested, trade is now cancelled
      */
     public void suggestMeeting(int tradeNumber, String place, LocalDateTime time) throws TradeNumberException,
-            IOException, TradeCancelledException, MaxNumMeetingsExceededException {
+            IOException, TradeCancelledException, MaxNumMeetingsExceededException, WrongMeetingAccountException, MeetingIDException {
         List<String> attendees = tradeStorage.getTraders(tradeNumber);
-        tradeStorage.addMeeting(tradeNumber, meetingStorage.newMeeting(attendees, place, time));
+        int meetingID = meetingStorage.newMeeting(attendees, place, time);
+        tradeStorage.addMeeting(tradeNumber, meetingID);
+        meetingStorage.acceptMeeting(meetingID, username);
+        storageGateway.saveStorageData(StorageEnum.TRADE);
         storageGateway.saveStorageData(StorageEnum.MEETING);
     }
 
