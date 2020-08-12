@@ -52,13 +52,10 @@ public class LoginController {
      * @throws UsernameInUseException username is in use
      * @throws InvalidEmailAddressException Email is Invalid
      * @throws EmailAddressInUseException Email is in use
-     * @throws AccountNotFoundException Thrown when no account has the given username
-     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      */
     public void register(String username, String password, String emailAddress) throws
-            UsernameInUseException, InvalidEmailAddressException, EmailAddressInUseException, IOException, InvalidUsernameException, InvalidPasswordException, AccountNotFoundException, WrongAccountTypeException {
+            UsernameInUseException, InvalidEmailAddressException, EmailAddressInUseException, IOException, InvalidUsernameException, InvalidPasswordException {
         accountStorage.createUser(username, password, emailAddress);
-        accountStorage.createStatus(username,"NEW");
         storageGateway.saveStorageData(StorageEnum.ACCOUNT);
     }
 }

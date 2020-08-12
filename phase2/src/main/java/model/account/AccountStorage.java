@@ -54,12 +54,6 @@ public class AccountStorage implements Storage, TradeObserver {
         return !p.matcher(username).matches();
     }
 
-    /**
-     * Checks if email address is valid
-     *
-     * @param emailAddress input email
-     * @return a boolean representing whether the email is valid
-     */
     private boolean isInvalidEmail(String emailAddress) {
 
         Pattern p = Pattern.compile("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-" +
@@ -70,12 +64,6 @@ public class AccountStorage implements Storage, TradeObserver {
         return !p.matcher(emailAddress).matches();
     }
 
-    /**
-     * Checks if email address is used in another account.
-     *
-     * @param emailAddress input email
-     * @return a boolean representing if emailAddress is in use
-     */
     private boolean isEmailAddressInUse(String emailAddress) {
         for (LoginAccount account: accounts.values()) {
             if (account.getEmailAddress().equals(emailAddress)) return true;
@@ -83,18 +71,6 @@ public class AccountStorage implements Storage, TradeObserver {
         return false;
     }
 
-    /**
-     * Wraps all checks for a new account being valid.
-     *
-     * @param username input username
-     * @param password input password
-     * @param emailAddress input email
-     * @throws InvalidEmailAddressException emailAddress doesn't match regex
-     * @throws InvalidUsernameException  username doesn't match regex
-     * @throws InvalidPasswordException  password doesn't match regex
-     * @throws UsernameInUseException username is in use
-     * @throws EmailAddressInUseException emailAddress is in use
-     */
     private void isValidAccount(String username, String password, String emailAddress) throws
             InvalidEmailAddressException, UsernameInUseException, EmailAddressInUseException, InvalidUsernameException, InvalidPasswordException {
         if (isInvalidUsername(username)){ throw new InvalidUsernameException(); }
@@ -147,12 +123,6 @@ public class AccountStorage implements Storage, TradeObserver {
         accounts.put(username, admin);
     }
 
-    /**
-     * Get account by username
-     * @param username input username
-     * @return account with username
-     * @throws AccountNotFoundException account not found under username
-     */
     private LoginAccount getAccount(String username) throws AccountNotFoundException{
         if (accounts.containsKey(username)){
             return accounts.get(username);
@@ -161,10 +131,6 @@ public class AccountStorage implements Storage, TradeObserver {
         }
     }
 
-    /**
-     * Get all accounts
-     * @return copy of accounts List
-     */
     private List<Account> getAccounts() { return new ArrayList<>(accounts.values()); }
 
     /**
@@ -224,11 +190,19 @@ public class AccountStorage implements Storage, TradeObserver {
         return allAdmins;
     }
 
+    /** Get password the of given username
+     *
+     * @return The password the of given username
+     */
     public String getPassword(String username) throws AccountNotFoundException {
         LoginAccount acc = getAccount(username);
         return acc.getPassword();
     }
 
+    /** Get email the of given username
+     *
+     * @return The email the of given username
+     */
     public String getEmail(String username) throws AccountNotFoundException {
         LoginAccount acc = getAccount(username);
         return acc.getEmailAddress();
@@ -238,7 +212,7 @@ public class AccountStorage implements Storage, TradeObserver {
     /** Set the BorrowThreshold of the given account to be the following.
      *
      * @param username The username of the account you'd like to modify
-     * @param threshold What you want to set the threshold to
+     * @param threshold The max number of items the user can borrow
      * @throws NegativeThresholdException Thrown if the suggested threshold is negative
      * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      * @throws AccountNotFoundException Thrown when no account has the given username
@@ -258,7 +232,7 @@ public class AccountStorage implements Storage, TradeObserver {
     /** Set the IncompleteThreshold of the given account to be the following.
      *
      * @param username The username of the account you'd like to modify
-     * @param threshold What you want to set the threshold to
+     * @param threshold The max number of incomplete trades the user can have
      * @throws NegativeThresholdException Thrown if the suggested threshold is negative
      * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      * @throws AccountNotFoundException Thrown when no account has the given username
@@ -278,7 +252,7 @@ public class AccountStorage implements Storage, TradeObserver {
     /** Set the WeeklyThreshold of the given account to be the following.
      *
      * @param username The username of the account you'd like to modify
-     * @param threshold What you want to set the threshold to
+     * @param threshold The max number of completed trades the user can have within a week
      * @throws NegativeThresholdException Thrown if the suggested threshold is negative
      * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      * @throws AccountNotFoundException Thrown when no account has the given username
@@ -295,6 +269,13 @@ public class AccountStorage implements Storage, TradeObserver {
         throw new WrongAccountTypeException();
     }
 
+    /** Set the BorrowThreshold to all users.
+     *
+     * @param threshold The max number of items the user can borrow
+     * @throws NegativeThresholdException Thrown if the suggested threshold is negative
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     */
     public void setAllBorrowThresholds(int threshold) throws AccountNotFoundException, NegativeThresholdException, WrongAccountTypeException {
         if(threshold < 0){
             throw new NegativeThresholdException();
@@ -306,6 +287,13 @@ public class AccountStorage implements Storage, TradeObserver {
         }
     }
 
+    /** Set the incompleteThreshold to all users.
+     *
+     * @param threshold The max number of incomplete trades the user can have
+     * @throws NegativeThresholdException Thrown if the suggested threshold is negative
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     */
     public void setAllIncompleteThresholds(int threshold) throws AccountNotFoundException, NegativeThresholdException, WrongAccountTypeException {
         if(threshold < 0){
             throw new NegativeThresholdException();
@@ -317,6 +305,13 @@ public class AccountStorage implements Storage, TradeObserver {
         }
     }
 
+    /** Set the weeklyThreshold to all users.
+     *
+     * @param threshold The max number of completed trades the user can have within a week
+     * @throws NegativeThresholdException Thrown if the suggested threshold is negative
+     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     */
     public void setAllWeeklyThresholds(int threshold) throws AccountNotFoundException, NegativeThresholdException, WrongAccountTypeException {
         if(threshold < 0){
             throw new NegativeThresholdException();
@@ -330,7 +325,7 @@ public class AccountStorage implements Storage, TradeObserver {
 
     /** Set the GildedThreshold for all users.
      *
-     * @param threshold What you want to set the threshold to
+     * @param threshold The min number of completed trades the user should have before their accounts is set gilded
      * @throws NegativeThresholdException Thrown if the suggested threshold is negative
      * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      * @throws AccountNotFoundException Thrown when no account has the given username
@@ -496,21 +491,6 @@ public class AccountStorage implements Storage, TradeObserver {
 
     }
 
-    //automatically freeze account below
-    /**
-     * Checks if a user with given username should be frozen based on if they violate any of the trade thresholds
-     * There are three thresholds that are checked:
-     * (1) Borrow Threshold: if a user has borrowed more than they have lent out
-     * (2) Incomplete Threshold: if a user has too many incomplete trades
-     * (3) Weekly Threshold: if a user has traded too much in one week
-     * If a user violates any of these thresholds, a string representing the violation is added into a list, and a list
-     * of reasons is returned.
-     * If the list is empty, the user should not be frozen.
-     *
-     * @param username username of the user
-     * @return a list of reasons why that user should be frozen. Empty if there are no reasons
-     */
-
     private List<String> checkUserShouldFreeze(String username) throws AccountNotFoundException {
         List<String> reasonsToFreeze = new ArrayList<>();
         UserAccount user = (UserAccount) getAccount(username);
@@ -528,23 +508,7 @@ public class AccountStorage implements Storage, TradeObserver {
     }
 
 
-    /**
-     * Checks which users in usernames should be frozen based on if they violate any of the trade thresholds
-     * There are three thresholds that are checked:
-     * (1) Borrow Threshold: if a user has borrowed more than they have lent out
-     * (2) Incomplete Threshold: if a user has too many incomplete trades
-     * (3) Weekly Threshold: if a user has traded too much in one week
-     * If a user violates any of these thresholds, a string representing the violation is added into a list, and a list
-     * of reasons is returned.
-     * If the list is empty, the user should not be frozen.
-     *
-     * @param traders list of usernames of traders involved
-     * @throws AccountNotFoundException Thrown when no account has the given username
-     * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
-     */
-
-
-    private void freezeUsers(List<String> traders) throws AccountNotFoundException, WrongAccountTypeException {
+   private void freezeUsers(List<String> traders) throws AccountNotFoundException, WrongAccountTypeException {
         for(String username:traders){
             if(!containsStatus(username,"FROZEN")) {
                 UserAccount user = (UserAccount) getAccount(username);
@@ -557,13 +521,19 @@ public class AccountStorage implements Storage, TradeObserver {
         }
     }
 
+    /**
+     * Show all freeze reasons of the given username
+     * If it's not frozen, return null
+     *
+     * @param username Account username
+     * @throws AccountNotFoundException Thrown when no account has the given username
+     */
     public List<String> showFreezeReasons(String username) throws AccountNotFoundException {
         UserAccount user = (UserAccount) getAccount(username);
         return user.getFreezeReasons();
     }
 
-    //automatically gild User below
-    /** Set the WeeklyThreshold of the given account to be the following.
+    /** Set the gildedThreshold of the given account to be the following.
      *
      * @param username The username of the account you'd like to modify
      * @param threshold What you want to set the threshold to
@@ -595,11 +565,14 @@ public class AccountStorage implements Storage, TradeObserver {
         }
     }
 
-
-
-
     /**
-     * Record the fact that a Trade's status has changed
+     * Update the traders' accounts status automatically the fact after a Trade's status has changed
+     * If the trade is completed (status==3), update numberOfCompletedTrades, numberOfWeeklyTrades,
+     * numberOfIncompleteTrades and updateNumberOfBorrowedItems of all traders.Then determine whether their accounts should be gilded
+     * or frozen. If the traders is NEW, remove the NEW status.
+     * If the trade is initialized and awaiting confirmation (status==0), update the numberOfIncompleteTrades of each trader.
+     * If the trade is cancelled (status==-1), update the numberOfIncompleteTrades of each trader.
+     *
      *
      * @param exchangeData A HashMap representing the Exchange Data of the Trade
      * @param newStatus    The new Status of the Trade

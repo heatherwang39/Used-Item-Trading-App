@@ -22,11 +22,7 @@ public class UserAccount extends LoginAccount {
     private int numberOfIncompleteTrades;
     private List<String> freezeReasons = new ArrayList<>();
     private List<StatusEnum> statuses = new ArrayList<>();
-
-
-
     private LocalDateTime weeklyTimer;
-
 
 
     /**
@@ -51,75 +47,139 @@ public class UserAccount extends LoginAccount {
         return "USER";
     }
 
+    /**
+     * Get the account statuses.
+     *
+     * @return list of all statuses
+     */
     public List<StatusEnum> getStatuses(){ return statuses;}
 
+    /**
+     * Add a new status to the account.
+     *
+     * @param status the status need to be added
+     */
     public void addStatus(StatusEnum status){
         statuses.add(status);
     }
 
+    /**
+     * Remove a status from the account.
+     *
+     * @param status the status need to be added
+     */
     public void removeStatus(StatusEnum status){
         statuses.remove(status);
     }
 
+    /**
+     * Get the number of completed trades of the account.
+     *
+     * @return the number of completed trades of the account
+     */
     public int getNumberOfCompletedTrades(){return numberOfCompletedTrades;}
 
-    //temporary, need to delete later
-    public void updateNumberOfCompletedTrades(){
-        numberOfCompletedTrades++;
-    }
+    /**
+     * Set the number of completed trades of the account.
+     *
+     * @param numberOfCompletedTrades  the number of completed trades of the account
+     */
     public void setNumberOfCompletedTrades(int numberOfCompletedTrades){
         this.numberOfCompletedTrades = numberOfCompletedTrades;
     }
 
-
+    /**
+     * Get all freeze reasons of the account.
+     * If the account is not frozen, return null.
+     *
+     * @return all freeze reasons of the account.
+     */
     public List<String> getFreezeReasons() {
         return freezeReasons;
     }
 
+    /**
+     * Set freeze reasons to the account.
+     *
+     * @param freezeReasons the freeze reasons of the account.
+     */
     public void setFreezeReasons(List<String> freezeReasons) {
         this.freezeReasons = freezeReasons;
     }
 
-
+    /**
+     * Get the number of completed trades in a week of the account.
+     *
+     * @return the number of completed trades in a week of the account
+     */
     public int getNumberOfWeeklyTrades() {
         return numberOfWeeklyTrades;
     }
 
+    /**
+     * Set the number of completed trades in a week of the account.
+     *
+     * @param numberOfWeeklyTrades  the number of completed trades in a week of the account
+     */
     public void setNumberOfWeeklyTrades(int numberOfWeeklyTrades) {
         this.numberOfWeeklyTrades = numberOfWeeklyTrades;
     }
 
-
+    /**
+     * Get the number of incomplete trades of the account.
+     *
+     * @return the number of incomplete trades of the account
+     */
     public int getNumberOfIncompleteTrades() {
         return numberOfIncompleteTrades;
     }
 
+    /**
+     * Set the number of incomplete trades of the account.
+     *
+     * @param numberOfIncompleteTrades  the number of incomplete trades of the account
+     */
     public void setNumberOfIncompleteTrades(int numberOfIncompleteTrades) {
         this.numberOfIncompleteTrades = numberOfIncompleteTrades;
     }
 
-
+    /**
+     * Get the number of borrowed items of the account.
+     *
+     * @return the number of borrowed items of the account
+     */
     public int getNumberOfBorrowedItems() {
         return numberOfBorrowedItems;
     }
 
+    /**
+     * Set the number of borrowed items of the account.
+     *
+     * @param numberOfBorrowedItems  the number of borrowed items of the account
+     */
     public void setNumberOfBorrowedItems(int numberOfBorrowedItems) {
         this.numberOfBorrowedItems = numberOfBorrowedItems;
     }
 
-
-
-    //Threshold Methods Below
-
+    /**
+     * Get the gilded threshold of the account.
+     *
+     * @return the gilded threshold of the account
+     */
     public int getGildedThreshold() {
         return gildedThreshold;
     }
 
+    /**
+     * Set the gilded threshold of the account.
+     *
+     * @param gildedThreshold  the gilded threshold of the account
+     */
     public void setGildedThreshold(int gildedThreshold) {
         this.gildedThreshold = gildedThreshold;
     }
 
-    /** Return the BorrowThreshold for this given Account
+    /** Return the BorrowThreshold of the Account
      *
      * @return the BorrowThreshold
      */
@@ -173,10 +233,24 @@ public class UserAccount extends LoginAccount {
         this.weeklyThreshold = weeklyThreshold;
     }
 
+    /**
+     * Get the weekly timer of the account.
+     * It's the time of the earliest completed trades that happened within a week.
+     * If the new completed trades happens more than one week after the weekly timer, the weekly timer need to be reset
+     *
+     * @return the weekly timer of the account
+     */
     public LocalDateTime getWeeklyTimer() {
         return weeklyTimer;
     }
 
+    /**
+     * Set the weekly timer of the account.
+     * It's the time of the earliest completed trades that happened within a week.
+     * If the new completed trades happens more than one week after the weekly timer, the weekly timer need to be reset
+     *
+     * @param  weeklyTimer the weekly timer of the account
+     */
     public void setWeeklyTimer(LocalDateTime weeklyTimer) {
         this.weeklyTimer = weeklyTimer;
     }
