@@ -14,11 +14,6 @@ import java.util.List;
 public class FreezePresenter {
 
     /**
-     * Initializes a new FreezePresenter
-     */
-    public FreezePresenter() {}
-
-    /**
      * Formats a list of lists representing data for why a user should be frozen for GUI Lists to display
      * Format of freeze data: "Username, Reasons: BORROW, INCOMPLETE, WEEKLY"
      * Example: "Fadi, Reasons: INCOMPLETE"

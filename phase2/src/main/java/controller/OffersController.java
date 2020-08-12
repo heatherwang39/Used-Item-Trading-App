@@ -1,8 +1,5 @@
 package main.java.controller;
 
-import main.java.model.account.AccountNotFoundException;
-import main.java.model.account.WrongAccountTypeException;
-import main.java.model.item.Item;
 import main.java.model.item.ItemStorage;
 import main.java.model.trade.*;
 import main.java.presenter.TradePresenter;
@@ -13,8 +10,6 @@ import main.java.system.StorageGateway;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-
-import static javax.swing.JOptionPane.showMessageDialog;
 
 /**
  * Controller that returns the needed information for GUI client to display for Offers tab

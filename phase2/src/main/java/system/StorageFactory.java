@@ -10,7 +10,11 @@ import main.java.model.trade.TradeStorage;
 import java.io.IOException;
 
 /**
+ * A Factory class for returning Storages
  *
+ * @author Robbert Liu
+ * @version %I%, %G%
+ * @since Phase 2
  */
 public class StorageFactory {
 

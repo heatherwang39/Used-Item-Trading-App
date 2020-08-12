@@ -13,6 +13,11 @@ public enum StorageEnum{
 
     private final String name;
 
+    /**
+     * Class constructor.
+     *
+     * @param name Enum name
+     */
     StorageEnum(String name) {
         this.name = name;
     }

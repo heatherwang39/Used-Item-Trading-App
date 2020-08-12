@@ -173,14 +173,14 @@ public class Meeting implements Serializable {
      *
      * @return Whether the Meeting is cancelled
      */
-    public boolean isCancelled(){
+    public boolean isNotCancelled(){
         return cancelled;
     }
 
 
     /** Cancel the Meeting
      *
-     * @return Whether the Meeting was succesfully cancelled
+     * @return Whether the Meeting was successfully cancelled
      */
     public boolean cancel(){
         if(cancelled){

@@ -4,18 +4,14 @@ import main.java.model.account.AccountNotFoundException;
 import main.java.model.account.AccountStorage;
 import main.java.model.account.StatusNotFoundException;
 import main.java.model.account.WrongAccountTypeException;
-import main.java.model.trade.TradeNumberException;
 import main.java.model.trade.TradeStorage;
 import main.java.system.StorageEnum;
 import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static javax.swing.JOptionPane.showMessageDialog;
 
 /**
  * Controller that returns the needed information for GUI client to display for Freeze tab
@@ -80,7 +76,7 @@ public class FreezeController {
      * Removes the freeze status from a certain user
      *
      * @param username username of the user
-     * @throws IOException file cnanot be read/written
+     * @throws IOException file cannot be read/written
      */
     public void unfreezeUser(String username) throws IOException, StatusNotFoundException, AccountNotFoundException, WrongAccountTypeException {
         accountStorage.removeStatus(username, "FREEZE");
