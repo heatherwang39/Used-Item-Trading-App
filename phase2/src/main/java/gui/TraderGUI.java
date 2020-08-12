@@ -21,6 +21,7 @@ import javax.swing.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -443,7 +444,7 @@ public class TraderGUI {
                     if (rbtnAcceptOffer.isSelected()) {
                         offersController.acceptOffer(Integer.parseInt(unformattedOfferList.get(0).get("id").get(0)));
                         txtAreaOffersOutput.setText(tradePresenter.formatTradeString(offersController.getOffers()));
-                        showMessageDialog(null, "Trade accepted! Log back in to see changes");
+                        showMessageDialog(null, "Trade accepted!");
                         MeetingController meetingController = new MeetingController(storageGateway, user);
                         displaySuggestMeetings(meetingController);
                     } else if (rbtnDenyOffer.isSelected()) {
@@ -641,7 +642,8 @@ public class TraderGUI {
             List<HashMap<String, List<String>>> acceptedTradesListUnformatted = new ArrayList<>();
             try {
                 acceptedTradesListUnformatted = meetingController.getAcceptedTradesUnformatted();
-            } catch (TradeNumberException tradeNumberException) {
+                acceptedTradesListUnformatted.addAll(meetingController.getUnfinishedTradesUnformatted());
+            } catch (TradeNumberException | MeetingIDException tradeNumberException) {
                 showMessageDialog(null, tradeNumberException.getMessage());
             }
 
@@ -649,17 +651,19 @@ public class TraderGUI {
             String suggestedTimeStr = txtMeetingTimeInput.getText();
             // from https://www.java67.com/2016/04/how-to-convert-string-to-localdatetime-in-java8-example.html
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-            LocalDateTime suggestedTime = LocalDateTime.parse(suggestedTimeStr, dateTimeFormatter);
+            try {
+                LocalDateTime suggestedTime = LocalDateTime.parse(suggestedTimeStr, dateTimeFormatter);
 
-
-            if (!acceptedTradesListUnformatted.isEmpty()) {
-                try {
+                if (!acceptedTradesListUnformatted.isEmpty()) {
                     meetingController.suggestMeeting(Integer.parseInt(acceptedTradesListUnformatted.get(0).get("id").get(0)), suggestedPlace, suggestedTime);
-                } catch (TradeNumberException | TradeCancelledException | MaxNumMeetingsExceededException exception) {
-                    showMessageDialog(null, exception.getMessage());
-                } catch (WrongMeetingAccountException | MeetingIDException | IOException ioException){
-                    ioException.printStackTrace();
+                    showMessageDialog(null, "The meeting has been suggested!");
                 }
+            } catch (DateTimeParseException dateTimeParseException) {
+                showMessageDialog(null, "The input meeting time should be in \"yyyy-MM-dd HH:mm\" format");
+            } catch (TradeNumberException | TradeCancelledException | MaxNumMeetingsExceededException exception) {
+                showMessageDialog(null, exception.getMessage());
+            } catch (WrongMeetingAccountException | MeetingIDException | IOException ioException) {
+                ioException.printStackTrace();
             }
             txtMeetingAcceptedTrade.setText("");
             txtMeetingTimeInput.setText("");
@@ -673,8 +677,10 @@ public class TraderGUI {
                 meetingSuggestionsListUnformatted = meetingController.getSuggestedMeetingsUnformatted();
                 if (rbtnMeetingAccept.isSelected()){
                     meetingController.acceptMeeting(Integer.parseInt(meetingSuggestionsListUnformatted.get(0).get("id").get(0)));
+                    showMessageDialog(null, "Suggested meeting is accepted!");
                 } else if (rbtnMeetingDeny.isSelected()){
                     meetingController.rejectMeeting(Integer.parseInt(meetingSuggestionsListUnformatted.get(0).get("id").get(0)));
+                    showMessageDialog(null, "Suggested meeting is rejected");
                 } else{
                     showMessageDialog(null, "Please either accept or deny this suggestion");
                 }
@@ -701,6 +707,7 @@ public class TraderGUI {
                 if (rbtnMeetingCompleted.isSelected()) {
                     try {
                         meetingController.confirmMeeting(Integer.parseInt(ongoingMeetingsListUnformatted.get(currMeetingOngoingIndex[0]).get("id").get(0)));
+                        showMessageDialog(null, "Meeting has been confirmed!");
                     } catch (WrongMeetingAccountException | MeetingIDException | TimeException exception) {
                         showMessageDialog(null, exception.getMessage());
                     } catch (IOException ioException){
@@ -714,7 +721,14 @@ public class TraderGUI {
             }
             displayOngoingMeetings(meetingController, currMeetingOngoingIndex[0]);
             displayCompletedMeetings(meetingController);
-
+            displaySuggestMeetings(meetingController);
+            BrowseController browseController = null;
+            try {
+                browseController = new BrowseController(storageGateway);
+                displayBrowse(browseController.getItemsString());
+            } catch (IOException | ClassNotFoundException | ItemNotFoundException ioException) {
+                ioException.printStackTrace();
+            }
         });
 
     }
@@ -731,7 +745,7 @@ public class TraderGUI {
             String messageContent = txtAreaMessageUserInput.getText();
             List<String> recipientList = Arrays.asList(txtMessageRecipientInput.getText().split("\\s*,\\s*"));
             if (!messageController.validMessage(messageTitle, messageContent, recipientList)) {
-                showMessageDialog(null,"Plead send a valid message to an existing user!");
+                showMessageDialog(null,"Please send a valid message to an existing user!");
             }
             else {
                 try {
@@ -1090,13 +1104,13 @@ public class TraderGUI {
             txtMeetingSuggestInput.setText(acceptedTradesList.get(0));
         }
         if (!unfinishedTradesList.isEmpty()) {
-            txtAreaMeetingAcceptedTrades.append("\n Unfinished Trades (set a meeting to trade back the items!)");
+            txtAreaMeetingAcceptedTrades.append("\n ---------------------- \n\nUnfinished Trades (set a meeting to trade back the items!)");
             for (String s : unfinishedTradesList) {
                 txtAreaMeetingAcceptedTrades.append("\n ---------------------- \n" + s);
             }
             if (txtMeetingSuggestInput.getText().isEmpty()) {
                 txtMeetingSuggestInput.setText("");
-                txtMeetingSuggestInput.setText(acceptedTradesList.get(0));
+                txtMeetingSuggestInput.setText(unfinishedTradesList.get(0));
             }
         }
     }

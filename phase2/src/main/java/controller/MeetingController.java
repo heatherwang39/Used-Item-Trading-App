@@ -1,6 +1,7 @@
 package main.java.controller;
 
 import main.java.model.item.ItemNotFoundException;
+import main.java.model.item.ItemStorage;
 import main.java.model.meeting.*;
 import main.java.model.trade.MaxNumMeetingsExceededException;
 import main.java.model.trade.TradeCancelledException;
@@ -37,13 +38,15 @@ public class MeetingController {
      * @param storageGateway gateway for loading and saving information
      * @param username username of the user accessing the Request tab
      */
-    public MeetingController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
+    public MeetingController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException{
         this.storageGateway = storageGateway;
         this.username = username;
         StorageFactory sf = new StorageFactory();
         tradeStorage = (TradeStorage) sf.getStorage(storageGateway, StorageEnum.TRADE);
         meetingStorage = (MeetingStorage) sf.getStorage(storageGateway, StorageEnum.MEETING);
+        ItemStorage itemStorage = (ItemStorage) sf.getStorage(storageGateway, StorageEnum.ITEM);
         meetingStorage.attachMeetingObserver(tradeStorage);
+        tradeStorage.attachTradeObserver(itemStorage);
         meetingPresenter = new MeetingPresenter(username);
         tradePresenter = new TradePresenter(storageGateway);
     }
@@ -161,6 +164,7 @@ public class MeetingController {
     public void acceptMeeting(int meetingId) throws WrongMeetingAccountException, MeetingIDException, IOException {
         meetingStorage.acceptMeeting(meetingId, username);
         storageGateway.saveStorageData(StorageEnum.MEETING);
+        storageGateway.saveStorageData(StorageEnum.TRADE);
     }
 
     /**
@@ -213,6 +217,7 @@ public class MeetingController {
             IOException {
         meetingStorage.confirmMeeting(meetingId, username);
         storageGateway.saveStorageData(StorageEnum.MEETING);
+        storageGateway.saveStorageData(StorageEnum.TRADE);
     }
 
     //rejectMeeting also used to cancel ongoing meetings
