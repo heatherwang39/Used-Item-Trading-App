@@ -403,6 +403,9 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
      * (6) items exchanged: the item ids based on after they are exchanged (numbers, one or more elements)
      * (7) items final: the item ids based on after the trade is finished (numbers, one or more elements)
      * (8) meetings: the meeting ids part of the trade (numbers, zero or more elements)
+     * (9) unaccepted: the users who have not yet accepted the trade (names, one or more elements)
+     * (10) warnings: the number of warnings (number, single element)
+     * (11) max warnings: the maximum number of warnings: (number, single element)
      *
      * @param tradeNumber the tradeNumber of the Trade getting data of
      * @return HashMap with all relevant data for a Trade
@@ -420,6 +423,9 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
         tradeData.put("items exchanged", getStringList(trade.getItemsExchanged()));
         tradeData.put("items final", getStringList(trade.getItemsFinal()));
         tradeData.put("meetings", getStringList(trade.getMeetings()));
+        tradeData.put("unaccepted", trade.getUnacceptedTraders());
+        tradeData.put("warnings", Collections.singletonList(String.valueOf(trade.getWarnings())));
+        tradeData.put("max warnings", Collections.singletonList(String.valueOf(trade.getMaxWarnings())));
         return tradeData;
     }
 

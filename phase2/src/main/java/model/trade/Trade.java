@@ -153,6 +153,22 @@ public abstract class Trade implements Serializable {
     }
 
 
+    /**
+     * Return the number of warnings received
+     *
+     * @return number of warnings
+     */
+    public int getWarnings() { return warnings; }
+
+
+    /**
+     * Return the maximum number of warnings allowed
+     *
+     * @return maximum number of warnings
+     */
+    public int getMaxWarnings() { return maxWarnings; }
+
+
     /** Resets the Warnings for meetings to 0.
      */
     public void resetWarnings(){

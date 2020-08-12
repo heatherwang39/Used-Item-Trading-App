@@ -113,7 +113,7 @@ public class Meeting implements Serializable {
      */
     public List<String> getUnacceptedAttendees(){
         List<String> unaccepted = new ArrayList<>();
-        for (int i = 1; i < attendees.size(); i++)
+        for (int i = 0; i < attendees.size(); i++)
             if(!accepted.get(i)) unaccepted.add(attendees.get(i));
         return unaccepted;
     }
@@ -124,7 +124,7 @@ public class Meeting implements Serializable {
      */
     public List<String> getUnconfirmedAttendees(){
         List<String> unconfirmed = new ArrayList<>();
-        for (int i = 1; i < attendees.size(); i++)
+        for (int i = 0; i < attendees.size(); i++)
             if(!confirmed.get(i)) unconfirmed.add(attendees.get(i));
         return unconfirmed;
     }

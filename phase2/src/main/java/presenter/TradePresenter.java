@@ -43,17 +43,22 @@ public class TradePresenter {
         List<String> formatTrade = new ArrayList<>();
         for (HashMap<String, List<String>> tradeData : tradesData) {
             StringBuilder tradeInfo = new StringBuilder(tradeData.get("type").get(0));
-            tradeInfo.append(", Traders: ");
+            tradeInfo.append("\nTraders: ");
             for (String username : tradeData.get("traders")) {
                 tradeInfo.append(username).append(", ");
             }
-            tradeInfo.append("Items: ");
+            tradeInfo.deleteCharAt(tradeInfo.length() - 1).deleteCharAt(tradeInfo.length() - 1).append("\nItems: ");
             List<String> itemNames = itemStorage.showNames(getIntegerList(tradeData.get("items original")));
             for (String itemName : itemNames){
                 tradeInfo.append(itemName).append(", ");
             }
-            tradeInfo.deleteCharAt(tradeInfo.length() - 1).deleteCharAt(tradeInfo.length() - 1);
-            tradeInfo.append("\n");
+            tradeInfo.deleteCharAt(tradeInfo.length() - 1).deleteCharAt(tradeInfo.length() - 1).append("\nWarnings: ");
+            tradeInfo.append(tradeData.get("warnings").get(0)).append("\nMaximum Number of Warnings Allowed: ");
+            tradeInfo.append(tradeData.get("max warnings").get(0)).append("\nUsers Who Have Not Yet Accepted: ");
+            for (String username : tradeData.get("unaccepted")) {
+                tradeInfo.append(username).append(", ");
+            }
+            tradeInfo.deleteCharAt(tradeInfo.length() - 1).deleteCharAt(tradeInfo.length() - 1).append("\n");
             formatTrade.add(tradeInfo.toString());
         }
         return formatTrade;

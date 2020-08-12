@@ -172,7 +172,7 @@ public class MeetingStorage  implements Storage, MeetingObservee{
         for(Meeting m: meetings){
             if(!m.isCancelled()){
                 if(m.isAccepted() && !m.isConfirmed()){
-                    if(m.getAttendees().contains(participant)){
+                    if(m.getAttendees().contains(participant) && m.getUnconfirmedAttendees().contains(participant)){
                         meeting.add(m.getMeetingID());
                     }
                 }
