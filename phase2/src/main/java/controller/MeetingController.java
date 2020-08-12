@@ -68,9 +68,42 @@ public class MeetingController {
      *
      * @return List of strings that contain formatted trade data
      * @throws TradeNumberException invalid trade id found in system
+     * @throws ItemNotFoundException invalid item id found in system
      */
     public List<String> getAcceptedTrades() throws TradeNumberException, ItemNotFoundException {
         return tradePresenter.formatTradeForListView(getAcceptedTradesUnformatted());
+    }
+
+
+    /**
+     * Gets all trades involving user that have a completed meeting but require another meeting to be fully finished
+     *
+     * @return List of hashmaps that contain trade data
+     * @throws TradeNumberException invalid trade id found in system
+     * @throws MeetingIDException invalid meeting id found in system
+     */
+    public List<HashMap<String, List<String>>> getUnfinishedTradesUnformatted() throws TradeNumberException,
+            MeetingIDException {
+        List<Integer> displayTrades = new ArrayList<>();
+        List<Integer> unfinishedTrades = tradeStorage.getUnfinishedTradesWithUser(username);
+        for (Integer tradeNumber : unfinishedTrades) {
+            List<Integer> meetings = tradeStorage.getMeetings(tradeNumber);
+            int meetingID = meetings.get(meetings.size() - 1);
+            if (meetingStorage.getMeetingData(meetingID).get("unconfirmed").size() == 0) displayTrades.add(tradeNumber);
+        }
+        return tradeStorage.getTradesData(displayTrades);
+    }
+
+    /**
+     * Gets all formatted trades involving user that have a completed meeting but need another meeting to fully finish
+     *
+     * @return List of strings that contain formatted trade data
+     * @throws TradeNumberException invalid trade id found in system
+     * @throws ItemNotFoundException invalid item id found in system
+     * @throws MeetingIDException invalid meeting id found in system
+     */
+    public List<String> getUnfinishedTrades() throws TradeNumberException, ItemNotFoundException, MeetingIDException {
+        return tradePresenter.formatTradeForListView(getUnfinishedTradesUnformatted());
     }
 
 

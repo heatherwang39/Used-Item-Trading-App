@@ -502,6 +502,22 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
         return acceptedUserTrades;
     }
 
+    /**
+     * Return all trades that have at least one complete meeting but still require more meetings to be completed
+     *
+     * @param username The username of user you're interested in
+     * @return A list containing the TradeIDs of all unfinished Trades that involve the given user
+     */
+    public List<Integer> getUnfinishedTradesWithUser(String username) {
+        List<Integer> unfinishedTrades = new ArrayList<>();
+        for (Trade t : trades) {
+            if (t.getTraders().contains(username)) {
+                if (t.getStatus() == 2 && t.getTotalNumMeetings() > 1) unfinishedTrades.add(t.getTradeNumber());
+            }
+        }
+        return unfinishedTrades;
+    }
+
 
     /** Return all active Trades that involved the given user.
      *

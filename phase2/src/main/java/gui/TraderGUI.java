@@ -1026,9 +1026,11 @@ public class TraderGUI {
     private void displaySuggestMeetings(MeetingController meetingController){
         txtAreaMeetingAcceptedTrades.setText("Accepted Trades (without attached meetings)");
         List<String> acceptedTradesList = new ArrayList<>();
+        List<String> unfinishedTradesList = new ArrayList<>();
         try {
             acceptedTradesList = meetingController.getAcceptedTrades();
-        } catch (TradeNumberException | ItemNotFoundException tradeNumberException) {
+            unfinishedTradesList = meetingController.getUnfinishedTrades();
+        } catch (TradeNumberException | ItemNotFoundException | MeetingIDException tradeNumberException) {
             tradeNumberException.printStackTrace();
         }
         if (!acceptedTradesList.isEmpty()) {
@@ -1037,6 +1039,16 @@ public class TraderGUI {
             }
             txtMeetingSuggestInput.setText("");
             txtMeetingSuggestInput.setText(acceptedTradesList.get(0));
+        }
+        if (!unfinishedTradesList.isEmpty()) {
+            txtAreaMeetingAcceptedTrades.append("\n Unfinished Trades (set a meeting to trade back the items!)");
+            for (String s : unfinishedTradesList) {
+                txtAreaMeetingAcceptedTrades.append("\n ---------------------- \n" + s);
+            }
+            if (txtMeetingSuggestInput.getText().isEmpty()) {
+                txtMeetingSuggestInput.setText("");
+                txtMeetingSuggestInput.setText(acceptedTradesList.get(0));
+            }
         }
     }
 
