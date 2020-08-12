@@ -890,7 +890,7 @@ public class TraderGUI {
             try {
                 thresholdController.setBorrowingThresholdForUser(thresholdUser, userBorrowingThreshold);
                 showMessageDialog(null, "Borrowing Threshold successfully set to " +
-                        Integer.toString(userBorrowingThreshold) + " items for user: " + thresholdUser);
+                        userBorrowingThreshold + " items for user: " + thresholdUser);
             } catch (AccountNotFoundException | NegativeThresholdException | WrongAccountTypeException exception) {
                 showMessageDialog(null, exception.getMessage());
             } catch (IOException ioException) {
@@ -903,7 +903,7 @@ public class TraderGUI {
             try {
                 thresholdController.setIncompleteThresholdForUser(thresholdUser, userIncompletedThreshold);
                 showMessageDialog(null, "Incompletd Trades Threshold successfully set to " +
-                        Integer.toString(userIncompletedThreshold) + " trades for user: " + thresholdUser);
+                        userIncompletedThreshold + " trades for user: " + thresholdUser);
             } catch (AccountNotFoundException | NegativeThresholdException | WrongAccountTypeException exception) {
                 showMessageDialog(null, exception.getMessage());
             } catch (IOException ioException) {
@@ -916,7 +916,7 @@ public class TraderGUI {
             try {
                 thresholdController.setWeeklyThresholdForUser(thresholdUser, userWeeklyThreshold);
                 showMessageDialog(null, "Weekly Trades Threshold successfully set to " +
-                        Integer.toString(userWeeklyThreshold) + " trades for user: " + thresholdUser);
+                        userWeeklyThreshold + " trades for user: " + thresholdUser);
             } catch (AccountNotFoundException | NegativeThresholdException | WrongAccountTypeException exception) {
                 showMessageDialog(null, exception.getMessage());
             } catch (IOException ioException) {
@@ -929,7 +929,7 @@ public class TraderGUI {
             try {
                 thresholdController.setGildedThresholdForUser(thresholdUser, userGildedThreshold);
                 showMessageDialog(null, "Threshold for User to obtain Gilded Status " +
-                        "successfully set to " + Integer.toString(userGildedThreshold) + " trades for user: "
+                        "successfully set to " + userGildedThreshold + " trades for user: "
                         + thresholdUser);
             } catch (AccountNotFoundException | NegativeThresholdException | WrongAccountTypeException exception) {
                 showMessageDialog(null, exception.getMessage());
