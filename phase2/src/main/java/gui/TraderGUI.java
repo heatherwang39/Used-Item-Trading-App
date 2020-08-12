@@ -447,7 +447,7 @@ public class TraderGUI {
                     }
                 }
             } catch (TradeNumberException | ItemNotFoundException | WrongTradeAccountException |
-                    TradeCancelledException | AccountNotFoundException | WrongAccountTypeException exception) {
+                    TradeCancelledException exception) {
                 showMessageDialog(null, exception.getMessage());
             } catch (IOException ioException) {
                 ioException.printStackTrace();
