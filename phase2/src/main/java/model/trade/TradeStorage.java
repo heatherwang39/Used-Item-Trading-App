@@ -639,7 +639,7 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
             resetWarnings(getTradeWithMeeting(meetingID));
             Trade t = getTrade(getTradeWithMeeting(meetingID));
             if(t.getMeetings().get(0) == meetingID){
-                t.setStatus(2);
+                setStatus(getTradeWithMeeting(meetingID), 2);
             }
         }
         catch(TradeNumberException | NoTradeWithMeetingIDException ignored){}
@@ -654,7 +654,7 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
         try{
             Trade t = getTrade(getTradeWithMeeting(meetingID));
             if(t.getMeetings().size() == t.getTotalNumMeetings()){
-                t.setStatus(3);
+                setStatus(getTradeWithMeeting(meetingID), 3);
             }
         }
         catch(TradeNumberException | NoTradeWithMeetingIDException ignored){}
