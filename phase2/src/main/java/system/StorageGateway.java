@@ -40,7 +40,7 @@ public class StorageGateway {
      * @param type Represents type of Storage
      * @return new Storage class
      * @throws IOException error during reading data
-     * @throws ClassNotFoundException Serialized clas not found
+     * @throws ClassNotFoundException Serialized class not found
      */
     public Object getStorageData(StorageEnum type, Object newData) throws IOException, ClassNotFoundException {
         String filePath = path + filenameMap.get(type.toString());
@@ -50,7 +50,8 @@ public class StorageGateway {
             return dataMap.get(type.toString());
         }
         if (!file.exists()) {
-            file.createNewFile();
+            boolean newFile = file.createNewFile();
+            assert newFile;
             dataMap.put(type.toString(), newData);
             return newData;
         }
@@ -79,11 +80,20 @@ public class StorageGateway {
     }
 
 
-
+    /**
+     * Gets file path
+     *
+     * @return file path
+     */
     public String getPath() {
         return path;
     }
 
+    /**
+     * Gets filename map
+     *
+     * @return filenames
+     */
     public Map<String, String> getFilenameMap() {
         return filenameMap;
     }

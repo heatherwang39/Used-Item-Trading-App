@@ -1,8 +1,6 @@
 package main.java.system;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * A gateway to read object from file and save object to file.
@@ -14,7 +12,7 @@ import java.util.List;
 
 public class FileReadWriter {
 
-    String filePath;
+    final String filePath;
 
     /**
      * Creates a FileReadWriter with the path of file
@@ -63,7 +61,7 @@ public class FileReadWriter {
      * @throws IOException cannot read from file
      */
     public HashMap<String, String> readAsMapFromTextFile() throws IOException {
-        HashMap<String, String> map = new HashMap<String, String>();
+        HashMap<String, String> map = new HashMap<>();
         String line;
         BufferedReader br = new BufferedReader(new FileReader(filePath));
         while ((line = br.readLine()) != null)
