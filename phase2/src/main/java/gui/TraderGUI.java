@@ -418,7 +418,7 @@ public class TraderGUI {
 
         MainTabbedPane.insertTab("Browse", null, Browse, null, 1);
 
-        txtAreaBrowseListingsOutput.setText(browseController.getItemsString());
+        displayBrowse(browseController.getItemsString());
     }
 
     private void initializeOffers() throws IOException, ClassNotFoundException, TradeNumberException, ItemNotFoundException {
@@ -438,6 +438,8 @@ public class TraderGUI {
                         offersController.acceptOffer(Integer.parseInt(unformattedOfferList.get(0).get("id").get(0)));
                         txtAreaOffersOutput.setText(tradePresenter.formatTradeString(offersController.getOffers()));
                         showMessageDialog(null, "Trade accepted! Log back in to see changes");
+                        MeetingController meetingController = new MeetingController(storageGateway, user);
+                        displaySuggestMeetings(meetingController);
                     } else if (rbtnDenyOffer.isSelected()) {
                         offersController.rejectOffer(Integer.parseInt(unformattedOfferList.get(0).get("id").get(0)));
                         txtAreaOffersOutput.setText(tradePresenter.formatTradeString(offersController.getOffers()));
@@ -449,7 +451,7 @@ public class TraderGUI {
             } catch (TradeNumberException | ItemNotFoundException | WrongTradeAccountException |
                     TradeCancelledException exception) {
                 showMessageDialog(null, exception.getMessage());
-            } catch (IOException ioException) {
+            } catch (ClassNotFoundException | IOException ioException) {
                 ioException.printStackTrace();
             }
         });
@@ -587,7 +589,6 @@ public class TraderGUI {
 
         final int[] currMeetingOngoingIndex = {0};
         btnMeetingSuggest.addActionListener(e -> {
-            displaySuggestMeetings(meetingController);
             List<HashMap<String, List<String>>> acceptedTradesListUnformatted = new ArrayList<>();
             try {
                 acceptedTradesListUnformatted = meetingController.getAcceptedTradesUnformatted();
@@ -595,7 +596,7 @@ public class TraderGUI {
                 showMessageDialog(null, tradeNumberException.getMessage());
             }
 
-            String suggestedPlace = txtMeetingSuggestInput.getText();
+            String suggestedPlace = txtMeetingAcceptedTrade.getText();
             String suggestedTimeStr = txtMeetingTimeInput.getText();
             // from https://www.java67.com/2016/04/how-to-convert-string-to-localdatetime-in-java8-example.html
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -607,14 +608,16 @@ public class TraderGUI {
                     meetingController.suggestMeeting(Integer.parseInt(acceptedTradesListUnformatted.get(0).get("id").get(0)), suggestedPlace, suggestedTime);
                 } catch (TradeNumberException | TradeCancelledException | MaxNumMeetingsExceededException exception) {
                     showMessageDialog(null, exception.getMessage());
-                } catch (IOException ioException){
+                } catch (WrongMeetingAccountException | MeetingIDException | IOException ioException){
                     ioException.printStackTrace();
                 }
             }
+            txtMeetingAcceptedTrade.setText("");
+            txtMeetingTimeInput.setText("");
+            displaySuggestMeetings(meetingController);
         });
 
         btnMeetingEnterResponse.addActionListener(e ->{
-            displayMeetingSuggestions(meetingController);
             List<HashMap<String, List<String>>> meetingSuggestionsListUnformatted;
 
             try {
@@ -633,11 +636,12 @@ public class TraderGUI {
             } catch (IOException ioException){
                 ioException.printStackTrace();
             }
+            displayMeetingSuggestions(meetingController);
+            displayOngoingMeetings(meetingController, currMeetingOngoingIndex[0]);
         });
 
 
         btnMeetingOngoingEnter.addActionListener(e -> {
-            displayOngoingMeetings(meetingController, currMeetingOngoingIndex[0]);
             List<HashMap<String, List<String>>> ongoingMeetingsListUnformatted = new ArrayList<>();
             try {
                 ongoingMeetingsListUnformatted = meetingController.getOngoingMeetingsUnformatted();
@@ -659,7 +663,8 @@ public class TraderGUI {
                     showMessageDialog(null, "Please select an option!");
                 }
             }
-
+            displayOngoingMeetings(meetingController, currMeetingOngoingIndex[0]);
+            displayCompletedMeetings(meetingController);
 
         });
 
@@ -747,6 +752,8 @@ public class TraderGUI {
                         requestsList.remove(item);
                         formattedRequestsList.remove(formattedRequestsList.get(0));
                         txtAreaRequestsOutput.setText(requestsController.getRequestsString());
+                        BrowseController browseController = new BrowseController(storageGateway);
+                        displayBrowse(browseController.getItemsString());
                     } else if (rbtnDenyRequest.isSelected()) {
                         showMessageDialog(null, "Item rejected!\nName: " + item.get("name") +
                                 "\nDescription: " + item.get("description") +
@@ -761,7 +768,7 @@ public class TraderGUI {
                 }
             } catch (ItemNotFoundException exception) {
                 showMessageDialog(null, exception.getMessage());
-            } catch (IOException ioException) {
+            } catch (ClassNotFoundException | IOException ioException) {
                 ioException.printStackTrace();
             }
         });
@@ -1017,6 +1024,7 @@ public class TraderGUI {
     }
 
     private void displaySuggestMeetings(MeetingController meetingController){
+        txtAreaMeetingAcceptedTrades.setText("Accepted Trades (without attached meetings)");
         List<String> acceptedTradesList = new ArrayList<>();
         try {
             acceptedTradesList = meetingController.getAcceptedTrades();
@@ -1027,12 +1035,13 @@ public class TraderGUI {
             for (String s : acceptedTradesList) {
                 txtAreaMeetingAcceptedTrades.append("\n ---------------------- \n" + s);
             }
-            txtMeetingAcceptedTrade.setText("");
-            txtMeetingAcceptedTrade.setText(acceptedTradesList.get(0));
+            txtMeetingSuggestInput.setText("");
+            txtMeetingSuggestInput.setText(acceptedTradesList.get(0));
         }
     }
 
     private void displayMeetingSuggestions(MeetingController meetingController){
+        txtAreaMeetingSuggestions.setText("Meeting Suggestions");
         List<String> meetingSuggestionsList = new ArrayList<>();
         try {
             meetingSuggestionsList = meetingController.getSuggestedMeetings();
@@ -1049,6 +1058,7 @@ public class TraderGUI {
     }
 
     private void displayOngoingMeetings(MeetingController meetingController, int currMeetingIndex){
+        txtAreaMeetingOngoing.setText("Ongoing Meetings");
         List<String> ongoingMeetingsList = new ArrayList<>();
         try {
             ongoingMeetingsList = meetingController.getOngoingMeetings();
@@ -1065,6 +1075,7 @@ public class TraderGUI {
     }
 
     private void displayCompletedMeetings(MeetingController meetingController){
+        txtAreaMeetingCompleted.setText("");
         List<String> completedMeetingsList = new ArrayList<>();
         try {
             completedMeetingsList = meetingController.getCompletedMeetings();
@@ -1086,5 +1097,9 @@ public class TraderGUI {
             }
             txtAreaRequestSuggestTradesOutput.append("----------------------- \n");
         }
+    }
+
+    private void displayBrowse(String items) {
+        txtAreaBrowseListingsOutput.setText(items);
     }
 }
