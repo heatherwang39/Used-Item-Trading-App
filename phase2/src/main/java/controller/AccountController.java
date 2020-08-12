@@ -127,10 +127,10 @@ public class AccountController {
     public String getThresholdsString() throws WrongAccountTypeException, AccountNotFoundException {
         HashMap<String, Integer> thresholds = getCurrentThresholds();
         String formattedString = "";
-        formattedString += ("Borrowing Threshold: " + thresholds.get("borrowingThreshold") + " items \n") +
-                ("Incomplete Trades Threshold: " + thresholds.get("incompleteThreshold") + "trades \n") +
-                ("Weekly Trades Threshold: " + thresholds.get("weeklyThreshold") + " trades \n") +
-                        ("Gilded Requirement Threshold: " + thresholds.get("gildedThreshold") + " trades \n");
+        formattedString += ("Borrowing Threshold: " + thresholds.get("borrowThreshold") + " item(s) \n") +
+                ("Incomplete Trades Threshold: " + thresholds.get("incompleteThreshold") + " trade(s) \n") +
+                ("Weekly Trades Threshold: " + thresholds.get("weeklyThreshold") + " trade(s) \n") +
+                        ("Gilded Requirement Threshold: " + thresholds.get("gildedThreshold") + " trade(s) \n");
         return formattedString;
     }
 

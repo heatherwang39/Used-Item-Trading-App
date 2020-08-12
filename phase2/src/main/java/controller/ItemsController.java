@@ -1,9 +1,7 @@
 package main.java.controller;
 
-import main.java.model.item.AlreadyHiddenException;
-import main.java.model.item.AlreadyNotHiddenException;
-import main.java.model.item.ItemNotFoundException;
-import main.java.model.item.ItemStorage;
+import main.java.model.item.*;
+import main.java.presenter.ItemPresenter;
 import main.java.system.StorageEnum;
 import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
@@ -23,6 +21,7 @@ public class ItemsController {
     private final StorageGateway storageGateway;
     private final ItemStorage itemStorage;
     private final String username;
+    private ItemPresenter itemPresenter;
 
     /**
      * Initializes a new AddItemsController for the given username
@@ -37,6 +36,7 @@ public class ItemsController {
         this.username = username;
         StorageFactory sf = new StorageFactory();
         itemStorage = (ItemStorage) sf.getStorage(storageGateway, StorageEnum.valueOf("ITEM"));
+        itemPresenter = new ItemPresenter();
     }
 
 
@@ -82,6 +82,7 @@ public class ItemsController {
         return itemStorage.getUnhiddenInventoryData(username);
     }
 
+
     /**
      * Hides the item with given itemID
      *
@@ -108,6 +109,8 @@ public class ItemsController {
     public List<HashMap<String, String>> getHiddenInventory() throws ItemNotFoundException {
         return itemStorage.getHiddenInventoryData(username);
     }
+
+
 
     /**
      * Unhides the item with given itemID

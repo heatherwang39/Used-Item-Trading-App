@@ -2,6 +2,8 @@ package main.java.gui;
 
 import main.java.controller.*;
 import main.java.model.account.*;
+import main.java.model.item.AlreadyHiddenException;
+import main.java.model.item.AlreadyNotHiddenException;
 import main.java.model.item.ItemNotFoundException;
 import main.java.model.meeting.MeetingAlreadyConfirmedException;
 import main.java.model.meeting.MeetingIDException;
@@ -192,19 +194,6 @@ public class TraderGUI {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-
-        btnItemsHide.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        btnItemsUnhide.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
     }
 
     private void initializeLogin() throws IOException, ClassNotFoundException {
@@ -564,11 +553,13 @@ public class TraderGUI {
 
     }
 
-    private void initializeItems() throws IOException, ClassNotFoundException {
+    private void initializeItems() throws IOException, ClassNotFoundException, ItemNotFoundException {
         MainTabbedPane.insertTab("Add Items", null, AddItems, null, 3);
 
         ItemsController itemsController = new ItemsController(storageGateway, user);
+        ItemPresenter itemPresenter = new ItemPresenter();
 
+        // Add items tab
         btnInventoryRequest.addActionListener(e -> {
             String name =  txtInventoryInput.getText();
             String description = txtAreaDescriptionInput.getText();
@@ -597,6 +588,45 @@ public class TraderGUI {
             }       });
 
 
+        // Hide/Unhide Items Tab
+
+        List<HashMap<String, String>> unhiddenInventory = itemsController.getUnhiddenInventory();
+        List<HashMap<String, String>> hiddenInventory = itemsController.getHiddenInventory();
+
+        displayUnhiddenInventory(unhiddenInventory, itemPresenter);
+        displayHiddenInventory(hiddenInventory, itemPresenter);
+
+        btnItemsHide.addActionListener(e -> {
+
+            String item = unhiddenInventory.get(0).get("id");
+            try {
+
+                itemsController.hideItem(item);
+                showMessageDialog(null, "Item: " + unhiddenInventory.get(0) + " has been successfully hidden");
+                unhiddenInventory.remove(0);
+                displayUnhiddenInventory(unhiddenInventory, itemPresenter);
+            } catch (AlreadyHiddenException | ItemNotFoundException exception) {
+                showMessageDialog(null, exception.getMessage());
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+
+        });
+
+        btnItemsUnhide.addActionListener(e ->{
+            String item = hiddenInventory.get(0).get("id");
+            try {
+                itemsController.unhideItem(item);
+                showMessageDialog(null, "Item: " + hiddenInventory.get(0) + " has been successfully unhidden");
+                hiddenInventory.remove(0);
+                displayHiddenInventory(hiddenInventory, itemPresenter);
+
+            } catch (ItemNotFoundException | AlreadyNotHiddenException exception) {
+                showMessageDialog(null, exception.getMessage());
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
     }
 
 
@@ -1138,5 +1168,31 @@ public class TraderGUI {
 
     private void displayBrowse(String items) {
         txtAreaBrowseListingsOutput.setText(items);
+    }
+
+    private void displayUnhiddenInventory(List<HashMap<String, String>> unhiddenList, ItemPresenter itemPresenter){
+        txtItemsUnhiddenOutput.setText("");
+        txtAreaItemsUnhiddenOutput.setText("");
+        List<String> formattedUnhiddenList = itemPresenter.formatItemsToListView(unhiddenList);
+        for (String item : formattedUnhiddenList){
+            txtAreaItemsUnhiddenOutput.append(item + "\n");
+        }
+        if (!formattedUnhiddenList.isEmpty()) {
+            txtItemsUnhiddenOutput.setText(formattedUnhiddenList.get(0));
+        }
+
+    }
+
+    private void displayHiddenInventory(List<HashMap<String, String>> hiddenList, ItemPresenter itemPresenter){
+        txtItemsHiddenOutput.setText("");
+        txtAreaItemsHiddenOutput.setText("");
+        List<String> formattedHiddenList = itemPresenter.formatItemsToListView(hiddenList);
+        for (String item : formattedHiddenList){
+            txtAreaItemsHiddenOutput.append(item + "\n");
+        }
+        if (!formattedHiddenList.isEmpty()) {
+            txtItemsHiddenOutput.setText(formattedHiddenList.get(0));
+        }
+
     }
 }
