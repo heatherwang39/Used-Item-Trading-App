@@ -1,8 +1,10 @@
 package main.java.controller;
 
+import main.java.model.Storage;
 import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
 import main.java.model.item.NotInWishlistException;
+import main.java.system.StorageDepot;
 import main.java.system.StorageEnum;
 import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
@@ -32,8 +34,8 @@ public class WishlistController {
     public WishlistController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
         this.storageGateway = storageGateway;
         this.username = username;
-        StorageFactory sf = new StorageFactory();
-        itemStorage = (ItemStorage) sf.getStorage(storageGateway, StorageEnum.valueOf("ITEM"));
+        StorageDepot sd = new StorageDepot(storageGateway);
+        itemStorage = sd.getItemStorage();
     }
 
     /**

@@ -3,6 +3,7 @@ package main.java.controller;
 import main.java.model.item.ItemStorage;
 import main.java.model.trade.*;
 import main.java.presenter.TradePresenter;
+import main.java.system.StorageDepot;
 import main.java.system.StorageEnum;
 import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
@@ -34,11 +35,8 @@ public class OffersController {
     public OffersController(StorageGateway storageGateway, String username, TradePresenter tradePresenter) throws IOException, ClassNotFoundException {
         this.storageGateway = storageGateway;
         this.username = username;
-
-        StorageFactory sf = new StorageFactory();
-        tradeStorage = (TradeStorage) sf.getStorage(storageGateway, StorageEnum.TRADE);
-        ItemStorage itemStorage = (ItemStorage) sf.getStorage(storageGateway, StorageEnum.ITEM);
-        tradeStorage.attachTradeObserver(itemStorage);
+        StorageDepot sd = new StorageDepot(storageGateway);
+        tradeStorage = sd.getTradeStorage();
     }
 
     /**

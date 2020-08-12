@@ -3,6 +3,7 @@ package main.java.controller;
 import main.java.model.account.*;
 import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
+import main.java.system.StorageDepot;
 import main.java.system.StorageEnum;
 import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
@@ -34,9 +35,9 @@ public class AccountController {
     public AccountController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
         this.username = username;
         this.storageGateway = storageGateway;
-        StorageFactory storageFactory = new StorageFactory();
-        accountStorage = (AccountStorage) storageFactory.getStorage(storageGateway, StorageEnum.ACCOUNT);
-        itemStorage = (ItemStorage) storageFactory.getStorage(storageGateway, StorageEnum.ITEM);
+        StorageDepot storageDepot = new StorageDepot(storageGateway);
+        accountStorage = storageDepot.getAccountStorage();
+        itemStorage = storageDepot.getItemStorage();
     }
 
     /**

@@ -3,6 +3,7 @@ package main.java.controller;
 import main.java.model.account.AccountNotFoundException;
 import main.java.model.account.AccountStorage;
 import main.java.model.account.WrongAccountTypeException;
+import main.java.system.StorageDepot;
 import main.java.system.StorageEnum;
 import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
@@ -30,8 +31,8 @@ public class UserlistController {
      */
     public UserlistController(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
         this.storageGateway = storageGateway;
-        StorageFactory sf = new StorageFactory();
-        accountStorage = (AccountStorage) sf.getStorage(storageGateway, StorageEnum.ACCOUNT);
+        StorageDepot sd = new StorageDepot(storageGateway);
+        accountStorage = sd.getAccountStorage();
     }
 
     /**

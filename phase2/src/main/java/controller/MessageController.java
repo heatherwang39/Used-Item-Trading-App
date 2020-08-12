@@ -2,6 +2,7 @@ package main.java.controller;
 
 import main.java.model.account.AccountStorage;
 import main.java.model.message.*;
+import main.java.system.StorageDepot;
 import main.java.system.StorageEnum;
 import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
@@ -30,9 +31,9 @@ public class MessageController {
      */
     public MessageController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
         this.storageGateway = storageGateway;
-        StorageFactory storageFactory = new StorageFactory();
-        messageStorage = (MessageStorage) storageFactory.getStorage(storageGateway, StorageEnum.MESSAGE);
-        accountStorage = (AccountStorage) storageFactory.getStorage(storageGateway, StorageEnum.ACCOUNT);
+        StorageDepot storageDepot = new StorageDepot(storageGateway);
+        messageStorage = storageDepot.getMessageStorage();
+        accountStorage = storageDepot.getAccountStorage();
         this.username = username;
     }
 

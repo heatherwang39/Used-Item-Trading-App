@@ -2,8 +2,7 @@ package main.java.presenter;
 
 import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
-import main.java.system.StorageEnum;
-import main.java.system.StorageFactory;
+import main.java.system.StorageDepot;
 import main.java.system.StorageGateway;
 
 import java.io.IOException;
@@ -26,8 +25,8 @@ public class TradePresenter {
      * @param storageGateway gateway for loading and saving information
      */
     public TradePresenter(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
-        StorageFactory sf = new StorageFactory();
-        itemStorage = (ItemStorage) sf.getStorage(storageGateway, StorageEnum.valueOf("ITEM"));
+        StorageDepot sd = new StorageDepot(storageGateway);
+        itemStorage = sd.getItemStorage();
     }
 
     /**

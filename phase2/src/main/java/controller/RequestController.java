@@ -4,6 +4,7 @@ import main.java.model.account.AccountStorage;
 import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
 import main.java.model.trade.*;
+import main.java.system.StorageDepot;
 import main.java.system.StorageEnum;
 import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
@@ -34,10 +35,10 @@ public class RequestController {
     public RequestController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
         this.storageGateway = storageGateway;
         this.username = username;
-        StorageFactory sf = new StorageFactory();
-        tradeStorage = (TradeStorage) sf.getStorage(storageGateway, StorageEnum.valueOf("TRADE"));
-        itemStorage = (ItemStorage) sf.getStorage(storageGateway, StorageEnum.valueOf("ITEM"));
-        accountStorage = (AccountStorage) sf.getStorage(storageGateway, StorageEnum.valueOf("ACCOUNT"));
+        StorageDepot sd = new StorageDepot(storageGateway);
+        tradeStorage = sd.getTradeStorage();
+        itemStorage = sd.getItemStorage();
+        accountStorage = sd.getAccountStorage();
     }
 
     /**

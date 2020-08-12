@@ -2,6 +2,7 @@ package main.java.controller;
 
 import main.java.model.item.*;
 import main.java.presenter.ItemPresenter;
+import main.java.system.StorageDepot;
 import main.java.system.StorageEnum;
 import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
@@ -34,8 +35,8 @@ public class ItemsController {
     public ItemsController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
         this.storageGateway = storageGateway;
         this.username = username;
-        StorageFactory sf = new StorageFactory();
-        itemStorage = (ItemStorage) sf.getStorage(storageGateway, StorageEnum.valueOf("ITEM"));
+        StorageDepot sd = new StorageDepot(storageGateway);
+        itemStorage = sd.getItemStorage();
         itemPresenter = new ItemPresenter();
     }
 

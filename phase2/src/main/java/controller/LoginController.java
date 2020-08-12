@@ -1,6 +1,7 @@
 package main.java.controller;
 
 import main.java.model.account.*;
+import main.java.system.StorageDepot;
 import main.java.system.StorageEnum;
 import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
@@ -25,8 +26,8 @@ public class LoginController {
      */
     public LoginController(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
         this.storageGateway = storageGateway;
-        StorageFactory storageFactory = new StorageFactory();
-        accountStorage = (AccountStorage) storageFactory.getStorage(storageGateway, StorageEnum.ACCOUNT);
+        StorageDepot storageDepot = new StorageDepot(storageGateway);
+        accountStorage = storageDepot.getAccountStorage();
     }
 
      /** Check if you can login with the given data. If you can, return True

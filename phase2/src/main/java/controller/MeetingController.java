@@ -9,6 +9,7 @@ import main.java.model.trade.TradeNumberException;
 import main.java.model.trade.TradeStorage;
 import main.java.presenter.MeetingPresenter;
 import main.java.presenter.TradePresenter;
+import main.java.system.StorageDepot;
 import main.java.system.StorageEnum;
 import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
@@ -41,12 +42,9 @@ public class MeetingController {
     public MeetingController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException{
         this.storageGateway = storageGateway;
         this.username = username;
-        StorageFactory sf = new StorageFactory();
-        tradeStorage = (TradeStorage) sf.getStorage(storageGateway, StorageEnum.TRADE);
-        meetingStorage = (MeetingStorage) sf.getStorage(storageGateway, StorageEnum.MEETING);
-        ItemStorage itemStorage = (ItemStorage) sf.getStorage(storageGateway, StorageEnum.ITEM);
-        meetingStorage.attachMeetingObserver(tradeStorage);
-        tradeStorage.attachTradeObserver(itemStorage);
+        StorageDepot sd = new StorageDepot(storageGateway);
+        tradeStorage = sd.getTradeStorage();
+        meetingStorage = sd.getMeetingStorage();
         meetingPresenter = new MeetingPresenter(username);
         tradePresenter = new TradePresenter(storageGateway);
     }

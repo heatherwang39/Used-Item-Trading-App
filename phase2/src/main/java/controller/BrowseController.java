@@ -2,6 +2,7 @@ package main.java.controller;
 
 import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
+import main.java.system.StorageDepot;
 import main.java.system.StorageEnum;
 import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
@@ -28,8 +29,8 @@ public class BrowseController {
      * @throws ClassNotFoundException serialized class not found
      */
     public BrowseController(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
-        StorageFactory sf = new StorageFactory();
-        itemStorage = (ItemStorage) sf.getStorage(storageGateway, StorageEnum.valueOf("ITEM"));
+        StorageDepot sd = new StorageDepot(storageGateway);
+        itemStorage = sd.getItemStorage();
     }
 
     /**

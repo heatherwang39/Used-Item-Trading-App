@@ -1,6 +1,7 @@
 package main.java.controller;
 
 import main.java.model.account.*;
+import main.java.system.StorageDepot;
 import main.java.system.StorageEnum;
 import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
@@ -28,8 +29,8 @@ public class AddAdminController {
      */
     public AddAdminController(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
         this.storageGateway = storageGateway;
-        StorageFactory sf = new StorageFactory();
-        accountStorage = (AccountStorage) sf.getStorage(storageGateway, StorageEnum.valueOf("ACCOUNT"));
+        StorageDepot sd = new StorageDepot(storageGateway);
+        accountStorage = sd.getAccountStorage();
     }
 
     /**

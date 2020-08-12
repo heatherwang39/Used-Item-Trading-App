@@ -4,6 +4,7 @@ import main.java.model.account.AccountNotFoundException;
 import main.java.model.account.AccountStorage;
 import main.java.model.account.StatusNotFoundException;
 import main.java.model.account.WrongAccountTypeException;
+import main.java.system.StorageDepot;
 import main.java.system.StorageEnum;
 import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
@@ -28,9 +29,9 @@ public class GildedController {
      * @param storageGateway Gateway class for reading and writing Storage Data
      */
     public GildedController(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
-        StorageFactory storageFactory = new StorageFactory();
+        StorageDepot storageDepot = new StorageDepot(storageGateway);
         this.storageGateway = storageGateway;
-        accountStorage = (AccountStorage)storageFactory.getStorage(storageGateway,StorageEnum.ACCOUNT);
+        accountStorage = storageDepot.getAccountStorage();
     }
 
     /** Get all gilded Users who have completed more than 20 trades and set their status to be gilded in the same time

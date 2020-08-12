@@ -4,10 +4,7 @@ import main.java.model.account.AccountNotFoundException;
 import main.java.model.account.AccountStorage;
 import main.java.model.account.NegativeThresholdException;
 import main.java.model.account.WrongAccountTypeException;
-import main.java.system.FileReadWriter;
-import main.java.system.StorageEnum;
-import main.java.system.StorageFactory;
-import main.java.system.StorageGateway;
+import main.java.system.*;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -33,8 +30,8 @@ public class ThresholdController {
 
     public ThresholdController(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
         this.storageGateway = storageGateway;
-        StorageFactory sf = new StorageFactory();
-        accountStorage = (AccountStorage) sf.getStorage(storageGateway, StorageEnum.ACCOUNT);
+        StorageDepot sd = new StorageDepot(storageGateway);
+        accountStorage = sd.getAccountStorage();
         path = storageGateway.getPath();
         String configKey = "THRESHOLDS";
         filename = storageGateway.getFilenameMap().get(configKey);
