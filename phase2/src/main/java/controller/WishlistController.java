@@ -1,12 +1,10 @@
 package main.java.controller;
 
-import main.java.model.Storage;
 import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
 import main.java.model.item.NotInWishlistException;
 import main.java.system.StorageDepot;
 import main.java.system.StorageEnum;
-import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
 
 import java.io.IOException;

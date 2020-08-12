@@ -1,7 +1,6 @@
 package main.java.controller;
 
 import main.java.model.item.ItemNotFoundException;
-import main.java.model.item.ItemStorage;
 import main.java.model.meeting.*;
 import main.java.model.trade.MaxNumMeetingsExceededException;
 import main.java.model.trade.TradeCancelledException;
@@ -11,7 +10,6 @@ import main.java.presenter.MeetingPresenter;
 import main.java.presenter.TradePresenter;
 import main.java.system.StorageDepot;
 import main.java.system.StorageEnum;
-import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
 
 import java.io.IOException;

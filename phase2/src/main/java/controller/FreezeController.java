@@ -7,7 +7,6 @@ import main.java.model.account.WrongAccountTypeException;
 import main.java.model.trade.TradeStorage;
 import main.java.system.StorageDepot;
 import main.java.system.StorageEnum;
-import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
 
 import java.io.IOException;

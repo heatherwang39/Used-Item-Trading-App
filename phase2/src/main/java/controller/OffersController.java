@@ -1,11 +1,9 @@
 package main.java.controller;
 
-import main.java.model.item.ItemStorage;
 import main.java.model.trade.*;
 import main.java.presenter.TradePresenter;
 import main.java.system.StorageDepot;
 import main.java.system.StorageEnum;
-import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
 
 import java.io.IOException;

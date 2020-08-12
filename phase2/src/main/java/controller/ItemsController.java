@@ -4,7 +4,6 @@ import main.java.model.item.*;
 import main.java.presenter.ItemPresenter;
 import main.java.system.StorageDepot;
 import main.java.system.StorageEnum;
-import main.java.system.StorageFactory;
 import main.java.system.StorageGateway;
 
 import java.io.IOException;
