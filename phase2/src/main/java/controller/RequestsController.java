@@ -10,7 +10,6 @@ import main.java.system.StorageGateway;
 import java.util.*;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 /**
  * Controller that returns the needed information for GUI client to display for Requests tab
@@ -42,7 +41,7 @@ public class RequestsController {
     /**
      * Gets a list containing HashMaps of data of all Trades that the user has requested
      *
-     * @return List of Trade datas
+     * @return List of Trade data
      * @throws ItemNotFoundException An item not in the system was inputted
      */
     public List<HashMap<String, String>> getRequests() throws ItemNotFoundException {

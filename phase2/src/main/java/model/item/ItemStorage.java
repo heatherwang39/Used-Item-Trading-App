@@ -1,9 +1,6 @@
 package main.java.model.item;
 
 import main.java.model.Storage;
-import main.java.model.account.AccountStorage;
-import main.java.model.account.UserAccount;
-import main.java.model.meeting.Meeting;
 import main.java.model.trade.TradeObserver;
 
 import java.util.*;

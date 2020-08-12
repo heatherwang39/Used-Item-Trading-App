@@ -102,7 +102,7 @@ public class MessageController {
      *
      * @param messageTitle message title
      * @param messageContent message content
-     * @param recipientList recpient list
+     * @param recipientList recipient list
      *
      * @return if message is valid
      */

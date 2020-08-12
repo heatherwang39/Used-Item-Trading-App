@@ -11,7 +11,6 @@ import main.java.system.StorageGateway;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Controller that returns the needed information for GUI client to display for Threshold tab
@@ -24,8 +23,8 @@ public class ThresholdController {
     private final StorageGateway storageGateway;
     private final AccountStorage accountStorage;
     private final String path;
-    private String filename;
-    private String configKey = "THRESHOLDS";
+    private final String filename;
+    private final String configKey = "THRESHOLDS";
 
     /**
      * Initializes a new ThresholdController

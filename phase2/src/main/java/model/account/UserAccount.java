@@ -21,7 +21,7 @@ public class UserAccount extends LoginAccount {
     private int numberOfWeeklyTrades;
     private int numberOfIncompleteTrades;
     private List<String> freezeReasons = new ArrayList<>();
-    private List<StatusEnum> statuses = new ArrayList<>();
+    private final List<StatusEnum> statuses = new ArrayList<>();
     private LocalDateTime weeklyTimer;
 
 

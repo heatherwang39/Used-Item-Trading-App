@@ -14,7 +14,7 @@ import java.util.Random;
  * @since Phase 2
  */
 public class RandomTradeAlgorithm implements TradeAlgorithm, Serializable {
-    private int seed;
+    private final int seed;
 
 
     public RandomTradeAlgorithm(){

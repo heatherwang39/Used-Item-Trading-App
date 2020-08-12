@@ -7,8 +7,6 @@ import main.java.system.StorageGateway;
 
 import java.io.IOException;
 
-import static javax.swing.JOptionPane.showMessageDialog;
-
 /**
  * Controller that returns the needed information for GUI client to display for Add Admin tab
  *

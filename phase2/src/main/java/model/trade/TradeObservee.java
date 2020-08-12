@@ -1,10 +1,6 @@
 package main.java.model.trade;
 
-import main.java.model.account.AccountNotFoundException;
-import main.java.model.account.WrongAccountTypeException;
-
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * An interface for something in the trade Package that updates its observers

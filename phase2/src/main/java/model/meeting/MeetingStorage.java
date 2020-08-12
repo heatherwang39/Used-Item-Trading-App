@@ -1,8 +1,6 @@
 package main.java.model.meeting;
 
 import main.java.model.Storage;
-import main.java.model.message.Message;
-import main.java.model.trade.TradeNumberException;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -152,7 +150,7 @@ public class MeetingStorage  implements Storage, MeetingObservee{
     public List<Integer> getSuggestedMeetings(String participant){
         List<Integer> meeting = new ArrayList<>();
         for(Meeting m: meetings){
-            if(!m.isCancelled() && !m.isAccepted()){
+            if(m.isNotCancelled() && !m.isAccepted()){
                 if(m.getAttendees().contains(participant) && m.getUnacceptedAttendees().contains(participant)){
                     meeting.add(m.getMeetingID());
                 }
@@ -170,7 +168,7 @@ public class MeetingStorage  implements Storage, MeetingObservee{
     public List<Integer> getOngoingMeetings(String participant){
         List<Integer> meeting = new ArrayList<>();
         for(Meeting m: meetings){
-            if(!m.isCancelled()){
+            if(m.isNotCancelled()){
                 if(m.isAccepted() && !m.isConfirmed()){
                     if(m.getAttendees().contains(participant) && m.getUnconfirmedAttendees().contains(participant)){
                         meeting.add(m.getMeetingID());
@@ -190,7 +188,7 @@ public class MeetingStorage  implements Storage, MeetingObservee{
     public List<Integer> getCompletedMeetings(String participant){
         List<Integer> meeting = new ArrayList<>();
         for(Meeting m: meetings){
-            if(!m.isCancelled()){
+            if(m.isNotCancelled()){
                 if(m.isConfirmed()){
                     if(m.getAttendees().contains(participant)){
                         meeting.add(m.getMeetingID());

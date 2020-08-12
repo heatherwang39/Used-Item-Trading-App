@@ -40,9 +40,7 @@ public class GildedController {
      * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      */
     public List<String> getAllGildedUsers() throws AccountNotFoundException, WrongAccountTypeException {
-        List<String> gildedUsers = accountStorage.getAccountsWithStatus("GILDED");
-
-        return gildedUsers;
+        return accountStorage.getAccountsWithStatus("GILDED");
     }
 
     /** Add the gilded status for a certain user
