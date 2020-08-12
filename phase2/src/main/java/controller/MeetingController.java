@@ -44,6 +44,7 @@ public class MeetingController {
         StorageFactory sf = new StorageFactory();
         tradeStorage = (TradeStorage) sf.getStorage(storageGateway, StorageEnum.TRADE);
         meetingStorage = (MeetingStorage) sf.getStorage(storageGateway, StorageEnum.MEETING);
+        meetingStorage.attachMeetingObserver(tradeStorage);
         meetingPresenter = new MeetingPresenter(username);
         tradePresenter = new TradePresenter(storageGateway);
     }
