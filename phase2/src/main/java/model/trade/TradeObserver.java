@@ -2,7 +2,6 @@ package main.java.model.trade;
 
 import java.util.HashMap;
 
-
 /**
  * An interface for something that "observes" something in the trade package
  *

@@ -7,6 +7,7 @@ package main.java.model.item;
  * @version %I%, %G%
  * @since Phase 2
  */
+
 public class ItemInTradeException extends Exception {
 
     /**

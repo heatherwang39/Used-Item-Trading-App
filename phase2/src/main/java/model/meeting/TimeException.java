@@ -6,6 +6,7 @@ package main.java.model.meeting;
  * @version %I%, %G%
  * @since Phase 1
  */
+
 public class TimeException extends Exception {
 
     /**

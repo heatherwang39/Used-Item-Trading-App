@@ -6,6 +6,7 @@ package main.java.model.trade;
  * @version %I%, %G%
  * @since Phase 2
  */
+
 public class WrongTradeAccountException extends Exception {
 
     /**

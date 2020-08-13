@@ -6,6 +6,7 @@ package main.java.model.message;
  * @version %I%, %G%
  * @since Phase 2
  */
+
 public class EmptyContentException extends Exception{
     /**
      * Class Constructor

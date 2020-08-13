@@ -26,6 +26,7 @@ public class MeetingStorage  implements Storage, MeetingObservee{
         this.meetings = (List<Meeting>) meetings;
     }
 
+
     /**
      * Gets the total number of meetings suggested
      *
@@ -45,7 +46,6 @@ public class MeetingStorage  implements Storage, MeetingObservee{
         throw new MeetingIDException();
     }
 
-
     /** Initializes a new Meeting based on the given parameters. Return the MeetingID of the newly initialized Meeting.
      *
      * @param attendees The Attendees of the meeting
@@ -58,7 +58,6 @@ public class MeetingStorage  implements Storage, MeetingObservee{
         meetings.add(m);
         return m.getMeetingID();
     }
-
 
     /** Record the fact that the attendee has accepted the meeting (corresponding to the Meeting ID).
      * Return true if this change has been successfully accepted.
@@ -78,7 +77,6 @@ public class MeetingStorage  implements Storage, MeetingObservee{
         if(b && m.isAccepted()){notifyAccepted(meetingID);}
         return b;
     }
-
 
     /** Record the fact that the attendee has confirmed the meeting (corresponding to the Meeting ID).
      * Return true if this change has been successfully accepted.
@@ -179,7 +177,6 @@ public class MeetingStorage  implements Storage, MeetingObservee{
         return meeting;
     }
 
-
     /** Return the IDs of all the meetings that the given participant is involved with and has been confirmed
      *
      * @param participant participant in meeting
@@ -199,7 +196,6 @@ public class MeetingStorage  implements Storage, MeetingObservee{
         return meeting;
     }
 
-
     /** Cancel the meeting associated with the given ID.
      *
      * @param meetingID The meetingID of the meeting you're interested in
@@ -215,9 +211,6 @@ public class MeetingStorage  implements Storage, MeetingObservee{
             notifyCancelled(meetingID);
         }
     }
-
-
-
 
 
     //Meeting and Trade Observer Pattern below
@@ -251,7 +244,6 @@ public class MeetingStorage  implements Storage, MeetingObservee{
         }
     }
 
-
     /** Notify its observers that a meeting has been confirmed
      *
      * @param meetingID The meeting that was confirmed
@@ -261,7 +253,6 @@ public class MeetingStorage  implements Storage, MeetingObservee{
             meetingObserver.updateConfirmed(meetingID);
         }
     }
-
 
     /** Record the fact that the given meeting has been cancelled
      *

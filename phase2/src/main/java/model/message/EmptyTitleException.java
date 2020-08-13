@@ -7,6 +7,7 @@ package main.java.model.message;
  * @version %I%, %G%
  * @since Phase 2
  */
+
 public class EmptyTitleException extends Exception{
     /**
      * Class Constructor
