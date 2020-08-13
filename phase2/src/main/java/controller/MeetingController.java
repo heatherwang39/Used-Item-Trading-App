@@ -70,7 +70,7 @@ public class MeetingController {
      * @throws ItemNotFoundException invalid item id found in system
      */
     public List<String> getAcceptedTrades() throws TradeNumberException, ItemNotFoundException {
-        return tradePresenter.formatTradeForListView(getAcceptedTradesUnformatted());
+        return tradePresenter.formatTradeForListView(getAcceptedTradesUnformatted(), "MEETING");
     }
 
 
@@ -102,7 +102,7 @@ public class MeetingController {
      * @throws MeetingIDException invalid meeting id found in system
      */
     public List<String> getUnfinishedTrades() throws TradeNumberException, ItemNotFoundException, MeetingIDException {
-        return tradePresenter.formatTradeForListView(getUnfinishedTradesUnformatted());
+        return tradePresenter.formatTradeForListView(getUnfinishedTradesUnformatted(), "MEETING");
     }
 
 

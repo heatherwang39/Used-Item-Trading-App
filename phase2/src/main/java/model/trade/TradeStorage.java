@@ -78,10 +78,8 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
     //I added this method to help with freeze manager, lmk if you don't like it -Fadi
     private List<Trade> getUserTrades(String username) throws TradeNumberException {
         List<Trade> userTrades = new ArrayList<>();
-        int i = 0;
         for (Trade trade : trades){
-            if (getTraders(i).contains(username)) userTrades.add(trade);
-            i++;
+            if (trade.getTraders().contains(username)) userTrades.add(trade);
         }
         return userTrades;
     }
