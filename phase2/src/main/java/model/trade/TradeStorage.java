@@ -76,7 +76,7 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
 
 
     //I added this method to help with freeze manager, lmk if you don't like it -Fadi
-    private List<Trade> getUserTrades(String username) throws TradeNumberException {
+    private List<Trade> getUserTrades(String username) {
         List<Trade> userTrades = new ArrayList<>();
         for (Trade trade : trades){
             if (trade.getTraders().contains(username)) userTrades.add(trade);
@@ -702,6 +702,7 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
     public void notifyTradeChange(HashMap<String, HashMap<String, Integer>> exchangeData, int newStatus){
         for (TradeObserver tradeObserver: observers) {
             tradeObserver.updateTradeChange(exchangeData, newStatus);
+            System.out.print(exchangeData);
         }
     }
 
@@ -715,9 +716,8 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
      *
      * @param username username of user
      * @return List containing lists with the ids of the items that were a part of the most recent trades
-     * @throws TradeNumberException an invalid trade number is found
      */
-    public List<List<Integer>> recentItemsTraded(String username) throws TradeNumberException {
+    public List<List<Integer>> recentItemsTraded(String username) {
         List <Trade> userTrades = getUserTrades(username);
         return tam.recentItemsTraded(userTrades);
     }
@@ -727,9 +727,8 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
      *
      * @param username username of the user
      * @return list of the usernames of the most frequent trading partners
-     * @throws TradeNumberException an invalid trade number is found
      */
-    public List<String> frequentTradePartners(String username) throws TradeNumberException {
+    public List<String> frequentTradePartners(String username)  {
         List <Trade> userTrades = getUserTrades(username);
         return tam.frequentTradePartners(username, userTrades);
     }

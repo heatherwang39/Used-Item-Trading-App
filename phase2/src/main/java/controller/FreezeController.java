@@ -68,7 +68,7 @@ public class FreezeController {
      * @throws WrongAccountTypeException wrong account type
      */
     public void freezeUser(String username) throws IOException, AccountNotFoundException, WrongAccountTypeException {
-        accountStorage.createStatus(username, "FREEZE");
+        accountStorage.createStatus(username, "FROZEN");
         storageGateway.saveStorageData(StorageEnum.ACCOUNT);
     }
 
@@ -82,7 +82,7 @@ public class FreezeController {
      * @throws WrongAccountTypeException account type doesn't support statuses
      */
     public void unfreezeUser(String username) throws IOException, StatusNotFoundException, AccountNotFoundException, WrongAccountTypeException {
-        accountStorage.removeStatus(username, "FREEZE");
+        accountStorage.removeStatus(username, "FROZEN");
         storageGateway.saveStorageData(StorageEnum.ACCOUNT);
     }
 

@@ -498,19 +498,12 @@ public class AccountStorage implements Storage, TradeObserver {
     private List<String> checkUserShouldFreeze(String username) throws AccountNotFoundException {
         List<String> reasonsToFreeze = new ArrayList<>();
         UserAccount user = (UserAccount) getAccount(username);
-        System.out.println(user.getUsername());
         int borrowThreshold = user.getBorrowThreshold();
-        System.out.println(borrowThreshold);
         int incompleteThreshold = user.getIncompleteThreshold();
-        System.out.println(incompleteThreshold);
         int weeklyThreshold = user.getWeeklyThreshold();
-        System.out.println(weeklyThreshold);
         int numberOfBorrowedItems = user.getNumberOfBorrowedItems();
-        System.out.println(numberOfBorrowedItems);
         int numberOfIncompleteTrades= user.getNumberOfIncompleteTrades();
-        System.out.println(numberOfIncompleteTrades);
         int numberOfWeeklyTrades = user.getNumberOfWeeklyTrades();
-        System.out.println(numberOfWeeklyTrades);
 
         if (numberOfBorrowedItems > borrowThreshold) reasonsToFreeze.add("BORROW");
         if (numberOfIncompleteTrades > incompleteThreshold) reasonsToFreeze.add("INCOMPLETE");
@@ -524,7 +517,6 @@ public class AccountStorage implements Storage, TradeObserver {
             if(!containsStatus(username,"FROZEN")) {
                 UserAccount user = (UserAccount) getAccount(username);
                 List<String> userFreezeReasons = checkUserShouldFreeze(username);
-                System.out.println(userFreezeReasons);
                 user.setFreezeReasons(userFreezeReasons);
                 if (userFreezeReasons.size() > 1) {
                     user.addStatus(StatusEnum.FROZEN);

@@ -585,7 +585,7 @@ public class TraderGUI {
 
     }
 
-    private void initializeItems() throws IOException, ClassNotFoundException, ItemNotFoundException {
+    private void initializeItems() throws IOException, ClassNotFoundException {
         MainTabbedPane.insertTab("Add Items", null, AddItems, null, 3);
 
         ItemsController itemsController = new ItemsController(storageGateway, user);
@@ -1075,24 +1075,39 @@ public class TraderGUI {
 
         FreezeController freezeController = new FreezeController(storageGateway);
 
+        List<List<String>> initialFrozenUserList = new ArrayList<>();
+        try {
+            initialFrozenUserList = freezeController.showAllFrozenUsers();
+        } catch (AccountNotFoundException | WrongAccountTypeException exception) {
+            showMessageDialog(null, exception.getMessage());
+        }
+        for (List<String> user: initialFrozenUserList) {
+            txtAreaFrozenUsers.append(String.join(", ", user) + "\n");
+        }
+
         btnFreezeEnter.addActionListener(e -> {
             List<List<String>> frozenUserList = new ArrayList<>();
-
             try {
                 frozenUserList = freezeController.showAllFrozenUsers();
             } catch (AccountNotFoundException | WrongAccountTypeException exception) {
                 showMessageDialog(null, exception.getMessage());
             }
-
             if(!frozenUserList.isEmpty()){
-                txtFrozenUser.setText(frozenUserList.get(currUserIndex[0]).get(0) + frozenUserList.get(currUserIndex[0]).get(1));
+                txtFrozenUser.setText(String.join(", ", frozenUserList.get(currUserIndex[0])));
                 if (rbtnUnfreezeUser.isSelected()) {
                     try {
                         freezeController.unfreezeUser(frozenUserList.get(0).get(0));
                         showMessageDialog(null, "User: " + frozenUserList.get(0).get(0) + " has been unfrozen!");
+                        txtAreaFrozenUsers.setText("");
+                        frozenUserList.remove(0);
+                        for (List<String> user: frozenUserList) {
+                            txtAreaFrozenUsers.append(String.join(", ", user) + "\n");
+                        }
+
                     } catch (IOException | StatusNotFoundException | AccountNotFoundException | WrongAccountTypeException exception) {
                         showMessageDialog(null, exception.getMessage());
                     }
+
                 } else if (rbtnIgnoreUser.isSelected()) {
                     currUserIndex[0]++;
 
@@ -1106,6 +1121,11 @@ public class TraderGUI {
            String userToFreeze = txtFreezeUserInput.getText();
             try {
                 freezeController.freezeUser(userToFreeze);
+                showMessageDialog(null, userToFreeze + " frozen!");
+                List<List<String>> frozenUserList = freezeController.showAllFrozenUsers();
+                for (List<String> user: frozenUserList) {
+                    txtAreaFrozenUsers.append(String.join(", ", user) + "\n");
+                }
             } catch (AccountNotFoundException | WrongAccountTypeException exception) {
                 showMessageDialog(null, exception.getMessage());
             } catch (IOException ioException){
