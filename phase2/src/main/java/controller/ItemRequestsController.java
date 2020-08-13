@@ -24,7 +24,7 @@ public class ItemRequestsController {
     private final ItemPresenter itemPresenter;
 
     /**
-     * Initializes a new RequestsController for the given username
+     * Initializes a new ItemRequestsController for the given username
      *
      * @param storageGateway gateway for loading and saving information
      * @param itemPresenter presenter class for prepping items for gui

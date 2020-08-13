@@ -420,6 +420,22 @@ public class ItemStorage implements Storage, TradeObserver {
     }
 
     /**
+     * Returns a list of ItemIDs of verified, not hidden Item in the given user's inventory
+     *
+     * @param username The username of the account
+     * @return Item IDs of verified, not hidden items in user's inventory
+     */
+    public List<Integer> getUnhiddenInventory(String username){
+        List<Integer> itemIDs = new ArrayList<>();
+        List<Item> verifiedInventory = getVerifiedInventory(username);
+        for(Item i : verifiedInventory){
+            if (!i.isHidden()) itemIDs.add(i.getID());
+        }
+        return itemIDs;
+    }
+
+
+    /**
      * Returns a list with each element being the Item data of a verified, not hidden Item in the given user's inventory
      *
      * @param username Account username

@@ -26,7 +26,7 @@ public class TradeRequestController {
     private final String username;
 
     /**
-     * Initializes a new RequestController for the given username
+     * Initializes a new TradeRequestController for the given username
      *
      * @param storageGateway gateway for loading and saving information
      * @param username username of the user accessing the Request tab
