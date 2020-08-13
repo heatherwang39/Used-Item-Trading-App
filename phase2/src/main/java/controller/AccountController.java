@@ -28,13 +28,12 @@ public class AccountController {
 
     /** Class constructor
      *
-     * @param storageGateway Gateway class for reading and writing Storage Data
+     * @param storageDepot storageDepot associated with the program
      * @param username username of account
      */
-    public AccountController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
+    public AccountController(StorageDepot storageDepot, String username) throws IOException, ClassNotFoundException {
         this.username = username;
-        this.storageGateway = storageGateway;
-        StorageDepot storageDepot = new StorageDepot(storageGateway);
+        storageGateway = storageDepot.getStorageGateway();
         accountStorage = storageDepot.getAccountStorage();
         itemStorage = storageDepot.getItemStorage();
     }
@@ -159,7 +158,7 @@ public class AccountController {
      */
     public void setAwayStatus() throws AccountNotFoundException, IOException, WrongAccountTypeException {
         accountStorage.createStatus(username, "AWAY");
-        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
+        storageGateway.saveStorageData();
     }
 
     /**
@@ -171,7 +170,7 @@ public class AccountController {
      */
     public void removeAwayStatus() throws StatusNotFoundException, AccountNotFoundException, IOException, WrongAccountTypeException {
         accountStorage.removeStatus(username, "AWAY");
-        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
+        storageGateway.saveStorageData();
     }
 
     /** Return all current thresholds of the given account

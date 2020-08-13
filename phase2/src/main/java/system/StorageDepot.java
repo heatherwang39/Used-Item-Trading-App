@@ -9,13 +9,16 @@ import main.java.model.trade.TradeStorage;
 import java.io.IOException;
 
 /**
- * A class that stores all of the Storage Classes
+ * A class that stores all of the Storage Classes and the Storage Gateway
+ *
+ * In essence, this is the backend of the program.
  *
  * @author Warren Zhu
  * @version %I%, %G%
  * @since Phase 2
  */
 public class StorageDepot {
+    private final StorageGateway sg;
     private final StorageFactory storageFactory = new StorageFactory();
     private final AccountStorage accountStorage;
     private final ItemStorage itemStorage;
@@ -30,7 +33,9 @@ public class StorageDepot {
      * @throws IOException if error during reading file
      * @throws ClassNotFoundException if serialized Class not found
      */
-    public StorageDepot(StorageGateway sg) throws IOException, ClassNotFoundException {
+    protected StorageDepot(StorageGateway sg) throws IOException, ClassNotFoundException {
+        this.sg = sg;
+
         accountStorage = (AccountStorage) storageFactory.getStorage(sg, StorageEnum.ACCOUNT);
         itemStorage = (ItemStorage) storageFactory.getStorage(sg, StorageEnum.ITEM);
         messageStorage = (MessageStorage) storageFactory.getStorage(sg, StorageEnum.MESSAGE);
@@ -87,4 +92,11 @@ public class StorageDepot {
     public TradeStorage getTradeStorage(){
         return tradeStorage;
     }
+
+
+    /** Return the StorageGateway involved with the program
+     *
+     * @return the StorageGateway
+     */
+    public StorageGateway getStorageGateway(){return sg;}
 }

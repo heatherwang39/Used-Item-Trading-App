@@ -26,16 +26,15 @@ public class ItemRequestsController {
     /**
      * Initializes a new ItemRequestsController for the given username
      *
-     * @param storageGateway gateway for loading and saving information
+     * @param storageDepot storageDepot associated with the program
      * @param itemPresenter presenter class for prepping items for gui
      * @throws IOException file can't be read/written
      * @throws ClassNotFoundException serialized class doesn't exist
      */
-    public ItemRequestsController(StorageGateway storageGateway, ItemPresenter itemPresenter) throws IOException, ClassNotFoundException {
-        this.storageGateway = storageGateway;
+    public ItemRequestsController(StorageDepot storageDepot, ItemPresenter itemPresenter) throws IOException, ClassNotFoundException {
+        storageGateway = storageDepot.getStorageGateway();
         this.itemPresenter = itemPresenter;
-        StorageDepot sd = new StorageDepot(storageGateway);
-        itemStorage = sd.getItemStorage();
+        itemStorage = storageDepot.getItemStorage();
     }
 
     /**
@@ -57,7 +56,7 @@ public class ItemRequestsController {
      */
     public void verifyItem(int itemID) throws ItemNotFoundException, IOException {
         itemStorage.verifyItem(itemID);
-        storageGateway.saveStorageData(StorageEnum.valueOf("ITEM"));
+        storageGateway.saveStorageData();
     }
 
     /**
@@ -69,7 +68,7 @@ public class ItemRequestsController {
      */
     public void rejectItem(int itemID) throws ItemNotFoundException, IOException {
         itemStorage.removeItem(itemID);
-        storageGateway.saveStorageData(StorageEnum.valueOf("ITEM"));
+        storageGateway.saveStorageData();
     }
 
     /**

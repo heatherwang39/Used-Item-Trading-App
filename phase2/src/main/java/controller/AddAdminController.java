@@ -22,14 +22,13 @@ public class AddAdminController {
     /**
      * Initializes a new AddAdminController for the given username
      *
-     * @param storageGateway gateway for loading and saving information
+     * @param storageDepot storageDepot associated with the program
      * @throws IOException file cannot be read/written
      * @throws ClassNotFoundException serialized class can't be found
      */
-    public AddAdminController(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
-        this.storageGateway = storageGateway;
-        StorageDepot sd = new StorageDepot(storageGateway);
-        accountStorage = sd.getAccountStorage();
+    public AddAdminController(StorageDepot storageDepot) throws IOException, ClassNotFoundException {
+        storageGateway = storageDepot.getStorageGateway();
+        accountStorage = storageDepot.getAccountStorage();
     }
 
     /**
@@ -48,7 +47,7 @@ public class AddAdminController {
     public void addAdmin(String username, String password, String emailAddress) throws IOException,
             InvalidUsernameException, InvalidPasswordException, InvalidEmailAddressException, EmailAddressInUseException, UsernameInUseException {
         accountStorage.createAdmin(username, password, emailAddress);
-        storageGateway.saveStorageData(StorageEnum.valueOf("ACCOUNT"));
+        storageGateway.saveStorageData();
     }
 
 }

@@ -22,13 +22,12 @@ public class BrowseController {
     /**
      * Initializes a new BrowseController for the given username
      *
-     * @param storageGateway gateway for loading and saving information
+     * @param storageDepot storageDepot associated with the program
      * @throws IOException file cannot be read/write
      * @throws ClassNotFoundException serialized class not found
      */
-    public BrowseController(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
-        StorageDepot sd = new StorageDepot(storageGateway);
-        itemStorage = sd.getItemStorage();
+    public BrowseController(StorageDepot storageDepot) throws IOException, ClassNotFoundException {
+        itemStorage = storageDepot.getItemStorage();
     }
 
     /**

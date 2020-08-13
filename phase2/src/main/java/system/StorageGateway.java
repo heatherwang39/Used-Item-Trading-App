@@ -27,7 +27,7 @@ public class StorageGateway {
      * @param filenameConfig filenames corresponding to each Storage
      * @throws IOException occurs during config read/load
      */
-    public StorageGateway(String resourcePath, String filenameConfig) throws IOException {
+    protected StorageGateway(String resourcePath, String filenameConfig) throws IOException {
         path = resourcePath;
         Properties storages = new Properties();
         storages.load(new FileInputStream(path + filenameConfig));
@@ -68,15 +68,16 @@ public class StorageGateway {
     }
 
     /**
-     * Save Storage data to file by type.
+     * Save Storage data to file.
      *
-     * @param type Storage type
      * @throws IOException if an error occurs during writing to file
      */
-    public void saveStorageData(StorageEnum type) throws IOException {
-        FileReadWriter fileReadWriter = new FileReadWriter(path + filenameMap.get(type.toString()));
-        Object data = dataMap.get(type.toString());
-        fileReadWriter.saveToFile(data);
+    public void saveStorageData() throws IOException {
+        for(StorageEnum type: StorageEnum.values()){
+            FileReadWriter fileReadWriter = new FileReadWriter(path + filenameMap.get(type.toString()));
+            Object data = dataMap.get(type.toString());
+            fileReadWriter.saveToFile(data);
+        }
     }
 
 

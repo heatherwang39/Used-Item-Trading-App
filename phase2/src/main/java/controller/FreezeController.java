@@ -22,20 +22,17 @@ import java.util.List;
  */
 public class FreezeController {
     private final StorageGateway storageGateway;
-    private final TradeStorage tradeStorage;
     private final AccountStorage accountStorage;
 
 
     /**
      * Class constructor for FreezeController
      *
-     * @param storageGateway gateway for loading and saving information
+     * @param storageDepot storageDepot associated with the program
      */
-    public FreezeController(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
-        this.storageGateway = storageGateway;
-        StorageDepot sd = new StorageDepot(storageGateway);
-        tradeStorage = sd.getTradeStorage();
-        accountStorage = sd.getAccountStorage();
+    public FreezeController(StorageDepot storageDepot) throws IOException, ClassNotFoundException {
+        storageGateway = storageDepot.getStorageGateway();
+        accountStorage = storageDepot.getAccountStorage();
     }
 
     /**
@@ -69,7 +66,7 @@ public class FreezeController {
      */
     public void freezeUser(String username) throws IOException, AccountNotFoundException, WrongAccountTypeException {
         accountStorage.createStatus(username, "FROZEN");
-        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
+        storageGateway.saveStorageData();
     }
 
     /**
@@ -83,7 +80,7 @@ public class FreezeController {
      */
     public void unfreezeUser(String username) throws IOException, StatusNotFoundException, AccountNotFoundException, WrongAccountTypeException {
         accountStorage.removeStatus(username, "FROZEN");
-        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
+        storageGateway.saveStorageData();
     }
 
 

@@ -26,12 +26,14 @@ public class TraderMain {
     public static void main(String[] args) {
         try {
             StorageGateway storageGateway = new StorageGateway(RESOURCE_PATH, FILENAME_CONFIG);
+            StorageDepot storageDepot = new StorageDepot(storageGateway);
+
             JFrame frame = new JFrame("Trader Client");
-            frame.setContentPane(new TraderGUI(storageGateway).MainContainer);
+            frame.setContentPane(new TraderGUI(storageDepot).MainContainer);
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             frame.pack();
             frame.setVisible(true);
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     } 

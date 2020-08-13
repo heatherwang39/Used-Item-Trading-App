@@ -25,13 +25,12 @@ public class ThresholdController {
     /**
      * Initializes a new ThresholdController
      *
-     * @param storageGateway gateway for loading and saving information
+     * @param storageDepot storageDepot associated with the program
      */
 
-    public ThresholdController(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
-        this.storageGateway = storageGateway;
-        StorageDepot sd = new StorageDepot(storageGateway);
-        accountStorage = sd.getAccountStorage();
+    public ThresholdController(StorageDepot storageDepot) throws IOException, ClassNotFoundException {
+        storageGateway = storageDepot.getStorageGateway();
+        accountStorage = storageDepot.getAccountStorage();
         path = storageGateway.getPath();
         String configKey = "THRESHOLDS";
         filename = storageGateway.getFilenameMap().get(configKey);
@@ -53,7 +52,7 @@ public class ThresholdController {
         int weeklyThreshold = Integer.parseInt(thresholdsData.get("weeklyThreshold"));
         int gildedThreshold = Integer.parseInt(thresholdsData.get("gildedThreshold"));
         accountStorage.setAllThresholds(borrowThreshold,incompleteThreshold,weeklyThreshold,gildedThreshold);
-        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
+        storageGateway.saveStorageData();
     }
 
     /**
@@ -67,7 +66,7 @@ public class ThresholdController {
      */
     public void setBorrowingThreshold(int threshold) throws AccountNotFoundException, WrongAccountTypeException, NegativeThresholdException, IOException {
         accountStorage.setAllBorrowThresholds(threshold);
-        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
+        storageGateway.saveStorageData();
     }
 
     /**
@@ -81,7 +80,7 @@ public class ThresholdController {
      */
     public void setIncompleteThreshold(int threshold) throws AccountNotFoundException, WrongAccountTypeException, NegativeThresholdException, IOException {
         accountStorage.setAllIncompleteThresholds(threshold);
-        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
+        storageGateway.saveStorageData();
     }
 
     /**
@@ -95,7 +94,7 @@ public class ThresholdController {
      */
     public void setWeeklyThreshold(int threshold) throws AccountNotFoundException, WrongAccountTypeException, NegativeThresholdException, IOException {
         accountStorage.setAllWeeklyThresholds(threshold);
-        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
+        storageGateway.saveStorageData();
     }
 
     /**
@@ -109,7 +108,7 @@ public class ThresholdController {
      */
     public void setGildedThreshold(int threshold) throws AccountNotFoundException, WrongAccountTypeException, NegativeThresholdException, IOException {
         accountStorage.setAllGildedThresholds(threshold);
-        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
+        storageGateway.saveStorageData();
     }
 
     /** Return all current thresholds of the given account
@@ -135,7 +134,7 @@ public class ThresholdController {
      */
     public void setBorrowingThresholdForUser(String username, int threshold) throws AccountNotFoundException, NegativeThresholdException, WrongAccountTypeException, IOException {
         accountStorage.setBorrowThreshold(username,threshold);
-        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
+        storageGateway.saveStorageData();
     }
 
     /**
@@ -150,7 +149,7 @@ public class ThresholdController {
      */
     public void setIncompleteThresholdForUser(String username, int threshold) throws AccountNotFoundException, NegativeThresholdException, WrongAccountTypeException, IOException {
         accountStorage.setIncompleteThreshold(username,threshold);
-        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
+        storageGateway.saveStorageData();
     }
 
     /**
@@ -165,7 +164,7 @@ public class ThresholdController {
      */
     public void setWeeklyThresholdForUser(String username, int threshold) throws AccountNotFoundException, NegativeThresholdException, WrongAccountTypeException, IOException {
         accountStorage.setWeeklyThreshold(username,threshold);
-        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
+        storageGateway.saveStorageData();
     }
 
     /**
@@ -180,6 +179,6 @@ public class ThresholdController {
      */
     public void setGildedThresholdForUser(String username, int threshold) throws AccountNotFoundException, NegativeThresholdException, WrongAccountTypeException, IOException {
         accountStorage.setGildedThreshold(username,threshold);
-        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
+        storageGateway.saveStorageData();
     }
 }

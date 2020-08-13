@@ -24,14 +24,13 @@ public class UserlistController {
     /**
      * Initializes a new UserlistController for the given username
      *
-     * @param storageGateway gateway for loading and saving information
+     * @param storageDepot storageDepot associated with the program
      * @throws IOException file cannot be read/written
      * @throws ClassNotFoundException serialized class was not found
      */
-    public UserlistController(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
-        this.storageGateway = storageGateway;
-        StorageDepot sd = new StorageDepot(storageGateway);
-        accountStorage = sd.getAccountStorage();
+    public UserlistController(StorageDepot storageDepot) throws IOException, ClassNotFoundException {
+        storageGateway = storageDepot.getStorageGateway();
+        accountStorage = storageDepot.getAccountStorage();
     }
 
 
@@ -67,6 +66,6 @@ public class UserlistController {
      */
     public void muteUser(String username) throws IOException, AccountNotFoundException, WrongAccountTypeException {
         accountStorage.createStatus(username, "MUTED");
-        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
+        storageGateway.saveStorageData();
     }
 }
