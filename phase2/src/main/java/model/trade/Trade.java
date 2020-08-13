@@ -304,41 +304,6 @@ public abstract class Trade implements Serializable {
     abstract List<Integer> getItemsFinal();
 
 
-    /** Returns a HashMap representing the Exchange Data in the Trade
-     *
-     * The first key is the username of a Trader that is involved.
-     * The second key and their respective values are as follows:
-     * 1) SENT: The item this user gave away in the trade
-     * 2) RECEIVED: The item this user received in the trade
-     * 3) FINAL: What the user has in their possession at the end of the trade
-     *
-     * @return The exchange data for the Trade
-     */
-    public HashMap<String, HashMap<String, Integer>> getExchangeData(){
-
-        HashMap<String, HashMap<String, Integer>> exchangeData = new HashMap<>();
-
-        String trader;
-        HashMap<String, Integer> traderData;
-
-        int i = 0;
-        while(i < traders.size()){
-            trader = getTraders().get(i);
-            traderData = new HashMap<>();
-
-            traderData.put("SENT", getItemsOriginal().get(i));
-            traderData.put("RECEIVED", getItemsExchanged().get(i));
-            traderData.put("FINAL", getItemsFinal().get(i));
-
-            exchangeData.put(trader, traderData);
-
-            i++;
-        }
-        return exchangeData;
-    }
-
-
-
     //Methods regarding who has trade acceptance
 
 

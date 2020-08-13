@@ -108,6 +108,28 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
     }
 
 
+    private HashMap<String, HashMap<String, Integer>> getExchangeData(Trade t){
+
+        HashMap<String, HashMap<String, Integer>> exchangeData = new HashMap<>();
+
+        String trader;
+        HashMap<String, Integer> traderData;
+
+        int i = 0;
+        while(i < t.getTraders().size()){
+            trader = t.getTraders().get(i);
+            traderData = new HashMap<>();
+
+            traderData.put("SENT", t.getItemsOriginal().get(i));
+            traderData.put("RECEIVED", t.getItemsExchanged().get(i));
+            traderData.put("FINAL", t.getItemsFinal().get(i));
+
+            exchangeData.put(trader, traderData);
+
+            i++;
+        }
+        return exchangeData;
+    }
 
 
     //Trade-related Methods Below
@@ -147,10 +169,13 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
         Trade t = getTrade(tradeNumber);
         boolean b = t.setStatus(status);
         if(b){
-            notifyTradeChange(t.getExchangeData(), status);
+            notifyTradeChange(getExchangeData(t), status);
         }
         return b;
     }
+
+
+
 
 
     /** Returns whether or not the Trade is permanent. Iff the Trade is permanent, return true.
