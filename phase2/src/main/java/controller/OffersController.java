@@ -37,6 +37,7 @@ public class OffersController {
         tradeStorage = sd.getTradeStorage();
     }
 
+
     /**
      * Gets a list containing HashMaps of data of all Trades that the user has been offered
      *
@@ -73,6 +74,4 @@ public class OffersController {
         tradeStorage.setStatus(tradeNumber, -1);
         storageGateway.saveStorageData(StorageEnum.valueOf("TRADE"));
     }
-
-
 }

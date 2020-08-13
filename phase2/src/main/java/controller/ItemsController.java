@@ -43,7 +43,6 @@ public class ItemsController {
 
     //Methods related to Add Items sub tab
 
-
     /**
      * Creates a new item and adds it to the system
      *
@@ -69,7 +68,6 @@ public class ItemsController {
         storageGateway.saveStorageData(StorageEnum.valueOf("ITEM"));
     }
 
-
     /**
      * Gets whether user owns the item
      * @param user username
@@ -81,8 +79,8 @@ public class ItemsController {
         return itemStorage.getData(Integer.parseInt(itemID)).get("owner").equals(user);
     }
 
-    //Methods related to Hide Items sub tab
 
+    //Methods related to Hide Items sub tab
 
     /**
      * Gets all items in the user's inventory that are not hidden
@@ -93,7 +91,6 @@ public class ItemsController {
     public List<HashMap<String, String>> getUnhiddenInventory() throws ItemNotFoundException {
         return itemStorage.getUnhiddenInventoryData(username);
     }
-
 
     /**
      * Hides the item with given itemID
@@ -111,7 +108,6 @@ public class ItemsController {
 
     //Methods related to Unhide Items sub tab
 
-
     /**
      * Gets all items in the user's inventory that are hidden
      *
@@ -121,8 +117,6 @@ public class ItemsController {
     public List<HashMap<String, String>> getHiddenInventory() throws ItemNotFoundException {
         return itemStorage.getHiddenInventoryData(username);
     }
-
-
 
     /**
      * Unhides the item with given itemID

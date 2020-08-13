@@ -53,7 +53,6 @@ public class TradeRequestController {
      * @throws TradeNumberException no trade has the given number
      * @throws TradeCancelledException trade has been cancelled
      * @throws ItemAlreadyInActiveTradeException An Item is already in another active Trade
-     *
      */
     public void createRequest(boolean permanent, TradeAlgorithmName tradeAlgorithmName, List<Integer> items)
             throws ItemNotFoundException, NoSuchTradeAlgorithmException, IOException, WrongTradeAccountException, TradeNumberException, TradeCancelledException, ItemAlreadyInActiveTradeException {
@@ -104,7 +103,8 @@ public class TradeRequestController {
         // iterate through every user in the system and find what currentUser can lend them
         // iterate through every user in the system and find what they can lend currentUser
         // get the intersection of these two lists.
-        // goal: return a list (unformatted) of every item currentUser could lend to another user in the system, but only when that other user has something for currentUser
+        // goal: return a list (unformatted) of every item currentUser could lend to another user in the system,
+        // but only when that other user has something for currentUser
 
         List<List<HashMap<String, String>>> suggestedItemsToLendList = new ArrayList<>();
         List<String> userList = accountStorage.getUsers();

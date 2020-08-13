@@ -107,7 +107,7 @@ public class TraderGUI {
     private JTextField txtItemsUnhideInput;
     private JTextField txtItemsHideInput;
     private JTextField txtRequestLendSuggestedInput;
-    private JTextField txtRequestThreeWayUsers;
+    private JTextField txtRequestRandomUsers;
 
     private JTextArea txtAreaActivityTradeOutput;
     private JTextArea txtAreaActivityPartnerOutput;
@@ -165,8 +165,8 @@ public class TraderGUI {
     private JButton btnThresholdUserGilded;
     private JButton btnItemsHide;
     private JButton btnItemsUnhide;
-    private JButton btnRequestThreeWayAddUser;
-    private JButton btnRequestThreeWayOfferTrade;
+    private JButton btnRequestRandomAddUser;
+    private JButton btnRequestRandomOfferTrade;
 
     private JRadioButton rbtnTempTrade;
     private JRadioButton rbtnPermTrade;
@@ -184,8 +184,8 @@ public class TraderGUI {
     private JRadioButton rbtnMeetingCompleted;
     private JRadioButton rbtnLend;
     private JRadioButton rbtnViewNextSuggestion;
-    private JRadioButton rbtnRequestThreeWayPerm;
-    private JRadioButton rbtnRequestThreeWayTemp;
+    private JRadioButton rbtnRequestRandomPerm;
+    private JRadioButton rbtnRequestRandomTemp;
 
     private JTextPane traderSystemTextPane;
 
