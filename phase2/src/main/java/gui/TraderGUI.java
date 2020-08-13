@@ -602,41 +602,51 @@ public class TraderGUI {
 
         // Hide/Unhide Items Tab
 
-        List<HashMap<String, String>> unhiddenInventory = itemsController.getUnhiddenInventory();
-        List<HashMap<String, String>> hiddenInventory = itemsController.getHiddenInventory();
+        BrowseController browseController = new BrowseController(storageGateway);
 
-        displayUnhiddenInventory(unhiddenInventory, itemPresenter);
-        displayHiddenInventory(hiddenInventory, itemPresenter);
+        displayUnhiddenInventory(itemsController.getUnhiddenInventory(), itemPresenter);
+        displayHiddenInventory(itemsController.getHiddenInventory(), itemPresenter);
 
         btnItemsHide.addActionListener(e -> {
 
-            String item = unhiddenInventory.get(0).get("id");
             try {
-
+                List<HashMap<String, String>> unhiddenInventory = itemsController.getUnhiddenInventory();
+                String item = unhiddenInventory.get(0).get("id");
                 itemsController.hideItem(item);
-                showMessageDialog(null, "Item: " + unhiddenInventory.get(0) + " has been successfully hidden");
+                showMessageDialog(null, unhiddenInventory.get(0).get("name") + " has been successfully hidden");
                 unhiddenInventory.remove(0);
-                displayUnhiddenInventory(unhiddenInventory, itemPresenter);
+                displayUnhiddenInventory(itemsController.getUnhiddenInventory(), itemPresenter);
+                displayHiddenInventory(itemsController.getHiddenInventory(), itemPresenter);
+                displayBrowse(browseController.getItemsString());
+
             } catch (AlreadyHiddenException | ItemNotFoundException exception) {
                 showMessageDialog(null, exception.getMessage());
             } catch (IOException ioException) {
                 ioException.printStackTrace();
+            }catch (IndexOutOfBoundsException outOfBoundsException) {
+                showMessageDialog(null, "There is no item to hide");
             }
 
         });
 
         btnItemsUnhide.addActionListener(e ->{
-            String item = hiddenInventory.get(0).get("id");
+
             try {
+                List<HashMap<String, String>> hiddenInventory = itemsController.getHiddenInventory();
+                String item = hiddenInventory.get(0).get("id");
                 itemsController.unhideItem(item);
-                showMessageDialog(null, "Item: " + hiddenInventory.get(0) + " has been successfully unhidden");
+                showMessageDialog(null, hiddenInventory.get(0).get("name") + " has been successfully unhidden");
                 hiddenInventory.remove(0);
-                displayHiddenInventory(hiddenInventory, itemPresenter);
+                displayUnhiddenInventory(itemsController.getUnhiddenInventory(), itemPresenter);
+                displayHiddenInventory(itemsController.getHiddenInventory(), itemPresenter);
+                displayBrowse(browseController.getItemsString());
 
             } catch (ItemNotFoundException | AlreadyNotHiddenException exception) {
                 showMessageDialog(null, exception.getMessage());
             } catch (IOException ioException) {
                 ioException.printStackTrace();
+            } catch (IndexOutOfBoundsException outOfBoundsException) {
+                showMessageDialog(null, "There is no item to unhide");
             }
         });
     }
