@@ -32,9 +32,9 @@ public class ItemPresenter {
         for (HashMap<String, String> itemData : items) {
             String itemInfo = itemData.get("id") + ". " + itemData.get("name") + ", Owner: " +
                     itemData.get("owner") +
-                    ", Description: " +
+                    "\nDescription: " +
                     itemData.get("description") +
-                    ", Tags: " +
+                    "\nTags: " +
                     itemData.get("tags") +
                     "\n";
             formatItem.add(itemInfo);

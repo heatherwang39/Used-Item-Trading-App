@@ -186,6 +186,8 @@ public class TraderGUI {
     private JButton btnRequestThreeWayAddUser;
     private JButton btnRequestThreeWayOfferTrade;
     private JRadioButton rbtnRequestThreeWayTemp;
+    private JTextArea txtAreaHiddenInventory;
+    private JTextArea txtAreaUnhiddenInventory;
     private JTextField txtRequestSantaExplanation;
     private JTextField txtRequestSantaInput;
     private JButton btnRequestSantaEnter;
@@ -218,6 +220,8 @@ public class TraderGUI {
         txtAccountStatuses.setEditable(false);
         txtRequestsOutput.setEditable(false);
 
+        txtAreaUnhiddenInventory.setEditable(false);
+        txtAreaHiddenInventory.setEditable(false);
         txtAreaBrowseListingsOutput.setEditable(false);
         txtAreaFrozenUsers.setEditable(false);
         txtAreaLoggingOutput.setEditable(false);
@@ -627,6 +631,7 @@ public class TraderGUI {
         // Hide/Unhide Items Tab
 
         BrowseController browseController = new BrowseController(storageGateway);
+        displayHiddenUnhidden(itemsController, itemPresenter);
 
         btnItemsHide.addActionListener(e -> {
             String itemID = txtItemsHideInput.getText();
@@ -634,6 +639,8 @@ public class TraderGUI {
                 if (itemsController.ownsItem(user, itemID)) {
                     itemsController.hideItem(itemID);
                     showMessageDialog(null, "Item has been hidden");
+                    txtItemsHideInput.setText("");
+                    displayHiddenUnhidden(itemsController, itemPresenter);
                     displayBrowse(browseController.getItemsString());
                 }
                 else showMessageDialog(null, "That item does not belong to you");
@@ -641,6 +648,8 @@ public class TraderGUI {
                 showMessageDialog(null, exception.getMessage());
             } catch (IOException ioException) {
                 ioException.printStackTrace();
+            } catch (NumberFormatException numberFormatException) {
+                showMessageDialog(null, "Your input was not a number");
             }
 
         });
@@ -651,12 +660,16 @@ public class TraderGUI {
                 if (itemsController.ownsItem(user, itemID)) {
                     itemsController.unhideItem(itemID);
                     showMessageDialog(null, "Item has been unhidden");
+                    txtItemsUnhideInput.setText("");
+                    displayHiddenUnhidden(itemsController, itemPresenter);
                     displayBrowse(browseController.getItemsString());
                 } else showMessageDialog(null, "That item does not belong to you");
             } catch (AlreadyNotHiddenException | ItemNotFoundException exception) {
                 showMessageDialog(null, exception.getMessage());
             } catch (IOException ioException) {
                 ioException.printStackTrace();
+            } catch (NumberFormatException numberFormatException) {
+                showMessageDialog(null, "Your input was not a number");
             }
 
         });
@@ -1262,6 +1275,25 @@ public class TraderGUI {
 
     private void displayBrowse(String items) {
         txtAreaBrowseListingsOutput.setText(items);
+    }
+
+    private void displayHiddenUnhidden(ItemsController itemsController, ItemPresenter itemPresenter) {
+        try {
+            List<String> hiddenInventory = itemPresenter.formatItemsToListView(itemsController.getHiddenInventory());
+            List<String> unhiddenInventory = itemPresenter.formatItemsToListView(itemsController.getUnhiddenInventory());
+            txtAreaHiddenInventory.setText("Items currently hidden:\n");
+            for (String itemData : hiddenInventory) {
+                txtAreaHiddenInventory.append(itemData);
+                txtAreaHiddenInventory.append("-----------------------\n");
+            }
+            txtAreaUnhiddenInventory.setText("Items currently unhidden:\n");
+            for (String itemData : unhiddenInventory) {
+                txtAreaUnhiddenInventory.append(itemData);
+                txtAreaUnhiddenInventory.append("-----------------------\n");
+            }
+        } catch (ItemNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 
