@@ -6,6 +6,7 @@ import main.java.model.item.ItemStorage;
 import main.java.model.meeting.MeetingStorage;
 import main.java.model.message.MessageStorage;
 import main.java.model.trade.TradeStorage;
+import main.java.model.log.LogStorage;
 
 import java.io.IOException;
 
@@ -44,6 +45,8 @@ public class StorageFactory {
             case TRADE:
                 storage = new TradeStorage();
                 break;
+            case LOG:
+                storage = new LogStorage();
             default:
                 throw new IllegalStateException("Unexpected value: " + type);
         }
