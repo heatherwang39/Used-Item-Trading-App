@@ -163,7 +163,6 @@ public class TraderGUI {
     private JButton btnThresholdUserIncompleted;
     private JButton btnThresholdUserWeekly;
     private JButton btnThresholdUserGilded;
-    private JButton enterButton;
     private JTextArea accountInformationTextArea;
     private JButton exitButton;
     private JTextPane traderSystemTextPane;
@@ -180,6 +179,9 @@ public class TraderGUI {
     private JButton btnItemsUnhide;
     private JTextArea txtAreaItemsUnhiddenOutput;
     private JTextArea txtAreaItemsHiddenOutput;
+    private JTextField txtRequestLendSuggestedInput;
+    private JTabbedPane tabbedPane4;
+    private JPasswordField pswdLogin;
 
     private String user;
     private final StorageGateway storageGateway;
@@ -207,6 +209,8 @@ public class TraderGUI {
         txtOffersOutput.setEditable(false);
         txtAccountStatuses.setEditable(false);
         txtRequestsOutput.setEditable(false);
+        txtItemsUnhiddenOutput.setEditable(false);
+        txtItemsHiddenOutput.setEditable(false);
         txtAreaBrowseListingsOutput.setEditable(false);
         txtAreaFrozenUsers.setEditable(false);
         txtAreaLoggingOutput.setEditable(false);
@@ -218,6 +222,8 @@ public class TraderGUI {
         txtAreaRequestSuggestTradesOutput.setEditable(false);
         txtAreaActivityTradeOutput.setEditable(false);
         txtAreaActivityPartnerOutput.setEditable(false);
+        txtAreaItemsUnhiddenOutput.setEditable(false);
+        txtAreaItemsHiddenOutput.setEditable(false);
 
 
         // this is so users cannot select two radio buttons simultaneously
@@ -273,11 +279,13 @@ public class TraderGUI {
 
         btnLogin.addActionListener(e -> {
             String user = txtLoginUsername.getText();
-            String pass = txtLoginPassword.getText();
-            txtLoginUsername.setText("");
-            txtLoginPassword.setText("");
+
+            char[] passChar = pswdLogin.getPassword();
+            StringBuilder pass = new StringBuilder();
+            for (char ch : passChar){ pass.append(ch); }
+
             try {
-                switch (loginController.login(user, pass)) {
+                switch (loginController.login(user, pass.toString())) {
                     case "USER":
                         this.user = user;
                         MainTabbedPane.removeAll();
@@ -474,17 +482,19 @@ public class TraderGUI {
         List<List<HashMap<String, String>>> suggestionList = requestController.suggestAllItems(user);
         displayRequestSuggestions(suggestionList, itemPresenter);
 
+
         btnRequestSuggestionEnter.addActionListener(e -> {
             displayRequestSuggestions(suggestionList, itemPresenter);
+            TradeAlgorithmName tradeAlgorithmName = TradeAlgorithmName.CYCLE;
 
-            if (rbtnLend.isSelected()){
+
+            if (rbtnLend.isSelected()) {
                 // lend the items
 
-                TradeAlgorithmName tradeAlgorithmName = TradeAlgorithmName.CYCLE;
                 List<Integer> tradeItemList = new ArrayList<>();
 
                 try {
-                    for (HashMap<String, String> individualItem : suggestionList.get(0)){
+                    for (HashMap<String, String> individualItem : suggestionList.get(0)) {
                         tradeItemList.add(Integer.parseInt(individualItem.get("id")));
                         requestController.createRequest(false, tradeAlgorithmName, tradeItemList);
                     }
@@ -492,7 +502,7 @@ public class TraderGUI {
                 } catch (ItemNotFoundException | NoSuchTradeAlgorithmException | WrongTradeAccountException |
                         TradeCancelledException exception) {
                     showMessageDialog(null, exception.getMessage());
-                } catch (TradeNumberException | IOException ioException){
+                } catch (TradeNumberException | IOException ioException) {
                     ioException.printStackTrace();
                 }
                 txtAreaRequestSuggestTradesOutput.setText("");
@@ -505,6 +515,7 @@ public class TraderGUI {
             } else{
                 showMessageDialog(null, "Please select an option!");
             }
+
         });
 
 
@@ -1166,7 +1177,7 @@ public class TraderGUI {
 
     private void displayRequestSuggestions(List<List<HashMap<String, String>>> unformattedSuggestionList, ItemPresenter itemPresenter) {
         if (unformattedSuggestionList.isEmpty()) {
-            txtAreaRequestSuggestTradesOutput.setText("No Suggestions Available (nothing in your inventory is in anyone elses wishlist, or vice versa");
+            txtAreaRequestSuggestTradesOutput.setText("No Suggestions Available (nothing in your inventory is in anyone elses wishlist, or vice versa)");
         } else {
             for (List<HashMap<String, String>> subSuggestionList : unformattedSuggestionList) {
                 for (String s : itemPresenter.formatItemsToListView(subSuggestionList)) {
@@ -1206,4 +1217,14 @@ public class TraderGUI {
         }
 
     }
+
+//    private Integer tryParse(String s){
+//        try {
+//            return Integer.parseInt(s);
+//        } catch (NumberFormatException e) {
+//
+//            showMessageDialog(null, "Invalid Input! Please try again");
+//            return null;
+//            }
+//    }
 }
