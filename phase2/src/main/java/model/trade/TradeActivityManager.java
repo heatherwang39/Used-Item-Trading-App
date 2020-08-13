@@ -50,7 +50,7 @@ class TradeActivityManager {
         List<String> threeMostFrequentPartners = new ArrayList<>();
         Map<String, Integer> tradingPartners = getTradePartners(username, userTrades);
         Map.Entry<String, Integer> maxEntry = null;
-        while (threeMostFrequentPartners.size() < 3 || threeMostFrequentPartners.size() < tradingPartners.size()) {
+        while (threeMostFrequentPartners.size() < 3 && threeMostFrequentPartners.size() < tradingPartners.size()) {
             //Citation: https://stackoverflow.com/questions/5911174/finding-key-associated-with-max-value-in-a-java-map
             for (Map.Entry<String, Integer> entry : tradingPartners.entrySet()) {
                 if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0) maxEntry = entry;
@@ -68,12 +68,11 @@ class TradeActivityManager {
         for (Trade trade : userTrades) {
             List<String> tradeParticipants = trade.getTraders();
             int status = trade.getStatus();
-            if (status == 1 || status == 2 || status == 3) {
-                String otherTrader;
-                if (tradeParticipants.get(0).equals(username)) otherTrader = tradeParticipants.get(1);
-                else otherTrader = tradeParticipants.get(0);
-                if (!tradingPartners.containsKey(otherTrader)) tradingPartners.put(otherTrader, 1);
-                else tradingPartners.replace(otherTrader, tradingPartners.get(otherTrader) + 1);
+            for (String otherTrader : tradeParticipants) {
+                if (!otherTrader.equals(username) && (status == 1 || status == 2 || status == 3)) {
+                    if (!tradingPartners.containsKey(otherTrader)) tradingPartners.put(otherTrader, 1);
+                    else tradingPartners.replace(otherTrader, tradingPartners.get(otherTrader) + 1);
+                }
             }
         }
         return tradingPartners;

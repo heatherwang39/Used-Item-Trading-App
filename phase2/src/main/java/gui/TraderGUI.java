@@ -182,6 +182,10 @@ public class TraderGUI {
     private JTextField txtRequestLendSuggestedInput;
     private JTabbedPane tabbedPane4;
     private JPasswordField pswdLogin;
+    private JTextField txtRequestSantaExplanation;
+    private JTextField txtRequestSantaInput;
+    private JButton btnRequestSantaEnter;
+    private JTextArea txtAreaRequestSantaExplanation;
 
     private String user;
     private final StorageGateway storageGateway;
@@ -224,6 +228,7 @@ public class TraderGUI {
         txtAreaActivityPartnerOutput.setEditable(false);
         txtAreaItemsUnhiddenOutput.setEditable(false);
         txtAreaItemsHiddenOutput.setEditable(false);
+        txtAreaRequestSantaExplanation.setEditable(false);
 
 
         // this is so users cannot select two radio buttons simultaneously
@@ -410,12 +415,13 @@ public class TraderGUI {
         ActivityController activityController = new ActivityController(storageGateway, user);
 
         List<List<Integer>> tradeList = activityController.recentItemsTraded();
-        StringBuilder tradeString = new StringBuilder();
-        for (List<Integer> integers : tradeList) {
-            for (Integer integer : integers) {
-                tradeString.append(", ").append(integer);
-                txtAreaActivityTradeOutput.append(tradeString + "\n");
+        TradePresenter tradePresenter = new TradePresenter(storageGateway);
+        try {
+            for (String s : tradePresenter.formatItemsInTradeForListView(tradeList)) {
+                txtAreaActivityTradeOutput.append(s + "\n");
             }
+        } catch (ItemNotFoundException e) {
+            e.printStackTrace();
         }
 
         List<String> partnerList = activityController.frequentTradingPartners();
@@ -438,23 +444,23 @@ public class TraderGUI {
         TradePresenter tradePresenter = new TradePresenter(storageGateway);
         OffersController offersController = new OffersController(storageGateway, user, tradePresenter);
 
-        txtAreaOffersOutput.setText(tradePresenter.formatTradeString(offersController.getOffers()));
+        txtAreaOffersOutput.setText(tradePresenter.formatTradeString(offersController.getOffers(), "OFFERS"));
 
         btnOfferEnter.addActionListener(e -> {
             try{
                 List<HashMap<String, List<String>>> unformattedOfferList = offersController.getOffers();
-                List<String> offerList = tradePresenter.formatTradeForListView(unformattedOfferList);
+                List<String> offerList = tradePresenter.formatTradeForListView(unformattedOfferList, "OFFERS");
                 if (!offerList.isEmpty()) {
                     txtOffersOutput.setText(offerList.get(0));
                     if (rbtnAcceptOffer.isSelected()) {
                         offersController.acceptOffer(Integer.parseInt(unformattedOfferList.get(0).get("id").get(0)));
-                        txtAreaOffersOutput.setText(tradePresenter.formatTradeString(offersController.getOffers()));
+                        txtAreaOffersOutput.setText(tradePresenter.formatTradeString(offersController.getOffers(), "OFFERS"));
                         showMessageDialog(null, "Trade accepted!");
                         MeetingController meetingController = new MeetingController(storageGateway, user);
                         displaySuggestMeetings(meetingController);
                     } else if (rbtnDenyOffer.isSelected()) {
                         offersController.rejectOffer(Integer.parseInt(unformattedOfferList.get(0).get("id").get(0)));
-                        txtAreaOffersOutput.setText(tradePresenter.formatTradeString(offersController.getOffers()));
+                        txtAreaOffersOutput.setText(tradePresenter.formatTradeString(offersController.getOffers(), "OFFERS"));
                         showMessageDialog(null, "Trade rejected!");
                     } else {
                         showMessageDialog(null, "Please select an option!");
@@ -479,6 +485,13 @@ public class TraderGUI {
         List<List<HashMap<String, String>>> suggestionList = requestController.suggestAllItems(user);
         displayRequestSuggestions(suggestionList, itemPresenter);
 
+        txtAreaRequestSantaExplanation.setText("Here you can offer an item you own for 'Secret Santa'. \n" +
+                "When there is enough items, your item should be lent to random user that the program will pick. \n" +
+                "Likewise you will receive an item from one of the other users.");
+
+        btnRequestSantaEnter.addActionListener(e -> {
+            Integer itemID = tryParse(txtRequestSantaInput.getText());
+        });
 
         btnRequestSuggestionEnter.addActionListener(e -> {
             displayRequestSuggestions(suggestionList, itemPresenter);
@@ -598,41 +611,51 @@ public class TraderGUI {
 
         // Hide/Unhide Items Tab
 
-        List<HashMap<String, String>> unhiddenInventory = itemsController.getUnhiddenInventory();
-        List<HashMap<String, String>> hiddenInventory = itemsController.getHiddenInventory();
+        BrowseController browseController = new BrowseController(storageGateway);
 
-        displayUnhiddenInventory(unhiddenInventory, itemPresenter);
-        displayHiddenInventory(hiddenInventory, itemPresenter);
+        displayUnhiddenInventory(itemsController.getUnhiddenInventory(), itemPresenter);
+        displayHiddenInventory(itemsController.getHiddenInventory(), itemPresenter);
 
         btnItemsHide.addActionListener(e -> {
 
-            String item = unhiddenInventory.get(0).get("id");
             try {
-
+                List<HashMap<String, String>> unhiddenInventory = itemsController.getUnhiddenInventory();
+                String item = unhiddenInventory.get(0).get("id");
                 itemsController.hideItem(item);
-                showMessageDialog(null, "Item: " + unhiddenInventory.get(0) + " has been successfully hidden");
+                showMessageDialog(null, unhiddenInventory.get(0).get("name") + " has been successfully hidden");
                 unhiddenInventory.remove(0);
-                displayUnhiddenInventory(unhiddenInventory, itemPresenter);
+                displayUnhiddenInventory(itemsController.getUnhiddenInventory(), itemPresenter);
+                displayHiddenInventory(itemsController.getHiddenInventory(), itemPresenter);
+                displayBrowse(browseController.getItemsString());
+
             } catch (AlreadyHiddenException | ItemNotFoundException exception) {
                 showMessageDialog(null, exception.getMessage());
             } catch (IOException ioException) {
                 ioException.printStackTrace();
+            }catch (IndexOutOfBoundsException outOfBoundsException) {
+                showMessageDialog(null, "There is no item to hide");
             }
 
         });
 
         btnItemsUnhide.addActionListener(e ->{
-            String item = hiddenInventory.get(0).get("id");
+
             try {
+                List<HashMap<String, String>> hiddenInventory = itemsController.getHiddenInventory();
+                String item = hiddenInventory.get(0).get("id");
                 itemsController.unhideItem(item);
-                showMessageDialog(null, "Item: " + hiddenInventory.get(0) + " has been successfully unhidden");
+                showMessageDialog(null, hiddenInventory.get(0).get("name") + " has been successfully unhidden");
                 hiddenInventory.remove(0);
-                displayHiddenInventory(hiddenInventory, itemPresenter);
+                displayUnhiddenInventory(itemsController.getUnhiddenInventory(), itemPresenter);
+                displayHiddenInventory(itemsController.getHiddenInventory(), itemPresenter);
+                displayBrowse(browseController.getItemsString());
 
             } catch (ItemNotFoundException | AlreadyNotHiddenException exception) {
                 showMessageDialog(null, exception.getMessage());
             } catch (IOException ioException) {
                 ioException.printStackTrace();
+            } catch (IndexOutOfBoundsException outOfBoundsException) {
+                showMessageDialog(null, "There is no item to unhide");
             }
         });
     }
@@ -1244,13 +1267,13 @@ public class TraderGUI {
 
     }
 
-//    private Integer tryParse(String s){
-//        try {
-//            return Integer.parseInt(s);
-//        } catch (NumberFormatException e) {
-//
-//            showMessageDialog(null, "Invalid Input! Please try again");
-//            return null;
-//            }
-//    }
+    private Integer tryParse(String s){
+        try {
+            return Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+
+            showMessageDialog(null, "Invalid Input! Please try again");
+            return null;
+            }
+    }
 }
