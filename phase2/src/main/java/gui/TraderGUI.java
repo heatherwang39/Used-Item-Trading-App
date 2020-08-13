@@ -182,6 +182,10 @@ public class TraderGUI {
     private JTextField txtRequestLendSuggestedInput;
     private JTabbedPane tabbedPane4;
     private JPasswordField pswdLogin;
+    private JTextField txtRequestSantaExplanation;
+    private JTextField txtRequestSantaInput;
+    private JButton btnRequestSantaEnter;
+    private JTextArea txtAreaRequestSantaExplanation;
 
     private String user;
     private final StorageGateway storageGateway;
@@ -224,6 +228,7 @@ public class TraderGUI {
         txtAreaActivityPartnerOutput.setEditable(false);
         txtAreaItemsUnhiddenOutput.setEditable(false);
         txtAreaItemsHiddenOutput.setEditable(false);
+        txtAreaRequestSantaExplanation.setEditable(false);
 
 
         // this is so users cannot select two radio buttons simultaneously
@@ -483,6 +488,13 @@ public class TraderGUI {
         List<List<HashMap<String, String>>> suggestionList = requestController.suggestAllItems(user);
         displayRequestSuggestions(suggestionList, itemPresenter);
 
+        txtAreaRequestSantaExplanation.setText("Here you can offer an item you own for 'Secret Santa'. \n" +
+                "When there is enough items, your item should be lent to random user that the program will pick. \n" +
+                "Likewise you will receive an item from one of the other users.");
+
+        btnRequestSantaEnter.addActionListener(e -> {
+            Integer itemID = tryParse(txtRequestSantaInput.getText());
+        });
 
         btnRequestSuggestionEnter.addActionListener(e -> {
             displayRequestSuggestions(suggestionList, itemPresenter);
@@ -1233,13 +1245,13 @@ public class TraderGUI {
 
     }
 
-//    private Integer tryParse(String s){
-//        try {
-//            return Integer.parseInt(s);
-//        } catch (NumberFormatException e) {
-//
-//            showMessageDialog(null, "Invalid Input! Please try again");
-//            return null;
-//            }
-//    }
+    private Integer tryParse(String s){
+        try {
+            return Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+
+            showMessageDialog(null, "Invalid Input! Please try again");
+            return null;
+            }
+    }
 }

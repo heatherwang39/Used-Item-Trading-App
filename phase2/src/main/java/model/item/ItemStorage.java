@@ -473,7 +473,7 @@ public class ItemStorage implements Storage, TradeObserver {
                 }
             }
 
-            if(newStatus == -1){
+            else if(newStatus == -1){
                 for(String user : exchangeData.keySet()){
                     item = exchangeData.get(user).get("SENT");
                     if(!(item == null)){
@@ -482,7 +482,7 @@ public class ItemStorage implements Storage, TradeObserver {
                 }
             }
 
-            if(newStatus == 2){
+            else if(newStatus == 2){
                 for(String user : exchangeData.keySet()){
                     item = exchangeData.get(user).get("RECEIVED");
                     if(!(item == null)){
