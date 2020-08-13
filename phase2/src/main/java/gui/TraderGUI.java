@@ -481,10 +481,10 @@ public class TraderGUI {
         AtomicInteger index = new AtomicInteger();
         MainTabbedPane.insertTab("Request", null, Request, null, 3);
 
-        RequestController requestController = new RequestController(storageGateway, user);
+        ItemRequestController itemRequestController = new ItemRequestController(storageGateway, user);
         ItemPresenter itemPresenter = new ItemPresenter();
 
-        List<List<HashMap<String, String>>> suggestionList = requestController.suggestAllItems();
+        List<List<HashMap<String, String>>> suggestionList = itemRequestController.suggestAllItems();
         displayRequestSuggestions(suggestionList, itemPresenter);
 
 
@@ -503,7 +503,7 @@ public class TraderGUI {
                         for (HashMap<String, String> individualItem : suggestionList.get(index.get())) {
                             tradeItemList.add(Integer.parseInt(individualItem.get("id")));
                         }
-                        requestController.createRequest(false, tradeAlgorithmName, tradeItemList);
+                        itemRequestController.createRequest(false, tradeAlgorithmName, tradeItemList);
                         showMessageDialog(null, "Request created!\n" +
                                 "Items: " + tradeItemList.toString());
 
@@ -547,7 +547,7 @@ public class TraderGUI {
 
 
                 try {
-                    String validRequest = requestController.checkValidRequest(requestedItem, offeredItem);
+                    String validRequest = itemRequestController.checkValidRequest(requestedItem, offeredItem);
                     if (!validRequest.equals("VALID")) {
                         showMessageDialog(null, validRequest);
                     } else {
@@ -562,7 +562,7 @@ public class TraderGUI {
                             tradeItemsList.add(requestedItemID);
                         }
                         TradeAlgorithmName tradeAlgorithmName = TradeAlgorithmName.CYCLE;
-                        requestController.createRequest(rbtnPermTrade.isSelected(), tradeAlgorithmName, tradeItemsList);
+                        itemRequestController.createRequest(rbtnPermTrade.isSelected(), tradeAlgorithmName, tradeItemsList);
                         showMessageDialog(null, "Request submitted!\n" +
                                 "Items: " + tradeItemsList.toString());
                         rbtnPermTrade.setSelected(false);
@@ -840,14 +840,14 @@ public class TraderGUI {
         MainTabbedPane.insertTab("Requests", null, Requests, null, 2);
 
         ItemPresenter itemPresenter = new ItemPresenter();
-        RequestsController requestsController = new RequestsController(storageGateway, itemPresenter);
+        TradeRequestsController tradeRequestsController = new TradeRequestsController(storageGateway, itemPresenter);
 
-        txtAreaRequestsOutput.setText(requestsController.getRequestsString());
+        txtAreaRequestsOutput.setText(tradeRequestsController.getRequestsString());
 
         btnRequestsEnter.addActionListener(e -> {
             try {
-                List<HashMap<String, String>> requestsList = requestsController.getRequests();
-                List<String> formattedRequestsList = requestsController.getFormattedRequests();
+                List<HashMap<String, String>> requestsList = tradeRequestsController.getRequests();
+                List<String> formattedRequestsList = tradeRequestsController.getFormattedRequests();
                 if (!requestsList.isEmpty()) {
                     HashMap<String, String> item = requestsList.get(0);
                     txtRequestsOutput.setText(formattedRequestsList.get(0));
@@ -855,20 +855,20 @@ public class TraderGUI {
                         showMessageDialog(null, "Item accepted!\nName: " + item.get("name") +
                                 "\nDescription: " + item.get("description") +
                                 "\nTags: " + item.get("tags"));
-                        requestsController.verifyItem(Integer.parseInt(item.get("id")));
+                        tradeRequestsController.verifyItem(Integer.parseInt(item.get("id")));
                         requestsList.remove(item);
                         formattedRequestsList.remove(formattedRequestsList.get(0));
-                        txtAreaRequestsOutput.setText(requestsController.getRequestsString());
+                        txtAreaRequestsOutput.setText(tradeRequestsController.getRequestsString());
                         BrowseController browseController = new BrowseController(storageGateway);
                         displayBrowse(browseController.getItemsString());
                     } else if (rbtnDenyRequest.isSelected()) {
                         showMessageDialog(null, "Item rejected!\nName: " + item.get("name") +
                                 "\nDescription: " + item.get("description") +
                                 "\nTags: " + item.get("tags"));
-                        requestsController.rejectItem(Integer.parseInt(item.get("id")));
+                        tradeRequestsController.rejectItem(Integer.parseInt(item.get("id")));
                         requestsList.remove(item);
                         formattedRequestsList.remove(formattedRequestsList.get(0));
-                        txtAreaRequestsOutput.setText(requestsController.getRequestsString());
+                        txtAreaRequestsOutput.setText(tradeRequestsController.getRequestsString());
                     } else {
                         showMessageDialog(null, "Please accept or deny this request!");
                     }

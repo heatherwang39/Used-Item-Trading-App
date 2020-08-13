@@ -18,7 +18,7 @@ import java.io.IOException;
  * @version %I%, %G%
  * @since Phase 2
  */
-public class RequestController {
+public class ItemRequestController {
     private final StorageGateway storageGateway;
     private final TradeStorage tradeStorage;
     private final ItemStorage itemStorage;
@@ -31,7 +31,7 @@ public class RequestController {
      * @param storageGateway gateway for loading and saving information
      * @param username username of the user accessing the Request tab
      */
-    public RequestController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
+    public ItemRequestController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
         this.storageGateway = storageGateway;
         this.username = username;
         StorageDepot sd = new StorageDepot(storageGateway);
