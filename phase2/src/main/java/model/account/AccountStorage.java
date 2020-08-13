@@ -223,10 +223,11 @@ public class AccountStorage implements Storage, TradeObserver {
             throw new NegativeThresholdException();
         }
         Account a = getAccount(username);
-        if(a.getType().equals("USER")){
+        if(a.getType().equals("USER")) {
             ((UserAccount) a).setBorrowThreshold(threshold);
+        } else {
+            throw new WrongAccountTypeException();
         }
-        throw new WrongAccountTypeException();
     }
 
     /** Set the IncompleteThreshold of the given account to be the following.
@@ -237,16 +238,17 @@ public class AccountStorage implements Storage, TradeObserver {
      * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      * @throws AccountNotFoundException Thrown when no account has the given username
      */
-    public void setIncompleteThreshold(String username, int threshold) throws NegativeThresholdException, WrongAccountTypeException,
-            AccountNotFoundException{
+    public void setIncompleteThreshold(String username, int threshold) throws NegativeThresholdException,
+            AccountNotFoundException, WrongAccountTypeException {
         if(threshold < 0){
             throw new NegativeThresholdException();
         }
         Account a = getAccount(username);
         if(a.getType().equals("USER")){
             ((UserAccount) a).setIncompleteThreshold(threshold);
+        } else {
+            throw new WrongAccountTypeException();
         }
-        throw new WrongAccountTypeException();
     }
 
     /** Set the WeeklyThreshold of the given account to be the following.
@@ -257,16 +259,17 @@ public class AccountStorage implements Storage, TradeObserver {
      * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      * @throws AccountNotFoundException Thrown when no account has the given username
      */
-    public void setWeeklyThreshold(String username, int threshold) throws NegativeThresholdException, WrongAccountTypeException,
-            AccountNotFoundException{
+    public void setWeeklyThreshold(String username, int threshold) throws NegativeThresholdException,
+            AccountNotFoundException, WrongAccountTypeException {
         if(threshold < 0){
             throw new NegativeThresholdException();
         }
         Account a = getAccount(username);
         if(a.getType().equals("USER")){
             ((UserAccount) a).setWeeklyThreshold(threshold);
+        } else {
+            throw new WrongAccountTypeException();
         }
-        throw new WrongAccountTypeException();
     }
 
     /** Set the BorrowThreshold to all users.
@@ -294,7 +297,8 @@ public class AccountStorage implements Storage, TradeObserver {
      * @throws WrongAccountTypeException Thrown if the account doesn't have a threshold associated with it
      * @throws AccountNotFoundException Thrown when no account has the given username
      */
-    public void setAllIncompleteThresholds(int threshold) throws AccountNotFoundException, NegativeThresholdException, WrongAccountTypeException {
+    public void setAllIncompleteThresholds(int threshold) throws AccountNotFoundException, NegativeThresholdException,
+            WrongAccountTypeException {
         if(threshold < 0){
             throw new NegativeThresholdException();
         }
@@ -549,8 +553,9 @@ public class AccountStorage implements Storage, TradeObserver {
         Account user = getAccount(username);
         if(user.getType().equals("USER")){
             ((UserAccount) user).setGildedThreshold(threshold);
+        } else {
+            throw new WrongAccountTypeException();
         }
-        throw new WrongAccountTypeException();
     }
 
 

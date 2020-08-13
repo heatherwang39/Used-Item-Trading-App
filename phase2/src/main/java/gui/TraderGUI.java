@@ -339,9 +339,6 @@ public class TraderGUI {
                 ioException.printStackTrace();
                 initializeRegister();
             }
-            txtLoginUsername.setText(""); // are we sure this should be here
-            txtLoginPassword.setText("");
-
         });
     }
 
@@ -863,104 +860,129 @@ public class TraderGUI {
                 showMessageDialog(null, exception.getMessage());
             } catch (IOException ioException) {
                 ioException.printStackTrace();
+            } catch (NumberFormatException numberFormatException) {
+                showMessageDialog(null, "Input a valid number please!");
             }
         });
 
-            btnThresholdBorrowedEnter.addActionListener(e -> {
-            txtThresholdBorrowedInput.setText("");
-            int newBorrowingThreshold = Integer.parseInt(txtThresholdBorrowedInput.getText());
+        btnThresholdBorrowedEnter.addActionListener(e -> {
             try {
+                int newBorrowingThreshold = Integer.parseInt(txtThresholdBorrowedInput.getText());
                 thresholdController.setBorrowingThreshold(newBorrowingThreshold);
                 showMessageDialog(null, "New Borrowing Threshold has been set to: " + newBorrowingThreshold);
+                txtThresholdBorrowedInput.setText("");
             } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException | IOException exception) {
                 showMessageDialog(null,exception.getMessage());
+            } catch (NumberFormatException numberFormatException) {
+                showMessageDialog(null, "Input a valid number please!");
             }
         });
+
         btnThresholdIncompleteEnter.addActionListener(e -> {
-            txtThresholdIncompleteInput.setText("");
-            int newIncompleteThreshold = Integer.parseInt(txtThresholdIncompleteInput.getText());
             try {
+                int newIncompleteThreshold = Integer.parseInt(txtThresholdIncompleteInput.getText());
                 thresholdController.setIncompleteThreshold(newIncompleteThreshold);
                 showMessageDialog(null, "New Incompleted Trades Threshold has been set to: " + newIncompleteThreshold);
+                txtThresholdIncompleteInput.setText("");
             } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException | IOException exception) {
                 showMessageDialog(null,exception.getMessage());
+            } catch (NumberFormatException numberFormatException) {
+                showMessageDialog(null, "Input a valid number please!");
             }
         });
         btnThresholdWeeklyEnter.addActionListener(e -> {
-            txtThresholdWeeklyInput.setText("");
-            int newWeeklyThreshold = Integer.parseInt(txtThresholdWeeklyInput.getText());
             try {
+                int newWeeklyThreshold = Integer.parseInt(txtThresholdWeeklyInput.getText());
                 thresholdController.setWeeklyThreshold(newWeeklyThreshold);
                 showMessageDialog(null, "New Weekly Trade Threshold has been set to: " + newWeeklyThreshold);
+                txtThresholdWeeklyInput.setText("");
             } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException | IOException exception) {
                 showMessageDialog(null,exception.getMessage());
+            } catch (NumberFormatException numberFormatException) {
+                showMessageDialog(null, "Input a valid number please!");
             }
         });
         btnThresholdGuildedEnter.addActionListener(e -> {
-            txtThresholdGildedInput.setText("");
-            int newGildedThreshold = Integer.parseInt(txtThresholdGildedInput.getText());
             try {
+                int newGildedThreshold = Integer.parseInt(txtThresholdGildedInput.getText());
                 thresholdController.setGildedThreshold(newGildedThreshold);
                 showMessageDialog(null, "New Threshold for Users to obtain the Guilded Status set to: " + newGildedThreshold);
+                txtThresholdGildedInput.setText("");
             } catch (AccountNotFoundException | WrongAccountTypeException | NegativeThresholdException exception) {
                  showMessageDialog(null,exception.getMessage());
             } catch (IOException ioException){
                  ioException.printStackTrace();
+            } catch (NumberFormatException numberFormatException) {
+                showMessageDialog(null, "Input a valid number please!");
             }
         });
 
-        String thresholdUser = txtThresholdUsernameInput.getText();
+
         btnThresholdUserBorrowing.addActionListener(e -> {
-            txtThresholdUserBorrowing.setText("");
-            int userBorrowingThreshold = Integer.parseInt(txtThresholdUserBorrowing.getText());
             try {
+                String thresholdUser = txtThresholdUsernameInput.getText();
+                int userBorrowingThreshold = Integer.parseInt(txtThresholdUserBorrowing.getText());
                 thresholdController.setBorrowingThresholdForUser(thresholdUser, userBorrowingThreshold);
                 showMessageDialog(null, "Borrowing Threshold successfully set to " +
                         userBorrowingThreshold + " items for user: " + thresholdUser);
+                txtThresholdUserBorrowing.setText("");
             } catch (AccountNotFoundException | NegativeThresholdException | WrongAccountTypeException exception) {
                 showMessageDialog(null, exception.getMessage());
             } catch (IOException ioException) {
                 ioException.printStackTrace();
+            } catch (NumberFormatException numberFormatException) {
+                showMessageDialog(null, "Input a valid number please!");
             }
         });
+
         btnThresholdUserIncompleted.addActionListener(e -> {
-            txtThresholdUserIncompleted.setText("");
-            int userIncompletedThreshold = Integer.parseInt(txtThresholdUserIncompleted.getText());
             try {
+                String thresholdUser = txtThresholdUsernameInput.getText();
+                int userIncompletedThreshold = Integer.parseInt(txtThresholdUserIncompleted.getText());
                 thresholdController.setIncompleteThresholdForUser(thresholdUser, userIncompletedThreshold);
                 showMessageDialog(null, "Incompletd Trades Threshold successfully set to " +
                         userIncompletedThreshold + " trades for user: " + thresholdUser);
+                txtThresholdUserIncompleted.setText("");
             } catch (AccountNotFoundException | NegativeThresholdException | WrongAccountTypeException exception) {
                 showMessageDialog(null, exception.getMessage());
             } catch (IOException ioException) {
                 ioException.printStackTrace();
+            } catch (NumberFormatException numberFormatException) {
+                showMessageDialog(null, "Input a valid number please!");
             }
         });
+
         btnThresholdUserWeekly.addActionListener(e -> {
-            txtThresholdUserWeekly.setText("");
-            int userWeeklyThreshold = Integer.parseInt(txtThresholdUserWeekly.getText());
             try {
+                String thresholdUser = txtThresholdUsernameInput.getText();
+                int userWeeklyThreshold = Integer.parseInt(txtThresholdUserWeekly.getText());
                 thresholdController.setWeeklyThresholdForUser(thresholdUser, userWeeklyThreshold);
                 showMessageDialog(null, "Weekly Trades Threshold successfully set to " +
                         userWeeklyThreshold + " trades for user: " + thresholdUser);
+                txtThresholdUserWeekly.setText("");
             } catch (AccountNotFoundException | NegativeThresholdException | WrongAccountTypeException exception) {
                 showMessageDialog(null, exception.getMessage());
             } catch (IOException ioException) {
                 ioException.printStackTrace();
+            } catch (NumberFormatException numberFormatException) {
+                showMessageDialog(null, "Input a valid number please!");
             }
         });
         btnThresholdUserGilded.addActionListener(e -> {
-            txtThresholdUserGilded.setText("");
-            int userGildedThreshold = Integer.parseInt(txtThresholdUserGilded.getText());
             try {
+                String thresholdUser = txtThresholdUsernameInput.getText();
+                int userGildedThreshold = Integer.parseInt(txtThresholdUserGilded.getText());
                 thresholdController.setGildedThresholdForUser(thresholdUser, userGildedThreshold);
                 showMessageDialog(null, "Threshold for User to obtain Gilded Status " +
                         "successfully set to " + userGildedThreshold + " trades for user: "
                         + thresholdUser);
+                txtThresholdUserGilded.setText("");
             } catch (AccountNotFoundException | NegativeThresholdException | WrongAccountTypeException exception) {
                 showMessageDialog(null, exception.getMessage());
             } catch (IOException ioException) {
                 ioException.printStackTrace();
+            } catch (NumberFormatException numberFormatException) {
+                showMessageDialog(null, "Input a valid number please!");
             }
         });
     }
