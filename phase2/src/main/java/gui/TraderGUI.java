@@ -182,6 +182,11 @@ public class TraderGUI {
     private JTextField txtRequestLendSuggestedInput;
     private JTabbedPane tabbedPane4;
     private JPasswordField pswdLogin;
+    private JTextField txtRequestThreeWayUsers;
+    private JRadioButton rbtnRequestThreeWayPerm;
+    private JButton btnRequestThreeWayAddUser;
+    private JButton btnRequestThreeWayOfferTrade;
+    private JRadioButton rbtnRequestThreeWayTemp;
     private JTextField txtRequestSantaExplanation;
     private JTextField txtRequestSantaInput;
     private JButton btnRequestSantaEnter;
@@ -228,7 +233,7 @@ public class TraderGUI {
         txtAreaActivityPartnerOutput.setEditable(false);
         txtAreaItemsUnhiddenOutput.setEditable(false);
         txtAreaItemsHiddenOutput.setEditable(false);
-        txtAreaRequestSantaExplanation.setEditable(false);
+
 
 
         // this is so users cannot select two radio buttons simultaneously
@@ -490,9 +495,6 @@ public class TraderGUI {
                 "When there is enough items, your item should be lent to random user that the program will pick. \n" +
                 "Likewise you will receive an item from one of the other users.");
 
-        btnRequestSantaEnter.addActionListener(e -> {
-            Integer itemID = tryParse(txtRequestSantaInput.getText());
-        });
 
         btnRequestSuggestionEnter.addActionListener(e -> {
             displayRequestSuggestions(suggestionList, itemPresenter);
@@ -1296,4 +1298,5 @@ public class TraderGUI {
             return null;
             }
     }
+
 }
