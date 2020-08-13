@@ -38,7 +38,8 @@ public class TradePresenter {
      * @return List of formatted Strings of each Trade object in tradesData
      * @throws ItemNotFoundException Thrown if there is an item not in the system
      */
-    public List<String> formatTradeForListView(List<HashMap<String, List<String>>> tradesData) throws ItemNotFoundException {
+    public List<String> formatTradeForListView(List<HashMap<String, List<String>>> tradesData, String format)
+            throws ItemNotFoundException {
         List<String> formatTrade = new ArrayList<>();
         for (HashMap<String, List<String>> tradeData : tradesData) {
             StringBuilder tradeInfo = new StringBuilder(tradeData.get("type").get(0));
@@ -51,16 +52,26 @@ public class TradePresenter {
             for (String itemName : itemNames){
                 tradeInfo.append(itemName).append(", ");
             }
-            tradeInfo.deleteCharAt(tradeInfo.length() - 1).deleteCharAt(tradeInfo.length() - 1).append("\nWarnings: ");
-            tradeInfo.append(tradeData.get("warnings").get(0)).append("\nMaximum Number of Warnings Allowed: ");
-            tradeInfo.append(tradeData.get("max warnings").get(0)).append("\nUsers Who Have Not Yet Accepted: ");
-            for (String username : tradeData.get("unaccepted")) {
-                tradeInfo.append(username).append(", ");
-            }
-            tradeInfo.deleteCharAt(tradeInfo.length() - 1).deleteCharAt(tradeInfo.length() - 1).append("\n");
+            tradeInfo.deleteCharAt(tradeInfo.length() - 1).deleteCharAt(tradeInfo.length() - 1);
+            if (format.equals("OFFERS")) tradeInfo.append(formatForOffers(tradeData));
+            if (format.equals("MEETING")) tradeInfo.append(formatForMeeting(tradeData));
             formatTrade.add(tradeInfo.toString());
         }
         return formatTrade;
+    }
+
+    private String formatForOffers(HashMap<String, List<String>> tradeData) {
+        StringBuilder tradeInfo = new StringBuilder("\nUsers Who Have Not Yet Accepted: ");
+        for (String username : tradeData.get("unaccepted")) {
+            tradeInfo.append(username).append(", ");
+        }
+        tradeInfo.deleteCharAt(tradeInfo.length() - 1).deleteCharAt(tradeInfo.length() - 1).append("\n ---------------------- \n");
+        return tradeInfo.toString();
+    }
+
+    private String formatForMeeting(HashMap<String, List<String>> tradeData) {
+        return "\nWarnings: " + tradeData.get("warnings").get(0) + "\nMaximum Number of Warnings Allowed: " +
+                tradeData.get("max warnings").get(0) + "\n";
     }
 
     /**
@@ -70,9 +81,10 @@ public class TradePresenter {
      * @return formatted string
      * @throws ItemNotFoundException item was not found
      */
-    public String formatTradeString(List<HashMap<String, List<String>>> tradesData) throws ItemNotFoundException {
+    public String formatTradeString(List<HashMap<String, List<String>>> tradesData, String format)
+            throws ItemNotFoundException {
         StringBuilder trades = new StringBuilder();
-        for (String s: formatTradeForListView(tradesData)) {
+        for (String s: formatTradeForListView(tradesData, format)) {
             trades.append(s);
         }
         return trades.toString();

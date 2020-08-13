@@ -441,23 +441,23 @@ public class TraderGUI {
         TradePresenter tradePresenter = new TradePresenter(storageGateway);
         OffersController offersController = new OffersController(storageGateway, user, tradePresenter);
 
-        txtAreaOffersOutput.setText(tradePresenter.formatTradeString(offersController.getOffers()));
+        txtAreaOffersOutput.setText(tradePresenter.formatTradeString(offersController.getOffers(), "OFFERS"));
 
         btnOfferEnter.addActionListener(e -> {
             try{
                 List<HashMap<String, List<String>>> unformattedOfferList = offersController.getOffers();
-                List<String> offerList = tradePresenter.formatTradeForListView(unformattedOfferList);
+                List<String> offerList = tradePresenter.formatTradeForListView(unformattedOfferList, "OFFERS");
                 if (!offerList.isEmpty()) {
                     txtOffersOutput.setText(offerList.get(0));
                     if (rbtnAcceptOffer.isSelected()) {
                         offersController.acceptOffer(Integer.parseInt(unformattedOfferList.get(0).get("id").get(0)));
-                        txtAreaOffersOutput.setText(tradePresenter.formatTradeString(offersController.getOffers()));
+                        txtAreaOffersOutput.setText(tradePresenter.formatTradeString(offersController.getOffers(), "OFFERS"));
                         showMessageDialog(null, "Trade accepted!");
                         MeetingController meetingController = new MeetingController(storageGateway, user);
                         displaySuggestMeetings(meetingController);
                     } else if (rbtnDenyOffer.isSelected()) {
                         offersController.rejectOffer(Integer.parseInt(unformattedOfferList.get(0).get("id").get(0)));
-                        txtAreaOffersOutput.setText(tradePresenter.formatTradeString(offersController.getOffers()));
+                        txtAreaOffersOutput.setText(tradePresenter.formatTradeString(offersController.getOffers(), "OFFERS"));
                         showMessageDialog(null, "Trade rejected!");
                     } else {
                         showMessageDialog(null, "Please select an option!");
