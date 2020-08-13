@@ -9,7 +9,7 @@ package main.java.system;
  */
 public enum StorageEnum{
     ACCOUNT("ACCOUNT"), MEETING("MEETING"), MESSAGE("MESSAGE"),
-    TRADE("TRADE"), ITEM("ITEM");
+    TRADE("TRADE"), ITEM("ITEM"), LOG("LOG");
 
     private final String name;
 
