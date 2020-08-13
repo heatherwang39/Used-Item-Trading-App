@@ -1,0 +1,1834 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>main.java</OriginalElement>
+  <nodes>
+    <node x="8940.61385324519" y="609.0">main.java.model.meeting.MeetingObserver</node>
+    <node x="6957.31545754238" y="1199.0">main.java.model.account.UserAccount</node>
+    <node x="6326.56545754238" y="1373.0">main.java.model.trade.ItemAlreadyInActiveTradeException</node>
+    <node x="11122.680040875714" y="1373.0">main.java.model.trade.MeetingNotInTradeException</node>
+    <node x="1968.4999999999982" y="1373.0">main.java.model.account.EmailAddressInUseException</node>
+    <node x="1716.4999999999982" y="1373.0">main.java.model.account.StatusNotFoundException</node>
+    <node x="12727.680040875714" y="1341.0">main.java.model.trade.PermanentTrade</node>
+    <node x="5529.048720461307" y="3258.0">main.java.model.message.MessageStorage</node>
+    <node x="9419.086290875714" y="1156.0">main.java.model.meeting.Meeting</node>
+    <node x="14101.680040875714" y="1178.0">main.java.model.item.Item</node>
+    <node x="0.0" y="6327.0">main.java.presenter.MessagePresenter</node>
+    <node x="13345.87926245079" y="3016.0">main.java.model.item.ItemStorage</node>
+    <node x="13609.680040875714" y="1373.0">main.java.model.trade.TradeNumberException</node>
+    <node x="6518.622781816619" y="1.0">main.java.model.account.Account</node>
+    <node x="8366.767663424733" y="6252.0">main.java.controller.OffersController</node>
+    <node x="14990.055040875714" y="6230.0">main.java.controller.ItemRequestsController</node>
+    <node x="5241.191577604165" y="5653.0">main.java.controller.GildedController</node>
+    <node x="4271.191577604165" y="5738.0">main.java.controller.UserAlreadyAddedException</node>
+    <node x="7077.482124209046" y="512.0">main.java.model.account.StatusEnum</node>
+    <node x="9749.086290875714" y="1362.0">main.java.model.Storage</node>
+    <node x="15897.907982052184" y="1373.0">main.java.model.item.ItemInTradeException</node>
+    <node x="8004.746013097935" y="5046.0">main.java.system.StorageDepot</node>
+    <node x="6691.31545754238" y="1352.0">main.java.model.account.AdminAccount</node>
+    <node x="9451.00295754238" y="5642.0">main.java.controller.WishlistController</node>
+    <node x="1212.4999999999982" y="1373.0">main.java.model.message.EmptyTitleException</node>
+    <node x="5340.65920754238" y="1309.0">main.java.system.FileReadWriter</node>
+    <node x="16126.907982052184" y="1373.0">main.java.model.item.AlreadyNotHiddenException</node>
+    <node x="15653.907982052184" y="1373.0">main.java.model.item.AlreadyHiddenException</node>
+    <node x="6754.499269911857" y="3271.0">main.java.system.StorageGateway</node>
+    <node x="416.4999999999991" y="1373.0">main.java.model.account.InvalidUsernameException</node>
+    <node x="11587.680040875714" y="568.0">main.java.model.trade.RandomTradeAlgorithm</node>
+    <node x="3146.691577604165" y="5738.0">main.java.controller.TooFewTradersException</node>
+    <node x="12347.430040875714" y="260.0">main.java.model.trade.Trade</node>
+    <node x="3669.191577604165" y="6218.0">main.java.controller.RandomTradeRequestController</node>
+    <node x="7639.273790875713" y="5696.0">main.java.presenter.MeetingPresenter</node>
+    <node x="7907.273790875713" y="6098.0">main.java.controller.MeetingController</node>
+    <node x="8599.36385324519" y="1329.0">main.java.model.meeting.MeetingObservee</node>
+    <node x="6812.664015234687" y="7052.0">main.java.gui.TraderGUI</node>
+    <node x="936.4999999999982" y="1373.0">main.java.model.account.NegativeThresholdException</node>
+    <node x="3149.1162211170413" y="1373.0">main.java.model.account.WrongAccountTypeException</node>
+    <node x="7557.2737908757135" y="1373.0">main.java.model.message.AccountMessage</node>
+    <node x="9616.00295754238" y="2764.0">main.java.model.trade.TradeStorage</node>
+    <node x="7762.47170754238" y="4802.0">main.java.system.StorageFactory</node>
+    <node x="4753.111413424733" y="1373.0">main.java.model.meeting.MeetingAlreadyConfirmedException</node>
+    <node x="8363.36385324519" y="1254.0">main.java.system.StorageEnum</node>
+    <node x="10644.773790875714" y="1373.0">main.java.model.trade.NoTradeWithMeetingIDException</node>
+    <node x="10719.006553966114" y="0.0">main.java.model.trade.TradeAlgorithmName</node>
+    <node x="2377.1162211170413" y="1373.0">main.java.model.message.EmptyContentException</node>
+    <node x="6557.191577604164" y="5532.0">main.java.controller.AccountController</node>
+    <node x="11804.728991596638" y="22.0">main.java.model.trade.TradeAlgorithm</node>
+    <node x="14054.430040875714" y="631.0">main.java.model.item.NotInWishlistException</node>
+    <node x="14677.680040875714" y="1373.0">main.java.model.item.ItemNotFoundException</node>
+    <node x="10069.773790875714" y="631.0">main.java.model.trade.TradeObserver</node>
+    <node x="0.0" y="11165.0">main.java.presenter.FreezePresenter</node>
+    <node x="2905.1162211170413" y="1373.0">main.java.model.account.UsernameInUseException</node>
+    <node x="4437.111413424733" y="1373.0">main.java.model.trade.MaxNumMeetingsExceededException</node>
+    <node x="4215.441577604165" y="2906.0">main.java.model.account.AccountStorage</node>
+    <node x="7254.2737908757135" y="1373.0">main.java.model.message.SystemMessage</node>
+    <node x="2613.1162211170413" y="1373.0">main.java.model.account.InvalidEmailAddressException</node>
+    <node x="11261.680040875714" y="610.0">main.java.model.trade.CycleTradeAlgorithm</node>
+    <node x="8862.00295754238" y="5674.0">main.java.controller.ActivityController</node>
+    <node x="3931.191577604165" y="5738.0">main.java.controller.NoValidItemsFromGivenUserException</node>
+    <node x="6301.191577604164" y="5663.0">main.java.controller.UserlistController</node>
+    <node x="9949.773790875714" y="1351.0">main.java.model.trade.TradeObservee</node>
+    <node x="1432.4999999999982" y="1373.0">main.java.model.message.EmptyRecipientListException</node>
+    <node x="3538.4287211170413" y="1373.0">main.java.model.account.AccountNotFoundException</node>
+    <node x="11257.068965983759" y="5630.0">main.java.controller.TradeRequestController</node>
+    <node x="11925.680040875714" y="1341.0">main.java.model.trade.TemporaryTrade</node>
+    <node x="361.0" y="11165.0">main.java.model.meeting.NotYetAcceptedException</node>
+    <node x="15477.613739574972" y="11002.0">main.java.system.TraderMain</node>
+    <node x="6053.191577604164" y="5674.0">main.java.controller.LoginController</node>
+    <node x="13145.680040875714" y="1373.0">main.java.model.meeting.WrongMeetingAccountException</node>
+    <node x="15366.525629111007" y="5717.0">main.java.presenter.ItemPresenter</node>
+    <node x="10544.773790875714" y="631.0">main.java.model.trade.TradeAlgorithmCreator</node>
+    <node x="13837.680040875714" y="1373.0">main.java.model.trade.TradeCancelledException</node>
+    <node x="9157.00295754238" y="5685.0">main.java.controller.BrowseController</node>
+    <node x="13437.680040875714" y="1373.0">main.java.model.meeting.TimeException</node>
+    <node x="8296.00295754238" y="5641.0">main.java.presenter.TradePresenter</node>
+    <node x="11398.680040875714" y="1373.0">main.java.model.trade.TradeAlgorithmFactory</node>
+    <node x="7578.085579435667" y="534.0">main.java.model.message.Message</node>
+    <node x="5077.111413424733" y="1373.0">main.java.model.meeting.MeetingIDException</node>
+    <node x="4905.191577604165" y="5587.0">main.java.controller.MessageController</node>
+    <node x="12343.680040875714" y="1351.0">main.java.model.trade.TradeActivityManager</node>
+    <node x="676.4999999999982" y="1373.0">main.java.model.account.InvalidPasswordException</node>
+    <node x="4539.191577604165" y="5554.0">main.java.controller.ThresholdController</node>
+    <node x="5493.191577604165" y="5685.0">main.java.controller.AddAdminController</node>
+    <node x="14401.680040875714" y="1373.0">main.java.model.trade.WrongTradeAccountException</node>
+    <node x="7752.75295754238" y="3138.0">main.java.model.meeting.MeetingStorage</node>
+    <node x="6737.25295754238" y="578.0">main.java.model.account.LoginAccount</node>
+    <node x="14768.180040875714" y="5587.0">main.java.controller.ItemsController</node>
+    <node x="13461.782160428203" y="631.0">main.java.model.trade.NoSuchTradeAlgorithmException</node>
+    <node x="5769.191577604164" y="5652.0">main.java.controller.FreezeController</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.account.EmailAddressInUseException">
+      <point x="-190.5000000000009" y="-1950.0" />
+      <point x="6876.164015234686" y="6952.0" />
+      <point x="2032.4999999999982" y="6952.0" />
+      <point x="-64.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.MeetingController" target="main.java.system.StorageGateway">
+      <point x="-150.18181818181802" y="-277.0" />
+      <point x="7963.591972693895" y="6068.0" />
+      <point x="6874.691577604164" y="6068.0" />
+      <point x="6874.691577604164" y="4612.0" />
+      <point x="6898.499269911857" y="4612.0" />
+      <point x="0.0" y="112.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeStorage" target="main.java.model.trade.MaxNumMeetingsExceededException">
+      <point x="-215.14583333333394" y="-619.0" />
+      <point x="9625.357124209047" y="1764.0" />
+      <point x="4659.111413424733" y="1764.0" />
+      <point x="74.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.TradeRequestController" target="main.java.system.StorageGateway">
+      <point x="0.0" y="-135.0" />
+      <point x="11456.068965983759" y="5502.0" />
+      <point x="11522.513410428202" y="5502.0" />
+      <point x="11522.513410428202" y="4122.0" />
+      <point x="6994.499269911857" y="4122.0" />
+      <point x="96.0" y="112.0" />
+    </edge>
+    <edge source="main.java.controller.ItemsController" target="main.java.system.StorageEnum">
+      <point x="135.42857142857065" y="-178.0" />
+      <point x="15061.608612304284" y="5512.0" />
+      <point x="15068.805040875714" y="5512.0" />
+      <point x="15068.805040875714" y="1734.0" />
+      <point x="8550.36385324519" y="1734.0" />
+      <point x="85.0" y="146.0" />
+    </edge>
+    <edge source="main.java.system.StorageFactory" target="main.java.model.message.MessageStorage">
+      <point x="-99.6875" y="-27.0" />
+      <point x="7822.28420754238" y="4262.0" />
+      <point x="5837.923720461307" y="4262.0" />
+      <point x="132.375" y="125.0" />
+    </edge>
+    <edge source="main.java.model.account.AccountStorage" target="main.java.model.trade.TradeObserver">
+      <point x="215.14285714285688" y="-477.0" />
+      <point x="4681.584434747022" y="2134.0" />
+      <point x="7235.419624209047" y="2134.0" />
+      <point x="7235.419624209047" y="1136.0" />
+      <point x="10115.273790875714" y="1136.0" />
+      <point x="-182.0" y="27.0" />
+    </edge>
+    <edge source="main.java.system.StorageFactory" target="main.java.model.Storage">
+      <point x="59.8125" y="-27.0" />
+      <point x="7981.78420754238" y="4612.0" />
+      <point x="8532.961290875714" y="4612.0" />
+      <point x="8532.961290875714" y="2404.0" />
+      <point x="9840.669624209047" y="2404.0" />
+      <point x="13.08333333333394" y="38.0" />
+    </edge>
+    <edge source="main.java.model.message.MessageStorage" target="main.java.model.message.SystemMessage">
+      <point x="-22.0625" y="-125.0" />
+      <point x="5683.486220461307" y="2144.0" />
+      <point x="7395.7737908757135" y="2144.0" />
+      <point x="0.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.LoginController" target="main.java.model.account.AccountStorage">
+      <point x="-95.0" y="-91.0" />
+      <point x="6072.191577604164" y="5302.0" />
+      <point x="6142.191577604164" y="5302.0" />
+      <point x="6142.191577604164" y="4352.0" />
+      <point x="4466.441577604165" y="4352.0" />
+      <point x="0.0" y="477.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.account.InvalidPasswordException">
+      <point x="-227.85294117647118" y="-1950.0" />
+      <point x="6838.811074058216" y="7002.0" />
+      <point x="736.4999999999982" y="7002.0" />
+      <point x="-60.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.RandomTradeRequestController" target="main.java.model.item.ItemStorage">
+      <point x="54.0" y="-157.0" />
+      <point x="3898.691577604165" y="4966.0" />
+      <point x="6852.691577604164" y="4966.0" />
+      <point x="6852.691577604164" y="4702.0" />
+      <point x="13368.424716996244" y="4702.0" />
+      <point x="-225.45454545454504" y="367.0" />
+    </edge>
+    <edge source="main.java.controller.ThresholdController" target="main.java.system.StorageDepot">
+      <point x="151.375" y="-211.0" />
+      <point x="4863.566577604165" y="5362.0" />
+      <point x="8025.843235320158" y="5362.0" />
+      <point x="-87.40277777777737" y="113.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.presenter.MessagePresenter">
+      <point x="-242.79411764705947" y="-1950.0" />
+      <point x="6823.869897587628" y="7022.0" />
+      <point x="349.5" y="7022.0" />
+      <point x="116.5" y="48.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeStorage" target="main.java.model.trade.WrongTradeAccountException">
+      <point x="215.14583333333394" y="-619.0" />
+      <point x="10055.648790875715" y="2694.0" />
+      <point x="14465.680040875714" y="2694.0" />
+      <point x="-64.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.meeting.MeetingStorage" target="main.java.model.meeting.TimeException">
+      <point x="192.72727272727207" y="-245.0" />
+      <point x="8157.480230269652" y="2604.0" />
+      <point x="13475.680040875714" y="2604.0" />
+      <point x="-38.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeAlgorithmCreator" target="main.java.model.trade.TradeAlgorithmName">
+      <point x="-89.5" y="-27.0" />
+      <point x="10634.273790875714" y="210.0" />
+      <point x="10822.339887299448" y="210.0" />
+      <point x="-20.66666666666606" y="70.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.controller.OffersController">
+      <point x="48.55882352941262" y="-1950.0" />
+      <point x="7115.2228387641" y="6762.0" />
+      <point x="8630.017663424733" y="6762.0" />
+      <point x="87.75" y="123.0" />
+    </edge>
+    <edge source="main.java.controller.GildedController" target="main.java.system.StorageGateway">
+      <point x="19.33333333333303" y="-112.0" />
+      <point x="5376.524910937497" y="4492.0" />
+      <point x="6809.883885296472" y="4492.0" />
+      <point x="-88.61538461538476" y="112.0" />
+    </edge>
+    <edge source="main.java.system.StorageDepot" target="main.java.system.StorageEnum">
+      <point x="-23.25" y="-113.0" />
+      <point x="8089.996013097935" y="4906.0" />
+      <point x="7656.22170754238" y="4906.0" />
+      <point x="7656.22170754238" y="2284.0" />
+      <point x="8482.36385324519" y="2284.0" />
+      <point x="17.0" y="146.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.controller.BrowseController">
+      <point x="93.38235294117658" y="-1950.0" />
+      <point x="7160.046368175864" y="6822.0" />
+      <point x="9289.767663424733" y="6822.0" />
+      <point x="9289.767663424733" y="6078.0" />
+      <point x="9225.25295754238" y="6078.0" />
+      <point x="-68.25" y="80.0" />
+    </edge>
+    <edge source="main.java.controller.BrowseController" target="main.java.system.StorageGateway">
+      <point x="34.125" y="-80.0" />
+      <point x="9327.62795754238" y="4182.0" />
+      <point x="6957.57619298878" y="4182.0" />
+      <point x="59.07692307692378" y="112.0" />
+    </edge>
+    <edge source="main.java.system.StorageDepot" target="main.java.model.account.AccountStorage">
+      <point x="-100.75" y="-113.0" />
+      <point x="8012.496013097935" y="4956.0" />
+      <point x="6687.834434747021" y="4956.0" />
+      <point x="6687.834434747021" y="4322.0" />
+      <point x="4582.287731450319" y="4322.0" />
+      <point x="115.84615384615427" y="477.0" />
+    </edge>
+    <edge source="main.java.presenter.TradePresenter" target="main.java.system.StorageDepot">
+      <point x="-183.75" y="-124.0" />
+      <point x="8357.25295754238" y="5482.0" />
+      <point x="8140.371013097935" y="5482.0" />
+      <point x="27.125" y="113.0" />
+    </edge>
+    <edge source="main.java.controller.RandomTradeRequestController" target="main.java.controller.TooFewTradersException">
+      <point x="-162.0" y="-157.0" />
+      <point x="3682.691577604165" y="6078.0" />
+      <point x="3314.691577604165" y="6078.0" />
+      <point x="56.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.trade.RandomTradeAlgorithm" target="main.java.model.trade.TradeAlgorithm">
+      <point x="0.0" y="-90.0" />
+      <point x="11740.680040875714" y="240.0" />
+      <point x="11889.728991596638" y="240.0" />
+      <point x="-68.0" y="48.0" />
+    </edge>
+    <edge source="main.java.model.trade.PermanentTrade" target="main.java.model.trade.TradeAlgorithm">
+      <point x="132.66666666666606" y="-59.0" />
+      <point x="13059.34670754238" y="1126.0" />
+      <point x="13114.21575516143" y="1126.0" />
+      <point x="13114.21575516143" y="210.0" />
+      <point x="12093.728991596638" y="210.0" />
+      <point x="136.0" y="48.0" />
+    </edge>
+    <edge source="main.java.controller.WishlistController" target="main.java.system.StorageGateway">
+      <point x="23.0" y="-123.0" />
+      <point x="9612.00295754238" y="5512.0" />
+      <point x="9594.50295754238" y="5512.0" />
+      <point x="9594.50295754238" y="4152.0" />
+      <point x="6979.730039142626" y="4152.0" />
+      <point x="81.23076923076951" y="112.0" />
+    </edge>
+    <edge source="main.java.controller.UserlistController" target="main.java.system.StorageDepot">
+      <point x="59.0" y="-102.0" />
+      <point x="6478.191577604164" y="5472.0" />
+      <point x="8092.148790875713" y="5472.0" />
+      <point x="-21.097222222222626" y="113.0" />
+    </edge>
+    <edge source="main.java.controller.RandomTradeRequestController" target="main.java.model.trade.TradeAlgorithmName">
+      <point x="-135.0" y="-157.0" />
+      <point x="3709.691577604165" y="6068.0" />
+      <point x="3383.941577604165" y="6068.0" />
+      <point x="3383.941577604165" y="4332.0" />
+      <point x="2289.8676470588225" y="4332.0" />
+      <point x="2289.8676470588225" y="190.0" />
+      <point x="10739.67322063278" y="190.0" />
+      <point x="-103.33333333333394" y="70.0" />
+    </edge>
+    <edge source="main.java.controller.TradeRequestController" target="main.java.system.StorageEnum">
+      <point x="132.66666666666697" y="-135.0" />
+      <point x="11588.735632650425" y="5492.0" />
+      <point x="13852.37926245079" y="5492.0" />
+      <point x="13852.37926245079" y="1744.0" />
+      <point x="8539.030519911856" y="1744.0" />
+      <point x="73.66666666666697" y="146.0" />
+    </edge>
+    <edge source="main.java.controller.TradeRequestController" target="main.java.model.account.AccountStorage">
+      <point x="-88.44444444444434" y="-135.0" />
+      <point x="11367.624521539314" y="5482.0" />
+      <point x="11500.513410428202" y="5482.0" />
+      <point x="11500.513410428202" y="4142.0" />
+      <point x="4698.133885296473" y="4142.0" />
+      <point x="231.69230769230762" y="477.0" />
+    </edge>
+    <edge source="main.java.system.StorageDepot" target="main.java.system.StorageGateway">
+      <point x="-38.75" y="-113.0" />
+      <point x="8074.496013097935" y="4916.0" />
+      <point x="7577.164015234687" y="4916.0" />
+      <point x="7577.164015234687" y="4282.0" />
+      <point x="6905.883885296472" y="4282.0" />
+      <point x="7.384615384615245" y="112.0" />
+    </edge>
+    <edge source="main.java.controller.FreezeController" target="main.java.system.StorageGateway">
+      <point x="0.0" y="-113.0" />
+      <point x="5901.191577604164" y="5322.0" />
+      <point x="5914.548720461307" y="5322.0" />
+      <point x="5914.548720461307" y="4532.0" />
+      <point x="6839.422346834933" y="4532.0" />
+      <point x="-59.07692307692378" y="112.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeStorage" target="main.java.model.trade.ItemAlreadyInActiveTradeException">
+      <point x="-196.4375" y="-619.0" />
+      <point x="9644.06545754238" y="1754.0" />
+      <point x="6560.56545754238" y="1754.0" />
+      <point x="78.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeAlgorithmFactory" target="main.java.model.trade.TradeAlgorithmCreator">
+      <point x="-149.16666666666606" y="-27.0" />
+      <point x="11428.513374209047" y="1136.0" />
+      <point x="10813.273790875714" y="1136.0" />
+      <point x="89.5" y="27.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeAlgorithmFactory" target="main.java.model.trade.CycleTradeAlgorithm">
+      <point x="-29.83333333333394" y="-27.0" />
+      <point x="11547.84670754238" y="1116.0" />
+      <point x="11414.680040875714" y="1116.0" />
+      <point x="0.0" y="48.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.account.AccountNotFoundException">
+      <point x="-153.14705882352973" y="-1950.0" />
+      <point x="6913.5169564111575" y="6902.0" />
+      <point x="2688.0240355873593" y="6902.0" />
+      <point x="2688.0240355873593" y="4352.0" />
+      <point x="2881.1242956039114" y="4352.0" />
+      <point x="2881.1242956039114" y="1984.0" />
+      <point x="3578.4287211170413" y="1984.0" />
+      <point x="-80.0" y="27.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.account.WrongAccountTypeException">
+      <point x="-160.61764705882433" y="-1950.0" />
+      <point x="6906.046368175863" y="6912.0" />
+      <point x="2632.189750528807" y="6912.0" />
+      <point x="2632.189750528807" y="4342.0" />
+      <point x="2757.951932117375" y="4342.0" />
+      <point x="2757.951932117375" y="1974.0" />
+      <point x="3180.1162211170413" y="1974.0" />
+      <point x="-93.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.FreezeController" target="main.java.system.StorageDepot">
+      <point x="75.42857142857065" y="-113.0" />
+      <point x="5976.620149032735" y="5432.0" />
+      <point x="8068.037679764601" y="5432.0" />
+      <point x="-45.20833333333394" y="113.0" />
+    </edge>
+    <edge source="main.java.model.item.ItemStorage" target="main.java.model.item.AlreadyHiddenException">
+      <point x="135.27272727272702" y="-367.0" />
+      <point x="13729.151989723516" y="2724.0" />
+      <point x="15709.907982052184" y="2724.0" />
+      <point x="-56.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeAlgorithmFactory" target="main.java.model.trade.TradeAlgorithm">
+      <point x="89.5" y="-27.0" />
+      <point x="11667.180040875714" y="1126.0" />
+      <point x="11904.180040875714" y="1126.0" />
+      <point x="11904.180040875714" y="230.0" />
+      <point x="11923.728991596638" y="230.0" />
+      <point x="-34.0" y="48.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.controller.ActivityController">
+      <point x="78.44117647058738" y="-1950.0" />
+      <point x="7145.105191705275" y="6802.0" />
+      <point x="8995.767663424733" y="6802.0" />
+      <point x="8995.767663424733" y="6078.0" />
+      <point x="8930.75295754238" y="6078.0" />
+      <point x="-68.75" y="91.0" />
+    </edge>
+    <edge source="main.java.controller.OffersController" target="main.java.system.StorageGateway">
+      <point x="50.14285714285688" y="-123.0" />
+      <point x="8592.41052056759" y="6058.0" />
+      <point x="8796.50295754238" y="6058.0" />
+      <point x="8796.50295754238" y="4212.0" />
+      <point x="6935.422346834933" y="4212.0" />
+      <point x="36.92307692307622" y="112.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.trade.MaxNumMeetingsExceededException">
+      <point x="-145.67647058823604" y="-1950.0" />
+      <point x="6920.987544646451" y="6892.0" />
+      <point x="2695.494623822653" y="6892.0" />
+      <point x="2695.494623822653" y="4362.0" />
+      <point x="3031.859589721558" y="4362.0" />
+      <point x="3031.859589721558" y="1994.0" />
+      <point x="4511.111413424733" y="1994.0" />
+      <point x="-74.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.FreezeController" target="main.java.system.StorageEnum">
+      <point x="-75.42857142857065" y="-113.0" />
+      <point x="5825.763006175594" y="5302.0" />
+      <point x="5892.548720461307" y="5302.0" />
+      <point x="5892.548720461307" y="2234.0" />
+      <point x="8425.697186578524" y="2234.0" />
+      <point x="-39.66666666666697" y="146.0" />
+    </edge>
+    <edge source="main.java.controller.RandomTradeRequestController" target="main.java.controller.UserAlreadyAddedException">
+      <point x="162.0" y="-157.0" />
+      <point x="4006.691577604165" y="6078.0" />
+      <point x="4333.191577604165" y="6078.0" />
+      <point x="-62.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.MeetingController" target="main.java.model.trade.TradeStorage">
+      <point x="112.63636363636397" y="-277.0" />
+      <point x="8226.410154512076" y="6058.0" />
+      <point x="8263.50295754238" y="6058.0" />
+      <point x="8263.50295754238" y="4672.0" />
+      <point x="9862.95295754238" y="4672.0" />
+      <point x="22.450000000000728" y="619.0" />
+    </edge>
+    <edge source="main.java.controller.AddAdminController" target="main.java.system.StorageEnum">
+      <point x="-64.0" y="-80.0" />
+      <point x="5557.191577604165" y="5312.0" />
+      <point x="5518.548720461307" y="5312.0" />
+      <point x="5518.548720461307" y="2224.0" />
+      <point x="8414.36385324519" y="2224.0" />
+      <point x="-51.0" y="146.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.system.StorageGateway">
+      <point x="108.32352941176396" y="-1950.0" />
+      <point x="7174.987544646451" y="6842.0" />
+      <point x="9440.50295754238" y="6842.0" />
+      <point x="9440.50295754238" y="4172.0" />
+      <point x="6964.960808373396" y="4172.0" />
+      <point x="66.46153846153902" y="112.0" />
+    </edge>
+    <edge source="main.java.controller.LoginController" target="main.java.system.StorageGateway">
+      <point x="-19.0" y="-91.0" />
+      <point x="6148.191577604164" y="5322.0" />
+      <point x="6175.191577604164" y="5322.0" />
+      <point x="6175.191577604164" y="4946.0" />
+      <point x="6390.691577604164" y="4946.0" />
+      <point x="6390.691577604164" y="4542.0" />
+      <point x="6846.806962219548" y="4542.0" />
+      <point x="-51.69230769230853" y="112.0" />
+    </edge>
+    <edge source="main.java.controller.MessageController" target="main.java.system.StorageEnum">
+      <point x="-90.28571428571468" y="-178.0" />
+      <point x="4972.90586331845" y="5302.0" />
+      <point x="5058.263006175594" y="5302.0" />
+      <point x="5058.263006175594" y="2204.0" />
+      <point x="8391.697186578524" y="2204.0" />
+      <point x="-73.66666666666697" y="146.0" />
+    </edge>
+    <edge source="main.java.model.message.SystemMessage" target="main.java.model.message.Message">
+      <point x="70.75" y="-27.0" />
+      <point x="7466.5237908757135" y="1116.0" />
+      <point x="7648.585579435667" y="1116.0" />
+      <point x="-70.5" y="124.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.controller.TradeRequestController">
+      <point x="115.79411764705947" y="-1950.0" />
+      <point x="7182.458132881747" y="6852.0" />
+      <point x="11548.098377748465" y="6852.0" />
+      <point x="11548.098377748465" y="6078.0" />
+      <point x="11356.568965983759" y="6078.0" />
+      <point x="-99.5" y="135.0" />
+    </edge>
+    <edge source="main.java.controller.ItemRequestsController" target="main.java.system.StorageEnum">
+      <point x="65.25" y="-145.0" />
+      <point x="15229.305040875714" y="6078.0" />
+      <point x="15250.930040875714" y="6078.0" />
+      <point x="15250.930040875714" y="1724.0" />
+      <point x="8561.697186578524" y="1724.0" />
+      <point x="96.33333333333303" y="146.0" />
+    </edge>
+    <edge source="main.java.controller.MeetingController" target="main.java.system.StorageEnum">
+      <point x="75.09090909090992" y="-277.0" />
+      <point x="8188.8646999666225" y="6048.0" />
+      <point x="8252.50295754238" y="6048.0" />
+      <point x="8252.50295754238" y="2304.0" />
+      <point x="8505.030519911856" y="2304.0" />
+      <point x="39.66666666666697" y="146.0" />
+    </edge>
+    <edge source="main.java.controller.AccountController" target="main.java.model.item.ItemStorage">
+      <point x="42.285714285714675" y="-233.0" />
+      <point x="6747.477291889879" y="5322.0" />
+      <point x="6800.084434747021" y="5322.0" />
+      <point x="6800.084434747021" y="4976.0" />
+      <point x="8182.25295754238" y="4976.0" />
+      <point x="8182.25295754238" y="4722.0" />
+      <point x="13458.606535178063" y="4722.0" />
+      <point x="-135.27272727272702" y="367.0" />
+    </edge>
+    <edge source="main.java.controller.TradeRequestController" target="main.java.model.trade.TradeStorage">
+      <point x="44.222222222222626" y="-135.0" />
+      <point x="11500.291188205982" y="5512.0" />
+      <point x="11533.513410428202" y="5512.0" />
+      <point x="11533.513410428202" y="4112.0" />
+      <point x="9997.652957542381" y="4112.0" />
+      <point x="157.14999999999964" y="619.0" />
+    </edge>
+    <edge source="main.java.model.item.ItemStorage" target="main.java.model.item.NotInWishlistException">
+      <point x="-135.27272727272702" y="-367.0" />
+      <point x="13458.606535178063" y="2654.0" />
+      <point x="14091.180040875714" y="2654.0" />
+      <point x="14091.180040875714" y="1136.0" />
+      <point x="14110.430040875714" y="1136.0" />
+      <point x="-56.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.MessageController" target="main.java.model.account.AccountStorage">
+      <point x="-135.42857142857156" y="-178.0" />
+      <point x="4927.763006175594" y="5292.0" />
+      <point x="5047.263006175594" y="5292.0" />
+      <point x="5047.263006175594" y="4392.0" />
+      <point x="4311.980039142627" y="4392.0" />
+      <point x="-154.4615384615381" y="477.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.controller.AccountController">
+      <point x="18.676470588236043" y="-1950.0" />
+      <point x="7085.340485822923" y="6672.0" />
+      <point x="6779.191577604164" y="6672.0" />
+      <point x="74.0" y="233.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeAlgorithmFactory" target="main.java.model.trade.RandomTradeAlgorithm">
+      <point x="29.83333333333394" y="-27.0" />
+      <point x="11607.513374209047" y="1116.0" />
+      <point x="11740.680040875714" y="1116.0" />
+      <point x="0.0" y="90.0" />
+    </edge>
+    <edge source="main.java.controller.ItemsController" target="main.java.model.trade.TradeStorage">
+      <point x="45.14285714285688" y="-178.0" />
+      <point x="14971.32289801857" y="5492.0" />
+      <point x="15046.805040875714" y="5492.0" />
+      <point x="15046.805040875714" y="4082.0" />
+      <point x="10042.552957542379" y="4082.0" />
+      <point x="202.04999999999927" y="619.0" />
+    </edge>
+    <edge source="main.java.model.account.AccountStorage" target="main.java.model.account.AccountNotFoundException">
+      <point x="0.0" y="-477.0" />
+      <point x="4466.441577604165" y="1844.0" />
+      <point x="3738.4287211170413" y="1844.0" />
+      <point x="80.0" y="27.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.controller.MeetingController">
+      <point x="33.61764705882342" y="-1950.0" />
+      <point x="7100.281662293511" y="6742.0" />
+      <point x="8217.023790875712" y="6742.0" />
+      <point x="103.25" y="277.0" />
+    </edge>
+    <edge source="main.java.model.account.AccountStorage" target="main.java.model.account.InvalidEmailAddressException">
+      <point x="-119.52380952380918" y="-477.0" />
+      <point x="4346.917768080356" y="1894.0" />
+      <point x="2817.1162211170413" y="1894.0" />
+      <point x="68.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.AddAdminController" target="main.java.model.account.AccountStorage">
+      <point x="-106.66666666666697" y="-80.0" />
+      <point x="5514.524910937498" y="5322.0" />
+      <point x="5507.548720461307" y="5322.0" />
+      <point x="5507.548720461307" y="4372.0" />
+      <point x="4389.210808373396" y="4372.0" />
+      <point x="-77.23076923076951" y="477.0" />
+    </edge>
+    <edge source="main.java.model.meeting.MeetingStorage" target="main.java.model.meeting.MeetingObserver">
+      <point x="-115.63636363636397" y="-245.0" />
+      <point x="7849.116593906016" y="2314.0" />
+      <point x="8577.86385324519" y="2314.0" />
+      <point x="8577.86385324519" y="1106.0" />
+      <point x="8964.48885324519" y="1106.0" />
+      <point x="-71.625" y="49.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.meeting.TimeException">
+      <point x="168.0882352941171" y="-1950.0" />
+      <point x="7234.752250528804" y="6922.0" />
+      <point x="15356.025629111007" y="6922.0" />
+      <point x="15356.025629111007" y="1704.0" />
+      <point x="13551.680040875714" y="1704.0" />
+      <point x="38.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.ItemRequestsController" target="main.java.system.StorageGateway">
+      <point x="-65.25" y="-145.0" />
+      <point x="15098.805040875714" y="6068.0" />
+      <point x="15147.555040875714" y="6068.0" />
+      <point x="15147.555040875714" y="4062.0" />
+      <point x="7016.653116065702" y="4062.0" />
+      <point x="118.15384615384573" y="112.0" />
+    </edge>
+    <edge source="main.java.system.StorageFactory" target="main.java.model.item.ItemStorage">
+      <point x="139.5625" y="-27.0" />
+      <point x="8061.53420754238" y="4712.0" />
+      <point x="13413.515626087154" y="4712.0" />
+      <point x="-180.36363636363603" y="367.0" />
+    </edge>
+    <edge source="main.java.controller.WishlistController" target="main.java.system.StorageDepot">
+      <point x="-69.0" y="-123.0" />
+      <point x="9520.00295754238" y="5402.0" />
+      <point x="8188.593235320158" y="5402.0" />
+      <point x="75.34722222222263" y="113.0" />
+    </edge>
+    <edge source="main.java.controller.ThresholdController" target="main.java.system.FileReadWriter">
+      <point x="-151.375" y="-211.0" />
+      <point x="4560.816577604165" y="5322.0" />
+      <point x="4140.914015234688" y="5322.0" />
+      <point x="4140.914015234688" y="4936.0" />
+      <point x="4010.754077604165" y="4936.0" />
+      <point x="4010.754077604165" y="2024.0" />
+      <point x="5381.03420754238" y="2024.0" />
+      <point x="-121.125" y="91.0" />
+    </edge>
+    <edge source="main.java.system.TraderMain" target="main.java.gui.TraderGUI">
+      <point x="-62.0" y="-59.0" />
+      <point x="15508.613739574972" y="10982.0" />
+      <point x="7066.664015234687" y="10982.0" />
+      <point x="0.0" y="1950.0" />
+    </edge>
+    <edge source="main.java.controller.TradeRequestController" target="main.java.system.StorageDepot">
+      <point x="-176.8888888888887" y="-135.0" />
+      <point x="11279.18007709487" y="5392.0" />
+      <point x="8194.621013097934" y="5392.0" />
+      <point x="81.375" y="113.0" />
+    </edge>
+    <edge source="main.java.model.meeting.MeetingStorage" target="main.java.model.meeting.MeetingObservee">
+      <point x="-38.54545454545405" y="-245.0" />
+      <point x="7926.2075029969255" y="2334.0" />
+      <point x="8749.86385324519" y="2334.0" />
+      <point x="0.0" y="71.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeStorage" target="main.java.model.trade.TemporaryTrade">
+      <point x="46.77083333333394" y="-619.0" />
+      <point x="9887.273790875715" y="2534.0" />
+      <point x="12124.180040875714" y="2534.0" />
+      <point x="0.0" y="59.0" />
+    </edge>
+    <edge source="main.java.model.message.MessageStorage" target="main.java.model.message.AccountMessage">
+      <point x="22.0625" y="-125.0" />
+      <point x="5727.611220461307" y="2154.0" />
+      <point x="7720.7737908757135" y="2154.0" />
+      <point x="0.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.MeetingController" target="main.java.presenter.TradePresenter">
+      <point x="187.72727272727207" y="-277.0" />
+      <point x="8301.501063602984" y="6078.0" />
+      <point x="8443.00295754238" y="6078.0" />
+      <point x="-98.0" y="124.0" />
+    </edge>
+    <edge source="main.java.presenter.TradePresenter" target="main.java.model.item.ItemStorage">
+      <point x="183.75" y="-124.0" />
+      <point x="8724.75295754238" y="5512.0" />
+      <point x="8840.50295754238" y="5512.0" />
+      <point x="8840.50295754238" y="4752.0" />
+      <point x="13593.87926245079" y="4752.0" />
+      <point x="0.0" y="367.0" />
+    </edge>
+    <edge source="main.java.controller.FreezeController" target="main.java.model.account.AccountStorage">
+      <point x="-113.14285714285688" y="-113.0" />
+      <point x="5788.048720461307" y="5292.0" />
+      <point x="5881.548720461307" y="5292.0" />
+      <point x="5881.548720461307" y="4362.0" />
+      <point x="4427.82619298878" y="4362.0" />
+      <point x="-38.615384615384755" y="477.0" />
+    </edge>
+    <edge source="main.java.model.trade.PermanentTrade" target="main.java.model.trade.Trade">
+      <point x="-132.66666666666606" y="-59.0" />
+      <point x="12794.013374209047" y="1116.0" />
+      <point x="12627.14432659" y="1116.0" />
+      <point x="101.71428571428623" y="398.0" />
+    </edge>
+    <edge source="main.java.controller.AccountController" target="main.java.system.StorageDepot">
+      <point x="126.85714285714312" y="-233.0" />
+      <point x="6832.048720461307" y="5502.0" />
+      <point x="8110.232124209047" y="5502.0" />
+      <point x="-3.013888888888687" y="113.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.trade.ItemAlreadyInActiveTradeException">
+      <point x="-123.26470588235316" y="-1950.0" />
+      <point x="6943.399309352334" y="6862.0" />
+      <point x="3136.191577604165" y="6862.0" />
+      <point x="3136.191577604165" y="4392.0" />
+      <point x="4039.0130061755935" y="4392.0" />
+      <point x="4039.0130061755935" y="2044.0" />
+      <point x="6404.56545754238" y="2044.0" />
+      <point x="-78.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeStorage" target="main.java.model.trade.TradeAlgorithmCreator">
+      <point x="-65.47916666666606" y="-619.0" />
+      <point x="9775.023790875715" y="2474.0" />
+      <point x="10634.273790875714" y="2474.0" />
+      <point x="-89.5" y="27.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.controller.MessageController">
+      <point x="-56.02941176470631" y="-1950.0" />
+      <point x="7010.634603469981" y="6772.0" />
+      <point x="5142.191577604165" y="6772.0" />
+      <point x="79.0" y="178.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.account.InvalidEmailAddressException">
+      <point x="-175.55882352941262" y="-1950.0" />
+      <point x="6891.105191705275" y="6932.0" />
+      <point x="2205.0695791761973" y="6932.0" />
+      <point x="2205.0695791761973" y="4772.0" />
+      <point x="2452.6176470588225" y="4772.0" />
+      <point x="2452.6176470588225" y="1954.0" />
+      <point x="2681.1162211170413" y="1954.0" />
+      <point x="-68.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.ItemRequestsController" target="main.java.model.item.ItemStorage">
+      <point x="21.75" y="-145.0" />
+      <point x="15185.805040875714" y="6078.0" />
+      <point x="15169.555040875714" y="6078.0" />
+      <point x="15169.555040875714" y="4042.0" />
+      <point x="13819.333807905336" y="4042.0" />
+      <point x="225.45454545454595" y="367.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.message.EmptyTitleException">
+      <point x="-212.9117647058829" y="-1950.0" />
+      <point x="6853.752250528804" y="6982.0" />
+      <point x="1262.4999999999982" y="6982.0" />
+      <point x="-50.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.item.ItemStorage" target="main.java.model.item.ItemNotFoundException">
+      <point x="90.18181818181802" y="-367.0" />
+      <point x="13684.061080632608" y="2714.0" />
+      <point x="14785.680040875714" y="2714.0" />
+      <point x="0.0" y="27.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.meeting.WrongMeetingAccountException">
+      <point x="160.61764705882342" y="-1950.0" />
+      <point x="7227.281662293511" y="6912.0" />
+      <point x="15348.555040875714" y="6912.0" />
+      <point x="15348.555040875714" y="1714.0" />
+      <point x="13349.680040875714" y="1714.0" />
+      <point x="68.0" y="27.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.meeting.MeetingIDException">
+      <point x="-130.73529411764775" y="-1950.0" />
+      <point x="6935.9287211170395" y="6872.0" />
+      <point x="3009.9652120579467" y="6872.0" />
+      <point x="3009.9652120579467" y="4382.0" />
+      <point x="3568.4505061755935" y="4382.0" />
+      <point x="3568.4505061755935" y="2014.0" />
+      <point x="5125.111413424733" y="2014.0" />
+      <point x="-48.0" y="27.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.trade.NoSuchTradeAlgorithmException">
+      <point x="235.32352941176396" y="-1950.0" />
+      <point x="7301.987544646451" y="7012.0" />
+      <point x="16116.407982052184" y="7012.0" />
+      <point x="16116.407982052184" y="1076.0" />
+      <point x="13671.782160428203" y="1076.0" />
+      <point x="70.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeStorage" target="main.java.model.trade.NoTradeWithMeetingIDException">
+      <point x="-28.0625" y="-619.0" />
+      <point x="9812.44045754238" y="2494.0" />
+      <point x="10854.773790875714" y="2494.0" />
+      <point x="70.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.RandomTradeRequestController" target="main.java.model.trade.TradeStorage">
+      <point x="27.0" y="-157.0" />
+      <point x="3871.691577604165" y="6078.0" />
+      <point x="3887.691577604165" y="6078.0" />
+      <point x="3887.691577604165" y="4956.0" />
+      <point x="4032.754077604165" y="4956.0" />
+      <point x="4032.754077604165" y="4622.0" />
+      <point x="9638.45295754238" y="4622.0" />
+      <point x="-202.04999999999927" y="619.0" />
+    </edge>
+    <edge source="main.java.controller.OffersController" target="main.java.system.StorageDepot">
+      <point x="-100.28571428571377" y="-123.0" />
+      <point x="8441.981949139019" y="6028.0" />
+      <point x="8274.50295754238" y="6028.0" />
+      <point x="8274.50295754238" y="5492.0" />
+      <point x="8134.343235320158" y="5492.0" />
+      <point x="21.097222222222626" y="113.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.controller.AddAdminController">
+      <point x="-48.55882352941171" y="-1950.0" />
+      <point x="7018.1051917052755" y="6762.0" />
+      <point x="5677.720989368871" y="6762.0" />
+      <point x="5677.720989368871" y="6078.0" />
+      <point x="5557.191577604165" y="6078.0" />
+      <point x="-64.0" y="80.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.controller.UserAlreadyAddedException">
+      <point x="-85.91176470588289" y="-1950.0" />
+      <point x="6980.752250528804" y="6812.0" />
+      <point x="4457.191577604165" y="6812.0" />
+      <point x="62.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeStorage" target="main.java.model.trade.PermanentTrade">
+      <point x="140.3125" y="-619.0" />
+      <point x="9980.81545754238" y="2584.0" />
+      <point x="12926.680040875714" y="2584.0" />
+      <point x="0.0" y="59.0" />
+    </edge>
+    <edge source="main.java.controller.MeetingController" target="main.java.system.StorageDepot">
+      <point x="0.0" y="-277.0" />
+      <point x="8113.773790875713" y="5512.0" />
+      <point x="8116.259901986824" y="5512.0" />
+      <point x="3.013888888888687" y="113.0" />
+    </edge>
+    <edge source="main.java.model.account.UserAccount" target="main.java.model.account.StatusEnum">
+      <point x="87.375" y="-201.0" />
+      <point x="7161.19045754238" y="1136.0" />
+      <point x="7175.482124209046" y="1136.0" />
+      <point x="0.0" y="146.0" />
+    </edge>
+    <edge source="main.java.controller.ThresholdController" target="main.java.model.account.AccountStorage">
+      <point x="-64.875" y="-211.0" />
+      <point x="4647.316577604165" y="5302.0" />
+      <point x="4598.226515234688" y="5302.0" />
+      <point x="4598.226515234688" y="4402.0" />
+      <point x="4273.364654527242" y="4402.0" />
+      <point x="-193.07692307692287" y="477.0" />
+    </edge>
+    <edge source="main.java.controller.ItemsController" target="main.java.model.item.ItemStorage">
+      <point x="90.28571428571377" y="-178.0" />
+      <point x="15016.465755161427" y="5502.0" />
+      <point x="15057.805040875714" y="5502.0" />
+      <point x="15057.805040875714" y="4072.0" />
+      <point x="13774.242898814426" y="4072.0" />
+      <point x="180.36363636363603" y="367.0" />
+    </edge>
+    <edge source="main.java.model.account.AccountStorage" target="main.java.model.account.InvalidPasswordException">
+      <point x="-215.14285714285688" y="-477.0" />
+      <point x="4251.298720461308" y="1934.0" />
+      <point x="856.4999999999982" y="1934.0" />
+      <point x="60.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeStorage" target="main.java.model.trade.MeetingNotInTradeException">
+      <point x="-9.35416666666606" y="-619.0" />
+      <point x="9831.148790875715" y="2504.0" />
+      <point x="11250.680040875714" y="2504.0" />
+      <point x="0.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.account.AdminAccount" target="main.java.model.account.LoginAccount">
+      <point x="-61.5" y="-48.0" />
+      <point x="6752.81545754238" y="1136.0" />
+      <point x="6837.25295754238" y="1136.0" />
+      <point x="-20.0" y="80.0" />
+    </edge>
+    <edge source="main.java.model.trade.TemporaryTrade" target="main.java.model.trade.TradeAlgorithm">
+      <point x="-132.33333333333394" y="-59.0" />
+      <point x="11991.84670754238" y="1096.0" />
+      <point x="12255.89432659" y="1096.0" />
+      <point x="12255.89432659" y="240.0" />
+      <point x="11991.728991596638" y="240.0" />
+      <point x="34.0" y="48.0" />
+    </edge>
+    <edge source="main.java.controller.AccountController" target="main.java.model.account.AccountStorage">
+      <point x="-126.85714285714312" y="-233.0" />
+      <point x="6578.334434747021" y="5292.0" />
+      <point x="6665.834434747021" y="5292.0" />
+      <point x="6665.834434747021" y="4926.0" />
+      <point x="6517.024910937497" y="4926.0" />
+      <point x="6517.024910937497" y="4332.0" />
+      <point x="4543.672346834935" y="4332.0" />
+      <point x="77.23076923076951" y="477.0" />
+    </edge>
+    <edge source="main.java.controller.TradeRequestController" target="main.java.model.item.ItemStorage">
+      <point x="88.44444444444434" y="-135.0" />
+      <point x="11544.513410428202" y="5482.0" />
+      <point x="11774.324774064567" y="5482.0" />
+      <point x="11774.324774064567" y="4782.0" />
+      <point x="13729.151989723516" y="4782.0" />
+      <point x="135.27272727272702" y="367.0" />
+    </edge>
+    <edge source="main.java.controller.RandomTradeRequestController" target="main.java.system.StorageEnum">
+      <point x="-54.0" y="-157.0" />
+      <point x="3790.691577604165" y="6048.0" />
+      <point x="3849.191577604165" y="6048.0" />
+      <point x="3849.191577604165" y="4412.0" />
+      <point x="4727.941577604165" y="4412.0" />
+      <point x="4727.941577604165" y="2184.0" />
+      <point x="8369.030519911856" y="2184.0" />
+      <point x="-96.33333333333303" y="146.0" />
+    </edge>
+    <edge source="main.java.presenter.TradePresenter" target="main.java.system.StorageGateway">
+      <point x="61.25" y="-124.0" />
+      <point x="8602.25295754238" y="4222.0" />
+      <point x="6928.037731450318" y="4222.0" />
+      <point x="29.53846153846098" y="112.0" />
+    </edge>
+    <edge source="main.java.system.StorageFactory" target="main.java.system.StorageGateway">
+      <point x="-59.8125" y="-27.0" />
+      <point x="7862.15920754238" y="4252.0" />
+      <point x="6913.268500681087" y="4252.0" />
+      <point x="14.76923076923049" y="112.0" />
+    </edge>
+    <edge source="main.java.controller.MeetingController" target="main.java.presenter.MeetingPresenter">
+      <point x="-37.54545454545405" y="-277.0" />
+      <point x="8076.228336330259" y="6038.0" />
+      <point x="7987.273790875713" y="6038.0" />
+      <point x="116.0" y="69.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.presenter.TradePresenter">
+      <point x="63.5" y="-1950.0" />
+      <point x="7130.164015234687" y="6782.0" />
+      <point x="8735.738251660026" y="6782.0" />
+      <point x="8735.738251660026" y="6048.0" />
+      <point x="8737.00295754238" y="6048.0" />
+      <point x="196.0" y="124.0" />
+    </edge>
+    <edge source="main.java.model.account.AccountStorage" target="main.java.model.account.EmailAddressInUseException">
+      <point x="-143.42857142857156" y="-477.0" />
+      <point x="4323.013006175594" y="1904.0" />
+      <point x="2160.499999999998" y="1904.0" />
+      <point x="64.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.AddAdminController" target="main.java.system.StorageGateway">
+      <point x="21.33333333333303" y="-80.0" />
+      <point x="5642.524910937497" y="4512.0" />
+      <point x="6824.653116065702" y="4512.0" />
+      <point x="-73.84615384615427" y="112.0" />
+    </edge>
+    <edge source="main.java.model.trade.CycleTradeAlgorithm" target="main.java.model.trade.TradeAlgorithm">
+      <point x="0.0" y="-48.0" />
+      <point x="11414.680040875714" y="230.0" />
+      <point x="11855.728991596638" y="230.0" />
+      <point x="-102.0" y="48.0" />
+    </edge>
+    <edge source="main.java.controller.ItemsController" target="main.java.system.StorageDepot">
+      <point x="-135.42857142857065" y="-178.0" />
+      <point x="14790.751469447143" y="5372.0" />
+      <point x="8206.676568653489" y="5372.0" />
+      <point x="93.43055555555475" y="113.0" />
+    </edge>
+    <edge source="main.java.model.account.AccountStorage" target="main.java.model.account.Account">
+      <point x="23.90476190476147" y="-477.0" />
+      <point x="4490.346339508927" y="2054.0" />
+      <point x="6649.06545754238" y="2054.0" />
+      <point x="6649.06545754238" y="180.0" />
+      <point x="6541.289448483286" y="180.0" />
+      <point x="-45.33333333333303" y="69.0" />
+    </edge>
+    <edge source="main.java.system.StorageDepot" target="main.java.model.meeting.MeetingStorage">
+      <point x="38.75" y="-113.0" />
+      <point x="8151.996013097935" y="4986.0" />
+      <point x="8193.25295754238" y="4986.0" />
+      <point x="8193.25295754238" y="4602.0" />
+      <point x="8123.75295754238" y="4602.0" />
+      <point x="159.0" y="245.0" />
+    </edge>
+    <edge source="main.java.controller.OffersController" target="main.java.presenter.TradePresenter">
+      <point x="0.0" y="-123.0" />
+      <point x="8542.267663424733" y="6078.0" />
+      <point x="8541.00295754238" y="6078.0" />
+      <point x="0.0" y="124.0" />
+    </edge>
+    <edge source="main.java.model.meeting.MeetingObservee" target="main.java.model.meeting.MeetingObserver">
+      <point x="0.0" y="-71.0" />
+      <point x="8749.86385324519" y="1126.0" />
+      <point x="9059.98885324519" y="1126.0" />
+      <point x="23.875" y="49.0" />
+    </edge>
+    <edge source="main.java.model.message.MessageStorage" target="main.java.model.message.EmptyRecipientListException">
+      <point x="-110.3125" y="-125.0" />
+      <point x="5595.236220461307" y="1824.0" />
+      <point x="1630.4999999999982" y="1824.0" />
+      <point x="66.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.ItemsController" target="main.java.system.StorageGateway">
+      <point x="-45.14285714285688" y="-178.0" />
+      <point x="14881.037183732857" y="5512.0" />
+      <point x="14915.180040875714" y="5512.0" />
+      <point x="14915.180040875714" y="4102.0" />
+      <point x="7001.883885296472" y="4102.0" />
+      <point x="103.38461538461524" y="112.0" />
+    </edge>
+    <edge source="main.java.model.message.AccountMessage" target="main.java.model.message.Message">
+      <point x="-81.75" y="-27.0" />
+      <point x="7639.0237908757135" y="1126.0" />
+      <point x="7695.585579435667" y="1126.0" />
+      <point x="-23.5" y="124.0" />
+    </edge>
+    <edge source="main.java.model.account.AccountStorage" target="main.java.model.account.StatusEnum">
+      <point x="191.2380952380954" y="-477.0" />
+      <point x="4657.6796728422605" y="2124.0" />
+      <point x="7224.419624209046" y="2124.0" />
+      <point x="7224.419624209046" y="1126.0" />
+      <point x="7240.81545754238" y="1126.0" />
+      <point x="65.33333333333303" y="146.0" />
+    </edge>
+    <edge source="main.java.controller.TradeRequestController" target="main.java.model.trade.TradeAlgorithmName">
+      <point x="176.8888888888887" y="-135.0" />
+      <point x="11632.957854872648" y="5502.0" />
+      <point x="14904.180040875714" y="5502.0" />
+      <point x="14904.180040875714" y="200.0" />
+      <point x="10905.006553966114" y="200.0" />
+      <point x="62.0" y="70.0" />
+    </edge>
+    <edge source="main.java.controller.GildedController" target="main.java.system.StorageEnum">
+      <point x="-58.0" y="-112.0" />
+      <point x="5299.191577604165" y="5312.0" />
+      <point x="5354.524910937497" y="5312.0" />
+      <point x="5354.524910937497" y="2214.0" />
+      <point x="8403.030519911856" y="2214.0" />
+      <point x="-62.33333333333303" y="146.0" />
+    </edge>
+    <edge source="main.java.model.account.AccountStorage" target="main.java.model.account.AdminAccount">
+      <point x="119.52380952380918" y="-477.0" />
+      <point x="4585.965387127974" y="2094.0" />
+      <point x="6875.81545754238" y="2094.0" />
+      <point x="61.5" y="48.0" />
+    </edge>
+    <edge source="main.java.model.message.MessageStorage" target="main.java.model.Storage">
+      <point x="154.4375" y="-125.0" />
+      <point x="5859.986220461307" y="2384.0" />
+      <point x="9788.336290875714" y="2384.0" />
+      <point x="-39.25" y="38.0" />
+    </edge>
+    <edge source="main.java.controller.LoginController" target="main.java.system.StorageEnum">
+      <point x="-57.0" y="-91.0" />
+      <point x="6110.191577604164" y="5312.0" />
+      <point x="6164.191577604164" y="5312.0" />
+      <point x="6164.191577604164" y="4936.0" />
+      <point x="6379.691577604164" y="4936.0" />
+      <point x="6379.691577604164" y="2244.0" />
+      <point x="8437.030519911856" y="2244.0" />
+      <point x="-28.33333333333303" y="146.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.item.ItemNotFoundException">
+      <point x="212.9117647058829" y="-1950.0" />
+      <point x="7279.57577994057" y="6982.0" />
+      <point x="15814.43739381689" y="6982.0" />
+      <point x="15814.43739381689" y="1664.0" />
+      <point x="14857.680040875714" y="1664.0" />
+      <point x="72.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.meeting.MeetingStorage" target="main.java.model.meeting.WrongMeetingAccountException">
+      <point x="154.18181818181802" y="-245.0" />
+      <point x="8118.934775724198" y="2594.0" />
+      <point x="13213.680040875714" y="2594.0" />
+      <point x="-68.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.UserlistController" target="main.java.system.StorageEnum">
+      <point x="-59.0" y="-102.0" />
+      <point x="6360.191577604164" y="5312.0" />
+      <point x="6416.85824427083" y="5312.0" />
+      <point x="6416.85824427083" y="4936.0" />
+      <point x="6528.024910937497" y="4936.0" />
+      <point x="6528.024910937497" y="2254.0" />
+      <point x="8448.36385324519" y="2254.0" />
+      <point x="-17.0" y="146.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.meeting.MeetingAlreadyConfirmedException">
+      <point x="-138.20588235294144" y="-1950.0" />
+      <point x="6928.458132881746" y="6882.0" />
+      <point x="2858.2299179403" y="6882.0" />
+      <point x="2858.2299179403" y="4372.0" />
+      <point x="3349.859589721558" y="4372.0" />
+      <point x="3349.859589721558" y="2004.0" />
+      <point x="4829.111413424733" y="2004.0" />
+      <point x="-76.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.ItemRequestsController" target="main.java.system.StorageDepot">
+      <point x="-152.25" y="-145.0" />
+      <point x="15011.805040875714" y="6068.0" />
+      <point x="8818.50295754238" y="6068.0" />
+      <point x="8818.50295754238" y="5462.0" />
+      <point x="8152.42656865349" y="5462.0" />
+      <point x="39.18055555555475" y="113.0" />
+    </edge>
+    <edge source="main.java.controller.MeetingController" target="main.java.model.meeting.MeetingStorage">
+      <point x="-112.63636363636397" y="-277.0" />
+      <point x="8001.137427239349" y="6058.0" />
+      <point x="7533.164015234687" y="6058.0" />
+      <point x="7533.164015234687" y="4602.0" />
+      <point x="7805.75295754238" y="4602.0" />
+      <point x="-159.0" y="245.0" />
+    </edge>
+    <edge source="main.java.controller.ItemRequestsController" target="main.java.presenter.ItemPresenter">
+      <point x="108.75" y="-145.0" />
+      <point x="15272.805040875714" y="6068.0" />
+      <point x="15418.400629111007" y="6068.0" />
+      <point x="-155.625" y="48.0" />
+    </edge>
+    <edge source="main.java.model.account.AccountStorage" target="main.java.model.account.UsernameInUseException">
+      <point x="-95.6190476190477" y="-477.0" />
+      <point x="4370.822529985117" y="1884.0" />
+      <point x="3073.1162211170413" y="1884.0" />
+      <point x="56.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeAlgorithmFactory" target="main.java.model.trade.NoSuchTradeAlgorithmException">
+      <point x="149.16666666666606" y="-27.0" />
+      <point x="11726.84670754238" y="1136.0" />
+      <point x="13531.782160428203" y="1136.0" />
+      <point x="-70.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.account.AccountStorage" target="main.java.model.account.NegativeThresholdException">
+      <point x="-191.2380952380954" y="-477.0" />
+      <point x="4275.20348236607" y="1924.0" />
+      <point x="1128.4999999999982" y="1924.0" />
+      <point x="64.0" y="27.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.account.StatusNotFoundException">
+      <point x="-197.9705882352946" y="-1950.0" />
+      <point x="6868.693426999393" y="6962.0" />
+      <point x="1774.4999999999982" y="6962.0" />
+      <point x="-58.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.item.ItemStorage" target="main.java.model.item.ItemInTradeException">
+      <point x="180.36363636363603" y="-367.0" />
+      <point x="13774.242898814426" y="2734.0" />
+      <point x="15949.907982052184" y="2734.0" />
+      <point x="-52.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.meeting.MeetingStorage" target="main.java.model.meeting.MeetingIDException">
+      <point x="-154.18181818181802" y="-245.0" />
+      <point x="7810.571139360562" y="1774.0" />
+      <point x="5221.111413424733" y="1774.0" />
+      <point x="48.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.AccountController" target="main.java.system.StorageGateway">
+      <point x="-42.285714285714675" y="-233.0" />
+      <point x="6662.9058633184495" y="5312.0" />
+      <point x="6709.834434747021" y="5312.0" />
+      <point x="6709.834434747021" y="4582.0" />
+      <point x="6876.345423758011" y="4582.0" />
+      <point x="-22.153846153845734" y="112.0" />
+    </edge>
+    <edge source="main.java.controller.MessageController" target="main.java.system.StorageDepot">
+      <point x="90.28571428571468" y="-178.0" />
+      <point x="5153.47729188988" y="5372.0" />
+      <point x="8031.871013097935" y="5372.0" />
+      <point x="-81.375" y="113.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.trade.TradeNumberException">
+      <point x="190.5" y="-1950.0" />
+      <point x="7257.164015234687" y="6952.0" />
+      <point x="15792.025629111007" y="6952.0" />
+      <point x="15792.025629111007" y="1694.0" />
+      <point x="13783.013374209047" y="1694.0" />
+      <point x="69.33333333333394" y="27.0" />
+    </edge>
+    <edge source="main.java.model.message.MessageStorage" target="main.java.model.message.EmptyContentException">
+      <point x="-66.1875" y="-125.0" />
+      <point x="5639.361220461307" y="1814.0" />
+      <point x="2539.1162211170413" y="1814.0" />
+      <point x="54.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.account.LoginAccount" target="main.java.model.account.Account">
+      <point x="-60.0" y="-80.0" />
+      <point x="6797.25295754238" y="170.0" />
+      <point x="6586.622781816619" y="170.0" />
+      <point x="0.0" y="69.0" />
+    </edge>
+    <edge source="main.java.system.StorageFactory" target="main.java.model.trade.TradeStorage">
+      <point x="99.6875" y="-27.0" />
+      <point x="8021.65920754238" y="4642.0" />
+      <point x="9728.25295754238" y="4642.0" />
+      <point x="-112.25" y="619.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeStorage" target="main.java.model.trade.Trade">
+      <point x="121.60416666666606" y="-619.0" />
+      <point x="9962.107124209047" y="2574.0" />
+      <point x="12717.180040875714" y="2574.0" />
+      <point x="12717.180040875714" y="1126.0" />
+      <point x="12576.287183732857" y="1126.0" />
+      <point x="50.85714285714312" y="398.0" />
+    </edge>
+    <edge source="main.java.controller.AccountController" target="main.java.system.StorageEnum">
+      <point x="-84.57142857142844" y="-233.0" />
+      <point x="6620.620149032736" y="5302.0" />
+      <point x="6698.834434747021" y="5302.0" />
+      <point x="6698.834434747021" y="2264.0" />
+      <point x="8459.697186578524" y="2264.0" />
+      <point x="-5.66666666666697" y="146.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.controller.ThresholdController">
+      <point x="-78.44117647058829" y="-1950.0" />
+      <point x="6988.222838764099" y="6802.0" />
+      <point x="4791.220989368871" y="6802.0" />
+      <point x="4791.220989368871" y="6078.0" />
+      <point x="4625.691577604165" y="6078.0" />
+      <point x="-86.5" y="211.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeObservee" target="main.java.model.trade.TradeObserver">
+      <point x="0.0" y="-49.0" />
+      <point x="10174.273790875714" y="1136.0" />
+      <point x="10206.273790875714" y="1136.0" />
+      <point x="-91.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.MessageController" target="main.java.model.message.MessageStorage">
+      <point x="-45.14285714285688" y="-178.0" />
+      <point x="5018.048720461308" y="5312.0" />
+      <point x="5069.263006175594" y="5312.0" />
+      <point x="5069.263006175594" y="4412.0" />
+      <point x="5573.173720461307" y="4412.0" />
+      <point x="-132.375" y="125.0" />
+    </edge>
+    <edge source="main.java.controller.RandomTradeRequestController" target="main.java.system.StorageGateway">
+      <point x="0.0" y="-157.0" />
+      <point x="3844.691577604165" y="6068.0" />
+      <point x="3876.691577604165" y="6068.0" />
+      <point x="3876.691577604165" y="4946.0" />
+      <point x="4021.754077604165" y="4946.0" />
+      <point x="4021.754077604165" y="4432.0" />
+      <point x="6765.57619298878" y="4432.0" />
+      <point x="-132.92307692307622" y="112.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.controller.UserlistController">
+      <point x="3.735294117646845" y="-1950.0" />
+      <point x="7070.399309352334" y="6692.0" />
+      <point x="6478.191577604164" y="6692.0" />
+      <point x="59.0" y="102.0" />
+    </edge>
+    <edge source="main.java.model.item.ItemStorage" target="main.java.model.item.Item">
+      <point x="-90.18181818181802" y="-367.0" />
+      <point x="13503.697444268972" y="2664.0" />
+      <point x="14148.34670754238" y="2664.0" />
+      <point x="-93.33333333333303" y="222.0" />
+    </edge>
+    <edge source="main.java.controller.WishlistController" target="main.java.model.item.ItemStorage">
+      <point x="115.0" y="-123.0" />
+      <point x="9704.00295754238" y="5512.0" />
+      <point x="11318.568965983759" y="5512.0" />
+      <point x="11318.568965983759" y="4772.0" />
+      <point x="13684.061080632608" y="4772.0" />
+      <point x="90.18181818181802" y="367.0" />
+    </edge>
+    <edge source="main.java.model.account.AccountStorage" target="main.java.model.account.StatusNotFoundException">
+      <point x="-167.33333333333303" y="-477.0" />
+      <point x="4299.108244270832" y="1914.0" />
+      <point x="1890.4999999999982" y="1914.0" />
+      <point x="58.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.ActivityController" target="main.java.system.StorageDepot">
+      <point x="-103.125" y="-91.0" />
+      <point x="8896.37795754238" y="5452.0" />
+      <point x="8158.454346431269" y="5452.0" />
+      <point x="45.20833333333394" y="113.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeStorage" target="main.java.model.trade.TradeActivityManager">
+      <point x="102.89583333333394" y="-619.0" />
+      <point x="9943.398790875715" y="2564.0" />
+      <point x="12615.930040875714" y="2564.0" />
+      <point x="90.75" y="49.0" />
+    </edge>
+    <edge source="main.java.controller.AddAdminController" target="main.java.system.StorageDepot">
+      <point x="106.66666666666697" y="-80.0" />
+      <point x="5727.858244270832" y="5422.0" />
+      <point x="8062.009901986824" y="5422.0" />
+      <point x="-51.23611111111131" y="113.0" />
+    </edge>
+    <edge source="main.java.system.StorageDepot" target="main.java.system.StorageFactory">
+      <point x="7.75" y="-113.0" />
+      <point x="8120.996013097935" y="4886.0" />
+      <point x="7842.22170754238" y="4886.0" />
+      <point x="-79.75" y="27.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.controller.NoValidItemsFromGivenUserException">
+      <point x="-93.38235294117658" y="-1950.0" />
+      <point x="6973.281662293511" y="6822.0" />
+      <point x="4171.191577604165" y="6822.0" />
+      <point x="80.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.trade.TemporaryTrade" target="main.java.model.trade.Trade">
+      <point x="0.0" y="-59.0" />
+      <point x="12124.180040875714" y="1106.0" />
+      <point x="12372.858612304284" y="1106.0" />
+      <point x="-152.57142857142935" y="398.0" />
+    </edge>
+    <edge source="main.java.model.account.AccountStorage" target="main.java.model.account.UserAccount">
+      <point x="167.33333333333303" y="-477.0" />
+      <point x="4633.774910937498" y="2114.0" />
+      <point x="7132.06545754238" y="2114.0" />
+      <point x="58.25" y="201.0" />
+    </edge>
+    <edge source="main.java.model.account.AccountStorage" target="main.java.model.account.LoginAccount">
+      <point x="47.80952380952385" y="-477.0" />
+      <point x="4514.251101413689" y="2064.0" />
+      <point x="6669.81545754238" y="2064.0" />
+      <point x="6669.81545754238" y="1116.0" />
+      <point x="6757.25295754238" y="1116.0" />
+      <point x="-100.0" y="80.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeStorage" target="main.java.model.meeting.MeetingObserver">
+      <point x="-159.02083333333394" y="-619.0" />
+      <point x="9681.482124209047" y="2424.0" />
+      <point x="9916.586290875714" y="2424.0" />
+      <point x="9916.586290875714" y="1126.0" />
+      <point x="9107.73885324519" y="1126.0" />
+      <point x="71.625" y="49.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.trade.TradeAlgorithmName">
+      <point x="250.26470588235316" y="-1950.0" />
+      <point x="7316.92872111704" y="7032.0" />
+      <point x="16385.407982052184" y="7032.0" />
+      <point x="16385.407982052184" y="190.0" />
+      <point x="10946.339887299448" y="190.0" />
+      <point x="103.33333333333394" y="70.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.controller.TooFewTradersException">
+      <point x="-115.79411764705947" y="-1950.0" />
+      <point x="6950.869897587628" y="6852.0" />
+      <point x="3202.691577604165" y="6852.0" />
+      <point x="-56.0" y="27.0" />
+    </edge>
+    <edge source="main.java.system.StorageGateway" target="main.java.system.StorageEnum">
+      <point x="96.0" y="-112.0" />
+      <point x="6994.499269911857" y="2274.0" />
+      <point x="8471.030519911856" y="2274.0" />
+      <point x="5.66666666666697" y="146.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.controller.LoginController">
+      <point x="-18.676470588236043" y="-1950.0" />
+      <point x="7047.987544646451" y="6722.0" />
+      <point x="6216.720989368869" y="6722.0" />
+      <point x="6216.720989368869" y="6078.0" />
+      <point x="6110.191577604164" y="6078.0" />
+      <point x="-57.0" y="91.0" />
+    </edge>
+    <edge source="main.java.system.StorageFactory" target="main.java.model.account.AccountStorage">
+      <point x="-139.5625" y="-27.0" />
+      <point x="7782.40920754238" y="4272.0" />
+      <point x="4659.518500681088" y="4272.0" />
+      <point x="193.07692307692287" y="477.0" />
+    </edge>
+    <edge source="main.java.model.trade.Trade" target="main.java.model.trade.TradeAlgorithm">
+      <point x="-89.0" y="-398.0" />
+      <point x="12436.430040875714" y="230.0" />
+      <point x="12025.728991596638" y="230.0" />
+      <point x="68.0" y="48.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.controller.RandomTradeRequestController">
+      <point x="-100.85294117647118" y="-1950.0" />
+      <point x="6965.811074058216" y="6832.0" />
+      <point x="3932.441577604165" y="6832.0" />
+      <point x="87.75" y="157.0" />
+    </edge>
+    <edge source="main.java.controller.ActivityController" target="main.java.system.StorageGateway">
+      <point x="34.375" y="-91.0" />
+      <point x="9033.87795754238" y="4192.0" />
+      <point x="6950.191577604165" y="4192.0" />
+      <point x="51.69230769230853" y="112.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.item.AlreadyHiddenException">
+      <point x="220.38235294117658" y="-1950.0" />
+      <point x="7287.046368175864" y="6992.0" />
+      <point x="15821.907982052184" y="6992.0" />
+      <point x="56.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.meeting.MeetingStorage" target="main.java.model.Storage">
+      <point x="115.63636363636397" y="-245.0" />
+      <point x="8080.389321178744" y="2394.0" />
+      <point x="9814.50295754238" y="2394.0" />
+      <point x="-13.08333333333303" y="38.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.item.ItemInTradeException">
+      <point x="227.85294117647027" y="-1950.0" />
+      <point x="7294.5169564111575" y="7002.0" />
+      <point x="16053.907982052184" y="7002.0" />
+      <point x="52.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeAlgorithmFactory" target="main.java.model.trade.TradeAlgorithmName">
+      <point x="-89.5" y="-27.0" />
+      <point x="11488.180040875714" y="1126.0" />
+      <point x="10926.69045754238" y="1126.0" />
+      <point x="10926.69045754238" y="210.0" />
+      <point x="10863.67322063278" y="210.0" />
+      <point x="20.66666666666606" y="70.0" />
+    </edge>
+    <edge source="main.java.system.StorageFactory" target="main.java.system.StorageEnum">
+      <point x="-19.9375" y="-27.0" />
+      <point x="7902.03420754238" y="4242.0" />
+      <point x="7742.25295754238" y="4242.0" />
+      <point x="7742.25295754238" y="2294.0" />
+      <point x="8493.697186578524" y="2294.0" />
+      <point x="28.33333333333303" y="146.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeStorage" target="main.java.model.trade.TradeAlgorithmName">
+      <point x="-140.3125" y="-619.0" />
+      <point x="9700.19045754238" y="2434.0" />
+      <point x="9939.273790875714" y="2434.0" />
+      <point x="9939.273790875714" y="200.0" />
+      <point x="10781.006553966114" y="200.0" />
+      <point x="-62.0" y="70.0" />
+    </edge>
+    <edge source="main.java.model.message.MessageStorage" target="main.java.model.message.EmptyTitleException">
+      <point x="-154.4375" y="-125.0" />
+      <point x="5551.111220461307" y="1834.0" />
+      <point x="1362.4999999999982" y="1834.0" />
+      <point x="50.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.account.AccountStorage" target="main.java.model.account.WrongAccountTypeException">
+      <point x="-47.80952380952385" y="-477.0" />
+      <point x="4418.632053794641" y="1864.0" />
+      <point x="3366.1162211170413" y="1864.0" />
+      <point x="93.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.MessageController" target="main.java.system.StorageGateway">
+      <point x="0.0" y="-178.0" />
+      <point x="5063.191577604165" y="5322.0" />
+      <point x="5080.263006175594" y="5322.0" />
+      <point x="5080.263006175594" y="4462.0" />
+      <point x="6787.730039142626" y="4462.0" />
+      <point x="-110.76923076923049" y="112.0" />
+    </edge>
+    <edge source="main.java.model.meeting.MeetingStorage" target="main.java.model.meeting.Meeting">
+      <point x="0.0" y="-245.0" />
+      <point x="7964.75295754238" y="2344.0" />
+      <point x="9470.75295754238" y="2344.0" />
+      <point x="-103.33333333333394" y="244.0" />
+    </edge>
+    <edge source="main.java.controller.GildedController" target="main.java.system.StorageDepot">
+      <point x="58.0" y="-112.0" />
+      <point x="5415.191577604165" y="5392.0" />
+      <point x="8043.92656865349" y="5392.0" />
+      <point x="-69.31944444444525" y="113.0" />
+    </edge>
+    <edge source="main.java.model.account.UserAccount" target="main.java.model.account.LoginAccount">
+      <point x="-29.125" y="-201.0" />
+      <point x="7044.69045754238" y="1126.0" />
+      <point x="6957.25295754238" y="1126.0" />
+      <point x="100.0" y="80.0" />
+    </edge>
+    <edge source="main.java.controller.ThresholdController" target="main.java.system.StorageGateway">
+      <point x="21.625" y="-211.0" />
+      <point x="4733.816577604165" y="5322.0" />
+      <point x="4749.941577604165" y="5322.0" />
+      <point x="4749.941577604165" y="4442.0" />
+      <point x="6772.960808373396" y="4442.0" />
+      <point x="-125.53846153846098" y="112.0" />
+    </edge>
+    <edge source="main.java.model.meeting.MeetingStorage" target="main.java.model.meeting.MeetingAlreadyConfirmedException">
+      <point x="-192.72727272727207" y="-245.0" />
+      <point x="7772.0256848151075" y="1784.0" />
+      <point x="4981.111413424733" y="1784.0" />
+      <point x="76.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.UserlistController" target="main.java.system.StorageGateway">
+      <point x="-19.66666666666606" y="-102.0" />
+      <point x="6399.524910937498" y="5322.0" />
+      <point x="6427.85824427083" y="5322.0" />
+      <point x="6427.85824427083" y="4946.0" />
+      <point x="6539.024910937497" y="4946.0" />
+      <point x="6539.024910937497" y="4562.0" />
+      <point x="6861.57619298878" y="4562.0" />
+      <point x="-36.92307692307622" y="112.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.controller.ItemRequestsController">
+      <point x="145.67647058823604" y="-1950.0" />
+      <point x="7212.340485822923" y="6892.0" />
+      <point x="15077.055040875714" y="6892.0" />
+      <point x="-87.0" y="145.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.controller.FreezeController">
+      <point x="-26.147058823529733" y="-1950.0" />
+      <point x="7040.5169564111575" y="6732.0" />
+      <point x="5967.191577604164" y="6732.0" />
+      <point x="66.0" y="113.0" />
+    </edge>
+    <edge source="main.java.controller.FreezeController" target="main.java.model.trade.TradeStorage">
+      <point x="37.714285714286234" y="-113.0" />
+      <point x="5938.90586331845" y="5322.0" />
+      <point x="6040.548720461307" y="5322.0" />
+      <point x="6040.548720461307" y="4926.0" />
+      <point x="6268.524910937497" y="4926.0" />
+      <point x="6268.524910937497" y="4632.0" />
+      <point x="9683.352957542382" y="4632.0" />
+      <point x="-157.14999999999964" y="619.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeActivityManager" target="main.java.model.trade.Trade">
+      <point x="0.0" y="-49.0" />
+      <point x="0.0" y="398.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeStorage" target="main.java.model.trade.TradeAlgorithmFactory">
+      <point x="9.35416666666606" y="-619.0" />
+      <point x="9849.857124209047" y="2514.0" />
+      <point x="11577.680040875714" y="2514.0" />
+      <point x="0.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeAlgorithmCreator" target="main.java.model.trade.TradeAlgorithm">
+      <point x="89.5" y="-27.0" />
+      <point x="10813.273790875714" y="220.0" />
+      <point x="11821.728991596638" y="220.0" />
+      <point x="-136.0" y="48.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeStorage" target="main.java.model.trade.TradeNumberException">
+      <point x="177.72916666666606" y="-619.0" />
+      <point x="10018.232124209047" y="2624.0" />
+      <point x="13713.680040875714" y="2624.0" />
+      <point x="0.0" y="27.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.message.EmptyRecipientListException">
+      <point x="-205.4411764705892" y="-1950.0" />
+      <point x="6861.222838764098" y="6972.0" />
+      <point x="1498.4999999999982" y="6972.0" />
+      <point x="-66.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.LoginController" target="main.java.system.StorageDepot">
+      <point x="95.0" y="-91.0" />
+      <point x="6262.191577604164" y="5462.0" />
+      <point x="8086.121013097935" y="5462.0" />
+      <point x="-27.125" y="113.0" />
+    </edge>
+    <edge source="main.java.controller.BrowseController" target="main.java.system.StorageDepot">
+      <point x="-34.125" y="-80.0" />
+      <point x="9259.37795754238" y="5422.0" />
+      <point x="8176.537679764601" y="5422.0" />
+      <point x="63.29166666666606" y="113.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.trade.TradeCancelledException">
+      <point x="197.9705882352937" y="-1950.0" />
+      <point x="7264.634603469981" y="6962.0" />
+      <point x="15799.4962173463" y="6962.0" />
+      <point x="15799.4962173463" y="1684.0" />
+      <point x="14011.680040875714" y="1684.0" />
+      <point x="58.0" y="27.0" />
+    </edge>
+    <edge source="main.java.system.StorageDepot" target="main.java.model.item.ItemStorage">
+      <point x="100.75" y="-113.0" />
+      <point x="8213.996013097934" y="5026.0" />
+      <point x="8241.50295754238" y="5026.0" />
+      <point x="8241.50295754238" y="4742.0" />
+      <point x="13548.78835335988" y="4742.0" />
+      <point x="-45.09090909090901" y="367.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeStorage" target="main.java.model.trade.TradeAlgorithm">
+      <point x="28.0625" y="-619.0" />
+      <point x="9868.56545754238" y="2524.0" />
+      <point x="11915.180040875714" y="2524.0" />
+      <point x="11915.180040875714" y="240.0" />
+      <point x="11957.728991596638" y="240.0" />
+      <point x="0.0" y="48.0" />
+    </edge>
+    <edge source="main.java.controller.RandomTradeRequestController" target="main.java.model.account.WrongAccountTypeException">
+      <point x="-108.0" y="-157.0" />
+      <point x="3736.691577604165" y="6028.0" />
+      <point x="3827.191577604165" y="6028.0" />
+      <point x="3827.191577604165" y="1974.0" />
+      <point x="3242.1162211170413" y="1974.0" />
+      <point x="-31.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.ThresholdController" target="main.java.system.StorageEnum">
+      <point x="-21.625" y="-211.0" />
+      <point x="4690.566577604165" y="5312.0" />
+      <point x="4738.941577604165" y="5312.0" />
+      <point x="4738.941577604165" y="2194.0" />
+      <point x="8380.36385324519" y="2194.0" />
+      <point x="-85.0" y="146.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.presenter.ItemPresenter">
+      <point x="175.55882352941262" y="-1950.0" />
+      <point x="7242.2228387641" y="6932.0" />
+      <point x="15674.04033499336" y="6932.0" />
+      <point x="15674.04033499336" y="6078.0" />
+      <point x="15625.900629111007" y="6078.0" />
+      <point x="51.875" y="48.0" />
+    </edge>
+    <edge source="main.java.system.StorageDepot" target="main.java.model.trade.TradeStorage">
+      <point x="69.75" y="-113.0" />
+      <point x="8182.996013097935" y="5006.0" />
+      <point x="8219.50295754238" y="5006.0" />
+      <point x="8219.50295754238" y="4662.0" />
+      <point x="9818.052957542379" y="4662.0" />
+      <point x="-22.450000000000728" y="619.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.trade.WrongTradeAccountException">
+      <point x="205.44117647058738" y="-1950.0" />
+      <point x="7272.105191705275" y="6972.0" />
+      <point x="15806.966805581595" y="6972.0" />
+      <point x="15806.966805581595" y="1674.0" />
+      <point x="14593.680040875714" y="1674.0" />
+      <point x="64.0" y="27.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.message.EmptyContentException">
+      <point x="-183.0294117647063" y="-1950.0" />
+      <point x="6883.634603469981" y="6942.0" />
+      <point x="2039.9705882352937" y="6942.0" />
+      <point x="2039.9705882352937" y="2744.0" />
+      <point x="2431.1162211170413" y="2744.0" />
+      <point x="-54.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.OffersController" target="main.java.model.trade.TradeStorage">
+      <point x="150.42857142857065" y="-123.0" />
+      <point x="8692.696234853303" y="6078.0" />
+      <point x="8829.50295754238" y="6078.0" />
+      <point x="8829.50295754238" y="4682.0" />
+      <point x="9907.852957542382" y="4682.0" />
+      <point x="67.35000000000036" y="619.0" />
+    </edge>
+    <edge source="main.java.system.StorageGateway" target="main.java.system.FileReadWriter">
+      <point x="0.0" y="-112.0" />
+      <point x="6898.499269911857" y="1794.0" />
+      <point x="5623.28420754238" y="1794.0" />
+      <point x="121.125" y="91.0" />
+    </edge>
+    <edge source="main.java.model.message.MessageStorage" target="main.java.model.message.Message">
+      <point x="110.3125" y="-125.0" />
+      <point x="5815.861220461307" y="2174.0" />
+      <point x="7905.7737908757135" y="2174.0" />
+      <point x="7905.7737908757135" y="1106.0" />
+      <point x="7836.585579435667" y="1106.0" />
+      <point x="117.5" y="124.0" />
+    </edge>
+    <edge source="main.java.model.item.ItemStorage" target="main.java.model.item.AlreadyNotHiddenException">
+      <point x="225.45454545454504" y="-367.0" />
+      <point x="13819.333807905336" y="2744.0" />
+      <point x="16188.907982052184" y="2744.0" />
+      <point x="-62.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.account.AccountStorage" target="main.java.model.account.InvalidUsernameException">
+      <point x="-239.04761904761926" y="-477.0" />
+      <point x="4227.393958556546" y="1944.0" />
+      <point x="596.4999999999991" y="1944.0" />
+      <point x="60.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.item.ItemStorage" target="main.java.model.trade.TradeObserver">
+      <point x="-180.36363636363603" y="-367.0" />
+      <point x="13413.515626087154" y="2644.0" />
+      <point x="14080.180040875714" y="2644.0" />
+      <point x="14080.180040875714" y="1086.0" />
+      <point x="10479.273790875714" y="1086.0" />
+      <point x="182.0" y="27.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.controller.ItemsController">
+      <point x="138.20588235294053" y="-1950.0" />
+      <point x="7204.869897587628" y="6882.0" />
+      <point x="14929.91533499336" y="6882.0" />
+      <point x="14929.91533499336" y="6078.0" />
+      <point x="15005.180040875714" y="6078.0" />
+      <point x="79.0" y="178.0" />
+    </edge>
+    <edge source="main.java.system.StorageDepot" target="main.java.model.message.MessageStorage">
+      <point x="-54.25" y="-113.0" />
+      <point x="8058.996013097935" y="4926.0" />
+      <point x="7566.164015234687" y="4926.0" />
+      <point x="7566.164015234687" y="4292.0" />
+      <point x="5749.673720461307" y="4292.0" />
+      <point x="44.125" y="125.0" />
+    </edge>
+    <edge source="main.java.controller.BrowseController" target="main.java.model.item.ItemStorage">
+      <point x="102.375" y="-80.0" />
+      <point x="9395.87795754238" y="5512.0" />
+      <point x="9384.06545754238" y="5512.0" />
+      <point x="9384.06545754238" y="4762.0" />
+      <point x="13638.9701715417" y="4762.0" />
+      <point x="45.09090909090901" y="367.0" />
+    </edge>
+    <edge source="main.java.system.StorageFactory" target="main.java.model.meeting.MeetingStorage">
+      <point x="19.9375" y="-27.0" />
+      <point x="7941.90920754238" y="4602.0" />
+      <point x="8017.75295754238" y="4602.0" />
+      <point x="53.0" y="245.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.item.AlreadyNotHiddenException">
+      <point x="242.79411764705947" y="-1950.0" />
+      <point x="7309.458132881747" y="7022.0" />
+      <point x="16312.907982052184" y="7022.0" />
+      <point x="62.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.ActivityController" target="main.java.model.trade.TradeStorage">
+      <point x="103.125" y="-91.0" />
+      <point x="9102.62795754238" y="5512.0" />
+      <point x="9180.75295754238" y="5512.0" />
+      <point x="9180.75295754238" y="4692.0" />
+      <point x="9952.75295754238" y="4692.0" />
+      <point x="112.25" y="619.0" />
+    </edge>
+    <edge source="main.java.controller.RandomTradeRequestController" target="main.java.controller.NoValidItemsFromGivenUserException">
+      <point x="135.0" y="-157.0" />
+      <point x="3979.691577604165" y="6068.0" />
+      <point x="4011.191577604165" y="6068.0" />
+      <point x="-80.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.WishlistController" target="main.java.system.StorageEnum">
+      <point x="69.0" y="-123.0" />
+      <point x="9658.00295754238" y="5502.0" />
+      <point x="9605.50295754238" y="5502.0" />
+      <point x="9605.50295754238" y="2294.0" />
+      <point x="8527.697186578524" y="2294.0" />
+      <point x="62.33333333333303" y="146.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeStorage" target="main.java.model.trade.TradeCancelledException">
+      <point x="196.4375" y="-619.0" />
+      <point x="10036.94045754238" y="2634.0" />
+      <point x="13895.680040875714" y="2634.0" />
+      <point x="-58.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.RandomTradeRequestController" target="main.java.system.StorageDepot">
+      <point x="81.0" y="-157.0" />
+      <point x="3925.691577604165" y="6078.0" />
+      <point x="3909.691577604165" y="6078.0" />
+      <point x="3909.691577604165" y="5332.0" />
+      <point x="8007.759901986824" y="5332.0" />
+      <point x="-105.48611111111131" y="113.0" />
+    </edge>
+    <edge source="main.java.controller.RandomTradeRequestController" target="main.java.model.account.AccountStorage">
+      <point x="-81.0" y="-157.0" />
+      <point x="3763.691577604165" y="6038.0" />
+      <point x="3838.191577604165" y="6038.0" />
+      <point x="3838.191577604165" y="4402.0" />
+      <point x="4234.7492699118575" y="4402.0" />
+      <point x="-231.69230769230762" y="477.0" />
+    </edge>
+    <edge source="main.java.model.item.Item" target="main.java.model.item.NotInWishlistException">
+      <point x="0.0" y="-222.0" />
+      <point x="14241.680040875714" y="1136.0" />
+      <point x="14222.430040875714" y="1136.0" />
+      <point x="56.0" y="27.0" />
+    </edge>
+    <edge source="main.java.system.TraderMain" target="main.java.system.StorageGateway">
+      <point x="0.0" y="-59.0" />
+      <point x="15570.613739574972" y="10972.0" />
+      <point x="16396.407982052184" y="10972.0" />
+      <point x="16396.407982052184" y="4032.0" />
+      <point x="7031.422346834933" y="4032.0" />
+      <point x="132.92307692307622" y="112.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeStorage" target="main.java.model.trade.TradeObservee">
+      <point x="-121.60416666666606" y="-619.0" />
+      <point x="9718.898790875715" y="2444.0" />
+      <point x="10174.273790875714" y="2444.0" />
+      <point x="0.0" y="49.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.account.NegativeThresholdException">
+      <point x="-220.3823529411775" y="-1950.0" />
+      <point x="6846.28166229351" y="6992.0" />
+      <point x="1000.4999999999982" y="6992.0" />
+      <point x="-64.0" y="27.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.account.InvalidUsernameException">
+      <point x="-235.32352941176578" y="-1950.0" />
+      <point x="6831.340485822921" y="7012.0" />
+      <point x="476.4999999999991" y="7012.0" />
+      <point x="-60.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeStorage" target="main.java.model.trade.TradeObserver">
+      <point x="-84.1875" y="-619.0" />
+      <point x="9756.31545754238" y="2464.0" />
+      <point x="10420.273790875714" y="2464.0" />
+      <point x="10420.273790875714" y="1126.0" />
+      <point x="10388.273790875714" y="1126.0" />
+      <point x="91.0" y="27.0" />
+    </edge>
+    <edge source="main.java.controller.GildedController" target="main.java.model.account.AccountStorage">
+      <point x="-96.66666666666697" y="-112.0" />
+      <point x="5260.524910937498" y="5302.0" />
+      <point x="5343.524910937497" y="5302.0" />
+      <point x="5343.524910937497" y="4382.0" />
+      <point x="4350.595423758011" y="4382.0" />
+      <point x="-115.84615384615427" y="477.0" />
+    </edge>
+    <edge source="main.java.model.trade.TradeStorage" target="main.java.model.Storage">
+      <point x="-177.72916666666606" y="-619.0" />
+      <point x="9662.773790875715" y="2414.0" />
+      <point x="9866.836290875714" y="2414.0" />
+      <point x="39.25" y="38.0" />
+    </edge>
+    <edge source="main.java.model.item.ItemStorage" target="main.java.model.Storage">
+      <point x="-225.45454545454595" y="-367.0" />
+      <point x="13368.424716996244" y="2414.0" />
+      <point x="9893.00295754238" y="2414.0" />
+      <point x="65.41666666666606" y="38.0" />
+    </edge>
+    <edge source="main.java.gui.TraderGUI" target="main.java.model.account.UsernameInUseException">
+      <point x="-168.08823529411802" y="-1950.0" />
+      <point x="6898.575779940569" y="6922.0" />
+      <point x="2442.2058823529405" y="6922.0" />
+      <point x="2442.2058823529405" y="4782.0" />
+      <point x="2596.3529411764703" y="4782.0" />
+      <point x="2596.3529411764703" y="1964.0" />
+      <point x="2961.1162211170413" y="1964.0" />
+      <point x="-56.0" y="27.0" />
+    </edge>
+    <edge source="main.java.model.account.AccountStorage" target="main.java.model.Storage">
+      <point x="239.04761904761926" y="-477.0" />
+      <point x="4705.489196651784" y="2374.0" />
+      <point x="9762.169624209047" y="2374.0" />
+      <point x="-65.41666666666697" y="38.0" />
+    </edge>
+    <edge source="main.java.controller.OffersController" target="main.java.system.StorageEnum">
+      <point x="100.28571428571377" y="-123.0" />
+      <point x="8642.553377710447" y="6068.0" />
+      <point x="8807.50295754238" y="6068.0" />
+      <point x="8807.50295754238" y="2304.0" />
+      <point x="8516.36385324519" y="2304.0" />
+      <point x="51.0" y="146.0" />
+    </edge>
+    <edge source="main.java.controller.UserlistController" target="main.java.model.account.AccountStorage">
+      <point x="-98.33333333333303" y="-102.0" />
+      <point x="6320.858244270831" y="5302.0" />
+      <point x="6405.85824427083" y="5302.0" />
+      <point x="6405.85824427083" y="4926.0" />
+      <point x="6279.524910937497" y="4926.0" />
+      <point x="6279.524910937497" y="4342.0" />
+      <point x="4505.05696221955" y="4342.0" />
+      <point x="38.615384615384755" y="477.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.17914490230218613" x="2487.5" y="2564.4999999999995" />
+  <SelectedNodes>
+    <node>main.java.model.meeting.MeetingObserver</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
