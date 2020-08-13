@@ -37,6 +37,7 @@ public class ThresholdController {
         filename = storageGateway.getFilenameMap().get(configKey);
     }
 
+
     /** Set all thresholds for all user account from the data in text file
      *
      * @throws NegativeThresholdException Thrown if the suggested threshold is negative
@@ -181,6 +182,4 @@ public class ThresholdController {
         accountStorage.setGildedThreshold(username,threshold);
         storageGateway.saveStorageData(StorageEnum.ACCOUNT);
     }
-
-
 }

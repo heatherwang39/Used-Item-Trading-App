@@ -50,7 +50,6 @@ public class MeetingController {
 
     //Methods related to creating meetings from accepted trade requests
 
-
     /**
      * Gets all accepted trades involving user that have not set a meeting yet
      *
@@ -60,7 +59,6 @@ public class MeetingController {
     public List<HashMap<String, List<String>>> getAcceptedTradesUnformatted() throws TradeNumberException {
         return tradeStorage.getTradesData(tradeStorage.getAcceptedTradesWithUser(username));
     }
-
 
     /**
      * Gets all formatted accepted trades involving user that have not set a meeting yet
@@ -72,7 +70,6 @@ public class MeetingController {
     public List<String> getAcceptedTrades() throws TradeNumberException, ItemNotFoundException {
         return tradePresenter.formatTradeForListView(getAcceptedTradesUnformatted(), "MEETING");
     }
-
 
     /**
      * Gets all trades involving user that have a completed meeting but require another meeting to be fully finished
@@ -105,7 +102,6 @@ public class MeetingController {
         return tradePresenter.formatTradeForListView(getUnfinishedTradesUnformatted(), "MEETING");
     }
 
-
     /**
      * Suggests a meeting for the trade with given tradeNumber
      *
@@ -128,7 +124,6 @@ public class MeetingController {
 
 
     //Methods related to interacting with suggested meetings
-
 
     /**
      * Gets all meeting suggestions the user has not replied to yet
@@ -179,7 +174,6 @@ public class MeetingController {
 
     //Methods related to interacting with ongoing meetings
 
-
     /**
      * Gets all meetings the user is participating in that are currently ongoing
      *
@@ -189,7 +183,6 @@ public class MeetingController {
     public List<HashMap<String, List<String>>> getOngoingMeetingsUnformatted() throws MeetingIDException {
         return meetingStorage.getMeetingsData(meetingStorage.getOngoingMeetings(username));
     }
-
 
     /**
      * Gets all meetings the user is participating in that are currently ongoing formatted
@@ -216,11 +209,8 @@ public class MeetingController {
         storageGateway.saveStorageData(StorageEnum.TRADE);
     }
 
-    //rejectMeeting also used to cancel ongoing meetings
-
 
     //Methods related to interacting with completed meetings
-
 
     /**
      * Gets all meetings the user has participated in that are completed. There is nothing to interact with, this is
