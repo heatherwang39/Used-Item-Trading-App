@@ -173,12 +173,11 @@ public class TraderGUI {
     private JTabbedPane MessagesTabbedPane;
     private JButton btnThresholdSetToDefault;
     private JTabbedPane tabbedPane3;
-    private JTextField txtItemsUnhiddenOutput;
-    private JTextField txtItemsHiddenOutput;
+    private JTextField txtItemsUnhideInput;
+    private JTextField txtItemsHideInput;
     private JButton btnItemsHide;
     private JButton btnItemsUnhide;
-    private JTextArea txtAreaItemsUnhiddenOutput;
-    private JTextArea txtAreaItemsHiddenOutput;
+    private JTextArea txtItemsHiddenInput;
     private JTextField txtRequestLendSuggestedInput;
     private JTabbedPane tabbedPane4;
     private JPasswordField pswdLogin;
@@ -218,8 +217,9 @@ public class TraderGUI {
         txtOffersOutput.setEditable(false);
         txtAccountStatuses.setEditable(false);
         txtRequestsOutput.setEditable(false);
-        txtItemsUnhiddenOutput.setEditable(false);
-        txtItemsHiddenOutput.setEditable(false);
+
+        txtItemsUnhideInput.setEditable(false);
+        txtItemsHideInput.setEditable(false);
         txtAreaBrowseListingsOutput.setEditable(false);
         txtAreaFrozenUsers.setEditable(false);
         txtAreaLoggingOutput.setEditable(false);
@@ -231,8 +231,7 @@ public class TraderGUI {
         txtAreaRequestSuggestTradesOutput.setEditable(false);
         txtAreaActivityTradeOutput.setEditable(false);
         txtAreaActivityPartnerOutput.setEditable(false);
-        txtAreaItemsUnhiddenOutput.setEditable(false);
-        txtAreaItemsHiddenOutput.setEditable(false);
+
 
 
 
@@ -634,50 +633,16 @@ public class TraderGUI {
 
         BrowseController browseController = new BrowseController(storageGateway);
 
-        displayUnhiddenInventory(itemsController.getUnhiddenInventory(), itemPresenter);
-        displayHiddenInventory(itemsController.getHiddenInventory(), itemPresenter);
+
 
         btnItemsHide.addActionListener(e -> {
 
-            try {
-                List<HashMap<String, String>> unhiddenInventory = itemsController.getUnhiddenInventory();
-                String item = unhiddenInventory.get(0).get("id");
-                itemsController.hideItem(item);
-                showMessageDialog(null, unhiddenInventory.get(0).get("name") + " has been successfully hidden");
-                unhiddenInventory.remove(0);
-                displayUnhiddenInventory(itemsController.getUnhiddenInventory(), itemPresenter);
-                displayHiddenInventory(itemsController.getHiddenInventory(), itemPresenter);
-                displayBrowse(browseController.getItemsString());
-
-            } catch (AlreadyHiddenException | ItemNotFoundException exception) {
-                showMessageDialog(null, exception.getMessage());
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }catch (IndexOutOfBoundsException outOfBoundsException) {
-                showMessageDialog(null, "There is no item to hide");
-            }
 
         });
 
         btnItemsUnhide.addActionListener(e ->{
 
-            try {
-                List<HashMap<String, String>> hiddenInventory = itemsController.getHiddenInventory();
-                String item = hiddenInventory.get(0).get("id");
-                itemsController.unhideItem(item);
-                showMessageDialog(null, hiddenInventory.get(0).get("name") + " has been successfully unhidden");
-                hiddenInventory.remove(0);
-                displayUnhiddenInventory(itemsController.getUnhiddenInventory(), itemPresenter);
-                displayHiddenInventory(itemsController.getHiddenInventory(), itemPresenter);
-                displayBrowse(browseController.getItemsString());
 
-            } catch (ItemNotFoundException | AlreadyNotHiddenException exception) {
-                showMessageDialog(null, exception.getMessage());
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            } catch (IndexOutOfBoundsException outOfBoundsException) {
-                showMessageDialog(null, "There is no item to unhide");
-            }
         });
     }
 
@@ -1263,31 +1228,6 @@ public class TraderGUI {
         txtAreaBrowseListingsOutput.setText(items);
     }
 
-    private void displayUnhiddenInventory(List<HashMap<String, String>> unhiddenList, ItemPresenter itemPresenter){
-        txtItemsUnhiddenOutput.setText("");
-        txtAreaItemsUnhiddenOutput.setText("");
-        List<String> formattedUnhiddenList = itemPresenter.formatItemsToListView(unhiddenList);
-        for (String item : formattedUnhiddenList){
-            txtAreaItemsUnhiddenOutput.append(item + "\n");
-        }
-        if (!formattedUnhiddenList.isEmpty()) {
-            txtItemsUnhiddenOutput.setText(formattedUnhiddenList.get(0));
-        }
-
-    }
-
-    private void displayHiddenInventory(List<HashMap<String, String>> hiddenList, ItemPresenter itemPresenter){
-        txtItemsHiddenOutput.setText("");
-        txtAreaItemsHiddenOutput.setText("");
-        List<String> formattedHiddenList = itemPresenter.formatItemsToListView(hiddenList);
-        for (String item : formattedHiddenList){
-            txtAreaItemsHiddenOutput.append(item + "\n");
-        }
-        if (!formattedHiddenList.isEmpty()) {
-            txtItemsHiddenOutput.setText(formattedHiddenList.get(0));
-        }
-
-    }
 
     private Integer tryParse(String s){
         try {
