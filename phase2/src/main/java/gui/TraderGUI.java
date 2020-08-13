@@ -526,9 +526,7 @@ public class TraderGUI {
                     if (suggestionList.isEmpty()) {
                         displayRequestSuggestions(suggestionList, itemPresenter);
                     } else {
-
                         displayRequestSuggestions(Collections.singletonList(suggestionList.get(index.get())), itemPresenter);
-
                     }
 
                 } else if(rbtnViewNextSuggestion.isSelected()){
@@ -537,14 +535,10 @@ public class TraderGUI {
                         index.set(0);
                     }
                     displayRequestSuggestions(Collections.singletonList(suggestionList.get(index.get())), itemPresenter);
-
-
                 } else {
                     showMessageDialog(null, "Please select an option!");
                 }
             }
-
-
         });
 
 
