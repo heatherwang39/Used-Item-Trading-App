@@ -191,6 +191,7 @@ public class TraderGUI {
     private JRadioButton rbtnRequestRandomTemp;
 
     private JTextPane traderSystemTextPane;
+    private JLabel lblLogo;
 
     private String user;
     private final StorageDepot storageDepot;
@@ -209,6 +210,7 @@ public class TraderGUI {
     private void initializeLogin() throws IOException, ClassNotFoundException {
 
         LoginController loginController = new LoginController(storageDepot);
+
 
         MainTabbedPane.insertTab("Main", null, Main, null, 0);
 
@@ -1323,15 +1325,4 @@ public class TraderGUI {
             e.printStackTrace();
         }
     }
-
-    private Integer tryParse(String s){
-        try {
-            return Integer.parseInt(s);
-        } catch (NumberFormatException e) {
-
-            showMessageDialog(null, "Invalid Input! Please try again");
-            return null;
-            }
-    }
-
 }
