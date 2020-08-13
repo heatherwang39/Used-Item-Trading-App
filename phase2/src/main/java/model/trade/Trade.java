@@ -369,7 +369,12 @@ public abstract class Trade implements Serializable {
         }
     }
 
-    private boolean checkAccepted(){
+
+    /** Return True if the Trade is Accepted by all Traders
+     *
+     * @return Whether the Trade is Accepted by all Traders
+     */
+    public boolean checkAccepted(){
         for(Boolean a: accepted){
             if(!a){
                 return false;

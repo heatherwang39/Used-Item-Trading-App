@@ -52,10 +52,11 @@ public class RequestController {
      * @throws WrongTradeAccountException attempted to edit trade through wrong account
      * @throws TradeNumberException no trade has the given number
      * @throws TradeCancelledException trade has been cancelled
+     * @throws ItemAlreadyInActiveTradeException An Item is already in another active Trade
      *
      */
     public void createRequest(boolean permanent, TradeAlgorithmName tradeAlgorithmName, List<Integer> items)
-            throws ItemNotFoundException, NoSuchTradeAlgorithmException, IOException, WrongTradeAccountException, TradeNumberException, TradeCancelledException {
+            throws ItemNotFoundException, NoSuchTradeAlgorithmException, IOException, WrongTradeAccountException, TradeNumberException, TradeCancelledException, ItemAlreadyInActiveTradeException {
         List<String> traders = new ArrayList<>();
         traders.add(username);
         for (Integer itemID : items) {
