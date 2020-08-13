@@ -768,8 +768,10 @@ public class TraderGUI {
             try {
                 BrowseController browseController = new BrowseController(storageGateway);
                 displayBrowse(browseController.getItemsString());
-            } catch (IOException | ClassNotFoundException | ItemNotFoundException ioException) {
-                ioException.printStackTrace();
+            } catch(ItemNotFoundException itemNotFoundException){
+                showMessageDialog(null, itemNotFoundException.getMessage());
+            } catch (IOException | ClassNotFoundException exception) {
+                exception.printStackTrace();
             }
         });
     }
