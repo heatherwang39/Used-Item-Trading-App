@@ -36,36 +36,14 @@ import static javax.swing.JOptionPane.showMessageDialog;
  */
 
 
-
 public class TraderGUI {
-    private JTabbedPane MainTabbedPane;
     public JPanel MainContainer;
-    private JTextField txtUsernameOutput;
-    private JTextField txtEmailOutput;
-    private JTextField txtInventoryInput;
-    private JTextField txtWishlistInput;
-    private JTextField txtRequestItemInput;
-    private JRadioButton rbtnTempTrade;
-    private JRadioButton rbtnPermTrade;
-    private JButton btnRequestTrade;
-    private JButton btnLoginMain;
-    private JButton btnRegisterMain;
-    private JTextField txtThresholdBorrowedInput;
-    private JButton btnThresholdBorrowedEnter;
     private JPanel Main;
     private JPanel Home;
     private JPanel Account;
-    private JButton guestButton;
-    private JTextField txtRegisterUsername;
-    private JTextField txtRegisterEmail;
-    private JTextField txtRegisterPassword;
-    private JTextField txtLoginUsername;
-    private JTextField txtLoginPassword;
     private JPanel Login;
     private JPanel Register;
-    private JButton btnRegister;
-    private JButton btnLogin;
-    private JPanel AddItems;
+    private JPanel Items;
     private JPanel AddAdmin;
     private JPanel Request;
     private JPanel Offers;
@@ -74,124 +52,141 @@ public class TraderGUI {
     private JPanel Requests;
     private JPanel Freeze;
     private JPanel Threshold;
-    private JTextField txtAdminPasswordInput;
-    private JButton btnAddAdmin;
-    private JTextArea txtAreaInventoryOutput;
-    private JTextArea txtAreaWishlistOutput;
-    private JButton btnInventoryRequest;
-    private JButton btnWishlistAddition;
     private JPanel Messages;
-    private JTextArea txtAreaActivityTradeOutput;
-    private JTextArea txtAreaActivityPartnerOutput;
-    private JTextArea txtAreaDescriptionInput;
+    private JPanel UserList;
+    private JPanel Meeting;
+    private JPanel Logging;
+
+    private JTabbedPane MainTabbedPane;
+    private JTabbedPane ThresholdTabbedPane;
+    private JTabbedPane MeetingTabbedPane;
+    private JTabbedPane MessagesTabbedPane;
+    private JTabbedPane ItemsTabbedPane;
+    private JTabbedPane RequestTabbedPane;
+
+    private JPasswordField pswdLogin;
+
+    private JTextField txtUsernameOutput;
+    private JTextField txtEmailOutput;
+    private JTextField txtInventoryInput;
+    private JTextField txtWishlistInput;
+    private JTextField txtRequestItemInput;
+    private JTextField txtThresholdBorrowedInput;
+    private JTextField txtRegisterUsername;
+    private JTextField txtRegisterEmail;
+    private JTextField txtRegisterPassword;
+    private JTextField txtLoginUsername;
+    private JTextField txtAdminPasswordInput;
     private JTextField txtTagsInput;
-    private JTextArea txtAreaBrowseListingsOutput;
-    private JTextArea txtAreaFrozenUsers;
     private JTextField txtFrozenUser;
-    private JRadioButton rbtnUnfreezeUser;
-    private JRadioButton rbtnIgnoreUser;
-    private JButton btnFreezeEnter;
     private JTextField txtOffersOutput;
-    private JRadioButton rbtnAcceptOffer;
-    private JRadioButton rbtnDenyOffer;
-    private JButton btnOfferEnter;
     private JTextField txtThresholdIncompleteInput;
     private JTextField txtThresholdWeeklyInput;
-    private JTextArea txtAreaLoggingOutput;
-    private JTextArea txtAreaRequestsOutput;
-    private JRadioButton rbtnAcceptRequest;
-    private JRadioButton rbtnDenyRequest;
-    private JButton btnRequestsEnter;
     private JTextField txtRequestsOutput;
-    private JTextArea txtAreaOffersOutput;
     private JTextField txtMessageRecipientInput;
-    private JButton btnMessageUser;
-    private JButton btnMessageAdmin;
-    private JTextArea txtAreaMessageUserInput;
-    private JTextArea txtAreaMessageAdminInput;
+    private JTextField txtAccountStatuses;
+    private JTextField txtRequestedItemInput;
     private JTextField txtMessageUserTitleInput;
     private JTextField txtMessageAdminTitleInput;
     private JTextField txtAdminEmailInput;
     private JTextField txtAdminUsernameInput;
-    private JPanel Logging;
-    private JPanel UserList;
-    private JTextArea txtAreaUserListOutput;
-    private JTextField txtAccountStatuses;
-    private JTextField txtRequestedItemInput;
-    private JButton btnAccountSetAwayStatus;
     private JTextField txtUserListOutput;
-    private JRadioButton rbtnUserListMute;
-    private JRadioButton rbtnUserListNext;
-    private JButton btnUserListEnter;
-    private JButton btnThresholdIncompleteEnter;
-    private JButton btnThresholdWeeklyEnter;
+    private JTextField txtMeetingAcceptedTrade;
+    private JTextField txtMeetingSuggestInput;
+    private JTextField txtMeetingSuggested;
+    private JTextField txtMeetingOngoingOutput;
+    private JTextField txtMeetingTimeInput;
+    private JTextField txtThresholdGildedInput;
+    private JTextField txtFreezeUserInput;
+    private JTextField txtThresholdUserWeekly;
+    private JTextField txtThresholdUsernameInput;
+    private JTextField txtThresholdUserGilded;
+    private JTextField txtThresholdUserIncompleted;
+    private JTextField txtThresholdUserBorrowing;
+    private JTextField txtItemsUnhideInput;
+    private JTextField txtItemsHideInput;
+    private JTextField txtRequestLendSuggestedInput;
+    private JTextField txtRequestThreeWayUsers;
+
+    private JTextArea txtAreaActivityTradeOutput;
+    private JTextArea txtAreaActivityPartnerOutput;
+    private JTextArea txtAreaDescriptionInput;
+    private JTextArea txtAreaInventoryOutput;
+    private JTextArea txtAreaWishlistOutput;
+    private JTextArea txtAreaBrowseListingsOutput;
+    private JTextArea txtAreaFrozenUsers;
+    private JTextArea txtAreaLoggingOutput;
+    private JTextArea txtAreaRequestsOutput;
+    private JTextArea txtAreaOffersOutput;
+    private JTextArea txtAreaMessageUserInput;
+    private JTextArea txtAreaMessageAdminInput;
+    private JTextArea txtAreaUserListOutput;
     private JTextArea txtAreaMessagesIncoming;
     private JTextArea txtAreaMessagesSent;
     private JTextArea txtAreaRequestSuggestTradesOutput;
-    private JButton btnRequestSuggestionEnter;
     private JTextArea txtAreaMeetingAcceptedTrades;
-    private JTextField txtMeetingAcceptedTrade;
-    private JTextField txtMeetingSuggestInput;
-    private JButton btnMeetingSuggest;
     private JTextArea txtAreaMeetingSuggestions;
-    private JTextField txtMeetingSuggested;
-    private JRadioButton rbtnMeetingAccept;
-    private JRadioButton rbtnMeetingDeny;
     private JTextArea txtAreaMeetingOngoing;
-    private JTextField txtMeetingOngoingOutput;
-    private JButton btnMeetingOngoingEnter;
-    private JPanel Meeting;
-    private JButton btnMeetingEnterResponse;
     private JTextArea txtAreaMeetingCompleted;
-    private JTextField txtMeetingTimeInput;
-    private JRadioButton rbtnMeetingNext;
-    private JRadioButton rbtnMeetingCompleted;
-    private JTextField txtThresholdGildedInput;
-    private JButton btnThresholdGuildedEnter;
     private JTextArea txtAreaAccountThresholds;
-    private JRadioButton rbtnLend;
-    private JRadioButton rbtnViewNextSuggestion;
-    private JTextField txtFreezeUserInput;
+    private JTextArea txtAreaHiddenInventory;
+    private JTextArea txtAreaUnhiddenInventory;
+
+    private JButton btnLoginMain;
+    private JButton btnGuestMain;
+    private JButton btnRegisterMain;
+    private JButton btnThresholdBorrowedEnter;
+    private JButton btnRequestTrade;
+    private JButton btnRegister;
+    private JButton btnLogin;
+    private JButton btnAddAdmin;
+    private JButton btnInventoryRequest;
+    private JButton btnWishlistAddition;
+    private JButton btnFreezeEnter;
+    private JButton btnOfferEnter;
+    private JButton btnRequestsEnter;
+    private JButton btnMessageUser;
+    private JButton btnMessageAdmin;
+    private JButton btnAccountSetAwayStatus;
+    private JButton btnUserListEnter;
+    private JButton btnThresholdIncompleteEnter;
+    private JButton btnThresholdWeeklyEnter;
+    private JButton btnRequestSuggestionEnter;
+    private JButton btnMeetingSuggest;
+    private JButton btnMeetingOngoingEnter;
+    private JButton btnThresholdSetToDefault;
+    private JButton btnMeetingEnterResponse;
     private JButton btnFreezeUser;
-    private JTabbedPane tabbedPane2;
-    private JTextField txtThresholdUsernameInput;
-    private JTextField txtThresholdUserBorrowing;
-    private JTextField txtThresholdUserIncompleted;
-    private JTextField txtThresholdUserWeekly;
-    private JTextField txtThresholdUserGilded;
+    private JButton btnThresholdGuildedEnter;
     private JButton btnThresholdUserBorrowing;
     private JButton btnThresholdUserIncompleted;
     private JButton btnThresholdUserWeekly;
     private JButton btnThresholdUserGilded;
-    private JTextArea accountInformationTextArea;
-    private JButton exitButton;
-    private JTextPane traderSystemTextPane;
-    private JScrollPane scrlInventoryOutput;
-    private JScrollPane scrlWishlistOutput;
-    private JTabbedPane tabbedPane1;
-    private JLabel MainLabel;
-    private JTabbedPane MessagesTabbedPane;
-    private JButton btnThresholdSetToDefault;
-    private JTabbedPane tabbedPane3;
-    private JTextField txtItemsUnhideInput;
-    private JTextField txtItemsHideInput;
     private JButton btnItemsHide;
     private JButton btnItemsUnhide;
-    private JTextArea txtItemsHiddenInput;
-    private JTextField txtRequestLendSuggestedInput;
-    private JTabbedPane tabbedPane4;
-    private JPasswordField pswdLogin;
-    private JTextField txtRequestThreeWayUsers;
-    private JRadioButton rbtnRequestThreeWayPerm;
     private JButton btnRequestThreeWayAddUser;
     private JButton btnRequestThreeWayOfferTrade;
+
+    private JRadioButton rbtnTempTrade;
+    private JRadioButton rbtnPermTrade;
+    private JRadioButton rbtnUnfreezeUser;
+    private JRadioButton rbtnIgnoreUser;
+    private JRadioButton rbtnAcceptOffer;
+    private JRadioButton rbtnDenyOffer;
+    private JRadioButton rbtnAcceptRequest;
+    private JRadioButton rbtnDenyRequest;
+    private JRadioButton rbtnUserListMute;
+    private JRadioButton rbtnUserListNext;
+    private JRadioButton rbtnMeetingAccept;
+    private JRadioButton rbtnMeetingDeny;
+    private JRadioButton rbtnMeetingNext;
+    private JRadioButton rbtnMeetingCompleted;
+    private JRadioButton rbtnLend;
+    private JRadioButton rbtnViewNextSuggestion;
+    private JRadioButton rbtnRequestThreeWayPerm;
     private JRadioButton rbtnRequestThreeWayTemp;
-    private JTextArea txtAreaHiddenInventory;
-    private JTextArea txtAreaUnhiddenInventory;
-    private JTextField txtRequestSantaExplanation;
-    private JTextField txtRequestSantaInput;
-    private JButton btnRequestSantaEnter;
-    private JTextArea txtAreaRequestSantaExplanation;
+
+    private JTextPane traderSystemTextPane;
 
     private String user;
     private final StorageGateway storageGateway;
@@ -219,7 +214,6 @@ public class TraderGUI {
         txtOffersOutput.setEditable(false);
         txtAccountStatuses.setEditable(false);
         txtRequestsOutput.setEditable(false);
-
         txtAreaUnhiddenInventory.setEditable(false);
         txtAreaHiddenInventory.setEditable(false);
         txtAreaBrowseListingsOutput.setEditable(false);
@@ -278,7 +272,7 @@ public class TraderGUI {
             MainTabbedPane.setSelectedIndex(1);
         });
 
-        guestButton.addActionListener(e -> {
+        btnGuestMain.addActionListener(e -> {
             tabCleaner();
             try {
                 initializeBrowse();
@@ -588,7 +582,7 @@ public class TraderGUI {
     }
 
     private void initializeItems() throws IOException, ClassNotFoundException {
-        MainTabbedPane.insertTab("Add Items", null, AddItems, null, 3);
+        MainTabbedPane.insertTab("Add Items", null, Items, null, 3);
 
         ItemsController itemsController = new ItemsController(storageGateway, user);
         ItemPresenter itemPresenter = new ItemPresenter();
@@ -1082,10 +1076,6 @@ public class TraderGUI {
         });
     }
 
-    private void initializeLogging() {
-        MainTabbedPane.insertTab("Logging", null, Logging, null, 2);
-    }
-
 
     private void initializeFreeze() throws IOException, ClassNotFoundException {
         final int[] currUserIndex = {0};
@@ -1150,6 +1140,10 @@ public class TraderGUI {
                 ioException.printStackTrace();
             }
         });
+    }
+
+    private void initializeLogging() {
+        MainTabbedPane.insertTab("Logging", null, Logging, null, 2);
     }
 
     private void tabCleaner(){
