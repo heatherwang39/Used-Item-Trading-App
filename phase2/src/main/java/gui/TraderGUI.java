@@ -440,8 +440,6 @@ public class TraderGUI {
         MainTabbedPane.insertTab("Browse", null, Browse, null, 1);
         BrowseController browseController = new BrowseController(storageDepot);
 
-        MainTabbedPane.insertTab("Browse", null, Browse, null, 1);
-
         displayBrowse(browseController.getItemsString());
     }
 
@@ -484,7 +482,7 @@ public class TraderGUI {
 
     private void initializeTradeRequest() throws IOException, ClassNotFoundException, ItemNotFoundException {
         AtomicInteger index = new AtomicInteger();
-        MainTabbedPane.insertTab("Item Request", null, Request, null, 3);
+        MainTabbedPane.insertTab("Trade Request", null, Request, null, 3);
 
         TradeRequestController tradeRequestController = new TradeRequestController(storageDepot, user);
         RandomTradeRequestController randomTradeRequestController = new RandomTradeRequestController(storageDepot, user);
@@ -866,7 +864,7 @@ public class TraderGUI {
     // Admin Tabs
 
     private void initializeItemRequests() throws IOException, ClassNotFoundException, ItemNotFoundException {
-        MainTabbedPane.insertTab("Trade Requests", null, Requests, null, 2);
+        MainTabbedPane.insertTab("Item Requests", null, Requests, null, 2);
 
         ItemPresenter itemPresenter = new ItemPresenter();
         ItemRequestsController itemRequestsController = new ItemRequestsController(storageDepot, itemPresenter);
