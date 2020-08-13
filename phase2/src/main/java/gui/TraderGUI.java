@@ -483,7 +483,7 @@ public class TraderGUI {
         RequestController requestController = new RequestController(storageGateway, user);
         ItemPresenter itemPresenter = new ItemPresenter();
 
-        List<List<HashMap<String, String>>> suggestionList = requestController.suggestAllItems(user);
+        List<List<HashMap<String, String>>> suggestionList = requestController.suggestAllItems();
         displayRequestSuggestions(suggestionList, itemPresenter);
 
         txtAreaRequestSantaExplanation.setText("Here you can offer an item you own for 'Secret Santa'. \n" +
@@ -497,43 +497,53 @@ public class TraderGUI {
         btnRequestSuggestionEnter.addActionListener(e -> {
             displayRequestSuggestions(suggestionList, itemPresenter);
             TradeAlgorithmName tradeAlgorithmName = TradeAlgorithmName.CYCLE;
-            if (rbtnLend.isSelected()) {
+            if (!suggestionList.isEmpty()) {
+                if (rbtnLend.isSelected()) {
                 // lend the items
 
                 List<Integer> tradeItemList = new ArrayList<>();
 
-                try {
-                    for (HashMap<String, String> individualItem : suggestionList.get(index.get())) {
-                        tradeItemList.add(Integer.parseInt(individualItem.get("id")));
+                {
+                    try {
+                        for (HashMap<String, String> individualItem : suggestionList.get(index.get())) {
+                            tradeItemList.add(Integer.parseInt(individualItem.get("id")));
+                        }
+                        requestController.createRequest(false, tradeAlgorithmName, tradeItemList);
+                        showMessageDialog(null, "Request created!\n" +
+                                "Items: " + tradeItemList.toString());
+
+                        } catch (ItemNotFoundException | NoSuchTradeAlgorithmException | WrongTradeAccountException |
+                            TradeCancelledException exception) {
+                        showMessageDialog(null, exception.getMessage());
+                        } catch (TradeNumberException | IOException ioException) {
+                        ioException.printStackTrace();
                     }
-                    requestController.createRequest(false, tradeAlgorithmName, tradeItemList);
-                    showMessageDialog(null, "Request created!\n" +
-                            "Items: " + tradeItemList.toString());
-
-                } catch (ItemNotFoundException | NoSuchTradeAlgorithmException | WrongTradeAccountException |
-                        TradeCancelledException exception) {
-                    showMessageDialog(null, exception.getMessage());
-                } catch (TradeNumberException | IOException ioException) {
-                    ioException.printStackTrace();
                 }
-                suggestionList.remove(0);
-                if (index.get() == suggestionList.size()) {
-                    index.set(0);
+                    suggestionList.remove(0);
+                    if (index.get() == suggestionList.size()) {
+                        index.set(0);
+                    }
+                    if (suggestionList.isEmpty()) {
+                        displayRequestSuggestions(suggestionList, itemPresenter);
+                    } else {
+
+                        displayRequestSuggestions(Collections.singletonList(suggestionList.get(index.get())), itemPresenter);
+
+                    }
+
+                } else if(rbtnViewNextSuggestion.isSelected()){
+                    index.getAndIncrement();
+                    if (index.get() == suggestionList.size()) {
+                        index.set(0);
+                    }
+                    displayRequestSuggestions(Collections.singletonList(suggestionList.get(index.get())), itemPresenter);
+
+
+                } else {
+                    showMessageDialog(null, "Please select an option!");
                 }
-                displayRequestSuggestions(Collections.singletonList(suggestionList.get(index.get())), itemPresenter);
-
-
-            } else if(rbtnViewNextSuggestion.isSelected()){
-                index.getAndIncrement();
-                if (index.get() == suggestionList.size()) {
-                    index.set(0);
-                }
-                displayRequestSuggestions(Collections.singletonList(suggestionList.get(index.get())), itemPresenter);
-
-
-            } else{
-                showMessageDialog(null, "Please select an option!");
             }
+
 
         });
 

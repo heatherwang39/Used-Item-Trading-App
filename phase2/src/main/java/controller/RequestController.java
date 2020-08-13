@@ -96,11 +96,10 @@ public class RequestController {
 
     /**
      * Find all trade suggestions
-     * @param currentUser username
      * @return List of trade suggestions data
      * @throws ItemNotFoundException item was not found
      */
-    public List<List<HashMap<String, String>>> suggestAllItems(String currentUser) throws ItemNotFoundException {
+    public List<List<HashMap<String, String>>> suggestAllItems() throws ItemNotFoundException {
         // iterate through every user in the system and find what currentUser can lend them
         // iterate through every user in the system and find what they can lend currentUser
         // get the intersection of these two lists.
@@ -108,13 +107,16 @@ public class RequestController {
 
         List<List<HashMap<String, String>>> suggestedItemsToLendList = new ArrayList<>();
         List<String> userList = accountStorage.getUsers();
-        userList.remove(currentUser);
-
-        for (String otherUser : userList){
-            List<HashMap<String, String>> currentUserLendList = itemStorage.suggestItems(currentUser, otherUser); // list of items currentUser could lend otherUser
-            List<HashMap<String, String>> otherUserLendList = itemStorage.suggestItems(otherUser, currentUser); // list of items otherUser could lend currentUser
-            if (!currentUserLendList.isEmpty() && !otherUserLendList.isEmpty()){
-                suggestedItemsToLendList.add(currentUserLendList);
+        userList.remove(username);
+        List<HashMap<String, String>> currentUserLendList = new ArrayList<>();
+        List<HashMap<String, String>> otherUserLendList = new ArrayList<>();
+        for (String otherUser : userList) {
+            currentUserLendList = itemStorage.suggestItems(username, otherUser); // list of items currentUser could lend otherUser
+            otherUserLendList = itemStorage.suggestItems(otherUser, username); // list of items otherUser could lend currentUser
+        }
+        for (HashMap<String, String> item1: currentUserLendList) {
+            for (HashMap<String, String> item2: otherUserLendList) {
+                suggestedItemsToLendList.add(Arrays.asList(item1, item2));
             }
         }
         return suggestedItemsToLendList;
