@@ -9,7 +9,6 @@ package main.java.model.trade;
  */
 public interface TradeAlgorithmCreator {
 
-
     /**
      * Constructs the a new instance of the given trade algorithm.
      *

@@ -515,6 +515,6 @@ public class ItemStorage implements Storage, TradeObserver {
                 }
             }
 
-        }catch(ItemNotFoundException ignored){}
+        } catch(ItemNotFoundException ignored){}
     }
 }

@@ -6,6 +6,7 @@ package main.java.model.meeting;
  * @version %I%, %G%
  * @since Phase 2
  */
+
 public class MeetingAlreadyConfirmedException extends Exception{
 
     /**

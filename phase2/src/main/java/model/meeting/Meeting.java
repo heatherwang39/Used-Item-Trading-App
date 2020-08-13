@@ -44,6 +44,7 @@ public class Meeting implements Serializable {
         cancelled = false;
     }
 
+
     // Getters
 
     /** Return the unique ID of the meeting
@@ -53,7 +54,6 @@ public class Meeting implements Serializable {
     public int getMeetingID() {
         return meetingID;
     }
-
 
     /** Return the place at which the meeting will take place
      *
@@ -79,7 +79,6 @@ public class Meeting implements Serializable {
      */
     public String getStringDateTime() { return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(dateTime); }
 
-
     /** Return a list containing all the attendees of this meeting
      *
      * @return A list containing all the attendees of this meeting
@@ -87,7 +86,6 @@ public class Meeting implements Serializable {
     public List<String> getAttendees(){
         return new ArrayList<>(attendees);
     }
-
 
     /** Return whether or not the meeting has been accepted (by everyone)
      *
@@ -129,6 +127,7 @@ public class Meeting implements Serializable {
         return unconfirmed;
     }
 
+
     // Pseudo-setters
 
     /** Record the fact that the attendee has accepted the meeting. Return true if this change has been successfully
@@ -147,7 +146,6 @@ public class Meeting implements Serializable {
         }
         return false;
     }
-
 
     /** Record the fact that the attendee has confirmed the meeting. Return true if this change has been successfully
      * accepted.
@@ -168,7 +166,6 @@ public class Meeting implements Serializable {
         return false;
     }
 
-
     /** Return whether or not the Meeting is cancelled
      *
      * @return Whether the Meeting is cancelled
@@ -176,7 +173,6 @@ public class Meeting implements Serializable {
     public boolean isNotCancelled(){
         return !cancelled;
     }
-
 
     /** Cancel the Meeting
      *

@@ -8,6 +8,7 @@ package main.java.model.meeting;
  * @version %I%, %G%
  * @since Phase 2
  */
+
 public interface MeetingObservee {
 
 

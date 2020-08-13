@@ -57,7 +57,6 @@ public class Item implements Serializable {
         return owner;
     }
 
-
     /**
      * Set the item's owner to be the given owner
      *
@@ -84,7 +83,6 @@ public class Item implements Serializable {
     public String getDescription() {
         return description;
     }
-
 
     /**
      * Get Item's tags.
