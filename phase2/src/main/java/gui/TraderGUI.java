@@ -230,8 +230,6 @@ public class TraderGUI {
         txtAreaActivityPartnerOutput.setEditable(false);
 
 
-
-
         // this is so users cannot select two radio buttons simultaneously
         ButtonGroup tradeTypeButtonGroup = new ButtonGroup();
         tradeTypeButtonGroup.add(rbtnPermTrade);
@@ -264,6 +262,10 @@ public class TraderGUI {
         ButtonGroup meetingOngoingButtonGroup = new ButtonGroup();
         meetingOngoingButtonGroup.add(rbtnMeetingCompleted);
         meetingOngoingButtonGroup.add(rbtnMeetingNext);
+
+        ButtonGroup randomButtonGroup = new ButtonGroup();
+        randomButtonGroup.add(rbtnRequestRandomPerm);
+        randomButtonGroup.add(rbtnRequestRandomTemp);
 
 
         initializeRegister();
@@ -487,8 +489,6 @@ public class TraderGUI {
         List<List<HashMap<String, String>>> suggestionList = tradeRequestController.suggestAllItems();
         displayRequestSuggestions(suggestionList, itemPresenter);
 
-
-
         btnRequestSuggestionEnter.addActionListener(e -> {
             displayRequestSuggestions(suggestionList, itemPresenter);
             TradeAlgorithmName tradeAlgorithmName = TradeAlgorithmName.CYCLE;
@@ -545,7 +545,6 @@ public class TraderGUI {
                 String requestedItem = txtRequestedItemInput.getText();
                 String offeredItem = txtRequestItemInput.getText();
 
-
                 try {
                     String validRequest = tradeRequestController.checkValidRequest(requestedItem, offeredItem);
                     if (!validRequest.equals("VALID")) {
@@ -578,9 +577,8 @@ public class TraderGUI {
                 }
             }
         });
-
-
     }
+
 
     private void initializeItems() throws IOException, ClassNotFoundException {
         MainTabbedPane.insertTab("Items", null, Items, null, 3);
@@ -774,8 +772,9 @@ public class TraderGUI {
                 ioException.printStackTrace();
             }
         });
-
     }
+
+
     private void initializeMessages() throws IOException, ClassNotFoundException {
         MainTabbedPane.insertTab("Messages", null, Messages, null, 3);
         MessageController messageController = new MessageController(storageGateway, user);
@@ -880,6 +879,7 @@ public class TraderGUI {
             }
         });
     }
+
 
     private void initializeThreshold() throws IOException, ClassNotFoundException {
         MainTabbedPane.insertTab("Trade Threshold", null, Threshold, null, 2);
@@ -1020,6 +1020,7 @@ public class TraderGUI {
         });
     }
 
+
     private void initializeUserList() throws IOException, ClassNotFoundException, AccountNotFoundException {
         AtomicInteger currUserIndex = new AtomicInteger();
         MainTabbedPane.insertTab("User List", null, UserList, null, 2);
@@ -1143,9 +1144,13 @@ public class TraderGUI {
         });
     }
 
+
     private void initializeLogging() {
         MainTabbedPane.insertTab("Logging", null, Logging, null, 2);
     }
+
+
+    // Helper methods
 
     private void tabCleaner(){
         if (MainTabbedPane.getTabCount() == 2) {
@@ -1290,7 +1295,6 @@ public class TraderGUI {
             e.printStackTrace();
         }
     }
-
 
     private Integer tryParse(String s){
         try {
