@@ -57,12 +57,12 @@ public class RequestController {
     public void createRequest(boolean permanent, TradeAlgorithmName tradeAlgorithmName, List<Integer> items)
             throws ItemNotFoundException, NoSuchTradeAlgorithmException, IOException, WrongTradeAccountException, TradeNumberException, TradeCancelledException {
         List<String> traders = new ArrayList<>();
+        traders.add(username);
         for (Integer itemID : items) {
-            traders.add(itemStorage.getData(itemID).get("owner"));
-        }
-        if (!(traders.contains(username))){
-            traders.add(username);
-            items.add(null);
+            if (itemID != null) {
+                String owner = itemStorage.getData(itemID).get("owner");
+                if (!owner.equals(username)) traders.add(owner);
+            }
         }
         int tradeNumber = tradeStorage.newTrade(permanent, tradeAlgorithmName, traders, items);
         tradeStorage.acceptTrade(tradeNumber, username);

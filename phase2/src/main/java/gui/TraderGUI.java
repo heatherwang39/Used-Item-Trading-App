@@ -533,13 +533,15 @@ public class TraderGUI {
                     if (!validRequest.equals("VALID")) {
                         showMessageDialog(null, validRequest);
                     } else {
-                        if (!requestedItem.isEmpty()) {
-                            Integer requestedItemID = Integer.parseInt(requestedItem);
-                            tradeItemsList.add(requestedItemID);
-                        }
                         if (!offeredItem.isEmpty()) {
                             Integer offeredItemID = Integer.parseInt(offeredItem);
                             tradeItemsList.add(offeredItemID);
+                        } else {
+                            tradeItemsList.add(null);
+                        }
+                        if (!requestedItem.isEmpty()) {
+                            Integer requestedItemID = Integer.parseInt(requestedItem);
+                            tradeItemsList.add(requestedItemID);
                         }
                         TradeAlgorithmName tradeAlgorithmName = TradeAlgorithmName.CYCLE;
                         requestController.createRequest(rbtnPermTrade.isSelected(), tradeAlgorithmName, tradeItemsList);
@@ -647,7 +649,7 @@ public class TraderGUI {
         displayOngoingMeetings(meetingController, 0);
         displayCompletedMeetings(meetingController);
 
-        final int[] currMeetingOngoingIndex = {0};
+        final int[] currOngoingIndex = {0};
         btnMeetingSuggest.addActionListener(e -> {
             List<HashMap<String, List<String>>> acceptedTradesListUnformatted = new ArrayList<>();
             try {
@@ -691,6 +693,7 @@ public class TraderGUI {
                 } else if (rbtnMeetingDeny.isSelected()){
                     meetingController.rejectMeeting(Integer.parseInt(meetingSuggestionsListUnformatted.get(0).get("id").get(0)));
                     showMessageDialog(null, "Suggested meeting is rejected");
+                    displaySuggestMeetings(meetingController);
                 } else{
                     showMessageDialog(null, "Please either accept or deny this suggestion");
                 }
@@ -702,7 +705,7 @@ public class TraderGUI {
                 ioException.printStackTrace();
             }
             displayMeetingSuggestions(meetingController);
-            displayOngoingMeetings(meetingController, currMeetingOngoingIndex[0]);
+            displayOngoingMeetings(meetingController, currOngoingIndex[0]);
         });
 
 
@@ -716,25 +719,26 @@ public class TraderGUI {
             if (!ongoingMeetingsListUnformatted.isEmpty()){
                 if (rbtnMeetingCompleted.isSelected()) {
                     try {
-                        meetingController.confirmMeeting(Integer.parseInt(ongoingMeetingsListUnformatted.get(currMeetingOngoingIndex[0]).get("id").get(0)));
+                        meetingController.confirmMeeting(Integer.parseInt(ongoingMeetingsListUnformatted.get(currOngoingIndex[0]).get("id").get(0)));
                         showMessageDialog(null, "Meeting has been confirmed!");
+                        currOngoingIndex[0] = 0;
                     } catch (WrongMeetingAccountException | MeetingIDException | TimeException exception) {
                         showMessageDialog(null, exception.getMessage());
                     } catch (IOException ioException){
                         ioException.printStackTrace();
                     }
                 } else if (rbtnMeetingNext.isSelected()){
-                    currMeetingOngoingIndex[0]++;
+                    if (currOngoingIndex[0] < ongoingMeetingsListUnformatted.size() - 1) currOngoingIndex[0]++;
+                    else currOngoingIndex[0] = 0;
                 } else{
                     showMessageDialog(null, "Please select an option!");
                 }
             }
-            displayOngoingMeetings(meetingController, currMeetingOngoingIndex[0]);
+            displayOngoingMeetings(meetingController, currOngoingIndex[0]);
             displayCompletedMeetings(meetingController);
             displaySuggestMeetings(meetingController);
-            BrowseController browseController = null;
             try {
-                browseController = new BrowseController(storageGateway);
+                BrowseController browseController = new BrowseController(storageGateway);
                 displayBrowse(browseController.getItemsString());
             } catch (IOException | ClassNotFoundException | ItemNotFoundException ioException) {
                 ioException.printStackTrace();

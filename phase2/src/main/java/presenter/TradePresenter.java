@@ -106,7 +106,7 @@ public class TradePresenter {
     private List<Integer> getIntegerList(List<String> stringList) {
         List<Integer> integerList = new ArrayList<>();
         for (String string : stringList) {
-            integerList.add(Integer.parseInt(string));
+            if (!string.equals("null")) integerList.add(Integer.parseInt(string));
         }
         return integerList;
     }

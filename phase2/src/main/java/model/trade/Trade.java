@@ -226,7 +226,7 @@ public abstract class Trade implements Serializable {
      * @param meetingID The meeting(ID) that you're removing from this trade
      */
     public void removeMeeting(int meetingID){
-        meetings.remove(meetings.get(meetingID));
+        meetings.remove(meetings.lastIndexOf(meetingID));
     }
 
 

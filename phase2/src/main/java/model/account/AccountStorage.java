@@ -580,7 +580,7 @@ public class AccountStorage implements Storage, TradeObserver {
     @Override
     public void updateTradeChange(HashMap<String, HashMap<String, Integer>> exchangeData, int newStatus){
         try {
-            List<String> traders = (List<String>) exchangeData.keySet();
+            List<String> traders = new ArrayList<>(exchangeData.keySet());
             if (newStatus == 3) {
                 for (String username : traders) {
                     UserAccount user = (UserAccount) getAccount(username);
