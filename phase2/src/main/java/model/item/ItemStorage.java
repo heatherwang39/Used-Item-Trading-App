@@ -462,21 +462,32 @@ public class ItemStorage implements Storage, TradeObserver {
     public void updateTradeChange(HashMap<String, HashMap<String, Integer>> exchangeData, int newStatus){
         try{
 
+            Integer item;
+
             if(newStatus == 3){
                 for(String user : exchangeData.keySet()){
-                    getItem(exchangeData.get(user).get("FINAL")).setOwner(user);
+                    item = exchangeData.get(user).get("FINAL");
+                    if(!(item == null)){
+                        getItem(item).setOwner(user);
+                    }
                 }
             }
 
             if(newStatus == -1){
                 for(String user : exchangeData.keySet()){
-                    getItem(exchangeData.get(user).get("SENT")).setOwner(user);
+                    item = exchangeData.get(user).get("SENT");
+                    if(!(item == null)){
+                        getItem(item).setOwner(user);
+                    }
                 }
             }
 
             if(newStatus == 2){
                 for(String user : exchangeData.keySet()){
-                    getItem(exchangeData.get(user).get("RECEIVED")).setOwner(user);
+                    item = exchangeData.get(user).get("RECEIVED");
+                    if(!(item == null)){
+                        getItem(item).setOwner(user);
+                    }
                 }
             }
 

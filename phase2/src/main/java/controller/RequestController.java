@@ -60,7 +60,10 @@ public class RequestController {
         for (Integer itemID : items) {
             traders.add(itemStorage.getData(itemID).get("owner"));
         }
-        if (!(traders.contains(username))) traders.add(username);
+        if (!(traders.contains(username))){
+            traders.add(username);
+            items.add(null);
+        }
         int tradeNumber = tradeStorage.newTrade(permanent, tradeAlgorithmName, traders, items);
         tradeStorage.acceptTrade(tradeNumber, username);
         storageGateway.saveStorageData(StorageEnum.valueOf("TRADE"));
