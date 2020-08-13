@@ -104,11 +104,14 @@ public class TradePresenter {
         for (List<Integer> itemIDSet : itemIDSets) {
             StringBuilder itemInfo = new StringBuilder();
             for (Integer itemID : itemIDSet) {
-                HashMap<String, String> itemData = itemStorage.getData(itemID);
-                if (!(itemInfo.length() == 0))itemInfo.append( " traded for ");
-                itemInfo.append(itemData.get("name"));
-                itemInfo.append(" owned by ");
-                itemInfo.append(itemData.get("owner"));
+                if (itemID == null) itemInfo.append("Nothing");
+                else {
+                    HashMap<String, String> itemData = itemStorage.getData(itemID);
+                    if (!(itemInfo.length() == 0)) itemInfo.append(" traded for ");
+                    itemInfo.append(itemData.get("name"));
+                    itemInfo.append(" owned by ");
+                    itemInfo.append(itemData.get("owner"));
+                }
             }
             formatItem.add(itemInfo.toString());
         }

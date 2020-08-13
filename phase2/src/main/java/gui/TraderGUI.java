@@ -413,12 +413,13 @@ public class TraderGUI {
         ActivityController activityController = new ActivityController(storageGateway, user);
 
         List<List<Integer>> tradeList = activityController.recentItemsTraded();
-        StringBuilder tradeString = new StringBuilder();
-        for (List<Integer> integers : tradeList) {
-            for (Integer integer : integers) {
-                tradeString.append(", ").append(integer);
-                txtAreaActivityTradeOutput.append(tradeString + "\n");
+        TradePresenter tradePresenter = new TradePresenter(storageGateway);
+        try {
+            for (String s : tradePresenter.formatItemsInTradeForListView(tradeList)) {
+                txtAreaActivityTradeOutput.append(s + "\n");
             }
+        } catch (ItemNotFoundException e) {
+            e.printStackTrace();
         }
 
         List<String> partnerList = activityController.frequentTradingPartners();
