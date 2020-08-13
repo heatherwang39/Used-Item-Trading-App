@@ -42,9 +42,15 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
      * @throws NoSuchTradeAlgorithmException Thrown if no tradeAlgorithm has the given name
      */
     public int newTrade(boolean permanent, TradeAlgorithmName tradeAlgorithmName, List<String> traders, List<Integer> items)
-            throws NoSuchTradeAlgorithmException{
+            throws NoSuchTradeAlgorithmException, ItemAlreadyInActiveTradeException{
 
         Trade t;
+
+        for(Integer i: items){
+            if(i != null && getActiveTradeWithItem(i) != 0){
+                throw new ItemAlreadyInActiveTradeException();
+            }
+        }
 
         TradeAlgorithm ta = tac.getTradeAlgorithm(tradeAlgorithmName);
 
@@ -386,6 +392,14 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
         checkTradeCancelled(t);
         try{t.acceptTrade(trader);}
         catch(IndexOutOfBoundsException e){throw new WrongTradeAccountException();}
+
+        if(t.checkAccepted()){
+            for(Integer itemID: t.getItemsOriginal()){
+                if(itemID != null){
+                    tradeItemCanceller(itemID);
+                }
+            }
+        }
     }
 
 
@@ -577,6 +591,17 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
         return tradesWithItems;
     }
 
+
+    private void tradeItemCanceller(int itemID){
+        for (Trade t : trades) {
+            if (t.getItemsOriginal().contains(itemID)) {
+                if(t.getStatus() == 0){
+                    t.setStatus(-1);
+                }
+            }
+        }
+    }
+
     /** Return the Trade ID of the active trade that contains the given item. If no Trade is both active and contains
      * the given item, return 0.
      *
@@ -586,7 +611,7 @@ public class TradeStorage implements Storage, MeetingObserver, TradeObservee {
     public int getActiveTradeWithItem(int itemID){
         for (Trade t : trades) {
             if (t.getItemsOriginal().contains(itemID)) {
-                if(t.getStatus() == 1 | t.getStatus() == 1){return t.getTradeNumber();}
+                if(t.getStatus() == 1 | t.getStatus() == 2){return t.getTradeNumber();}
             }
         }
         return 0;

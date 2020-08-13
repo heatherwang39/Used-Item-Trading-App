@@ -508,7 +508,7 @@ public class TraderGUI {
                                 "Items: " + tradeItemList.toString());
 
                         } catch (ItemNotFoundException | NoSuchTradeAlgorithmException | WrongTradeAccountException |
-                            TradeCancelledException exception) {
+                            TradeCancelledException | ItemAlreadyInActiveTradeException exception) {
                         showMessageDialog(null, exception.getMessage());
                         } catch (TradeNumberException | IOException ioException) {
                         ioException.printStackTrace();
@@ -571,7 +571,7 @@ public class TraderGUI {
                         txtRequestItemInput.setText("");
                     }
                 } catch (ItemNotFoundException | NoSuchTradeAlgorithmException | TradeCancelledException |
-                        WrongTradeAccountException | TradeNumberException exception) {
+                        WrongTradeAccountException | TradeNumberException | ItemAlreadyInActiveTradeException exception) {
                     showMessageDialog(null, exception.getMessage());
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
