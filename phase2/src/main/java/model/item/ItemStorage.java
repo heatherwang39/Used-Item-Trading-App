@@ -489,6 +489,8 @@ public class ItemStorage implements Storage, TradeObserver {
                     itemID = exchangeData.get(user).get("FINAL");
                     if(!(itemID == null)){
                         getItem(itemID).setOwner(user);
+                        getItem(itemID).hide();
+                        removeWishList(user, itemID);
                     }
                 }
             }
@@ -515,6 +517,6 @@ public class ItemStorage implements Storage, TradeObserver {
                 }
             }
 
-        }catch(ItemNotFoundException ignored){}
+        }catch(ItemNotFoundException | NotInWishlistException ignored){}
     }
 }
