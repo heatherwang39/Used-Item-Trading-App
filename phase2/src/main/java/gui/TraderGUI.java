@@ -4,6 +4,7 @@ import main.java.controller.*;
 import main.java.model.account.*;
 import main.java.model.item.AlreadyHiddenException;
 import main.java.model.item.AlreadyNotHiddenException;
+import main.java.model.item.ItemInTradeException;
 import main.java.model.item.ItemNotFoundException;
 import main.java.model.meeting.MeetingAlreadyConfirmedException;
 import main.java.model.meeting.MeetingIDException;
@@ -658,7 +659,7 @@ public class TraderGUI {
                     displayHiddenUnhidden(itemsController, itemPresenter);
                     displayBrowse(browseController.getItemsString());
                 } else showMessageDialog(null, "That item does not belong to you");
-            } catch (AlreadyNotHiddenException | ItemNotFoundException exception) {
+            } catch (AlreadyNotHiddenException | ItemNotFoundException | ItemInTradeException exception) {
                 showMessageDialog(null, exception.getMessage());
             } catch (IOException ioException) {
                 ioException.printStackTrace();

@@ -391,8 +391,11 @@ public class ItemStorage implements Storage, TradeObserver {
      *
      * @throws ItemNotFoundException item not in system
      * @throws AlreadyNotHiddenException item already not hidden
+     * @throws ItemInTradeException item is in an active trade and cannot be unhidden
      */
-    public void unhideItem(int itemId) throws ItemNotFoundException, AlreadyNotHiddenException {
+    public void unhideItem(int itemId, int activeTrade) throws ItemNotFoundException, AlreadyNotHiddenException,
+            ItemInTradeException {
+        if (activeTrade != 0) throw new ItemInTradeException();
         if (items.containsKey(itemId)) {
             if (!items.get(itemId).unhide()) throw new AlreadyNotHiddenException();
         } else {

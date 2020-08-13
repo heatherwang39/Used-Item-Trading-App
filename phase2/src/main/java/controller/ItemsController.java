@@ -1,6 +1,7 @@
 package main.java.controller;
 
 import main.java.model.item.*;
+import main.java.model.trade.TradeStorage;
 import main.java.presenter.ItemPresenter;
 import main.java.system.StorageDepot;
 import main.java.system.StorageEnum;
@@ -20,8 +21,8 @@ import java.util.List;
 public class ItemsController {
     private final StorageGateway storageGateway;
     private final ItemStorage itemStorage;
+    private final TradeStorage tradeStorage;
     private final String username;
-    private ItemPresenter itemPresenter;
 
     /**
      * Initializes a new AddItemsController for the given username
@@ -36,7 +37,7 @@ public class ItemsController {
         this.username = username;
         StorageDepot sd = new StorageDepot(storageGateway);
         itemStorage = sd.getItemStorage();
-        itemPresenter = new ItemPresenter();
+        tradeStorage = sd.getTradeStorage();
     }
 
 
@@ -129,10 +130,12 @@ public class ItemsController {
      * @param itemID id of item
      * @throws AlreadyNotHiddenException Item is already not hidden
      * @throws ItemNotFoundException invalid item id
+     * @throws ItemInTradeException item is in an active trade and cannot be unhidden
      * @throws IOException file can't be read/written
      */
-    public void unhideItem(String itemID) throws AlreadyNotHiddenException, ItemNotFoundException, IOException {
-        itemStorage.unhideItem(Integer.parseInt(itemID));
+    public void unhideItem(String itemID) throws AlreadyNotHiddenException, ItemNotFoundException, ItemInTradeException,
+            IOException {
+        itemStorage.unhideItem(Integer.parseInt(itemID), tradeStorage.getActiveTradeWithItem(Integer.parseInt(itemID)));
         storageGateway.saveStorageData(StorageEnum.ITEM);
     }
 
