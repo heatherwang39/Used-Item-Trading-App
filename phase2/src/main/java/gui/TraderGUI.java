@@ -490,9 +490,6 @@ public class TraderGUI {
         List<List<HashMap<String, String>>> suggestionList = requestController.suggestAllItems();
         displayRequestSuggestions(suggestionList, itemPresenter);
 
-        txtAreaRequestSantaExplanation.setText("Here you can offer an item you own for 'Secret Santa'. \n" +
-                "When there is enough items, your item should be lent to random user that the program will pick. \n" +
-                "Likewise you will receive an item from one of the other users.");
 
 
         btnRequestSuggestionEnter.addActionListener(e -> {
@@ -631,17 +628,31 @@ public class TraderGUI {
 
         // Hide/Unhide Items Tab
 
-        BrowseController browseController = new BrowseController(storageGateway);
+        //BrowseController browseController = new BrowseController(storageGateway);
 
 
 
         btnItemsHide.addActionListener(e -> {
-
+            String itemID = txtItemsHideInput.getText();
+            try {
+                itemsController.hideItem(itemID);
+            } catch (AlreadyHiddenException | ItemNotFoundException exception) {
+                showMessageDialog(null, exception.getMessage());
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
 
         });
 
         btnItemsUnhide.addActionListener(e ->{
-
+            String itemID = txtItemsUnhideInput.getText();
+            try {
+                itemsController.unhideItem(itemID);
+            } catch (AlreadyNotHiddenException | ItemNotFoundException exception) {
+                showMessageDialog(null, exception.getMessage());
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
 
         });
     }
