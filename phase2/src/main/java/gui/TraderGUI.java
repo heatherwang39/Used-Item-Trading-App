@@ -218,8 +218,6 @@ public class TraderGUI {
         txtAccountStatuses.setEditable(false);
         txtRequestsOutput.setEditable(false);
 
-        txtItemsUnhideInput.setEditable(false);
-        txtItemsHideInput.setEditable(false);
         txtAreaBrowseListingsOutput.setEditable(false);
         txtAreaFrozenUsers.setEditable(false);
         txtAreaLoggingOutput.setEditable(false);
@@ -628,14 +626,17 @@ public class TraderGUI {
 
         // Hide/Unhide Items Tab
 
-        //BrowseController browseController = new BrowseController(storageGateway);
-
-
+        BrowseController browseController = new BrowseController(storageGateway);
 
         btnItemsHide.addActionListener(e -> {
             String itemID = txtItemsHideInput.getText();
             try {
-                itemsController.hideItem(itemID);
+                if (itemsController.ownsItem(user, itemID)) {
+                    itemsController.hideItem(itemID);
+                    showMessageDialog(null, "Item has been hidden");
+                    displayBrowse(browseController.getItemsString());
+                }
+                else showMessageDialog(null, "That item does not belong to you");
             } catch (AlreadyHiddenException | ItemNotFoundException exception) {
                 showMessageDialog(null, exception.getMessage());
             } catch (IOException ioException) {
@@ -647,7 +648,11 @@ public class TraderGUI {
         btnItemsUnhide.addActionListener(e ->{
             String itemID = txtItemsUnhideInput.getText();
             try {
-                itemsController.unhideItem(itemID);
+                if (itemsController.ownsItem(user, itemID)) {
+                    itemsController.unhideItem(itemID);
+                    showMessageDialog(null, "Item has been unhidden");
+                    displayBrowse(browseController.getItemsString());
+                } else showMessageDialog(null, "That item does not belong to you");
             } catch (AlreadyNotHiddenException | ItemNotFoundException exception) {
                 showMessageDialog(null, exception.getMessage());
             } catch (IOException ioException) {
