@@ -693,18 +693,18 @@ public class TraderGUI {
 
             try {
                 meetingSuggestionsListUnformatted = meetingController.getSuggestedMeetingsUnformatted();
-                if (rbtnMeetingAccept.isSelected()){
-                    meetingController.acceptMeeting(Integer.parseInt(meetingSuggestionsListUnformatted.get(0).get("id").get(0)));
-                    showMessageDialog(null, "Suggested meeting is accepted!");
-                } else if (rbtnMeetingDeny.isSelected()){
-                    meetingController.rejectMeeting(Integer.parseInt(meetingSuggestionsListUnformatted.get(0).get("id").get(0)));
-                    showMessageDialog(null, "Suggested meeting is rejected");
-                    displaySuggestMeetings(meetingController);
-                } else{
-                    showMessageDialog(null, "Please either accept or deny this suggestion");
+                if (!meetingSuggestionsListUnformatted.isEmpty()){
+                    if (rbtnMeetingAccept.isSelected()){
+                        meetingController.acceptMeeting(Integer.parseInt(meetingSuggestionsListUnformatted.get(0).get("id").get(0)));
+                        showMessageDialog(null, "Suggested meeting is accepted!");
+                    } else if (rbtnMeetingDeny.isSelected()){
+                        meetingController.rejectMeeting(Integer.parseInt(meetingSuggestionsListUnformatted.get(0).get("id").get(0)));
+                        showMessageDialog(null, "Suggested meeting is rejected");
+                        displaySuggestMeetings(meetingController);
+                    } else{
+                        showMessageDialog(null, "Please either accept or deny this suggestion");
+                    }
                 }
-
-
             } catch (WrongMeetingAccountException | MeetingIDException | MeetingAlreadyConfirmedException exception) {
                 showMessageDialog(null, exception.getMessage());
             } catch (IOException ioException){
