@@ -69,6 +69,17 @@ public class ItemsController {
     }
 
 
+    /**
+     * Gets whether user owns the item
+     * @param user username
+     * @param itemID item ID
+     * @return if the user owns the item
+     * @throws ItemNotFoundException item was not found
+     */
+    public boolean ownsItem(String user, String itemID) throws ItemNotFoundException {
+        return itemStorage.getData(Integer.parseInt(itemID)).get("owner").equals(user);
+    }
+
     //Methods related to Hide Items sub tab
 
 

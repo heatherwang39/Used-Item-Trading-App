@@ -477,6 +477,7 @@ public class TraderGUI {
 
 
     private void initializeRequest() throws IOException, ClassNotFoundException, ItemNotFoundException {
+        AtomicInteger index = new AtomicInteger();
         MainTabbedPane.insertTab("Request", null, Request, null, 3);
 
         RequestController requestController = new RequestController(storageGateway, user);
@@ -496,18 +497,18 @@ public class TraderGUI {
         btnRequestSuggestionEnter.addActionListener(e -> {
             displayRequestSuggestions(suggestionList, itemPresenter);
             TradeAlgorithmName tradeAlgorithmName = TradeAlgorithmName.CYCLE;
-
-
             if (rbtnLend.isSelected()) {
                 // lend the items
 
                 List<Integer> tradeItemList = new ArrayList<>();
 
                 try {
-                    for (HashMap<String, String> individualItem : suggestionList.get(0)) {
+                    for (HashMap<String, String> individualItem : suggestionList.get(index.get())) {
                         tradeItemList.add(Integer.parseInt(individualItem.get("id")));
-                        requestController.createRequest(false, tradeAlgorithmName, tradeItemList);
                     }
+                    requestController.createRequest(false, tradeAlgorithmName, tradeItemList);
+                    showMessageDialog(null, "Request created!\n" +
+                            "Items: " + tradeItemList.toString());
 
                 } catch (ItemNotFoundException | NoSuchTradeAlgorithmException | WrongTradeAccountException |
                         TradeCancelledException exception) {
@@ -515,12 +516,20 @@ public class TraderGUI {
                 } catch (TradeNumberException | IOException ioException) {
                     ioException.printStackTrace();
                 }
-                txtAreaRequestSuggestTradesOutput.setText("");
                 suggestionList.remove(0);
+                if (index.get() == suggestionList.size()) {
+                    index.set(0);
+                }
+                displayRequestSuggestions(Collections.singletonList(suggestionList.get(index.get())), itemPresenter);
+
 
             } else if(rbtnViewNextSuggestion.isSelected()){
-                txtAreaRequestSuggestTradesOutput.setText("");
-                suggestionList.remove(0);
+                index.getAndIncrement();
+                if (index.get() == suggestionList.size()) {
+                    index.set(0);
+                }
+                displayRequestSuggestions(Collections.singletonList(suggestionList.get(index.get())), itemPresenter);
+
 
             } else{
                 showMessageDialog(null, "Please select an option!");
@@ -599,14 +608,20 @@ public class TraderGUI {
         btnWishlistAddition.addActionListener(e -> {
             String itemID = txtWishlistInput.getText();
             try {
-                itemsController.addWishlistItem(itemID);
-                showMessageDialog(null, "Item was added to wishlist! Changes will appear when you log back in.");
-                txtWishlistInput.setText("");
+                if (itemsController.ownsItem(user, itemID)) {
+                    showMessageDialog(null, "You can't wishlist your own item!");
+                }
+                else {
+                    itemsController.addWishlistItem(itemID);
+                    showMessageDialog(null, "Item was added to wishlist! Changes will appear when you log back in.");
+                    txtWishlistInput.setText("");
+                }
             } catch (ItemNotFoundException exception) {
                 showMessageDialog(null, exception.getMessage());
             } catch (IOException ioException) {
                 ioException.printStackTrace();
-            }       });
+            }
+        });
 
 
         // Hide/Unhide Items Tab
@@ -1225,6 +1240,7 @@ public class TraderGUI {
     }
 
     private void displayRequestSuggestions(List<List<HashMap<String, String>>> unformattedSuggestionList, ItemPresenter itemPresenter) {
+        txtAreaRequestSuggestTradesOutput.setText("");
         if (unformattedSuggestionList.isEmpty()) {
             txtAreaRequestSuggestTradesOutput.setText("No Suggestions Available (nothing in your inventory is in anyone elses wishlist, or vice versa)");
         } else {
