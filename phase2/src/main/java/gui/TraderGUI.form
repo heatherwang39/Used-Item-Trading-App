@@ -49,7 +49,7 @@
                   <text value="Register"/>
                 </properties>
               </component>
-              <component id="ac547" class="javax.swing.JButton" binding="guestButton" default-binding="true">
+              <component id="ac547" class="javax.swing.JButton" binding="btnGuestMain">
                 <constraints>
                   <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -240,7 +240,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <tabbedpane id="89caa" binding="tabbedPane2" default-binding="true">
+              <tabbedpane id="89caa" binding="ThresholdTabbedPane">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
                     <preferred-size width="200" height="200"/>
@@ -626,7 +626,7 @@
                   <text value="Inventory:"/>
                 </properties>
               </component>
-              <scrollpane id="fc1ca" binding="scrlWishlistOutput">
+              <scrollpane id="fc1ca">
                 <constraints>
                   <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -639,7 +639,7 @@
                   </component>
                 </children>
               </scrollpane>
-              <scrollpane id="2784f" binding="scrlInventoryOutput">
+              <scrollpane id="2784f">
                 <constraints>
                   <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -720,15 +720,15 @@
               </component>
             </children>
           </grid>
-          <grid id="becde" binding="AddItems" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="becde" binding="Items" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <tabbedpane title="Items"/>
+              <tabbedpane title="Items" noi18n="true"/>
             </constraints>
             <properties/>
             <border type="none"/>
             <children>
-              <tabbedpane id="90d8f" binding="tabbedPane3" default-binding="true">
+              <tabbedpane id="90d8f" binding="ItemsTabbedPane">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
                     <preferred-size width="200" height="200"/>
@@ -940,7 +940,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <tabbedpane id="3bbf6" binding="tabbedPane4" default-binding="true">
+              <tabbedpane id="3bbf6" binding="RequestTabbedPane">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
                     <preferred-size width="200" height="200"/>
@@ -1641,7 +1641,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <tabbedpane id="9d7e7" binding="tabbedPane1" default-binding="true">
+              <tabbedpane id="9d7e7" binding="MeetingTabbedPane">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
                     <preferred-size width="200" height="552"/>
@@ -1901,7 +1901,7 @@
               </tabbedpane>
             </children>
           </grid>
-          <grid id="eac24" binding="Logging" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="eac24" binding="Logging" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <tabbedpane title="Logging"/>
@@ -1909,19 +1909,31 @@
             <properties/>
             <border type="none"/>
             <children>
-              <scrollpane id="8c1ec">
+              <scrollpane id="3588d">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="27aca" class="javax.swing.JTextArea" binding="txtAreaLoggingOutput">
+                  <component id="e4a28" class="javax.swing.JTextArea" binding="txtAreaLoggingOutput">
                     <constraints/>
-                    <properties/>
+                    <properties>
+                      <text value=""/>
+                    </properties>
                   </component>
                 </children>
               </scrollpane>
+              <hspacer id="aaa74">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </hspacer>
+              <vspacer id="2f174">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
             </children>
           </grid>
         </children>
