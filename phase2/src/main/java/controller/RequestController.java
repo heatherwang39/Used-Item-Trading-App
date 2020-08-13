@@ -68,40 +68,27 @@ public class RequestController {
 
     /**
      * Check if trade request is valid
-     * @param user username
+     *
      * @param str1 requested item
      * @param str2 offered item
-     * @return is the offer valid
+     * @return VALID if the request is valid, if not, it will return a message to display
      * @throws ItemNotFoundException item was not found
      */
-    public boolean checkValidRequest(String user, String str1, String str2) throws ItemNotFoundException {
-        if (str1.isEmpty() && str2.isEmpty()){
-            return false;
-        } else if (str1.isEmpty()){
-            try {
+    public String checkValidRequest(String str1, String str2) throws ItemNotFoundException {
+        if (str1.isEmpty()) return "You need to input what item you would like to request";
+        try {
+            String owner1 = itemStorage.getData(Integer.parseInt(str1)).get("owner");
+            if (owner1 != null && owner1.equals(username))
+                return "The item you are trying to request belongs to you!";
+            if (!str2.isEmpty()) {
                 String owner2 = itemStorage.getData(Integer.parseInt(str2)).get("owner");
-                return owner2 != null && owner2.equals(user);
-            } catch (NumberFormatException e){
-                return false;
+                if (owner2 != null && !owner2.equals(username))
+                    return "The item you are trying to offer does not belong to you!";
             }
-        } else if (str2.isEmpty()){
-            try {
-                String owner1 = itemStorage.getData(Integer.parseInt(str1)).get("owner");
-                return owner1 != null && !owner1.equals(user);
-            } catch (NumberFormatException e){
-                return false;
-            }
-        } else {
-            try {
-                String owner1 = itemStorage.getData(Integer.parseInt(str1)).get("owner");
-                String owner2 = itemStorage.getData(Integer.parseInt(str2)).get("owner");
-                return (owner1 != null &&
-                        !owner1.equals(user)) &&
-                        owner2.equals(user);
-            } catch (NumberFormatException e){
-                return false;
-            }
+        } catch (NumberFormatException e){
+            return "At least one of your inputs is not a number";
         }
+        return "VALID";
     }
 
     /**

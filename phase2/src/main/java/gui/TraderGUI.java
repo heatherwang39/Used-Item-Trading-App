@@ -518,18 +518,17 @@ public class TraderGUI {
 
 
                 try {
-                    if (!requestController.checkValidRequest(user, requestedItem, offeredItem)) {
-                        showMessageDialog(null, "Please enter a valid request"); // placeholder
+                    String validRequest = requestController.checkValidRequest(requestedItem, offeredItem);
+                    if (!validRequest.equals("VALID")) {
+                        showMessageDialog(null, validRequest);
                     } else {
-                        Integer requestedItemID = Integer.parseInt(requestedItem);
-                        Integer offeredItemID = Integer.parseInt(offeredItem);
-                        if (offeredItem.equals("")) {
+                        if (!requestedItem.isEmpty()) {
+                            Integer requestedItemID = Integer.parseInt(requestedItem);
                             tradeItemsList.add(requestedItemID);
-                        } else if (requestedItem.equals("")) {
+                        }
+                        if (!offeredItem.isEmpty()) {
+                            Integer offeredItemID = Integer.parseInt(offeredItem);
                             tradeItemsList.add(offeredItemID);
-                        } else {
-                            tradeItemsList.add(offeredItemID);
-                            tradeItemsList.add(requestedItemID);
                         }
                         TradeAlgorithmName tradeAlgorithmName = TradeAlgorithmName.CYCLE;
                         requestController.createRequest(rbtnPermTrade.isSelected(), tradeAlgorithmName, tradeItemsList);
