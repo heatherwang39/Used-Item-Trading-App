@@ -19,6 +19,8 @@ import main.java.presenter.*;
 
 import javax.swing.*;
 // From: https://stackoverflow.com/questions/9119481/how-to-present-a-simple-alert-message-in-java
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -107,7 +109,7 @@ public class TraderGUI {
     private JTextField txtItemsUnhideInput;
     private JTextField txtItemsHideInput;
     private JTextField txtRequestLendSuggestedInput;
-    private JTextField txtRequestRandomUsers;
+    private JTextField txtRequestRandomUser;
 
     private JTextArea txtAreaActivityTradeOutput;
     private JTextArea txtAreaActivityPartnerOutput;
@@ -307,7 +309,7 @@ public class TraderGUI {
                         MainTabbedPane.removeAll();
                         MainTabbedPane.insertTab("Home", null, Home, null, 0);
                         initializeBrowse();
-                        initializeRequests();
+                        initializeItemRequests();
                         initializeThreshold();
                         initializeUserList();
                         initializeAddAdmin();
@@ -361,7 +363,7 @@ public class TraderGUI {
     private void initializeStatus() throws IOException, ClassNotFoundException, TradeNumberException, ItemNotFoundException, AccountNotFoundException, WrongAccountTypeException {
         AccountController accountController = new AccountController(storageGateway,user);
         if (!accountController.getStatuses().contains("AWAY") && !accountController.getStatuses().contains("FROZEN")) {
-            initializeRequest();
+            initializeTradeRequest();
             initializeOffers();
             initializeMeeting();
         }
@@ -479,11 +481,12 @@ public class TraderGUI {
     }
 
 
-    private void initializeRequest() throws IOException, ClassNotFoundException, ItemNotFoundException {
+    private void initializeTradeRequest() throws IOException, ClassNotFoundException, ItemNotFoundException {
         AtomicInteger index = new AtomicInteger();
         MainTabbedPane.insertTab("Item Request", null, Request, null, 3);
 
         TradeRequestController tradeRequestController = new TradeRequestController(storageGateway, user);
+        RandomTradeRequestController randomTradeRequestController = new RandomTradeRequestController(storageGateway, user);
         ItemPresenter itemPresenter = new ItemPresenter();
 
         List<List<HashMap<String, String>>> suggestionList = tradeRequestController.suggestAllItems();
@@ -534,8 +537,9 @@ public class TraderGUI {
                     showMessageDialog(null, "Please select an option!");
                 }
             }
-        });
 
+
+        });
 
         btnRequestTrade.addActionListener(e -> {
             if (!rbtnTempTrade.isSelected() && !rbtnPermTrade.isSelected()) {
@@ -571,6 +575,29 @@ public class TraderGUI {
                     }
                 } catch (ItemNotFoundException | NoSuchTradeAlgorithmException | TradeCancelledException |
                         WrongTradeAccountException | TradeNumberException | ItemAlreadyInActiveTradeException exception) {
+                    showMessageDialog(null, exception.getMessage());
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            }
+        });
+
+        btnRequestRandomAddUser.addActionListener(e -> {
+            String trader = txtRequestRandomUser.getText();
+            try {
+                randomTradeRequestController.addTrader(trader);
+            } catch (UserAlreadyAddedException | NoValidItemsFromGivenUserException | AccountNotFoundException | WrongAccountTypeException exception) {
+                showMessageDialog(null, exception.getMessage());
+            }
+        });
+
+        btnRequestRandomOfferTrade.addActionListener(e -> {
+            if (!rbtnRequestRandomPerm.isSelected() && !rbtnRequestRandomTemp.isSelected()){
+                showMessageDialog(null, "Please select an option!");
+            } else{
+                try {
+                    randomTradeRequestController.createRequest(rbtnRequestRandomPerm.isSelected());
+                } catch (ItemAlreadyInActiveTradeException | NoSuchTradeAlgorithmException | TradeNumberException | WrongTradeAccountException | TradeCancelledException | TooFewTradersException | NoValidItemsFromGivenUserException exception) {
                     showMessageDialog(null, exception.getMessage());
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
@@ -837,7 +864,7 @@ public class TraderGUI {
 
     // Admin Tabs
 
-    private void initializeRequests() throws IOException, ClassNotFoundException, ItemNotFoundException {
+    private void initializeItemRequests() throws IOException, ClassNotFoundException, ItemNotFoundException {
         MainTabbedPane.insertTab("Trade Requests", null, Requests, null, 2);
 
         ItemPresenter itemPresenter = new ItemPresenter();
