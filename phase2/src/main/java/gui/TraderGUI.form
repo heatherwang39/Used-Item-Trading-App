@@ -935,7 +935,7 @@
           <grid id="77694" binding="Request" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <tabbedpane title="Request"/>
+              <tabbedpane title="Item Request"/>
             </constraints>
             <properties/>
             <border type="none"/>
@@ -1581,7 +1581,7 @@
           <grid id="b0653" binding="Requests" layout-manager="GridLayoutManager" row-count="6" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <tabbedpane title="Requests"/>
+              <tabbedpane title="Trade Requests"/>
             </constraints>
             <properties/>
             <border type="none" title="Requests"/>
