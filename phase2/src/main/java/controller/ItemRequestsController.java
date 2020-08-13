@@ -18,7 +18,7 @@ import java.io.IOException;
  * @version %I%, %G%
  * @since Phase 2
  */
-public class TradeRequestsController {
+public class ItemRequestsController {
     private final StorageGateway storageGateway;
     private final ItemStorage itemStorage;
     private final ItemPresenter itemPresenter;
@@ -31,7 +31,7 @@ public class TradeRequestsController {
      * @throws IOException file can't be read/written
      * @throws ClassNotFoundException serialized class doesn't exist
      */
-    public TradeRequestsController(StorageGateway storageGateway, ItemPresenter itemPresenter) throws IOException, ClassNotFoundException {
+    public ItemRequestsController(StorageGateway storageGateway, ItemPresenter itemPresenter) throws IOException, ClassNotFoundException {
         this.storageGateway = storageGateway;
         this.itemPresenter = itemPresenter;
         StorageDepot sd = new StorageDepot(storageGateway);
