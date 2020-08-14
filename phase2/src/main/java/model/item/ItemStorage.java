@@ -45,7 +45,7 @@ public class ItemStorage implements Storage, TradeObserver {
     }
 
     private int generateNextID() {
-        return items.size() + 1;
+        return items.size();
     }
 
 

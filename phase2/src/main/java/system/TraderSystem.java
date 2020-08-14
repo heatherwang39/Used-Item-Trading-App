@@ -25,8 +25,8 @@ public class TraderSystem {
         try {
             StorageGateway storageGateway = new StorageGateway(RESOURCE_PATH, FILENAME_CONFIG);
             StorageDepot storageDepot = new StorageDepot(storageGateway);
-
             JFrame frame = new JFrame("Trader Client");
+            frame.setIconImage(new ImageIcon("phase2/src/main/resources/mainIcon.png").getImage());
             frame.setContentPane(new TraderGUI(storageDepot).MainContainer);
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             frame.pack();
