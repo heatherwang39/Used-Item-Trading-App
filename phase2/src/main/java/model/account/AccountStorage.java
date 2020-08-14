@@ -518,7 +518,7 @@ public class AccountStorage implements Storage, TradeObserver {
                 UserAccount user = (UserAccount) getAccount(username);
                 List<String> userFreezeReasons = checkUserShouldFreeze(username);
                 user.setFreezeReasons(userFreezeReasons);
-                if (userFreezeReasons.size() > 1) {
+                if (userFreezeReasons.size() >= 1) {
                     user.addStatus(StatusEnum.FROZEN);
                 }
             }
@@ -563,7 +563,7 @@ public class AccountStorage implements Storage, TradeObserver {
         for(String username:traders) {
             if(!containsStatus(username,"GILDED")){
                 UserAccount user = (UserAccount) getAccount(username);
-                if(user.getNumberOfCompletedTrades()>user.getGildedThreshold()){
+                if(user.getNumberOfCompletedTrades()>=user.getGildedThreshold()){
                     user.addStatus(StatusEnum.GILDED);
                 }
             }
