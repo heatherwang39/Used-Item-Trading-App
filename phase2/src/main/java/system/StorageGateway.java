@@ -74,10 +74,21 @@ public class StorageGateway {
      */
     public void saveStorageData() throws IOException {
         for(StorageEnum type: StorageEnum.values()){
-            FileReadWriter fileReadWriter = new FileReadWriter(path + filenameMap.get(type.toString()));
-            Object data = dataMap.get(type.toString());
-            fileReadWriter.saveToFile(data);
+            saveStorageData(type);
         }
+    }
+
+
+    /**
+     * Save Storage data to file by type.
+     *
+     * @param type Storage type
+     * @throws IOException if an error occurs during writing to file
+     */
+    public void saveStorageData(StorageEnum type) throws IOException {
+        FileReadWriter fileReadWriter = new FileReadWriter(path + filenameMap.get(type.toString()));
+        Object data = dataMap.get(type.toString());
+        fileReadWriter.saveToFile(data);
     }
 
 
