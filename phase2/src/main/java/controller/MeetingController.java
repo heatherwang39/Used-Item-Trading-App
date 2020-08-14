@@ -9,7 +9,6 @@ import main.java.model.trade.TradeStorage;
 import main.java.presenter.MeetingPresenter;
 import main.java.presenter.TradePresenter;
 import main.java.system.StorageDepot;
-import main.java.system.StorageEnum;
 import main.java.system.StorageGateway;
 
 import java.io.IOException;

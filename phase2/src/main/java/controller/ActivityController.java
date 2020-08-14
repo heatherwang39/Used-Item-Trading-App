@@ -3,9 +3,6 @@ package main.java.controller;
 import main.java.model.trade.TradeNumberException;
 import main.java.model.trade.TradeStorage;
 import main.java.system.StorageDepot;
-import main.java.system.StorageGateway;
-
-import javax.swing.*;
 import java.util.*;
 
 import java.io.IOException;
@@ -26,10 +23,8 @@ public class ActivityController {
      *
      * @param storageDepot storageDepot associated with the program
      * @param username username of the user accessing the Activity tab
-     * @throws IOException file can't be read/written
-     * @throws ClassNotFoundException serialized class not found
      */
-    public ActivityController(StorageDepot storageDepot, String username) throws IOException, ClassNotFoundException {
+    public ActivityController(StorageDepot storageDepot, String username) {
         this.username = username;
         tradeStorage = storageDepot.getTradeStorage();
     }
@@ -38,9 +33,8 @@ public class ActivityController {
      * Returns a list of at most the three most recent trades a user with given username has participated in
      *
      * @return List containing lists with the ids of the items that were a part of the most recent trades
-     * @throws TradeNumberException an invalid trade number is found
      */
-    public List<List<Integer>> recentItemsTraded() throws TradeNumberException {
+    public List<List<Integer>> recentItemsTraded() {
         return tradeStorage.recentItemsTraded(username);
     }
 
@@ -48,9 +42,8 @@ public class ActivityController {
      * Returns a list of at most the three most frequent trading partners for the user with given username
      *
      * @return list of the usernames of the most frequent trading partners
-     * @throws TradeNumberException an invalid trade number is found
      */
-    public List<String> frequentTradingPartners() throws TradeNumberException {
+    public List<String> frequentTradingPartners() {
         return tradeStorage.frequentTradePartners(username);
     }
 }

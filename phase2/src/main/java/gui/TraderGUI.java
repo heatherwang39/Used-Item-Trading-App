@@ -15,7 +15,6 @@ import main.java.model.message.EmptyRecipientListException;
 import main.java.model.message.EmptyTitleException;
 import main.java.model.trade.*;
 import main.java.system.StorageDepot;
-import main.java.system.StorageGateway;
 import main.java.presenter.*;
 
 import javax.swing.*;
@@ -200,14 +199,10 @@ public class TraderGUI {
     public TraderGUI(StorageDepot storageDepot) {
         this.storageDepot = storageDepot;
         MainTabbedPane.removeAll();
-        try {
-            initializeLogin();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        initializeLogin();
     }
 
-    private void initializeLogin() throws IOException, ClassNotFoundException {
+    private void initializeLogin() {
 
         LoginController loginController = new LoginController(storageDepot);
 
@@ -284,7 +279,7 @@ public class TraderGUI {
             tabCleaner();
             try {
                 initializeBrowse();
-            } catch (IOException | ClassNotFoundException | ItemNotFoundException exception) {
+            } catch (ItemNotFoundException exception) {
                 exception.printStackTrace();
             }
 
@@ -379,7 +374,7 @@ public class TraderGUI {
         initializeItems();
     }
 
-    private void initializeAccount() throws IOException, ClassNotFoundException, AccountNotFoundException, ItemNotFoundException, WrongAccountTypeException {
+    private void initializeAccount() throws AccountNotFoundException, ItemNotFoundException, WrongAccountTypeException {
         MainTabbedPane.insertTab("Account", null, Account, null, 1);
 
         AccountController accountController = new AccountController(storageDepot, user);
@@ -418,7 +413,7 @@ public class TraderGUI {
         });
     }
 
-    private void initializeActivity() throws IOException, ClassNotFoundException, TradeNumberException {
+    private void initializeActivity() throws IOException, ClassNotFoundException {
         MainTabbedPane.insertTab("Activity", null, Activity, null, 1);
         ActivityController activityController = new ActivityController(storageDepot, user);
 
@@ -438,7 +433,7 @@ public class TraderGUI {
         }
     }
 
-    private void initializeBrowse() throws IOException, ClassNotFoundException, ItemNotFoundException {
+    private void initializeBrowse() throws ItemNotFoundException {
         MainTabbedPane.insertTab("Browse", null, Browse, null, 1);
         BrowseController browseController = new BrowseController(storageDepot);
 
@@ -448,7 +443,7 @@ public class TraderGUI {
     private void initializeOffers() throws IOException, ClassNotFoundException, TradeNumberException, ItemNotFoundException {
         MainTabbedPane.insertTab("Offers", null, Offers, null, 1);
         TradePresenter tradePresenter = new TradePresenter(storageDepot);
-        OffersController offersController = new OffersController(storageDepot, user, tradePresenter);
+        OffersController offersController = new OffersController(storageDepot, user);
 
         txtAreaOffersOutput.setText(tradePresenter.formatTradeString(offersController.getOffers(), "OFFERS"));
 
@@ -608,7 +603,7 @@ public class TraderGUI {
     }
 
 
-    private void initializeItems() throws IOException, ClassNotFoundException {
+    private void initializeItems() {
         MainTabbedPane.insertTab("Items", null, Items, null, 1);
 
         ItemsController itemsController = new ItemsController(storageDepot, user);
@@ -798,14 +793,12 @@ public class TraderGUI {
                 displayBrowse(browseController.getItemsString());
             } catch(ItemNotFoundException itemNotFoundException){
                 showMessageDialog(null, itemNotFoundException.getMessage());
-            } catch (IOException | ClassNotFoundException exception) {
-                exception.printStackTrace();
             }
         });
     }
 
 
-    private void initializeMessages() throws IOException, ClassNotFoundException {
+    private void initializeMessages() {
         MainTabbedPane.insertTab("Messages", null, Messages, null, 1);
         MessageController messageController = new MessageController(storageDepot, user);
         MessagePresenter messagePresenter = new MessagePresenter();
@@ -865,7 +858,7 @@ public class TraderGUI {
 
     // Admin Tabs
 
-    private void initializeItemRequests() throws IOException, ClassNotFoundException, ItemNotFoundException {
+    private void initializeItemRequests() throws ItemNotFoundException {
         MainTabbedPane.insertTab("Item Requests", null, Requests, null, 1);
 
         ItemPresenter itemPresenter = new ItemPresenter();
@@ -904,14 +897,14 @@ public class TraderGUI {
                 }
             } catch (ItemNotFoundException exception) {
                 showMessageDialog(null, exception.getMessage());
-            } catch (ClassNotFoundException | IOException ioException) {
+            } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
         });
     }
 
 
-    private void initializeThreshold() throws IOException, ClassNotFoundException {
+    private void initializeThreshold() {
         MainTabbedPane.insertTab("Trade Threshold", null, Threshold, null, 1);
         ThresholdController thresholdController = new ThresholdController(storageDepot);
 
@@ -1051,7 +1044,7 @@ public class TraderGUI {
     }
 
 
-    private void initializeUserList() throws IOException, ClassNotFoundException, AccountNotFoundException {
+    private void initializeUserList() throws AccountNotFoundException {
         AtomicInteger currUserIndex = new AtomicInteger();
         MainTabbedPane.insertTab("User List", null, UserList, null, 1);
         UserlistController userlistController = new UserlistController(storageDepot);
@@ -1084,7 +1077,7 @@ public class TraderGUI {
         });
     }
 
-    private void initializeAddAdmin() throws IOException, ClassNotFoundException {
+    private void initializeAddAdmin() {
         MainTabbedPane.insertTab("Add Admin", null, AddAdmin, null, 1);
 
         AddAdminController addAdminController = new AddAdminController(storageDepot);
@@ -1109,7 +1102,7 @@ public class TraderGUI {
     }
 
 
-    private void initializeFreeze() throws IOException, ClassNotFoundException {
+    private void initializeFreeze() {
         final int[] currUserIndex = {0};
         MainTabbedPane.insertTab("Un-Freeze", null, Freeze, null, 1);
 

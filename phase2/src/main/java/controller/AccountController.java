@@ -4,7 +4,6 @@ import main.java.model.account.*;
 import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
 import main.java.system.StorageDepot;
-import main.java.system.StorageEnum;
 import main.java.system.StorageGateway;
 
 import java.io.IOException;
@@ -31,7 +30,7 @@ public class AccountController {
      * @param storageDepot storageDepot associated with the program
      * @param username username of account
      */
-    public AccountController(StorageDepot storageDepot, String username) throws IOException, ClassNotFoundException {
+    public AccountController(StorageDepot storageDepot, String username) {
         this.username = username;
         storageGateway = storageDepot.getStorageGateway();
         accountStorage = storageDepot.getAccountStorage();
@@ -81,7 +80,6 @@ public class AccountController {
      * @throws AccountNotFoundException account was not found
      * @throws WrongAccountTypeException account not supporting statuses was entered
      */
-    // consider making this into a presenter class
     public String getStatusString() throws AccountNotFoundException, WrongAccountTypeException {
         List<String> userStatusList = getStatuses();
         StringBuilder statusString = new StringBuilder();

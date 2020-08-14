@@ -2,7 +2,6 @@ package main.java.controller;
 
 import main.java.model.account.*;
 import main.java.system.StorageDepot;
-import main.java.system.StorageEnum;
 import main.java.system.StorageGateway;
 
 import java.io.IOException;
@@ -23,7 +22,7 @@ public class LoginController {
      *
      * @param storageDepot storageDepot associated with the program
      */
-    public LoginController(StorageDepot storageDepot) throws IOException, ClassNotFoundException {
+    public LoginController(StorageDepot storageDepot) {
         storageGateway = storageDepot.getStorageGateway();
         accountStorage = storageDepot.getAccountStorage();
     }

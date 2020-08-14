@@ -4,7 +4,6 @@ import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
 import main.java.presenter.ItemPresenter;
 import main.java.system.StorageDepot;
-import main.java.system.StorageEnum;
 import main.java.system.StorageGateway;
 
 import java.util.*;
@@ -28,10 +27,8 @@ public class ItemRequestsController {
      *
      * @param storageDepot storageDepot associated with the program
      * @param itemPresenter presenter class for prepping items for gui
-     * @throws IOException file can't be read/written
-     * @throws ClassNotFoundException serialized class doesn't exist
      */
-    public ItemRequestsController(StorageDepot storageDepot, ItemPresenter itemPresenter) throws IOException, ClassNotFoundException {
+    public ItemRequestsController(StorageDepot storageDepot, ItemPresenter itemPresenter) {
         storageGateway = storageDepot.getStorageGateway();
         this.itemPresenter = itemPresenter;
         itemStorage = storageDepot.getItemStorage();

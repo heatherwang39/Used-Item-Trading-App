@@ -3,7 +3,6 @@ package main.java.controller;
 import main.java.model.account.AccountStorage;
 import main.java.model.message.*;
 import main.java.system.StorageDepot;
-import main.java.system.StorageEnum;
 import main.java.system.StorageGateway;
 import java.io.IOException;
 import java.util.HashMap;
@@ -28,7 +27,7 @@ public class MessageController {
      *
      * @param storageDepot storageDepot associated with the program
      */
-    public MessageController(StorageDepot storageDepot, String username) throws IOException, ClassNotFoundException {
+    public MessageController(StorageDepot storageDepot, String username) {
         storageGateway = storageDepot.getStorageGateway();
         messageStorage = storageDepot.getMessageStorage();
         accountStorage = storageDepot.getAccountStorage();

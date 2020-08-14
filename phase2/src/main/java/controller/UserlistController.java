@@ -4,7 +4,6 @@ import main.java.model.account.AccountNotFoundException;
 import main.java.model.account.AccountStorage;
 import main.java.model.account.WrongAccountTypeException;
 import main.java.system.StorageDepot;
-import main.java.system.StorageEnum;
 import main.java.system.StorageGateway;
 
 import java.io.IOException;
@@ -25,10 +24,8 @@ public class UserlistController {
      * Initializes a new UserlistController for the given username
      *
      * @param storageDepot storageDepot associated with the program
-     * @throws IOException file cannot be read/written
-     * @throws ClassNotFoundException serialized class was not found
      */
-    public UserlistController(StorageDepot storageDepot) throws IOException, ClassNotFoundException {
+    public UserlistController(StorageDepot storageDepot) {
         storageGateway = storageDepot.getStorageGateway();
         accountStorage = storageDepot.getAccountStorage();
     }

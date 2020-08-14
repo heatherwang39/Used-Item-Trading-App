@@ -3,7 +3,6 @@ package main.java.controller;
 import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
 import main.java.system.StorageDepot;
-import main.java.system.StorageGateway;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -23,10 +22,8 @@ public class BrowseController {
      * Initializes a new BrowseController for the given username
      *
      * @param storageDepot storageDepot associated with the program
-     * @throws IOException file cannot be read/write
-     * @throws ClassNotFoundException serialized class not found
      */
-    public BrowseController(StorageDepot storageDepot) throws IOException, ClassNotFoundException {
+    public BrowseController(StorageDepot storageDepot) {
         itemStorage = storageDepot.getItemStorage();
     }
 

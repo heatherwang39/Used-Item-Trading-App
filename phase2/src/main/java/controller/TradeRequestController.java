@@ -5,7 +5,6 @@ import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
 import main.java.model.trade.*;
 import main.java.system.StorageDepot;
-import main.java.system.StorageEnum;
 import main.java.system.StorageGateway;
 import java.util.*;
 
@@ -31,7 +30,7 @@ public class TradeRequestController {
      * @param storageDepot storageDepot associated with the program
      * @param username username of the user accessing the Request tab
      */
-    public TradeRequestController(StorageDepot storageDepot, String username) throws IOException, ClassNotFoundException {
+    public TradeRequestController(StorageDepot storageDepot, String username) {
         storageGateway = storageDepot.getStorageGateway();
         this.username = username;
         tradeStorage = storageDepot.getTradeStorage();

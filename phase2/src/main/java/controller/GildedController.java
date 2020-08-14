@@ -5,7 +5,6 @@ import main.java.model.account.AccountStorage;
 import main.java.model.account.StatusNotFoundException;
 import main.java.model.account.WrongAccountTypeException;
 import main.java.system.StorageDepot;
-import main.java.system.StorageEnum;
 import main.java.system.StorageGateway;
 
 import java.io.IOException;
@@ -27,7 +26,7 @@ public class GildedController {
      *
      * @param storageDepot storageDepot associated with the program
      */
-    public GildedController(StorageDepot storageDepot) throws IOException, ClassNotFoundException {
+    public GildedController(StorageDepot storageDepot) {
         storageGateway = storageDepot.getStorageGateway();
         accountStorage = storageDepot.getAccountStorage();
     }

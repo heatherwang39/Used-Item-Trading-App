@@ -28,7 +28,7 @@ public class ThresholdController {
      * @param storageDepot storageDepot associated with the program
      */
 
-    public ThresholdController(StorageDepot storageDepot) throws IOException, ClassNotFoundException {
+    public ThresholdController(StorageDepot storageDepot) {
         storageGateway = storageDepot.getStorageGateway();
         accountStorage = storageDepot.getAccountStorage();
         path = storageGateway.getPath();

@@ -3,7 +3,6 @@ package main.java.controller;
 import main.java.model.trade.*;
 import main.java.presenter.TradePresenter;
 import main.java.system.StorageDepot;
-import main.java.system.StorageEnum;
 import main.java.system.StorageGateway;
 
 import java.io.IOException;
@@ -27,10 +26,8 @@ public class OffersController {
      *
      * @param storageDepot storageDepot associated with the program
      * @param username username of the user accessing the Offers tab
-     * @throws IOException file cannot be read/written
-     * @throws ClassNotFoundException serialized class not found
      */
-    public OffersController(StorageDepot storageDepot, String username, TradePresenter tradePresenter) throws IOException, ClassNotFoundException {
+    public OffersController(StorageDepot storageDepot, String username) {
         storageGateway = storageDepot.getStorageGateway();
         this.username = username;
         tradeStorage = storageDepot.getTradeStorage();

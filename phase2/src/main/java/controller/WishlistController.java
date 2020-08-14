@@ -4,7 +4,6 @@ import main.java.model.item.ItemNotFoundException;
 import main.java.model.item.ItemStorage;
 import main.java.model.item.NotInWishlistException;
 import main.java.system.StorageDepot;
-import main.java.system.StorageEnum;
 import main.java.system.StorageGateway;
 
 import java.io.IOException;
@@ -27,9 +26,8 @@ public class WishlistController {
      *
      * @param storageDepot storageDepot associated with the program
      * @param username username of user
-     * @throws IOException file cannot be read/written
      */
-    public WishlistController(StorageDepot storageDepot, String username) throws IOException, ClassNotFoundException {
+    public WishlistController(StorageDepot storageDepot, String username) {
         storageGateway = storageDepot.getStorageGateway();
         this.username = username;
         itemStorage = storageDepot.getItemStorage();

@@ -4,9 +4,7 @@ import main.java.model.account.AccountNotFoundException;
 import main.java.model.account.AccountStorage;
 import main.java.model.account.StatusNotFoundException;
 import main.java.model.account.WrongAccountTypeException;
-import main.java.model.trade.TradeStorage;
 import main.java.system.StorageDepot;
-import main.java.system.StorageEnum;
 import main.java.system.StorageGateway;
 
 import java.io.IOException;
@@ -30,7 +28,7 @@ public class FreezeController {
      *
      * @param storageDepot storageDepot associated with the program
      */
-    public FreezeController(StorageDepot storageDepot) throws IOException, ClassNotFoundException {
+    public FreezeController(StorageDepot storageDepot) {
         storageGateway = storageDepot.getStorageGateway();
         accountStorage = storageDepot.getAccountStorage();
     }

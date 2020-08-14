@@ -2,9 +2,7 @@ package main.java.controller;
 
 import main.java.model.item.*;
 import main.java.model.trade.TradeStorage;
-import main.java.presenter.ItemPresenter;
 import main.java.system.StorageDepot;
-import main.java.system.StorageEnum;
 import main.java.system.StorageGateway;
 
 import java.io.IOException;
@@ -29,10 +27,8 @@ public class ItemsController {
      *
      * @param storageDepot storageDepot associated with the program
      * @param username username of the user accessing the AddItems tab
-     * @throws IOException file can't be read/written
-     * @throws ClassNotFoundException serialized class not found
      */
-    public ItemsController(StorageDepot storageDepot, String username) throws IOException, ClassNotFoundException {
+    public ItemsController(StorageDepot storageDepot, String username) {
         storageGateway = storageDepot.getStorageGateway();
         this.username = username;
         itemStorage = storageDepot.getItemStorage();
