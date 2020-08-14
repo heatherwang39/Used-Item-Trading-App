@@ -188,8 +188,8 @@ public class TraderGUI {
     private JRadioButton rbtnRequestRandomPerm;
     private JRadioButton rbtnRequestRandomTemp;
 
-    private JTextPane traderSystemTextPane;
-    private JLabel lblLogo;
+    private JLabel lblLogoMain;
+    private JLabel lblLogoHome;
 
     private String user;
     private final StorageDepot storageDepot;
