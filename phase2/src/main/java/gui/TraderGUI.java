@@ -58,7 +58,7 @@ public class TraderGUI {
     private JPanel Messages;
     private JPanel UserList;
     private JPanel Meeting;
-    private JPanel Logging;
+
 
     private JTabbedPane MainTabbedPane;
     private JTabbedPane ThresholdTabbedPane;
@@ -118,7 +118,6 @@ public class TraderGUI {
     private JTextArea txtAreaWishlistOutput;
     private JTextArea txtAreaBrowseListingsOutput;
     private JTextArea txtAreaFrozenUsers;
-    private JTextArea txtAreaLoggingOutput;
     private JTextArea txtAreaRequestsOutput;
     private JTextArea txtAreaOffersOutput;
     private JTextArea txtAreaMessageUserInput;
@@ -219,7 +218,6 @@ public class TraderGUI {
         txtAreaHiddenInventory.setEditable(false);
         txtAreaBrowseListingsOutput.setEditable(false);
         txtAreaFrozenUsers.setEditable(false);
-        txtAreaLoggingOutput.setEditable(false);
         txtAreaUserListOutput.setEditable(false);
         txtAreaInventoryOutput.setEditable(false);
         txtAreaWishlistOutput.setEditable(false);
@@ -306,7 +304,6 @@ public class TraderGUI {
                         this.user = user;
                         MainTabbedPane.removeAll();
                         MainTabbedPane.insertTab("Home", null, Home, null, 0);
-                        initializeLogging();
                         initializeAddAdmin();
                         initializeThreshold();
                         initializeUserList();
@@ -1168,9 +1165,6 @@ public class TraderGUI {
     }
 
 
-    private void initializeLogging() {
-        MainTabbedPane.insertTab("Logging", null, Logging, null, 1);
-    }
 
 
     // Helper methods
