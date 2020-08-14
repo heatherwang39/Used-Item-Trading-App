@@ -59,7 +59,6 @@ public class TraderGUI {
     private JPanel UserList;
     private JPanel Meeting;
 
-
     private JTabbedPane MainTabbedPane;
     private JTabbedPane ThresholdTabbedPane;
     private JTabbedPane MeetingTabbedPane;
