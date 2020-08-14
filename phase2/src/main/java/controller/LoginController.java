@@ -21,11 +21,10 @@ public class LoginController {
 
     /** Class constructor
      *
-     * @param storageGateway Gateway class for reading and writing Storage Data
+     * @param storageDepot storageDepot associated with the program
      */
-    public LoginController(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
-        this.storageGateway = storageGateway;
-        StorageDepot storageDepot = new StorageDepot(storageGateway);
+    public LoginController(StorageDepot storageDepot) throws IOException, ClassNotFoundException {
+        storageGateway = storageDepot.getStorageGateway();
         accountStorage = storageDepot.getAccountStorage();
     }
 
@@ -58,6 +57,6 @@ public class LoginController {
     public void register(String username, String password, String emailAddress) throws
             UsernameInUseException, InvalidEmailAddressException, EmailAddressInUseException, IOException, InvalidUsernameException, InvalidPasswordException {
         accountStorage.createUser(username, password, emailAddress);
-        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
+        storageGateway.saveStorageData();
     }
 }

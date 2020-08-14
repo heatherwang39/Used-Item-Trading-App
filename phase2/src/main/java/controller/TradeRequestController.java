@@ -28,16 +28,15 @@ public class TradeRequestController {
     /**
      * Initializes a new TradeRequestController for the given username
      *
-     * @param storageGateway gateway for loading and saving information
+     * @param storageDepot storageDepot associated with the program
      * @param username username of the user accessing the Request tab
      */
-    public TradeRequestController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
-        this.storageGateway = storageGateway;
+    public TradeRequestController(StorageDepot storageDepot, String username) throws IOException, ClassNotFoundException {
+        storageGateway = storageDepot.getStorageGateway();
         this.username = username;
-        StorageDepot sd = new StorageDepot(storageGateway);
-        tradeStorage = sd.getTradeStorage();
-        itemStorage = sd.getItemStorage();
-        accountStorage = sd.getAccountStorage();
+        tradeStorage = storageDepot.getTradeStorage();
+        itemStorage = storageDepot.getItemStorage();
+        accountStorage = storageDepot.getAccountStorage();
     }
 
     /**
@@ -66,7 +65,7 @@ public class TradeRequestController {
         }
         int tradeNumber = tradeStorage.newTrade(permanent, tradeAlgorithmName, traders, items);
         tradeStorage.acceptTrade(tradeNumber, username);
-        storageGateway.saveStorageData(StorageEnum.valueOf("TRADE"));
+        storageGateway.saveStorageData();
     }
 
     /**

@@ -27,17 +27,16 @@ public class ItemsController {
     /**
      * Initializes a new AddItemsController for the given username
      *
-     * @param storageGateway gateway for loading and saving information
+     * @param storageDepot storageDepot associated with the program
      * @param username username of the user accessing the AddItems tab
      * @throws IOException file can't be read/written
      * @throws ClassNotFoundException serialized class not found
      */
-    public ItemsController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
-        this.storageGateway = storageGateway;
+    public ItemsController(StorageDepot storageDepot, String username) throws IOException, ClassNotFoundException {
+        storageGateway = storageDepot.getStorageGateway();
         this.username = username;
-        StorageDepot sd = new StorageDepot(storageGateway);
-        itemStorage = sd.getItemStorage();
-        tradeStorage = sd.getTradeStorage();
+        itemStorage = storageDepot.getItemStorage();
+        tradeStorage = storageDepot.getTradeStorage();
     }
 
 
@@ -53,7 +52,7 @@ public class ItemsController {
      */
     public void addInventoryItem(String name, String description, List<String> tags) throws IOException {
         itemStorage.newItem(username, name, description, tags);
-        storageGateway.saveStorageData(StorageEnum.valueOf("ITEM"));
+        storageGateway.saveStorageData();
     }
 
     /**
@@ -65,7 +64,7 @@ public class ItemsController {
      */
     public void addWishlistItem(String itemID) throws IOException, ItemNotFoundException {
         itemStorage.addWishList(username, Integer.parseInt(itemID));
-        storageGateway.saveStorageData(StorageEnum.valueOf("ITEM"));
+        storageGateway.saveStorageData();
     }
 
     /**
@@ -102,7 +101,7 @@ public class ItemsController {
      */
     public void hideItem(String itemID) throws AlreadyHiddenException, ItemNotFoundException, IOException {
         itemStorage.hideItem(Integer.parseInt(itemID));
-        storageGateway.saveStorageData(StorageEnum.ITEM);
+        storageGateway.saveStorageData();
     }
 
 
@@ -130,7 +129,7 @@ public class ItemsController {
     public void unhideItem(String itemID) throws AlreadyNotHiddenException, ItemNotFoundException, ItemInTradeException,
             IOException {
         itemStorage.unhideItem(Integer.parseInt(itemID), tradeStorage.getActiveTradeWithItem(Integer.parseInt(itemID)));
-        storageGateway.saveStorageData(StorageEnum.ITEM);
+        storageGateway.saveStorageData();
     }
 
 }

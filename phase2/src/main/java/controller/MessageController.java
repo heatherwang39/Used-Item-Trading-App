@@ -26,11 +26,10 @@ public class MessageController {
     /**
      * Class constructor for MessageController
      *
-     * @param storageGateway gateway for loading and saving information
+     * @param storageDepot storageDepot associated with the program
      */
-    public MessageController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
-        this.storageGateway = storageGateway;
-        StorageDepot storageDepot = new StorageDepot(storageGateway);
+    public MessageController(StorageDepot storageDepot, String username) throws IOException, ClassNotFoundException {
+        storageGateway = storageDepot.getStorageGateway();
         messageStorage = storageDepot.getMessageStorage();
         accountStorage = storageDepot.getAccountStorage();
         this.username = username;
@@ -49,7 +48,7 @@ public class MessageController {
     public void sendUserMessage(String title, String content, List<String> recipients) throws EmptyTitleException,
             EmptyContentException, EmptyRecipientListException, IOException {
         messageStorage.sendUserMessage(title, content, username, recipients);
-        storageGateway.saveStorageData(StorageEnum.MESSAGE);
+        storageGateway.saveStorageData();
     }
 
 
@@ -66,7 +65,7 @@ public class MessageController {
             EmptyRecipientListException, IOException {
         List<String> recipients = accountStorage.getAdmins();
         messageStorage.sendSystemMessage(title, content, recipients);
-        storageGateway.saveStorageData(StorageEnum.MESSAGE);
+        storageGateway.saveStorageData();
     }
 
     /**

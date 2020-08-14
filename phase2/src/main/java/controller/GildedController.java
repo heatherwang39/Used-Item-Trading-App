@@ -25,11 +25,10 @@ public class GildedController {
 
     /** Class constructor
      *
-     * @param storageGateway Gateway class for reading and writing Storage Data
+     * @param storageDepot storageDepot associated with the program
      */
-    public GildedController(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
-        StorageDepot storageDepot = new StorageDepot(storageGateway);
-        this.storageGateway = storageGateway;
+    public GildedController(StorageDepot storageDepot) throws IOException, ClassNotFoundException {
+        storageGateway = storageDepot.getStorageGateway();
         accountStorage = storageDepot.getAccountStorage();
     }
 
@@ -51,7 +50,7 @@ public class GildedController {
      */
     public void setGildedStatus(String username) throws IOException, AccountNotFoundException, WrongAccountTypeException {
         accountStorage.createStatus(username,"GILDED");
-        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
+        storageGateway.saveStorageData();
     }
 
     /** Remove the gilded status for a certain user
@@ -64,7 +63,7 @@ public class GildedController {
      */
     public void removeGildedStatus(String username) throws IOException, StatusNotFoundException, AccountNotFoundException, WrongAccountTypeException {
         accountStorage.removeStatus(username,"GILDED");
-        storageGateway.saveStorageData(StorageEnum.ACCOUNT);
+        storageGateway.saveStorageData();
     }
 
 

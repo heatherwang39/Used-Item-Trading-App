@@ -25,16 +25,15 @@ public class OffersController {
     /**
      * Initializes a new OffersController for the given username
      *
-     * @param storageGateway gateway for loading and saving information
+     * @param storageDepot storageDepot associated with the program
      * @param username username of the user accessing the Offers tab
      * @throws IOException file cannot be read/written
      * @throws ClassNotFoundException serialized class not found
      */
-    public OffersController(StorageGateway storageGateway, String username, TradePresenter tradePresenter) throws IOException, ClassNotFoundException {
-        this.storageGateway = storageGateway;
+    public OffersController(StorageDepot storageDepot, String username, TradePresenter tradePresenter) throws IOException, ClassNotFoundException {
+        storageGateway = storageDepot.getStorageGateway();
         this.username = username;
-        StorageDepot sd = new StorageDepot(storageGateway);
-        tradeStorage = sd.getTradeStorage();
+        tradeStorage = storageDepot.getTradeStorage();
     }
 
 
@@ -59,8 +58,7 @@ public class OffersController {
      */
     public void acceptOffer(int tradeNumber) throws TradeNumberException, IOException, TradeCancelledException, WrongTradeAccountException {
         tradeStorage.acceptTrade(tradeNumber, username);
-        storageGateway.saveStorageData(StorageEnum.TRADE);
-        storageGateway.saveStorageData(StorageEnum.ITEM);
+        storageGateway.saveStorageData();
     }
 
     /**
@@ -72,6 +70,6 @@ public class OffersController {
      */
     public void rejectOffer(int tradeNumber) throws TradeNumberException, IOException{
         tradeStorage.setStatus(tradeNumber, -1);
-        storageGateway.saveStorageData(StorageEnum.valueOf("TRADE"));
+        storageGateway.saveStorageData();
     }
 }

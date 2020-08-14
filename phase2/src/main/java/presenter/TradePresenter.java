@@ -22,11 +22,10 @@ public class TradePresenter {
     /**
      * Initializes a new TradePresenter
      *
-     * @param storageGateway gateway for loading and saving information
+     * @param storageDepot storageDepot associated with the program
      */
-    public TradePresenter(StorageGateway storageGateway) throws IOException, ClassNotFoundException {
-        StorageDepot sd = new StorageDepot(storageGateway);
-        itemStorage = sd.getItemStorage();
+    public TradePresenter(StorageDepot storageDepot) throws IOException, ClassNotFoundException {
+        itemStorage = storageDepot.getItemStorage();
     }
 
     /**

@@ -25,15 +25,14 @@ public class WishlistController {
     /**
      * Class constructor for WishlistController
      *
-     * @param storageGateway gateway for loading and saving information
+     * @param storageDepot storageDepot associated with the program
      * @param username username of user
      * @throws IOException file cannot be read/written
      */
-    public WishlistController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
-        this.storageGateway = storageGateway;
+    public WishlistController(StorageDepot storageDepot, String username) throws IOException, ClassNotFoundException {
+        storageGateway = storageDepot.getStorageGateway();
         this.username = username;
-        StorageDepot sd = new StorageDepot(storageGateway);
-        itemStorage = sd.getItemStorage();
+        itemStorage = storageDepot.getItemStorage();
     }
 
     /**
@@ -45,7 +44,7 @@ public class WishlistController {
      */
     public void addWishlist(int itemID) throws ItemNotFoundException, IOException {
         itemStorage.addWishList(username, itemID);
-        storageGateway.saveStorageData(StorageEnum.valueOf("ITEM"));
+        storageGateway.saveStorageData();
     }
 
     /**
@@ -58,7 +57,7 @@ public class WishlistController {
      */
     public void removeWishlist(int itemID) throws NotInWishlistException, ItemNotFoundException, IOException {
         itemStorage.removeWishList(username, itemID);
-        storageGateway.saveStorageData(StorageEnum.valueOf("ITEM"));
+        storageGateway.saveStorageData();
     }
 
     /**

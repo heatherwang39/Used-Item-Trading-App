@@ -14,6 +14,7 @@ import main.java.model.message.EmptyContentException;
 import main.java.model.message.EmptyRecipientListException;
 import main.java.model.message.EmptyTitleException;
 import main.java.model.trade.*;
+import main.java.system.StorageDepot;
 import main.java.system.StorageGateway;
 import main.java.presenter.*;
 
@@ -190,13 +191,14 @@ public class TraderGUI {
     private JRadioButton rbtnRequestRandomTemp;
 
     private JTextPane traderSystemTextPane;
+    private JLabel lblLogo;
 
     private String user;
-    private final StorageGateway storageGateway;
+    private final StorageDepot storageDepot;
 
 
-    public TraderGUI(StorageGateway storageGateway) {
-        this.storageGateway = storageGateway;
+    public TraderGUI(StorageDepot storageDepot) {
+        this.storageDepot = storageDepot;
         MainTabbedPane.removeAll();
         try {
             initializeLogin();
@@ -207,7 +209,8 @@ public class TraderGUI {
 
     private void initializeLogin() throws IOException, ClassNotFoundException {
 
-        LoginController loginController = new LoginController(storageGateway);
+        LoginController loginController = new LoginController(storageDepot);
+
 
         MainTabbedPane.insertTab("Main", null, Main, null, 0);
 
@@ -300,22 +303,22 @@ public class TraderGUI {
                         this.user = user;
                         MainTabbedPane.removeAll();
                         MainTabbedPane.insertTab("Home", null, Home, null, 0);
+                        initializeStatus();
                         initializeBrowse();
                         initializeAccount();
-                        initializeStatus();
                         break;
                     case "ADMIN":
                         this.user = user;
                         MainTabbedPane.removeAll();
                         MainTabbedPane.insertTab("Home", null, Home, null, 0);
-                        initializeBrowse();
-                        initializeItemRequests();
+                        initializeLogging();
+                        initializeAddAdmin();
                         initializeThreshold();
                         initializeUserList();
-                        initializeAddAdmin();
-                        initializeLogging();
                         initializeFreeze();
                         initializeMessages();
+                        initializeItemRequests();
+                        initializeBrowse();
                         break;
                     default:
                         showMessageDialog(null, "Your account did not match any credentials in " +
@@ -361,11 +364,11 @@ public class TraderGUI {
     }
 
     private void initializeStatus() throws IOException, ClassNotFoundException, TradeNumberException, ItemNotFoundException, AccountNotFoundException, WrongAccountTypeException {
-        AccountController accountController = new AccountController(storageGateway,user);
+        AccountController accountController = new AccountController(storageDepot,user);
         if (!accountController.getStatuses().contains("AWAY") && !accountController.getStatuses().contains("FROZEN")) {
-            initializeTradeRequest();
-            initializeOffers();
             initializeMeeting();
+            initializeOffers();
+            initializeTradeRequest();
         }
         if (!accountController.getStatuses().contains("FROZEN")) {
             initializeMessages();
@@ -379,7 +382,7 @@ public class TraderGUI {
     private void initializeAccount() throws IOException, ClassNotFoundException, AccountNotFoundException, ItemNotFoundException, WrongAccountTypeException {
         MainTabbedPane.insertTab("Account", null, Account, null, 1);
 
-        AccountController accountController = new AccountController(storageGateway, user);
+        AccountController accountController = new AccountController(storageDepot, user);
 
         txtUsernameOutput.setText(user);
         txtEmailOutput.setText(accountController.getEmail());
@@ -416,11 +419,11 @@ public class TraderGUI {
     }
 
     private void initializeActivity() throws IOException, ClassNotFoundException, TradeNumberException {
-        MainTabbedPane.insertTab("Activity", null, Activity, null, 3);
-        ActivityController activityController = new ActivityController(storageGateway, user);
+        MainTabbedPane.insertTab("Activity", null, Activity, null, 1);
+        ActivityController activityController = new ActivityController(storageDepot, user);
 
         List<List<Integer>> tradeList = activityController.recentItemsTraded();
-        TradePresenter tradePresenter = new TradePresenter(storageGateway);
+        TradePresenter tradePresenter = new TradePresenter(storageDepot);
         try {
             for (String s : tradePresenter.formatItemsInTradeForListView(tradeList)) {
                 txtAreaActivityTradeOutput.append(s + "\n");
@@ -437,17 +440,15 @@ public class TraderGUI {
 
     private void initializeBrowse() throws IOException, ClassNotFoundException, ItemNotFoundException {
         MainTabbedPane.insertTab("Browse", null, Browse, null, 1);
-        BrowseController browseController = new BrowseController(storageGateway);
-
-        MainTabbedPane.insertTab("Browse", null, Browse, null, 1);
+        BrowseController browseController = new BrowseController(storageDepot);
 
         displayBrowse(browseController.getItemsString());
     }
 
     private void initializeOffers() throws IOException, ClassNotFoundException, TradeNumberException, ItemNotFoundException {
-        MainTabbedPane.insertTab("Offers", null, Offers, null, 3);
-        TradePresenter tradePresenter = new TradePresenter(storageGateway);
-        OffersController offersController = new OffersController(storageGateway, user, tradePresenter);
+        MainTabbedPane.insertTab("Offers", null, Offers, null, 1);
+        TradePresenter tradePresenter = new TradePresenter(storageDepot);
+        OffersController offersController = new OffersController(storageDepot, user, tradePresenter);
 
         txtAreaOffersOutput.setText(tradePresenter.formatTradeString(offersController.getOffers(), "OFFERS"));
 
@@ -461,7 +462,7 @@ public class TraderGUI {
                         offersController.acceptOffer(Integer.parseInt(unformattedOfferList.get(0).get("id").get(0)));
                         txtAreaOffersOutput.setText(tradePresenter.formatTradeString(offersController.getOffers(), "OFFERS"));
                         showMessageDialog(null, "Trade accepted!");
-                        MeetingController meetingController = new MeetingController(storageGateway, user);
+                        MeetingController meetingController = new MeetingController(storageDepot, user);
                         displaySuggestMeetings(meetingController);
                     } else if (rbtnDenyOffer.isSelected()) {
                         offersController.rejectOffer(Integer.parseInt(unformattedOfferList.get(0).get("id").get(0)));
@@ -483,10 +484,10 @@ public class TraderGUI {
 
     private void initializeTradeRequest() throws IOException, ClassNotFoundException, ItemNotFoundException {
         AtomicInteger index = new AtomicInteger();
-        MainTabbedPane.insertTab("Item Request", null, Request, null, 3);
+        MainTabbedPane.insertTab("Trade Request", null, Request, null, 1);
 
-        TradeRequestController tradeRequestController = new TradeRequestController(storageGateway, user);
-        RandomTradeRequestController randomTradeRequestController = new RandomTradeRequestController(storageGateway, user);
+        TradeRequestController tradeRequestController = new TradeRequestController(storageDepot, user);
+        RandomTradeRequestController randomTradeRequestController = new RandomTradeRequestController(storageDepot, user);
         ItemPresenter itemPresenter = new ItemPresenter();
 
         List<List<HashMap<String, String>>> suggestionList = tradeRequestController.suggestAllItems();
@@ -608,9 +609,9 @@ public class TraderGUI {
 
 
     private void initializeItems() throws IOException, ClassNotFoundException {
-        MainTabbedPane.insertTab("Items", null, Items, null, 3);
+        MainTabbedPane.insertTab("Items", null, Items, null, 1);
 
-        ItemsController itemsController = new ItemsController(storageGateway, user);
+        ItemsController itemsController = new ItemsController(storageDepot, user);
         ItemPresenter itemPresenter = new ItemPresenter();
 
         // Add items tab
@@ -650,7 +651,7 @@ public class TraderGUI {
 
         // Hide/Unhide Items Tab
 
-        BrowseController browseController = new BrowseController(storageGateway);
+        BrowseController browseController = new BrowseController(storageDepot);
         displayHiddenUnhidden(itemsController, itemPresenter);
 
         btnItemsHide.addActionListener(e -> {
@@ -697,8 +698,8 @@ public class TraderGUI {
 
 
     private void initializeMeeting() throws IOException, ClassNotFoundException {
-        MainTabbedPane.insertTab("Meeting", null, Meeting, null, 3);
-        MeetingController meetingController = new MeetingController(storageGateway, user);
+        MainTabbedPane.insertTab("Meeting", null, Meeting, null, 1);
+        MeetingController meetingController = new MeetingController(storageDepot, user);
         displaySuggestMeetings(meetingController);
         displayMeetingSuggestions(meetingController);
         displayOngoingMeetings(meetingController, 0);
@@ -793,7 +794,7 @@ public class TraderGUI {
             displayCompletedMeetings(meetingController);
             displaySuggestMeetings(meetingController);
             try {
-                BrowseController browseController = new BrowseController(storageGateway);
+                BrowseController browseController = new BrowseController(storageDepot);
                 displayBrowse(browseController.getItemsString());
             } catch(ItemNotFoundException itemNotFoundException){
                 showMessageDialog(null, itemNotFoundException.getMessage());
@@ -805,8 +806,8 @@ public class TraderGUI {
 
 
     private void initializeMessages() throws IOException, ClassNotFoundException {
-        MainTabbedPane.insertTab("Messages", null, Messages, null, 3);
-        MessageController messageController = new MessageController(storageGateway, user);
+        MainTabbedPane.insertTab("Messages", null, Messages, null, 1);
+        MessageController messageController = new MessageController(storageDepot, user);
         MessagePresenter messagePresenter = new MessagePresenter();
 
         displayIncomingMessages(messageController, messagePresenter);
@@ -865,10 +866,10 @@ public class TraderGUI {
     // Admin Tabs
 
     private void initializeItemRequests() throws IOException, ClassNotFoundException, ItemNotFoundException {
-        MainTabbedPane.insertTab("Trade Requests", null, Requests, null, 2);
+        MainTabbedPane.insertTab("Item Requests", null, Requests, null, 1);
 
         ItemPresenter itemPresenter = new ItemPresenter();
-        ItemRequestsController itemRequestsController = new ItemRequestsController(storageGateway, itemPresenter);
+        ItemRequestsController itemRequestsController = new ItemRequestsController(storageDepot, itemPresenter);
 
         txtAreaRequestsOutput.setText(itemRequestsController.getRequestsString());
 
@@ -887,7 +888,7 @@ public class TraderGUI {
                         requestsList.remove(item);
                         formattedRequestsList.remove(formattedRequestsList.get(0));
                         txtAreaRequestsOutput.setText(itemRequestsController.getRequestsString());
-                        BrowseController browseController = new BrowseController(storageGateway);
+                        BrowseController browseController = new BrowseController(storageDepot);
                         displayBrowse(browseController.getItemsString());
                     } else if (rbtnDenyRequest.isSelected()) {
                         showMessageDialog(null, "Item rejected!\nName: " + item.get("name") +
@@ -911,8 +912,8 @@ public class TraderGUI {
 
 
     private void initializeThreshold() throws IOException, ClassNotFoundException {
-        MainTabbedPane.insertTab("Trade Threshold", null, Threshold, null, 2);
-        ThresholdController thresholdController = new ThresholdController(storageGateway);
+        MainTabbedPane.insertTab("Trade Threshold", null, Threshold, null, 1);
+        ThresholdController thresholdController = new ThresholdController(storageDepot);
 
         btnThresholdSetToDefault.addActionListener(e -> {
             try {
@@ -1052,8 +1053,8 @@ public class TraderGUI {
 
     private void initializeUserList() throws IOException, ClassNotFoundException, AccountNotFoundException {
         AtomicInteger currUserIndex = new AtomicInteger();
-        MainTabbedPane.insertTab("User List", null, UserList, null, 2);
-        UserlistController userlistController = new UserlistController(storageGateway);
+        MainTabbedPane.insertTab("User List", null, UserList, null, 1);
+        UserlistController userlistController = new UserlistController(storageDepot);
         List<String> userList = userlistController.showUsers();
         for (String s : userlistController.showUserStrings()) {
             txtAreaUserListOutput.append(s);
@@ -1084,9 +1085,9 @@ public class TraderGUI {
     }
 
     private void initializeAddAdmin() throws IOException, ClassNotFoundException {
-        MainTabbedPane.insertTab("Add Admin", null, AddAdmin, null, 2);
+        MainTabbedPane.insertTab("Add Admin", null, AddAdmin, null, 1);
 
-        AddAdminController addAdminController = new AddAdminController(storageGateway);
+        AddAdminController addAdminController = new AddAdminController(storageDepot);
 
         btnAddAdmin.addActionListener(e -> {
             String usernameAdmin = txtAdminUsernameInput.getText();
@@ -1110,9 +1111,9 @@ public class TraderGUI {
 
     private void initializeFreeze() throws IOException, ClassNotFoundException {
         final int[] currUserIndex = {0};
-        MainTabbedPane.insertTab("Un-Freeze", null, Freeze, null, 2);
+        MainTabbedPane.insertTab("Un-Freeze", null, Freeze, null, 1);
 
-        FreezeController freezeController = new FreezeController(storageGateway);
+        FreezeController freezeController = new FreezeController(storageDepot);
 
         List<List<String>> initialFrozenUserList = new ArrayList<>();
         try {
@@ -1175,7 +1176,7 @@ public class TraderGUI {
 
 
     private void initializeLogging() {
-        MainTabbedPane.insertTab("Logging", null, Logging, null, 2);
+        MainTabbedPane.insertTab("Logging", null, Logging, null, 1);
     }
 
 
@@ -1324,15 +1325,4 @@ public class TraderGUI {
             e.printStackTrace();
         }
     }
-
-    private Integer tryParse(String s){
-        try {
-            return Integer.parseInt(s);
-        } catch (NumberFormatException e) {
-
-            showMessageDialog(null, "Invalid Input! Please try again");
-            return null;
-            }
-    }
-
 }

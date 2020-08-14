@@ -24,15 +24,14 @@ public class ActivityController {
     /**
      * Initializes a new ActivityController for the given username
      *
-     * @param storageGateway gateway for loading and saving information
+     * @param storageDepot storageDepot associated with the program
      * @param username username of the user accessing the Activity tab
      * @throws IOException file can't be read/written
      * @throws ClassNotFoundException serialized class not found
      */
-    public ActivityController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException {
+    public ActivityController(StorageDepot storageDepot, String username) throws IOException, ClassNotFoundException {
         this.username = username;
-        StorageDepot sd = new StorageDepot(storageGateway);
-        tradeStorage = sd.getTradeStorage();
+        tradeStorage = storageDepot.getTradeStorage();
     }
 
     /**

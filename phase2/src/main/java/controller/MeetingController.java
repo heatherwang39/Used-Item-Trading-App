@@ -34,17 +34,16 @@ public class MeetingController {
     /**
      * Initializes a new MeetingController for the given username
      *
-     * @param storageGateway gateway for loading and saving information
+     * @param storageDepot gateway for loading and saving information
      * @param username username of the user accessing the Request tab
      */
-    public MeetingController(StorageGateway storageGateway, String username) throws IOException, ClassNotFoundException{
-        this.storageGateway = storageGateway;
+    public MeetingController(StorageDepot storageDepot, String username) throws IOException, ClassNotFoundException{
+        storageGateway = storageDepot.getStorageGateway();
         this.username = username;
-        StorageDepot sd = new StorageDepot(storageGateway);
-        tradeStorage = sd.getTradeStorage();
-        meetingStorage = sd.getMeetingStorage();
+        tradeStorage = storageDepot.getTradeStorage();
+        meetingStorage = storageDepot.getMeetingStorage();
         meetingPresenter = new MeetingPresenter(username);
-        tradePresenter = new TradePresenter(storageGateway);
+        tradePresenter = new TradePresenter(storageDepot);
     }
 
 
@@ -118,8 +117,7 @@ public class MeetingController {
         int meetingID = meetingStorage.newMeeting(attendees, place, time);
         tradeStorage.addMeeting(tradeNumber, meetingID);
         meetingStorage.acceptMeeting(meetingID, username);
-        storageGateway.saveStorageData(StorageEnum.TRADE);
-        storageGateway.saveStorageData(StorageEnum.MEETING);
+        storageGateway.saveStorageData();
     }
 
 
@@ -154,8 +152,7 @@ public class MeetingController {
      */
     public void acceptMeeting(int meetingId) throws WrongMeetingAccountException, MeetingIDException, IOException {
         meetingStorage.acceptMeeting(meetingId, username);
-        storageGateway.saveStorageData(StorageEnum.MEETING);
-        storageGateway.saveStorageData(StorageEnum.TRADE);
+        storageGateway.saveStorageData();
     }
 
     /**
@@ -167,8 +164,7 @@ public class MeetingController {
      */
     public void rejectMeeting(int meetingId) throws MeetingAlreadyConfirmedException, MeetingIDException, IOException {
         meetingStorage.cancelMeeting(meetingId);
-        storageGateway.saveStorageData(StorageEnum.MEETING);
-        storageGateway.saveStorageData(StorageEnum.TRADE);
+        storageGateway.saveStorageData();
     }
 
 
@@ -205,8 +201,7 @@ public class MeetingController {
     public void confirmMeeting(int meetingId) throws WrongMeetingAccountException, MeetingIDException, TimeException,
             IOException {
         meetingStorage.confirmMeeting(meetingId, username);
-        storageGateway.saveStorageData(StorageEnum.MEETING);
-        storageGateway.saveStorageData(StorageEnum.TRADE);
+        storageGateway.saveStorageData();
     }
 
 
